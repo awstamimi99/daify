@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /login.html
+Disallow: /signup.html
+Disallow: /template-customizer.html
+
+Sitemap: https://menuflow.app/sitemap.xml
