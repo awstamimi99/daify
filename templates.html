@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Restaurant Menu Templates — MenuFlow</title>
+    <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+    <meta
+      name="description"
+      content="Explore premium digital menu templates for fine dining, cafés, fast casual restaurants, and modern hospitality brands."
+    />
+    <meta property="og:title" content="MenuFlow Templates" />
+    <link rel="stylesheet" href="assets/css/variables.css" />
+    <link rel="stylesheet" href="assets/css/reset.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="assets/js/templates.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header scrolled">
+      <nav class="nav">
+        <a class="brand" href="index.html" aria-label="MenuFlow home"
+          ><img
+            class="brand-logo"
+            src="assets/icons/menuflow-logo.svg"
+            alt="MenuFlow"
+        /></a>
+        <div class="nav-links">
+          <a href="features.html">Features</a
+          ><a href="templates.html">Templates</a
+          ><a href="index.html#how">How It Works</a
+          ><a href="pricing.html">Pricing</a><a href="about.html">About</a>
+        </div>
+        <div class="nav-actions">
+          <a href="login.html">Log In</a
+          ><a class="btn btn--dark" href="signup.html">Start Free Trial ↗</a
+          ><button class="nav-toggle" aria-label="Toggle menu">☰</button>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <section class="page-hero">
+        <div class="container">
+          <span class="eyebrow">Template collection</span>
+          <h1 class="h1">Designed for the way your restaurant feels.</h1>
+          <p class="lead">
+            Eight distinctive starting points. Each one mobile-first, fully
+            customizable, and ready to carry your own food, voice, and brand.
+          </p>
+          <div class="button-row page-hero-actions">
+            <a class="btn btn--dark" href="signup.html">Start Free Trial ↗</a>
+            <span class="trial-inline-note">Try every template for 14 days</span>
+          </div>
+        </div>
+      </section>
+      <section class="section" style="padding-top: 0">
+        <div class="container">
+          <div class="template-tabs" aria-label="Template filters">
+            <button class="filter-btn active" data-filter="All">All</button
+            ><button class="filter-btn" data-filter="Fine Dining">
+              Fine Dining</button
+            ><button class="filter-btn" data-filter="Cafe">Cafe</button
+            ><button class="filter-btn" data-filter="Fast Casual">
+              Fast Casual</button
+            ><button class="filter-btn" data-filter="Dark Luxury">Dark Luxury</button
+            ><button class="filter-btn" data-filter="Mediterranean">Mediterranean</button
+            ><button class="filter-btn" data-filter="Minimal">Minimal</button
+            ><button class="filter-btn" data-filter="Middle Eastern">Middle Eastern</button
+            ><button class="filter-btn" data-filter="Bakery">Bakery</button>
+          </div>
+          <div class="template-grid" id="templateGrid"></div>
+        </div>
+      </section>
+    </main>
+    <div
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+    >
+      <button
+        data-close-modal
+        style="position: absolute; inset: 0; background: transparent"
+        aria-label="Close preview"
+      ></button>
+      <div class="modal-panel">
+        <button class="modal-close" aria-label="Close preview">×</button
+        ><span class="eyebrow">Interactive preview</span>
+        <h2 class="h2" id="modalTitle">Template</h2>
+        <div class="feature-visual" style="margin-top: 2rem">
+          <div class="demo-phone">
+            <div class="demo-screen">
+              <small class="mini-meta">Preview restaurant</small>
+              <h3>Oliva</h3>
+              <div class="demo-nav">
+                <span>Starters</span><span>Mains</span><span>Dessert</span>
+              </div>
+              <div class="demo-items">
+                <article class="demo-item">
+                  <strong>Whipped feta</strong><b>KD 3.5</b>
+                </article>
+                <article class="demo-item">
+                  <strong>Sea bass</strong><b>KD 8.5</b>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="container footer-bottom footer-bottom--flush">
+        <a class="brand" href="index.html" aria-label="MenuFlow home"
+          ><img
+            class="brand-logo"
+            src="assets/icons/menuflow-logo-dark.svg"
+            alt="MenuFlow" /></a
+        ><span>© 2026 MenuFlow · Front-end prototype</span>
+      </div>
+    </footer>
+  </body>
+</html>

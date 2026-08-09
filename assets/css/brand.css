@@ -1,0 +1,36 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+  width: clamp(150px, 13vw, 178px);
+  line-height: 0;
+  flex: 0 0 auto;
+}
+
+.brand-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.footer .brand { width: 172px; }
+.auth-art .brand { width: 180px; }
+.auth-panel { position: relative; }
+
+.section--olive { background: var(--mf-sage-dark); }
+.cta { background: var(--mf-mist); }
+.controls { background: var(--mf-ink); border-color: #30352f; }
+.step span, .benefit-num { color: var(--mf-champagne); }
+.price-card.featured, .template-tab.active, .filter-btn.active {
+  background: var(--mf-ink);
+  border-color: var(--mf-ink);
+}
+.site-header.scrolled .nav { background: rgba(247, 244, 237, .9); }
+.demo-screen { --demo-accent: var(--mf-sage); }
+.template-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+.template-actions a { padding: .55rem .75rem; border: 1px solid var(--mf-stone); border-radius: var(--mf-radius-pill); font-size: .66rem; font-weight: 700; }
+.template-actions a:last-child { background: var(--mf-ink); color: var(--mf-white); border-color: var(--mf-ink); }
+
+@media (max-width: 680px) {
+  .brand { width: 144px; }
+  .footer .brand { width: 156px; }
+}

@@ -1,0 +1,38 @@
+@media (max-width: 680px) {
+  .nav {
+    max-width: calc(100vw - 1.5rem);
+  }
+  .nav-actions .btn {
+    padding-inline: 0.7rem;
+  }
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .hero-grid > * {
+    min-width: 0;
+  }
+  .hero-copy .display {
+    font-size: clamp(2.55rem, 11vw, 3.2rem);
+  }
+  .hero-visual {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 430px) {
+  .nav-actions .btn {
+    display: none;
+  }
+  .hero-copy .button-row {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .hero-copy .button-row .btn {
+    width: 100%;
+  }
+  .video-copy {
+    left: 1.5rem;
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+}

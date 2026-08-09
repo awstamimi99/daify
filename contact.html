@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Contact — MenuFlow</title><link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+    <meta
+      name="description"
+      content="Talk to MenuFlow about a beautiful digital menu for your restaurant."
+    />
+    <meta property="og:title" content="Contact MenuFlow" />
+    <link rel="stylesheet" href="assets/css/variables.css" />
+    <link rel="stylesheet" href="assets/css/reset.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="assets/js/main.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header scrolled">
+      <nav class="nav">
+        <a class="brand" href="index.html" aria-label="MenuFlow home"><img class="brand-logo" src="assets/icons/menuflow-logo.svg" alt="MenuFlow"></a>
+        <div class="nav-links">
+          <a href="features.html">Features</a
+          ><a href="templates.html">Templates</a
+          ><a href="pricing.html">Pricing</a><a href="about.html">About</a>
+        </div>
+        <div class="nav-actions">
+          <a href="login.html">Log In</a
+          ><a class="btn btn--dark" href="signup.html">Start Free Trial ↗</a
+          ><button class="nav-toggle" aria-label="Toggle menu">☰</button>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <section class="page-hero">
+        <div class="container form-shell">
+          <div>
+            <span class="eyebrow">Let's talk</span>
+            <h1 class="h1">Tell us about your restaurant.</h1>
+            <p class="lead" style="margin-top: 1.4rem">
+              Planning for several locations or need help choosing a plan?
+              Tell us what you are building. For one restaurant, you can start
+              a 14-day trial immediately—no credit card required.
+            </p>
+          </div>
+          <form class="form" data-prototype="contact" novalidate>
+            <!-- Production submission will be implemented server-side during the Drupal phase. -->
+            <div class="field-row">
+              <div class="field">
+                <label for="name">Name</label
+                ><input id="name" name="name" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="email">Email</label
+                ><input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  required
+                />
+              </div>
+            </div>
+            <div class="field">
+              <label for="restaurant">Restaurant name</label
+              ><input id="restaurant" name="restaurant" required />
+            </div>
+            <div class="field">
+              <label for="phone"
+                >Phone <span style="font-weight: 400">(optional)</span></label
+              ><input id="phone" name="phone" type="tel" autocomplete="tel" />
+            </div>
+            <div class="field">
+              <label for="message">Message</label
+              ><textarea id="message" name="message" required></textarea>
+            </div>
+            <button class="btn btn--dark" type="submit">Send message</button>
+            <div class="form-message" role="status"></div>
+          </form>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="container footer-bottom footer-bottom--flush">
+        <a class="brand" href="index.html" aria-label="MenuFlow home"><img class="brand-logo" src="assets/icons/menuflow-logo-dark.svg" alt="MenuFlow"></a><span>© 2026 MenuFlow · Front-end prototype</span>
+      </div>
+    </footer>
+  </body>
+</html>

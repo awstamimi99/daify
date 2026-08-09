@@ -1,0 +1,34 @@
+:root {
+  /* MenuFlow brand kit — single source of truth, consumed directly everywhere */
+  --mf-ink: #171a17;
+  --mf-ivory: #f7f4ed;
+  --mf-sage: #7c8b73;
+  --mf-sage-dark: #5e6b57;
+  --mf-champagne: #c8a96b;
+  --mf-stone: #d9d4c8;
+  --mf-mist: #eef0ea;
+  --mf-white: #ffffff;
+  --mf-text-muted: #5c625c;
+
+  --mf-radius-sm: 10px;
+  --mf-radius-md: 18px;
+  --mf-radius-lg: 28px;
+  --mf-radius-pill: 999px;
+
+  --mf-space-1: 4px;
+  --mf-space-2: 8px;
+  --mf-space-3: 12px;
+  --mf-space-4: 16px;
+  --mf-space-6: 24px;
+  --mf-space-8: 32px;
+  --mf-space-12: 48px;
+  --mf-space-16: 64px;
+
+  --mf-shadow-soft: 0 12px 40px rgba(23, 26, 23, 0.08);
+  --mf-shadow-medium: 0 18px 50px rgba(23, 26, 23, 0.1);
+  --mf-shadow-large: 0 32px 80px rgba(23, 26, 23, 0.16);
+
+  --mf-container: 1200px;
+  --mf-font-serif: "DM Serif Display", Georgia, serif;
+  --mf-font-sans: "Inter", system-ui, sans-serif;
+}
