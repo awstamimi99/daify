@@ -165,11 +165,10 @@
   }
   $$('.modal-close,[data-close-modal]').forEach(btn => btn.addEventListener('click', () => $('.modal')?.classList.remove('open')));
 
-  $$('form[data-prototype]').forEach(form => form.addEventListener('submit', e => {
+  $$('form[data-prototype="contact"]').forEach(form => form.addEventListener('submit', e => {
     e.preventDefault(); const message = $('.form-message', form); if (!form.checkValidity()) { form.reportValidity(); return; }
-    if (form.dataset.prototype === 'signup') { const p = $('[name="password"]', form), c = $('[name="confirmPassword"]', form); if (p.value.length < 8 || p.value !== c.value) { message.textContent = 'Use at least 8 characters and make sure both passwords match.'; message.classList.add('show'); return; } }
-    message.textContent = form.dataset.prototype === 'contact' ? 'Thanks — your message is ready. Form delivery will be connected in the Drupal phase.' : 'Your trial signup is ready. Account activation will be connected in the Drupal phase.';
-    message.classList.add('show');
+    message.textContent = 'Thanks — your message is ready. Form delivery will be connected in the Drupal phase.';
+    message.classList.add('show', 'form-message--success');
   }));
   $$('.password-toggle').forEach(btn => btn.addEventListener('click', () => { const input = btn.previousElementSibling; input.type = input.type === 'password' ? 'text' : 'password'; btn.textContent = input.type === 'password' ? 'Show' : 'Hide'; }));
 })();

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="assets/css/reset.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
     <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/auth.js" defer></script>
     <link rel="canonical" href="https://menuflow.app/login.html" />
     <meta name="robots" content="noindex,follow" />
     <meta property="og:site_name" content="MenuFlow" />
@@ -54,22 +55,25 @@
             Prototype interface only. No credentials are transmitted or stored.
           </p>
           <form
+            id="loginForm"
             class="form"
-            data-prototype="login"
+            data-auth="login"
             novalidate
             style="padding: 0; box-shadow: none; background: transparent"
           >
-            <div class="field">
+            <div class="field" data-field="email">
               <label for="email">Email</label
               ><input
                 id="email"
                 name="email"
                 type="email"
                 autocomplete="email"
+                aria-describedby="email-error"
                 required
               />
+              <small class="field-error" id="email-error"></small>
             </div>
-            <div class="field">
+            <div class="field" data-field="password">
               <label for="password">Password</label>
               <div class="password-wrap">
                 <input
@@ -77,19 +81,34 @@
                   name="password"
                   type="password"
                   autocomplete="current-password"
+                  aria-describedby="password-error"
                   required
                 /><button class="password-toggle" type="button">Show</button>
               </div>
+              <small class="field-error" id="password-error"></small>
             </div>
             <div style="display: flex; justify-content: flex-end">
-              <a class="small-link" href="#">Forgot password?</a>
+              <a class="small-link" href="#" id="forgotPasswordLink">Forgot password?</a>
             </div>
-            <button class="btn btn--dark" type="submit">Log In</button>
-            <div class="form-message" role="status"></div>
+            <button class="btn btn--dark" type="submit">
+              <span class="btn-label">Log In</span>
+            </button>
+            <div class="form-message" role="status" aria-live="polite"></div>
           </form>
-          <p class="center" style="font-size: 0.85rem">
+          <div class="auth-success hidden" id="loginSuccess" tabindex="-1">
+            <div class="auth-success-icon" aria-hidden="true">✓</div>
+            <h2 class="h2" style="font-size: 2rem">Welcome back.</h2>
+            <p>You're logged in. This prototype has no dashboard yet, so here's where your menus would be.</p>
+            <a class="btn btn--dark" href="templates.html">Go to templates →</a>
+          </div>
+          <p class="center auth-switch" style="font-size: 0.85rem">
             Don't have an account?
             <a class="small-link" href="signup.html">Start Free Trial</a>
+          </p>
+          <p class="auth-prototype-hint">
+            Prototype tip — log in with <code>demo@menuflow.app</code> /
+            <code>menuflow123</code> to see the success state. Any other
+            combination shows the invalid-credentials error.
           </p>
         </div>
       </section>

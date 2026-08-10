@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="assets/css/reset.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
     <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/auth.js" defer></script>
     <link rel="canonical" href="https://menuflow.app/signup.html" />
     <meta name="robots" content="noindex,follow" />
     <meta property="og:site_name" content="MenuFlow" />
@@ -65,42 +66,49 @@
             <li>Cancel anytime</li>
           </ul>
           <form
+            id="signupForm"
             class="form"
-            data-prototype="signup"
+            data-auth="signup"
             novalidate
             style="padding: 0; box-shadow: none; background: transparent"
           >
             <div class="field-row">
-              <div class="field">
+              <div class="field" data-field="firstName">
                 <label for="firstName">First name</label
                 ><input
                   id="firstName"
                   name="firstName"
                   autocomplete="given-name"
+                  aria-describedby="firstName-error"
                   required
                 />
+                <small class="field-error" id="firstName-error"></small>
               </div>
-              <div class="field">
+              <div class="field" data-field="lastName">
                 <label for="lastName">Last name</label
                 ><input
                   id="lastName"
                   name="lastName"
                   autocomplete="family-name"
+                  aria-describedby="lastName-error"
                   required
                 />
+                <small class="field-error" id="lastName-error"></small>
               </div>
             </div>
-            <div class="field">
+            <div class="field" data-field="email">
               <label for="email">Email</label
               ><input
                 id="email"
                 name="email"
                 type="email"
                 autocomplete="email"
+                aria-describedby="email-error"
                 required
               />
+              <small class="field-error" id="email-error"></small>
             </div>
-            <div class="field">
+            <div class="field" data-field="password">
               <label for="password">Password</label>
               <div class="password-wrap">
                 <input
@@ -109,12 +117,17 @@
                   type="password"
                   minlength="8"
                   autocomplete="new-password"
+                  aria-describedby="password-error"
                   required
                 /><button class="password-toggle" type="button">Show</button>
               </div>
-              <small>At least 8 characters</small>
+              <div class="password-strength" data-level="0" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </div>
+              <small class="password-strength-label">At least 8 characters</small>
+              <small class="field-error" id="password-error"></small>
             </div>
-            <div class="field">
+            <div class="field" data-field="confirmPassword">
               <label for="confirmPassword">Confirm password</label>
               <div class="password-wrap">
                 <input
@@ -123,16 +136,39 @@
                   type="password"
                   minlength="8"
                   autocomplete="new-password"
+                  aria-describedby="confirmPassword-error"
                   required
                 /><button class="password-toggle" type="button">Show</button>
               </div>
+              <small class="field-error" id="confirmPassword-error"></small>
             </div>
-            <button class="btn btn--dark" type="submit">Start My Free Trial</button>
-            <div class="form-message" role="status"></div>
+            <label class="checkbox-field" data-field="terms">
+              <input type="checkbox" id="terms" name="terms" aria-describedby="terms-error" required />
+              <span>I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</span>
+            </label>
+            <small class="field-error" id="terms-error"></small>
+            <button class="btn btn--dark" type="submit">
+              <span class="btn-label">Start My Free Trial</span>
+            </button>
+            <div class="form-message" role="status" aria-live="polite"></div>
           </form>
-          <p class="center" style="font-size: 0.85rem">
+          <div class="auth-success hidden" id="signupSuccess" tabindex="-1">
+            <div class="auth-success-icon" aria-hidden="true">✓</div>
+            <h2 class="h2" style="font-size: 2rem" id="signupSuccessName">You're in.</h2>
+            <p id="signupSuccessBody">
+              Your 14-day Pro trial has started. We've sent a confirmation to
+              your email.
+            </p>
+            <a class="btn btn--dark" href="templates.html">Start building your menu →</a>
+          </div>
+          <p class="center auth-switch" style="font-size: 0.85rem">
             Already have an account?
             <a class="small-link" href="login.html">Log In</a>
+          </p>
+          <p class="auth-prototype-hint">
+            Prototype tip — try <code>demo@menuflow.app</code> for the
+            "already registered" case, or <code>error@menuflow.app</code> for
+            a simulated server error. Any other valid details succeed.
           </p>
         </div>
       </section>
