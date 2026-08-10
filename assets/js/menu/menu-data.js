@@ -95,4 +95,19 @@
       }
     ]
   };
+
+  try {
+    const saved = localStorage.getItem('menuflow_dashboard_v1');
+    if (saved) {
+      const state = JSON.parse(saved);
+      if (state && state.restaurant && Array.isArray(state.sections) && state.sections.length) {
+        window.MenuFlowMenuData = {
+          restaurant: Object.assign({}, window.MenuFlowMenuData.restaurant, state.restaurant),
+          sections: state.sections
+        };
+      }
+    }
+  } catch (error) {
+    /* no saved dashboard data yet, or storage unavailable — fall back to the demo menu above */
+  }
 })();

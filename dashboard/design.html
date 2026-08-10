@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Design — MenuFlow Dashboard</title>
+    <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml" />
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="stylesheet" href="../assets/css/variables.css" />
+    <link rel="stylesheet" href="../assets/css/reset.css" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/dashboard.css" />
+    <script src="../assets/js/menu/menu-data.js"></script>
+    <script src="../assets/js/menu/templates-config.js"></script>
+    <script src="../assets/js/dashboard/store.js"></script>
+    <script src="../assets/js/dashboard/shell.js"></script>
+    <script src="../assets/js/dashboard/design.js" defer></script>
+  </head>
+  <body class="dash-body">
+    <div class="dash-shell">
+      <aside class="dash-sidebar">
+        <a class="brand" href="../index.html" aria-label="MenuFlow home"
+          ><img class="brand-logo" src="../assets/icons/menuflow-logo-dark.svg" alt="MenuFlow"
+        /></a>
+        <nav class="dash-nav" aria-label="Dashboard">
+          <a href="index.html"><span class="dash-nav-icon">⌂</span> Overview</a>
+          <a href="menu.html"><span class="dash-nav-icon">▤</span> Menu</a>
+          <a href="design.html" class="active"><span class="dash-nav-icon">✎</span> Design</a>
+          <a href="qr.html"><span class="dash-nav-icon">▦</span> QR &amp; Publish</a>
+        </nav>
+        <div class="dash-sidebar-footer">
+          <a href="#" id="dashReset">Reset demo data</a>
+          <a href="#" id="dashLogout">Log out</a>
+        </div>
+      </aside>
+      <main class="dash-main">
+        <div class="dash-topbar">
+          <button class="dash-menu-toggle" aria-label="Toggle menu">☰</button>
+          <div>
+            <h1>Design</h1>
+            <p class="dash-topbar-meta">Pick a template, then tune it to match your brand.</p>
+          </div>
+        </div>
+
+        <div class="dash-card" style="margin-bottom: 1.75rem">
+          <div class="dash-card-header">
+            <div>
+              <h2>Template</h2>
+              <p>Switching templates resets fine-tuned colors for a clean start.</p>
+            </div>
+          </div>
+          <div class="dash-template-grid" id="templateGrid"></div>
+        </div>
+
+        <div class="dash-design-grid">
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <div>
+                <h2 id="customizeTitle">Customize</h2>
+                <p>Changes appear in the live preview and save automatically.</p>
+              </div>
+            </div>
+
+            <div class="dash-option-group">
+              <span>Colors</span>
+              <div class="dash-swatch-row" id="colorControls"></div>
+            </div>
+
+            <div id="shapeControls"></div>
+          </div>
+
+          <div class="dash-preview-frame-wrap">
+            <iframe id="previewFrame" title="Live menu preview"></iframe>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

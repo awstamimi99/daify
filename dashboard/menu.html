@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Menu — MenuFlow Dashboard</title>
+    <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml" />
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="stylesheet" href="../assets/css/variables.css" />
+    <link rel="stylesheet" href="../assets/css/reset.css" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/dashboard.css" />
+    <script src="../assets/js/menu/menu-data.js"></script>
+    <script src="../assets/js/dashboard/store.js"></script>
+    <script src="../assets/js/dashboard/shell.js"></script>
+    <script src="../assets/js/dashboard/menu-editor.js" defer></script>
+  </head>
+  <body class="dash-body">
+    <div class="dash-shell">
+      <aside class="dash-sidebar">
+        <a class="brand" href="../index.html" aria-label="MenuFlow home"
+          ><img class="brand-logo" src="../assets/icons/menuflow-logo-dark.svg" alt="MenuFlow"
+        /></a>
+        <nav class="dash-nav" aria-label="Dashboard">
+          <a href="index.html"><span class="dash-nav-icon">⌂</span> Overview</a>
+          <a href="menu.html" class="active"><span class="dash-nav-icon">▤</span> Menu</a>
+          <a href="design.html"><span class="dash-nav-icon">✎</span> Design</a>
+          <a href="qr.html"><span class="dash-nav-icon">▦</span> QR &amp; Publish</a>
+        </nav>
+        <div class="dash-sidebar-footer">
+          <a href="#" id="dashReset">Reset demo data</a>
+          <a href="#" id="dashLogout">Log out</a>
+        </div>
+      </aside>
+      <main class="dash-main">
+        <div class="dash-topbar">
+          <button class="dash-menu-toggle" aria-label="Toggle menu">☰</button>
+          <div>
+            <h1>Menu</h1>
+            <p class="dash-topbar-meta">Manage your sections and dishes. Changes save automatically.</p>
+          </div>
+          <div class="dash-topbar-actions">
+            <button class="btn btn--dark" type="button" id="addSectionBtn">+ Add section</button>
+          </div>
+        </div>
+
+        <div id="sectionsList"></div>
+      </main>
+    </div>
+
+    <dialog class="dash-modal" id="sectionDialog">
+      <div class="dash-modal-body">
+        <h2 id="sectionDialogTitle">Add section</h2>
+        <form id="sectionForm" novalidate>
+          <div class="field" data-field="name">
+            <label for="sectionName">Section name</label>
+            <input id="sectionName" name="name" required aria-describedby="sectionName-error" />
+            <small class="field-error" id="sectionName-error"></small>
+          </div>
+          <div class="field" data-field="description" style="margin-top: 1rem">
+            <label for="sectionDescription">Description</label>
+            <input id="sectionDescription" name="description" placeholder="e.g. Small plates for the table" />
+          </div>
+          <div class="dash-modal-actions">
+            <button class="btn btn--ghost" type="button" id="sectionCancelBtn">Cancel</button>
+            <button class="btn btn--dark" type="submit">Save section</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+
+    <dialog class="dash-modal" id="itemDialog">
+      <div class="dash-modal-body">
+        <h2 id="itemDialogTitle">Add dish</h2>
+        <form id="itemForm" novalidate>
+          <div class="field" data-field="name">
+            <label for="itemName">Dish name</label>
+            <input id="itemName" name="name" required aria-describedby="itemName-error" />
+            <small class="field-error" id="itemName-error"></small>
+          </div>
+          <div class="field" data-field="description" style="margin-top: 1rem">
+            <label for="itemDescription">Description</label>
+            <input id="itemDescription" name="description" placeholder="Key ingredients, prepared how" />
+          </div>
+          <div class="field-row" style="margin-top: 1rem">
+            <div class="field" data-field="price">
+              <label for="itemPrice">Price</label>
+              <input id="itemPrice" name="price" required placeholder="e.g. 4.500 KD" aria-describedby="itemPrice-error" />
+              <small class="field-error" id="itemPrice-error"></small>
+            </div>
+            <div class="field" data-field="badge">
+              <label for="itemBadge">Badge (optional)</label>
+              <input id="itemBadge" name="badge" placeholder="e.g. Chef's Choice" />
+            </div>
+          </div>
+          <div class="field" data-field="image" style="margin-top: 1rem">
+            <label for="itemImage">Photo</label>
+            <select id="itemImage" name="image"></select>
+          </div>
+          <div class="dash-option-group" style="margin-top: 1rem">
+            <span>Dietary tags</span>
+            <div class="dash-checkbox-row">
+              <label><input type="checkbox" name="dietary" value="Vegetarian" /> Vegetarian</label>
+              <label><input type="checkbox" name="dietary" value="Vegan" /> Vegan</label>
+              <label><input type="checkbox" name="dietary" value="Gluten Free" /> Gluten Free</label>
+            </div>
+          </div>
+          <div class="dash-checkbox-row">
+            <label><input type="checkbox" name="featured" /> Feature on menu highlights</label>
+            <label><input type="checkbox" name="available" checked /> Available</label>
+          </div>
+          <div class="dash-modal-actions">
+            <button class="btn btn--ghost" type="button" id="itemCancelBtn">Cancel</button>
+            <button class="btn btn--dark" type="submit">Save dish</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+  </body>
+</html>

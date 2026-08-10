@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>QR &amp; Publish — MenuFlow Dashboard</title>
+    <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml" />
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="stylesheet" href="../assets/css/variables.css" />
+    <link rel="stylesheet" href="../assets/css/reset.css" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/dashboard.css" />
+    <script src="../assets/js/menu/menu-data.js"></script>
+    <script src="../assets/js/dashboard/store.js"></script>
+    <script src="../assets/js/dashboard/shell.js"></script>
+    <script src="../assets/js/vendor/qrcode.min.js"></script>
+    <script src="../assets/js/dashboard/qr.js" defer></script>
+  </head>
+  <body class="dash-body">
+    <div class="dash-shell">
+      <aside class="dash-sidebar">
+        <a class="brand" href="../index.html" aria-label="MenuFlow home"
+          ><img class="brand-logo" src="../assets/icons/menuflow-logo-dark.svg" alt="MenuFlow"
+        /></a>
+        <nav class="dash-nav" aria-label="Dashboard">
+          <a href="index.html"><span class="dash-nav-icon">⌂</span> Overview</a>
+          <a href="menu.html"><span class="dash-nav-icon">▤</span> Menu</a>
+          <a href="design.html"><span class="dash-nav-icon">✎</span> Design</a>
+          <a href="qr.html" class="active"><span class="dash-nav-icon">▦</span> QR &amp; Publish</a>
+        </nav>
+        <div class="dash-sidebar-footer">
+          <a href="#" id="dashReset">Reset demo data</a>
+          <a href="#" id="dashLogout">Log out</a>
+        </div>
+      </aside>
+      <main class="dash-main">
+        <div class="dash-topbar">
+          <button class="dash-menu-toggle" aria-label="Toggle menu">☰</button>
+          <div>
+            <h1>QR &amp; Publish</h1>
+            <p class="dash-topbar-meta">One code, always pointing at your latest menu.</p>
+          </div>
+        </div>
+
+        <div class="dash-qr-grid">
+          <div class="dash-qr-canvas-wrap">
+            <canvas id="qrCanvas"></canvas>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <div>
+                <h2>Your live menu link</h2>
+                <p>Scan the code or share this link. It updates automatically as you edit your menu.</p>
+              </div>
+            </div>
+            <div class="dash-link-row">
+              <input type="text" id="liveUrl" readonly />
+              <button class="btn btn--dark" type="button" id="copyLinkBtn">Copy link</button>
+            </div>
+            <div class="button-row" style="margin-top: 1.25rem">
+              <a class="btn btn--ghost" id="openLiveBtn" href="#" target="_blank" rel="noopener">Open live menu ↗</a>
+              <button class="btn btn--ghost" type="button" id="downloadQrBtn">Download QR (PNG)</button>
+            </div>
+            <p class="auth-prototype-hint">
+              This prototype has no print/ordering flow yet — download the PNG and take it to any
+              print shop or table-card supplier.
+            </p>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

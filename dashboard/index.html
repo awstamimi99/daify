@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dashboard — MenuFlow</title>
+    <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml" />
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="stylesheet" href="../assets/css/variables.css" />
+    <link rel="stylesheet" href="../assets/css/reset.css" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/dashboard.css" />
+    <script src="../assets/js/menu/menu-data.js"></script>
+    <script src="../assets/js/dashboard/store.js"></script>
+    <script src="../assets/js/dashboard/shell.js"></script>
+    <script src="../assets/js/dashboard/overview.js" defer></script>
+  </head>
+  <body class="dash-body">
+    <div class="dash-shell">
+      <aside class="dash-sidebar">
+        <a class="brand" href="../index.html" aria-label="MenuFlow home"
+          ><img class="brand-logo" src="../assets/icons/menuflow-logo-dark.svg" alt="MenuFlow"
+        /></a>
+        <nav class="dash-nav" aria-label="Dashboard">
+          <a href="index.html" class="active"><span class="dash-nav-icon">⌂</span> Overview</a>
+          <a href="menu.html"><span class="dash-nav-icon">▤</span> Menu</a>
+          <a href="design.html"><span class="dash-nav-icon">✎</span> Design</a>
+          <a href="qr.html"><span class="dash-nav-icon">▦</span> QR &amp; Publish</a>
+        </nav>
+        <div class="dash-sidebar-footer">
+          <a href="#" id="dashReset">Reset demo data</a>
+          <a href="#" id="dashLogout">Log out</a>
+        </div>
+      </aside>
+      <main class="dash-main">
+        <div class="dash-topbar">
+          <button class="dash-menu-toggle" aria-label="Toggle menu">☰</button>
+          <div>
+            <h1>Welcome back, <span data-restaurant-name>Oliva</span>.</h1>
+            <p class="dash-topbar-meta">Here's what's happening with your menu.</p>
+          </div>
+          <div class="dash-topbar-actions">
+            <span class="trial-badge">● 12 days left in trial</span>
+            <a class="btn btn--ghost" href="qr.html">View live menu ↗</a>
+          </div>
+        </div>
+
+        <div class="dash-stats" id="dashStats">
+          <div class="dash-stat"><span>Menu sections</span><strong id="statSections">—</strong></div>
+          <div class="dash-stat"><span>Total dishes</span><strong id="statItems">—</strong></div>
+          <div class="dash-stat"><span>Unavailable</span><strong id="statUnavailable">—</strong></div>
+          <div class="dash-stat"><span>Featured</span><strong id="statFeatured">—</strong></div>
+        </div>
+
+        <div class="dash-quick-actions">
+          <a class="dash-quick-action" href="menu.html">
+            <strong>Edit your menu</strong>
+            <span>Add dishes, update prices, mark items sold out.</span>
+          </a>
+          <a class="dash-quick-action" href="design.html">
+            <strong>Customize design</strong>
+            <span>Pick a template and tune colors, shapes, and layout.</span>
+          </a>
+          <a class="dash-quick-action" href="qr.html">
+            <strong>Get your QR code</strong>
+            <span>Download a scannable code for your tables.</span>
+          </a>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <div>
+              <h2>Getting started</h2>
+              <p>A quick checklist to get your first menu live.</p>
+            </div>
+          </div>
+          <ul class="dash-checklist" id="dashChecklist"></ul>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
