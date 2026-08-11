@@ -44,6 +44,7 @@
       actions: `<span class="save-state" id="saveState" data-state="saved">All changes saved</span>` +
         (canPublish ? `<button class="btn btn--dark" type="button" id="publishBtn">Publish</button>` : ''),
     });
+    if (!window.MenuFlowShell.requirePermission(window.MenuFlowPermissions.PERMISSIONS.THEME_VIEW, content)) return;
 
     if (!menuId) {
       content.innerHTML = `<div class="dash-card"><div class="dash-empty-state"><h3>No menu yet</h3><p>Create a menu first to customize its design.</p><a class="btn btn--dark" href="menus.html">Go to Menus</a></div></div>`;

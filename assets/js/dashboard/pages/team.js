@@ -26,6 +26,7 @@
       subtitle: 'Who has access to this restaurant, and what they can do.',
       actions: canManage ? `<button class="btn btn--dark" type="button" id="inviteBtn">+ Invite manager</button>` : '',
     });
+    if (!window.MenuFlowShell.requirePermission(P.TEAM_VIEW, content)) return;
     content.innerHTML = `<div id="teamTable"></div>`;
     renderTable(restaurant);
     $('#inviteBtn')?.addEventListener('click', () => openInviteDialog(restaurant));

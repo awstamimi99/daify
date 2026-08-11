@@ -35,6 +35,9 @@
     const menus = Object.values(restaurant.menus);
     menuId = params.get('menu') && restaurant.menus[params.get('menu')] ? params.get('menu') : (menus.find(m => m.id === 'main-menu') || menus[0])?.id;
 
+    const guardContent = window.MenuFlowShell.render({ active: 'menus', title: 'Menu Builder' });
+    if (!window.MenuFlowShell.requirePermission(P.MENU_VIEW, guardContent)) return;
+
     if (!menuId) {
       const content = window.MenuFlowShell.render({ active: 'menus', title: 'Menu Builder' });
       content.innerHTML = `<div class="dash-card"><div class="dash-empty-state"><div class="dash-empty-state-icon">▤</div><h3>No menu selected</h3><p>Create a menu first.</p><a class="btn btn--dark" href="menus.html">Go to Menus</a></div></div>`;

@@ -16,6 +16,7 @@
       breadcrumb: esc(restaurant.name),
       subtitle: 'Your plan, usage, and renewal details.',
     });
+    if (!window.MenuFlowShell.requirePermission(window.MenuFlowPermissions.PERMISSIONS.BILLING_VIEW, content)) return;
 
     const statusKind = { active: 'success', trial: 'info', 'past due': 'danger' }[sub.status] || 'neutral';
 

@@ -35,6 +35,7 @@
       breadcrumb: esc(restaurant.name),
       subtitle: 'One code, always pointing at your latest menu.',
     });
+    if (!window.MenuFlowShell.requirePermission(window.MenuFlowPermissions.PERMISSIONS.QR_VIEW, content)) return;
 
     if (!menuId) {
       content.innerHTML = `<div class="dash-card"><div class="dash-empty-state"><h3>No menu yet</h3><p>Create a menu first.</p><a class="btn btn--dark" href="menus.html">Go to Menus</a></div></div>`;

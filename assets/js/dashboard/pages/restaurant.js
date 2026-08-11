@@ -27,6 +27,7 @@
       subtitle: 'Everything guests and MenuFlow need to know about your restaurant.',
       actions: canEdit ? `<span class="save-state" id="saveState" data-state="idle">All changes saved</span><button class="btn btn--dark" type="button" id="saveBtn">Save changes</button>` : `<span class="status-badge status-badge--neutral">View only</span>`,
     });
+    if (!window.MenuFlowShell.requirePermission(window.MenuFlowPermissions.PERMISSIONS.RESTAURANT_VIEW, content)) return;
 
     content.innerHTML = `
       <div class="dash-card">

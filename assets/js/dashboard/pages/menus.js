@@ -17,6 +17,7 @@
       subtitle: 'Every menu for this restaurant — Main Menu, seasonal menus, and drafts.',
       actions: canCreate ? `<button class="btn btn--dark" type="button" id="createMenuBtn">+ Create menu</button>` : '',
     });
+    if (!window.MenuFlowShell.requirePermission(P.MENU_VIEW, content)) return;
 
     content.innerHTML = `<div id="menusList"></div>`;
     renderList(restaurant);

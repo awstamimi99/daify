@@ -19,6 +19,7 @@
         <button type="button" data-range="90">90 days</button>
       </div>`,
     });
+    if (!window.MenuFlowShell.requirePermission(window.MenuFlowPermissions.PERMISSIONS.ANALYTICS_VIEW, content)) return;
     content.innerHTML = `<div id="analyticsBody"></div>`;
     renderBody(restaurant);
 

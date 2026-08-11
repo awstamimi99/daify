@@ -27,6 +27,40 @@
   margin-bottom: 1.5rem;
   padding: 0 0.15rem;
 }
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--mf-radius-pill);
+  background: rgba(122, 143, 168, 0.22);
+  color: #9fb6cc;
+  font-size: 0.64rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1.4rem;
+}
+.admin-badge::before {
+  content: "";
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+.dash-sidebar.admin-sidebar .dash-nav a.active {
+  background: var(--dash-chart-3, #7a8fa6);
+  color: #fff;
+}
+.admin-back-link {
+  display: block;
+  font-size: 0.76rem;
+  color: rgba(247, 244, 237, 0.55);
+  margin-bottom: 1rem;
+}
+.admin-back-link:hover {
+  color: #fff;
+}
 .dash-nav-group {
   margin-bottom: 1.4rem;
 }

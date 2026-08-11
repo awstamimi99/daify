@@ -35,15 +35,13 @@
     {
       group: 'Account',
       items: [
-        { id: 'settings', label: 'Settings', icon: '⚙', href: 'settings.html', permission: P().SETTINGS_VIEW },
+        { id: 'settings', label: 'Settings', icon: '⚙', href: 'settings.html', permission: null },
         { id: 'help', label: 'Help', icon: '?', href: 'help.html', permission: null },
       ],
     },
   ];
 
-  function esc(v) {
-    return String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  }
+  const { esc } = window.MenuFlowShellCommon;
 
   function sidebarHtml(activeId) {
     const can = window.MenuFlowStore.can;
@@ -262,55 +260,28 @@
     });
   }
 
-  // ---- Toast ----
-  function toast(text, kind) {
-    let el = $('.dash-save-toast');
-    if (!el) {
-      el = document.createElement('div');
-      el.className = 'dash-save-toast';
-      el.setAttribute('role', 'status');
-      document.body.appendChild(el);
+  const { toast, confirmDialog } = window.MenuFlowShellCommon;
+
+  /**
+   * Guards a page against direct-URL access when the current role lacks the
+   * required permission — nav already hides the link, but a manager (or
+   * anyone) could still type the URL. Renders a clean "permission denied"
+   * state and returns false so the calling page can bail out early instead
+   * of building content the visitor shouldn't see.
+   */
+  function requirePermission(permission, contentEl) {
+    if (!permission || window.MenuFlowStore.can(permission)) return true;
+    const host = contentEl || $('#dashContent');
+    if (host) {
+      host.innerHTML = `<div class="dash-card"><div class="dash-empty-state">
+        <div class="dash-empty-state-icon">⛊</div>
+        <h3>You don't have permission to view this page.</h3>
+        <p>Ask the restaurant owner to grant you access from Team settings.</p>
+        <a class="btn btn--dark" href="index.html">Back to dashboard</a>
+      </div></div>`;
     }
-    el.textContent = text;
-    el.classList.toggle('error', kind === 'error');
-    el.classList.add('show');
-    clearTimeout(el._hideTimer);
-    el._hideTimer = setTimeout(() => el.classList.remove('show'), 2200);
+    return false;
   }
 
-  // ---- Reusable confirm dialog ----
-  function confirmDialog({ title, message, confirmLabel, danger }) {
-    return new Promise(resolve => {
-      let dialog = $('#globalConfirmDialog');
-      if (!dialog) {
-        dialog = document.createElement('dialog');
-        dialog.id = 'globalConfirmDialog';
-        dialog.className = 'dash-modal';
-        document.body.appendChild(dialog);
-      }
-      dialog.innerHTML = `
-        <div class="dash-modal-body">
-          <div class="dash-confirm-icon ${danger ? '' : 'neutral'}">${danger ? '!' : '?'}</div>
-          <div class="dash-confirm-body">
-            <h2 style="margin-bottom:.3rem">${esc(title)}</h2>
-            <p>${esc(message)}</p>
-          </div>
-          <div class="dash-modal-actions">
-            <button class="btn btn--ghost" type="button" data-choice="cancel">Cancel</button>
-            <button class="btn ${danger ? 'btn--danger' : 'btn--dark'}" type="button" data-choice="confirm">${esc(confirmLabel || 'Confirm')}</button>
-          </div>
-        </div>`;
-      dialog.showModal();
-      const onClick = event => {
-        const choice = event.target.dataset.choice;
-        if (!choice && event.target !== dialog) return;
-        dialog.removeEventListener('click', onClick);
-        dialog.close();
-        resolve(choice === 'confirm');
-      };
-      dialog.addEventListener('click', onClick);
-    });
-  }
-
-  window.MenuFlowShell = { render, toast, confirmDialog, esc };
+  window.MenuFlowShell = { render, toast, confirmDialog, esc, requirePermission };
 })();
