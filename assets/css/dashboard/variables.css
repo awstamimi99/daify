@@ -1,0 +1,26 @@
+/* Dashboard-only tokens layered on top of the shared --mf-* brand tokens. */
+:root {
+  --dash-bg: var(--mf-mist);
+  --dash-surface: #fff;
+  --dash-border: var(--mf-stone);
+  --dash-text-muted: var(--mf-text-muted);
+
+  --dash-success: #3f7a4f;
+  --dash-success-bg: #e4ecdf;
+  --dash-warning: #8a6a1f;
+  --dash-warning-bg: #f5ecd8;
+  --dash-danger: #a8402f;
+  --dash-danger-bg: #f7e6e2;
+  --dash-info: #3a5a78;
+  --dash-info-bg: #e6edf3;
+  --dash-neutral: var(--mf-text-muted);
+  --dash-neutral-bg: var(--mf-mist);
+
+  --dash-chart-1: var(--mf-sage);
+  --dash-chart-2: var(--mf-champagne);
+  --dash-chart-3: #7a8fa6;
+  --dash-chart-4: #b5765a;
+
+  --dash-sidebar-w: 260px;
+  --dash-radius: var(--mf-radius-lg);
+}

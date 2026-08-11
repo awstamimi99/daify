@@ -1,0 +1,57 @@
+@media (max-width: 1080px) {
+  .dash-stats,
+  .dash-quick-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dash-template-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .dash-design-grid,
+  .dash-qr-grid {
+    grid-template-columns: 1fr;
+  }
+  .dash-preview-frame-wrap {
+    position: static;
+  }
+  .builder-layout {
+    grid-template-columns: 1fr;
+  }
+  .builder-sections {
+    position: static;
+  }
+}
+
+@media (max-width: 620px) {
+  .dash-stats,
+  .dash-quick-actions,
+  .dash-template-grid,
+  .preset-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .dash-item-row {
+    grid-template-columns: 1.2rem 2.6rem 1fr;
+    grid-template-areas: "handle thumb info" ". . actions";
+    row-gap: 0.6rem;
+  }
+  .dash-item-row .drag-handle { grid-area: handle; }
+  .dash-item-row .dash-item-thumb,
+  .dash-item-row .dash-item-thumb-empty {
+    grid-area: thumb;
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+  .dash-item-row .dash-item-info { grid-area: info; }
+  .dash-item-row .dash-item-price,
+  .dash-item-row .toggle,
+  .dash-item-row .dash-section-actions {
+    grid-column: 2 / -1;
+    justify-self: start;
+  }
+  .dash-drawer {
+    width: 100vw;
+  }
+  .dash-notif-panel {
+    width: calc(100vw - 2rem);
+    right: -0.5rem;
+  }
+}

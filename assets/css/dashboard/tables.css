@@ -1,0 +1,49 @@
+.dash-table-wrap {
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-border);
+  border-radius: var(--dash-radius);
+  overflow: hidden;
+}
+.dash-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+.dash-table th {
+  text-align: left;
+  padding: 0.9rem 1.2rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--dash-text-muted);
+  background: var(--dash-bg);
+  border-bottom: 1px solid var(--dash-border);
+  white-space: nowrap;
+}
+.dash-table th[data-sortable] { cursor: pointer; }
+.dash-table th[data-sortable]:hover { color: var(--mf-ink); }
+.dash-table th .sort-arrow { margin-left: 0.3rem; opacity: 0.5; }
+.dash-table td {
+  padding: 0.9rem 1.2rem;
+  border-bottom: 1px solid var(--dash-bg);
+  vertical-align: middle;
+}
+.dash-table tbody tr:last-child td { border-bottom: 0; }
+.dash-table tbody tr:hover { background: color-mix(in srgb, var(--mf-sage) 4%, transparent); }
+.dash-table .cell-primary { font-weight: 700; }
+.dash-table .cell-muted { color: var(--dash-text-muted); }
+.dash-table .cell-actions { display: flex; gap: 0.4rem; justify-content: flex-end; }
+
+.table-row-avatar {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+}
+.table-row-avatar i {
+  width: 2rem; height: 2rem; border-radius: 50%; background: var(--dash-bg);
+  display: grid; place-items: center; font-family: var(--mf-font-serif); font-style: normal; font-size: 0.85rem; flex: 0 0 auto;
+}
+
+@media (max-width: 900px) {
+  .dash-table thead { display: none; }
+  .dash-table, .dash-table tbody, .dash-table tr, .dash-table td { display: block; width: 100%; }
+  .dash-table tr { padding: 0.9rem 1.2rem; border-bottom: 1px solid var(--dash-bg); }
+  .dash-table td { padding: 0.3rem 0; border-bottom: 0; display: flex; justify-content: space-between; gap: 1rem; text-align: right; }
+  .dash-table td::before { content: attr(data-label); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--dash-text-muted); text-align: left; }
+  .dash-table .cell-actions { justify-content: flex-end; }
+}

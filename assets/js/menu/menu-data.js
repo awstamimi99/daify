@@ -97,14 +97,21 @@
   };
 
   try {
-    const saved = localStorage.getItem('menuflow_dashboard_v1');
+    const saved = localStorage.getItem('menuflow_platform_v1');
     if (saved) {
-      const state = JSON.parse(saved);
-      if (state && state.restaurant && Array.isArray(state.sections) && state.sections.length) {
-        window.MenuFlowMenuData = {
-          restaurant: Object.assign({}, window.MenuFlowMenuData.restaurant, state.restaurant),
-          sections: state.sections
-        };
+      const platform = JSON.parse(saved);
+      const restaurantId = platform?.session?.activeRestaurantId;
+      const restaurant = platform?.restaurants?.[restaurantId];
+      if (restaurant) {
+        const menus = Object.values(restaurant.menus || {});
+        const published = menus.find(m => m.id === 'main-menu' && m.status === 'published' && m.publishedSnapshot)
+          || menus.find(m => m.status === 'published' && m.publishedSnapshot);
+        if (published) {
+          window.MenuFlowMenuData = {
+            restaurant: Object.assign({}, window.MenuFlowMenuData.restaurant, restaurant.info, { name: restaurant.name }),
+            sections: published.publishedSnapshot.sections
+          };
+        }
       }
     }
   } catch (error) {
