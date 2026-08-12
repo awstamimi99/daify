@@ -77,7 +77,7 @@
   ];
 
   // Platform-admin permissions live in a separate namespace on purpose —
-  // an admin manages MenuFlow itself, not a specific restaurant, so
+  // an admin manages DAIFY itself, not a specific restaurant, so
   // restaurant-scoped permissions above don't apply to them at all.
   const ADMIN_PERMISSIONS = [
     'platform.overview',

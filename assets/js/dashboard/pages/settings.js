@@ -43,9 +43,13 @@
     return `
       <div class="field-row">
         <div class="field"><label for="accName">Name</label><input id="accName" value="${esc(user.name)}" /></div>
-        <div class="field"><label for="accEmail">Email</label><input id="accEmail" type="email" value="${esc(user.email)}" /></div>
+        <div class="field"><label for="accEmail">Primary email</label><input id="accEmail" type="email" value="${esc(user.email)}" /></div>
       </div>
-      <button class="btn btn--dark" type="button" id="saveAccountBtn">Save changes</button>
+      <div class="field-row" style="margin-top:1rem">
+        <div class="field"><label for="accBackupEmail">Backup email</label><input id="accBackupEmail" type="email" value="${esc(user.backupEmail || '')}" placeholder="Used if you're ever locked out" /></div>
+        <div class="field"><label for="accPhone">Phone</label><input id="accPhone" type="tel" value="${esc(user.phone || '')}" placeholder="+965 …" /></div>
+      </div>
+      <button class="btn btn--dark" type="button" id="saveAccountBtn" style="margin-top:1rem">Save changes</button>
       <div class="dash-hint">Password changes are handled under the Security tab.</div>`;
   }
 
@@ -72,7 +76,7 @@
       <div class="dash-card-header" style="margin:1.75rem 0 1rem"><div><h2 style="font-size:1.1rem">Sessions</h2><p>Devices currently signed in to your account.</p></div></div>
       <div class="dash-table-wrap"><table class="dash-table"><tbody>
         <tr><td data-label="Device" class="cell-primary">This device — Chrome on macOS</td><td data-label="" class="cell-muted">Active now</td></tr>
-        <tr><td data-label="Device" class="cell-primary">iPhone — MenuFlow (Safari)</td><td data-label="" class="cell-actions"><span class="cell-muted">2 days ago</span><button class="btn btn--ghost" type="button" style="padding:.4rem .8rem;font-size:.72rem">Sign out</button></td></tr>
+        <tr><td data-label="Device" class="cell-primary">iPhone — DAIFY (Safari)</td><td data-label="" class="cell-actions"><span class="cell-muted">2 days ago</span><button class="btn btn--ghost" type="button" style="padding:.4rem .8rem;font-size:.72rem">Sign out</button></td></tr>
       </tbody></table></div>`;
   }
 
@@ -86,7 +90,7 @@
       </div>
       <div class="dash-card" style="border-color:var(--dash-danger-bg);background:var(--dash-danger-bg);margin-top:1rem">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
-          <div><strong style="display:block;color:var(--dash-danger)">Delete account</strong><span style="font-size:.8rem;color:var(--dash-danger)">Permanently deletes your MenuFlow account.</span></div>
+          <div><strong style="display:block;color:var(--dash-danger)">Delete account</strong><span style="font-size:.8rem;color:var(--dash-danger)">Permanently deletes your DAIFY account.</span></div>
           <button class="btn btn--danger" type="button" id="deleteAccountBtn">Delete account</button>
         </div>
       </div>`;
@@ -104,7 +108,16 @@
   }
 
   function bindActions(restaurant) {
-    $('#saveAccountBtn')?.addEventListener('click', () => window.MenuFlowShell.toast('Account details saved'));
+    $('#saveAccountBtn')?.addEventListener('click', () => {
+      const user = store.currentUser();
+      store.updateProfile(user.id, {
+        name: $('#accName').value.trim() || user.name,
+        email: $('#accEmail').value.trim() || user.email,
+        backupEmail: $('#accBackupEmail').value.trim(),
+        phone: $('#accPhone').value.trim(),
+      });
+      window.MenuFlowShell.toast('Account details saved');
+    });
     $('#changePasswordBtn')?.addEventListener('click', () => window.MenuFlowShell.toast('Password change will be available once accounts connect to Drupal.'));
     $('#deleteRestaurantBtn')?.addEventListener('click', () => {
       window.MenuFlowShell.confirmDialog({
@@ -119,7 +132,7 @@
     $('#deleteAccountBtn')?.addEventListener('click', () => {
       window.MenuFlowShell.confirmDialog({
         title: 'Delete your account?',
-        message: 'This permanently deletes your MenuFlow account and removes your access to every restaurant.',
+        message: 'This permanently deletes your DAIFY account and removes your access to every restaurant.',
         confirmLabel: 'Delete account',
         danger: true,
       }).then(ok => {

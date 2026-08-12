@@ -3,956 +3,225 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>MenuFlow — Beautiful digital menus for modern restaurants</title>
+    <title>DAIFY — Digital Menus Made Remarkable</title>
     <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
-    <meta
-      name="description"
-      content="Create a beautiful digital restaurant menu, publish one QR, and try every Pro feature free for 14 days with no credit card."
-    />
+    <meta name="description" content="Build, style, publish, and update a beautiful mobile-first restaurant menu with DAIFY. One menu, one QR code, always current." />
     <link rel="stylesheet" href="assets/css/variables.css" />
     <link rel="stylesheet" href="assets/css/reset.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/vendor/aos.css" />
     <script src="assets/js/templates.js" defer></script>
-    <script>document.documentElement.classList.add('has-js');addEventListener('load',()=>setTimeout(()=>document.querySelectorAll('.fade-up:not(.visible)').forEach(el=>el.classList.add('visible')),2500));</script>
+    <script src="assets/js/vendor/aos.js" defer></script>
     <script src="assets/js/main.js" defer></script>
-    <link rel="canonical" href="https://menuflow.app/" />
-    <meta property="og:site_name" content="MenuFlow" />
-    <meta property="og:title" content="MenuFlow — Beautiful digital menus for modern restaurants" />
-    <meta property="og:description" content="Create a beautiful digital restaurant menu, publish one QR, and try every Pro feature free for 14 days with no credit card." />
+    <link rel="canonical" href="https://daify.net/" />
+    <meta property="og:site_name" content="DAIFY" />
+    <meta property="og:title" content="DAIFY — Digital Menus Made Remarkable" />
+    <meta property="og:description" content="A beautiful digital-menu experience for restaurants, cafés, and hospitality businesses." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://menuflow.app/" />
-    <meta property="og:image" content="https://menuflow.app/assets/images/og-cover.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://daify.net/" />
+    <meta property="og:image" content="https://daify.net/assets/images/og-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="MenuFlow — Beautiful digital menus for modern restaurants" />
-    <meta name="twitter:description" content="Create a beautiful digital restaurant menu, publish one QR, and try every Pro feature free for 14 days with no credit card." />
-    <meta name="twitter:image" content="https://menuflow.app/assets/images/og-cover.png" />
-    <meta name="theme-color" content="#F7F4ED" />
+    <meta name="twitter:title" content="DAIFY — Digital Menus Made Remarkable" />
+    <meta name="twitter:description" content="Build, style, publish, and update a beautiful mobile-first restaurant menu." />
+    <meta name="twitter:image" content="https://daify.net/assets/images/og-cover.png" />
+    <meta name="theme-color" content="#fbfaf7" />
     <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": "https://menuflow.app/#organization",
-      "name": "MenuFlow",
-      "url": "https://menuflow.app/",
-      "logo": "https://menuflow.app/assets/icons/menuflow-logo.svg",
-      "description": "MenuFlow helps restaurants create beautiful, mobile-first digital menus and publish them through a single QR code."
-    },
-    {
-      "@type": "SoftwareApplication",
-      "@id": "https://menuflow.app/#software",
-      "name": "MenuFlow",
-      "url": "https://menuflow.app/",
-      "applicationCategory": "BusinessApplication",
-      "operatingSystem": "Web",
-      "description": "A digital menu builder for restaurants: choose a template, customize the design, publish a QR code, and update dishes and prices instantly.",
-      "offers": [
-        {
-          "@type": "Offer",
-          "name": "Starter",
-          "price": "12",
-          "priceCurrency": "USD",
-          "description": "For one restaurant getting off the PDF.",
-          "url": "https://menuflow.app/pricing.html"
-        },
-        {
-          "@type": "Offer",
-          "name": "Pro",
-          "price": "29",
-          "priceCurrency": "USD",
-          "description": "For growing restaurants with a distinct brand.",
-          "url": "https://menuflow.app/pricing.html"
-        },
-        {
-          "@type": "Offer",
-          "name": "Business",
-          "price": "69",
-          "priceCurrency": "USD",
-          "description": "For groups managing several locations.",
-          "url": "https://menuflow.app/pricing.html"
-        }
-      ]
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "https://menuflow.app/#faq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is MenuFlow?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "MenuFlow is a simple platform for creating polished, mobile-friendly restaurant menus from customizable templates."
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://daify.net/#organization",
+            "name": "DAIFY",
+            "url": "https://daify.net/",
+            "logo": "https://daify.net/assets/icons/menuflow-logo.svg"
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://daify.net/#software",
+            "name": "DAIFY",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "description": "A mobile-first digital menu builder for restaurants and hospitality businesses.",
+            "offers": {
+              "@type": "AggregateOffer",
+              "lowPrice": "10",
+              "priceCurrency": "USD"
+            }
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://daify.net/#faq",
+            "mainEntity": [
+              {"@type":"Question","name":"What is DAIFY?","acceptedAnswer":{"@type":"Answer","text":"DAIFY is a platform for building polished, mobile-friendly digital menus from customizable templates."}},
+              {"@type":"Question","name":"Do guests need an app?","acceptedAnswer":{"@type":"Answer","text":"No. Guests scan your QR code and open the menu directly in their phone browser."}},
+              {"@type":"Question","name":"Can I update a published menu?","acceptedAnswer":{"@type":"Answer","text":"Yes. Changes appear on the live menu without requiring a new QR code."}}
+            ]
           }
-        },
-        {
-          "@type": "Question",
-          "name": "How does the free trial work?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Start without a credit card and use every Pro feature for 14 days. Build, customize, and publish your menu, then choose a plan only if MenuFlow works for your restaurant."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Do customers need an app?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "No. Guests scan your QR code and open the menu directly in their phone browser."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can I use my own colors and branding?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. You can customize colors, button and card shapes, layouts, navigation styles, imagery, and restaurant branding."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can I change the menu after publishing?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Published menus are designed to stay current, so updates appear without requiring a new QR code."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can I manage multiple restaurants?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The prototype includes multi-restaurant plan concepts. The final product scope will be confirmed during backend development."
-          }
-        }
-      ]
-    }
-  ]
-}
+        ]
+      }
     </script>
   </head>
-  <body>
+  <body class="home-page home-v2">
     <header class="site-header">
       <nav class="nav" aria-label="Main navigation">
-        <a class="brand" href="index.html" aria-label="MenuFlow home"
-          ><img
-            class="brand-logo"
-            src="assets/icons/menuflow-logo.svg"
-            alt="MenuFlow"
-        /></a>
+        <a class="brand" href="index.html" aria-label="DAIFY home"><img class="brand-logo" src="assets/icons/menuflow-logo.svg" alt="DAIFY" /></a>
         <div class="nav-links">
-          <a href="features.html">Features</a
-          ><a href="templates.html">Templates</a><a href="#how">How It Works</a
-          ><a href="pricing.html">Pricing</a><a href="about.html">About</a>
+          <a href="features.html">Features</a><a href="templates.html">Templates</a><a href="#how">How It Works</a><a href="pricing.html">Pricing</a><a href="about.html">About</a>
         </div>
         <div class="nav-actions">
-          <a href="login.html">Log In</a
-          ><a class="btn btn--dark" href="signup.html"
-            >Start Free Trial <span>↗</span></a
-          ><button
-            class="nav-toggle"
-            aria-label="Toggle menu"
-            aria-expanded="false"
-          >
-            ☰
-          </button>
+          <a href="login.html">Log In</a><a class="btn btn--dark" href="signup.html">Start Free Trial <span>↗</span></a>
+          <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
         </div>
       </nav>
     </header>
+
     <main>
-      <section class="hero">
-        <div class="flow-motif" aria-hidden="true"><svg viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M-50 420C120 460 220 320 380 340C540 360 600 500 780 480C940 462 1000 320 1180 300" stroke="#C8A96B" stroke-width="2.5" stroke-linecap="round"/><circle cx="1180" cy="300" r="6" fill="#C8A96B"/><path d="M-50 500C140 540 240 400 420 420C600 440 660 560 840 540C1000 522 1060 400 1240 380" stroke="#7C8B73" stroke-width="2" stroke-linecap="round" opacity="0.75"/></svg></div>
-        <div class="container hero-grid">
-          <div class="hero-copy fade-up">
-            <span class="eyebrow">A better menu in minutes</span>
-            <h1 class="display">
-              Your food has a story. Let the menu tell it.
-            </h1>
-            <p class="lead">
-              Launch a beautiful mobile menu in minutes. Update dishes
-              instantly, share one QR, and give every guest an experience that
-              feels like your restaurant.
-            </p>
-            <div class="button-row">
-              <a class="btn btn--dark" href="signup.html"
-                >Start Your Free Trial <span>↗</span></a
-              ><a class="btn btn--ghost" href="templates.html"
-                >Explore Templates</a
-              >
-            </div>
-            <p class="microcopy trial-microcopy">
-              14 days free · No credit card required · Cancel anytime
-            </p>
+      <section class="home-hero">
+        <div class="home-hero-orb home-hero-orb--blue" aria-hidden="true"></div>
+        <div class="home-hero-orb home-hero-orb--red" aria-hidden="true"></div>
+        <div class="container home-hero-grid">
+          <div class="home-hero-copy" data-aos="fade-up">
+            <span class="eyebrow">The menu experience, reimagined</span>
+            <h1>Your restaurant deserves more than a PDF.</h1>
+            <p>Turn every scan into a fast, beautiful expression of your brand. Build once, update instantly, and give every guest a menu made for the phone already in their hand.</p>
+            <div class="button-row"><a class="btn btn--dark" href="signup.html">Build your menu <span>↗</span></a><a class="btn btn--ghost" href="templates.html">Explore templates</a></div>
+            <div class="home-hero-trust"><span><i>✓</i> Full Pro access for 14 days</span><span><i>✓</i> Publish in minutes</span><span><i>✓</i> No guest app</span></div>
           </div>
-          <div class="hero-visual fade-up">
-            <img
-              class="hero-photo"
-              src="assets/images/oliva-seabass.png"
-              alt="Mediterranean sea bass beautifully plated at Oliva restaurant"
-            />
-            <div class="phone">
-              <div class="phone-screen">
-                <div class="menu-cover"></div>
-                <div class="mini-menu">
-                  <span class="mini-meta">Mediterranean kitchen</span>
-                  <h2 class="mini-brand">Oliva</h2>
-                  <div class="mini-tabs">
-                    <span>Starters</span><span>Pasta</span><span>Mains</span>
-                  </div>
-                  <article class="dish">
-                    <div>
-                      <strong>Whipped feta</strong>
-                      <p>Charred peppers, basil oil</p>
-                    </div>
-                    <b>KD 3.5</b>
-                  </article>
-                  <article class="dish">
-                    <div>
-                      <strong>Sea bass</strong>
-                      <p>Lemon, capers, garden herbs</p>
-                    </div>
-                    <b>KD 8.5</b>
-                  </article>
-                  <article class="dish">
-                    <div>
-                      <strong>Wild mushroom orzo</strong>
-                      <p>Parmesan, thyme</p>
-                    </div>
-                    <b>KD 6.0</b>
-                  </article>
-                </div>
+          <div class="home-product-stage" data-aos="zoom-in" data-aos-delay="120">
+            <div class="home-stage-photo"><img src="assets/images/hero-oliva-evening.png" alt="Mediterranean restaurant at blue hour" /></div>
+            <div class="home-dashboard-card">
+              <header><span><i></i><i></i><i></i></span><b>Oliva / Dinner</b><small>Live</small></header>
+              <div class="home-dashboard-body">
+                <aside><b>Menu</b><span class="active">Dishes</span><span>Design</span><span>Publish</span></aside>
+                <div class="home-dashboard-list"><small>MAIN COURSES</small><article><img src="assets/images/menu/truffle-rigatoni.jpg" alt="" /><div><b>Truffle rigatoni</b><span>Wild mushroom · parmesan</span></div><strong>KD 6.5</strong></article><article><img src="assets/images/menu/charred-octopus.jpg" alt="" /><div><b>Charred octopus</b><span>Chickpea · paprika</span></div><strong>KD 8.0</strong></article></div>
               </div>
             </div>
-            <div class="floating-note">
-              <i>✓</i
-              ><span
-                >Published in minutes<br /><small
-                  >Always up to date</small
-                ></span
-              >
+            <div class="home-menu-phone">
+              <div class="home-phone-cover"></div><div class="home-phone-copy"><small>MEDITERRANEAN KITCHEN</small><h2>Oliva</h2><div class="home-phone-tabs"><span>Starters</span><span>Mains</span></div><article><b>Sea bass</b><strong>KD 8.5</strong></article><article><b>Wild mushroom orzo</b><strong>KD 6.0</strong></article></div>
             </div>
+            <div class="home-live-note"><i></i><span>Published<br /><small>Always up to date</small></span></div>
           </div>
         </div>
+        <div class="home-scroll-cue" aria-hidden="true"><span>Discover DAIFY</span><i></i></div>
       </section>
-      <section class="section">
+
+      <section class="home-ribbon" aria-label="DAIFY product capabilities">
+        <div class="home-ribbon-track"><span>Build</span><i></i><span>Style</span><i></i><span>Preview</span><i></i><span>Publish</span><i></i><span>Scan</span><i></i><span>Understand</span><i></i><span>Update</span><i></i><span>Build</span><i></i><span>Style</span><i></i><span>Preview</span></div>
+      </section>
+
+      <section class="section home-proof">
         <div class="container">
-          <div class="split-head fade-up">
-            <div>
-              <span class="eyebrow">Static PDF vs MenuFlow</span>
-              <h2 class="h2">
-                Your menu should do more than simply open.
-              </h2>
-            </div>
-            <p class="lead">
-              A PDF shows what you printed. MenuFlow gives every guest a fast,
-              branded experience—and gives your team the freedom to update it
-              anytime.
-            </p>
+          <div class="home-section-head" data-aos="fade-up">
+            <div><span class="eyebrow">The guest experience</span><h2 class="h2">Dinner starts before<br />the first bite.</h2></div>
+            <p>One quiet scan becomes a beautifully branded moment—fast to open, effortless to explore, and designed to feel like your restaurant.</p>
           </div>
-          <div class="comparison fade-up" aria-label="Static PDF and MenuFlow comparison">
-            <article class="compare-side compare-side--before">
-              <header class="compare-card-head">
-                <div class="compare-title-row">
-                  <span class="compare-mark">PDF</span>
-                  <div><small>THE OLD WAY</small><h3>Static PDF menu</h3></div>
-                </div>
-                <span class="compare-verdict compare-verdict--limited">Limited</span>
-              </header>
-              <p class="compare-summary">
-                A fixed document that makes guests work harder and small changes feel bigger than they should.
-              </p>
-              <div class="pdf-sheet" aria-hidden="true">
-                <div class="pdf-sheet-head"><strong>OLIVA</strong><span>PDF</span></div>
-                <h4>DINNER MENU</h4>
-                <div class="pdf-menu-row"><span>Whipped feta</span><b>3.5</b></div>
-                <div class="pdf-menu-row"><span>Sea bass</span><b>8.5</b></div>
-                <div class="pdf-menu-row"><span>Olive oil cake</span><b>3.0</b></div>
-                <div class="pdf-friction">Pinch · zoom · search</div>
+          <div class="home-proof-stage" data-aos="fade-up" data-aos-duration="900">
+            <figure class="home-proof-scene">
+              <img src="assets/images/guest-scan-evening.png" loading="lazy" alt="Guest scanning a QR menu at an elegant candlelit restaurant" />
+              <div class="home-proof-shade"></div>
+              <div class="home-proof-time"><i></i><span>Table 08</span><small>Live menu</small></div>
+              <div class="home-scan-pulse" aria-hidden="true"><i></i><span>SCAN</span></div>
+              <figcaption><small>THE FIRST 5 SECONDS</small><strong>No app. No download.<br />Just your menu.</strong></figcaption>
+            </figure>
+            <article class="home-proof-story">
+              <header><span>01 / THE MOMENT</span><i>DAIFY</i></header>
+              <h3>A menu they’ll want to explore.</h3>
+              <p>Guests move from scan to selection without friction. Every dish is clear, every detail is considered, and every update is already there.</p>
+              <div class="home-guest-menu">
+                <div class="home-guest-menu-head"><div><small>Seasonal Mediterranean</small><h4>Oliva</h4></div><span>Open now</span></div>
+                <nav aria-label="Menu preview"><b>Popular</b><span>Starters</span><span>Mains</span></nav>
+                <article><img src="assets/images/menu/whipped-feta.jpg" alt="" /><div><b>Whipped feta</b><small>Charred peppers · basil oil</small></div><strong>KD 3.5</strong></article>
+                <article><img src="assets/images/menu/burrata-tomato.jpg" alt="" /><div><b>Burrata &amp; tomato</b><small>Heirloom tomato · za'atar</small></div><strong>KD 4.5</strong></article>
               </div>
-              <ul class="compare-points compare-points--limited">
-                <li><span aria-hidden="true">×</span>Awkward to read on phones</li>
-                <li><span aria-hidden="true">×</span>Slow, manual menu updates</li>
-                <li><span aria-hidden="true">×</span>Little room for brand experience</li>
-              </ul>
-            </article>
-            <article class="compare-side compare-side--after">
-              <span class="compare-winner">Recommended</span>
-              <header class="compare-card-head">
-                <div class="compare-title-row">
-                  <span class="compare-mark">MF</span>
-                  <div><small>THE BETTER WAY</small><h3>MenuFlow</h3></div>
-                </div>
-              </header>
-              <p class="compare-summary">
-                A live, mobile-first menu that looks like your restaurant and stays effortless to manage.
-              </p>
-              <div class="after-menu">
-                <div class="after-menu-status"><span>Live menu</span><i>Open now</i></div>
-                <h3>Oliva</h3>
-                <p>Seasonal Mediterranean cooking.</p>
-                <article>
-                  <span
-                    >Whipped feta<br /><small
-                      >Charred pepper · basil</small
-                    ></span
-                  ><b>KD 3.5</b>
-                </article>
-                <article>
-                  <span
-                    >Sea bass<br /><small>Lemon · capers · herbs</small></span
-                  ><b>KD 8.5</b>
-                </article>
-                <article>
-                  <span
-                    >Olive oil cake<br /><small
-                      >Citrus · mascarpone</small
-                    ></span
-                  ><b>KD 3.0</b>
-                </article>
-              </div>
-              <ul class="compare-points compare-points--best">
-                <li><span aria-hidden="true">✓</span>Designed for every phone</li>
-                <li><span aria-hidden="true">✓</span>Instant edits without reprinting</li>
-                <li><span aria-hidden="true">✓</span>Beautiful, branded, and QR ready</li>
-              </ul>
-              <div class="compare-cta">
-                <a class="btn btn--light" href="signup.html">Start free for 14 days</a>
-                <small>No credit card required</small>
+              <div class="home-proof-benefits">
+                <span><i>01</i><b>Instant access</b></span>
+                <span><i>02</i><b>Clear choices</b></span>
+                <span><i>03</i><b>Always current</b></span>
               </div>
             </article>
-            <div class="comparison-decision">
-              <span>Our pick</span>
-              <strong>MenuFlow is better for guests—and easier for your team.</strong>
-              <p>More readable, more flexible, and always up to date.</p>
-            </div>
           </div>
         </div>
       </section>
-      <section class="section section--dark how-section" id="how">
+
+      <section class="section home-capabilities">
         <div class="container">
-          <div class="split-head fade-up">
-            <div>
-              <span class="eyebrow">How it works</span>
-              <h2 class="h2">
-                From first dish to live menu, without the fuss.
-              </h2>
-            </div>
-            <p class="lead">
-              No designer handoffs. No clumsy PDF uploads. Just a clear
-              five-step path to a menu customers enjoy using.
-            </p>
-          </div>
-          <div class="steps fade-up">
-            <article class="step">
-              <span>01</span>
-              <h3>Create your restaurant</h3>
-              <p>
-                Add your name, story, logo, contact details, and the essentials
-                that make your restaurant recognizable.
-              </p>
-            </article>
-            <article class="step">
-              <span>02</span>
-              <h3>Build your menu</h3>
-              <p>
-                Organize starters, mains, drinks, and specials into clear
-                sections with descriptions, prices, and images.
-              </p>
-            </article>
-            <article class="step">
-              <span>03</span>
-              <h3>Choose your look</h3>
-              <p>
-                Pick a template and tune its colors, card treatment, navigation,
-                and layout to fit your brand.
-              </p>
-            </article>
-            <article class="step">
-              <span>04</span>
-              <h3>Publish your menu</h3>
-              <p>
-                Preview everything on mobile, publish when it feels right, and
-                keep every future update instantly in sync.
-              </p>
-            </article>
-            <article class="step step--qr">
-              <span>05</span>
-              <h3>Get your QR code</h3>
-              <p>
-                Download your ready-to-print QR code and place it on tables,
-                windows, receipts, or anywhere guests need your menu.
-              </p>
-            </article>
+          <div class="home-section-head" data-aos="fade-up"><div><span class="eyebrow">Everything in one place</span><h2 class="h2">Simple enough for tonight.<br />Powerful enough for what’s next.</h2></div><a class="btn btn--ghost" href="features.html">Explore all features</a></div>
+          <div class="home-cap-grid">
+            <article class="home-cap home-cap--builder" data-aos="fade-up"><span>01 / BUILD</span><h3>Think in dishes,<br />not documents.</h3><p>Sections, prices, dietary notes, imagery, and availability—organized around the way restaurants actually work.</p><div class="home-cap-list"><article><i>⠿</i><img src="assets/images/menu/whipped-feta.jpg" alt="" /><b>Whipped feta</b><strong>KD 3.5</strong></article><article><i>⠿</i><img src="assets/images/menu/burrata-tomato.jpg" alt="" /><b>Burrata &amp; tomato</b><strong>KD 4.5</strong></article></div></article>
+            <article class="home-cap home-cap--design" data-aos="fade-up" data-aos-delay="80"><span>02 / DESIGN</span><h3>Make the screen feel like the room.</h3><p>Start with an art-directed template, then shape every detail around your brand.</p><div class="home-color-control"><small>BRAND COLOR</small><b><i></i>#E53935</b><small>LAYOUT</small><b class="blue">Rounded</b></div></article>
+            <article class="home-cap home-cap--insight" data-aos="fade-up"><span>03 / INSIGHTS</span><h3>Know what guests notice.</h3><p>See menu views and popular items through a calm, useful dashboard.</p><div class="home-mini-chart"><b>1,284</b><small>MENU VIEWS</small><svg viewBox="0 0 400 120" preserveAspectRatio="none"><path d="M0 100C45 95 60 60 105 76S168 94 205 62S260 30 305 54S355 76 400 20" fill="none" stroke="#587ff8" stroke-width="5" stroke-linecap="round"/></svg></div></article>
           </div>
         </div>
       </section>
-      <section class="section templates-shell">
+
+      <section class="section home-journey" id="how">
         <div class="container">
-          <div class="split-head fade-up">
-            <div>
-              <span class="eyebrow">Template collection</span>
-              <h2 class="h2">A look for every kind of table.</h2>
+          <div class="home-journey-head" data-aos="fade-up"><span class="eyebrow">From idea to table</span><h2 class="h2">One calm flow.<br />A menu guests remember.</h2><p>Move from your first dish to a live QR experience without handoffs, design files, or complicated setup.</p></div>
+          <div class="home-journey-grid">
+            <div class="home-journey-nav" role="list">
+              <button class="home-journey-step active" type="button" data-step="1" data-title="Create your restaurant" data-copy="Bring in your name, story, identity, and the details guests already recognize." aria-pressed="true"><span>01</span><b>Create your restaurant</b><i>↗</i></button>
+              <button class="home-journey-step" type="button" data-step="2" data-title="Build your menu" data-copy="Add sections, dishes, images, descriptions, prices, and dietary information." aria-pressed="false"><span>02</span><b>Build your menu</b><i>↗</i></button>
+              <button class="home-journey-step" type="button" data-step="3" data-title="Choose your look" data-copy="Select a template and tune colors, cards, typography, and navigation." aria-pressed="false"><span>03</span><b>Choose your look</b><i>↗</i></button>
+              <button class="home-journey-step" type="button" data-step="4" data-title="Preview and publish" data-copy="See the real guest experience, make it live, and update it whenever you need." aria-pressed="false"><span>04</span><b>Preview and publish</b><i>↗</i></button>
+              <button class="home-journey-step" type="button" data-step="5" data-title="Share one QR" data-copy="Download your code and place it wherever the guest experience begins." aria-pressed="false"><span>05</span><b>Share one QR</b><i>↗</i></button>
             </div>
-            <a class="btn btn--ghost" href="templates.html"
-              >Explore all templates</a
-            >
-          </div>
-          <div class="template-tabs" role="tablist">
-            <button class="template-tab active">Atelier</button
-            ><button class="template-tab">Verde</button
-            ><button class="template-tab">Noir</button
-            ><button class="template-tab">Sora</button
-            ><button class="template-tab">Amalfi</button>
-          </div>
-          <div class="template-stage fade-up">
-            <div class="template-copy">
-              <span class="eyebrow" id="templateType">Fine Dining</span>
-              <h3 id="templateName">Atelier</h3>
-              <p id="templateTone">
-                Quiet luxury, generous spacing, elegant serif
-              </p>
-              <a class="btn btn--dark" href="templates.html"
-                >Preview template</a
-              >
-            </div>
-            <div class="device-deck">
-              <div class="device-card">
-                <div class="phone-screen">
-                  <div class="mini-menu">
-                    <span class="mini-meta">A seasonal tasting room</span>
-                    <h3 class="mini-brand">Atelier</h3>
-                    <div class="mini-tabs">
-                      <span>Menu</span><span>Wine</span>
-                    </div>
-                    <article class="dish">
-                      <strong>Garden pea velouté</strong><b>12</b>
-                    </article>
-                    <article class="dish">
-                      <strong>Roasted turbot</strong><b>28</b>
-                    </article>
-                    <article class="dish">
-                      <strong>Vanilla fig</strong><b>11</b>
-                    </article>
-                  </div>
-                </div>
-              </div>
-              <div class="device-card muted theme-noir">
-                <div class="phone-screen">
-                  <div class="menu-cover"></div>
-                  <div class="mini-menu">
-                    <span class="mini-meta">After dark dining</span>
-                    <h3 class="mini-brand">Noir</h3>
-                    <div class="mini-tabs">
-                      <span>Small plates</span><span>Fire</span>
-                    </div>
-                    <article class="dish">
-                      <strong>Smoked aubergine</strong><b>6</b>
-                    </article>
-                    <article class="dish">
-                      <strong>Coal roasted lamb</strong><b>17</b>
-                    </article>
-                  </div>
-                </div>
-              </div>
-              <div class="device-card muted theme-amalfi">
-                <div class="phone-screen">
-                  <div class="mini-menu">
-                    <span class="mini-meta">Coastal kitchen</span>
-                    <h3 class="mini-brand">Amalfi</h3>
-                    <div class="mini-tabs">
-                      <span>Antipasti</span><span>Pasta</span>
-                    </div>
-                    <article class="dish">
-                      <strong>Burrata & peach</strong><b>7</b>
-                    </article>
-                    <article class="dish">
-                      <strong>Lemon linguine</strong><b>9</b>
-                    </article>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="home-journey-stage" data-aos="zoom-in"><img src="assets/images/how-it-works-evening.png" alt="Restaurant menu workspace in an evening setting" /><div class="home-journey-overlay"></div><header><span>DAIFY / YOUR JOURNEY</span><b>01</b></header><div class="home-journey-card"><span>STEP 01</span><h3>Create your restaurant</h3><p>Bring in your name, story, identity, and the details guests already recognize.</p></div><div class="home-journey-progress"><i class="active"></i><i></i><i></i><i></i><i></i></div></div>
           </div>
         </div>
       </section>
-      <section class="section section--dark">
-        <div class="container customizer">
-          <div>
-            <span class="eyebrow">Live customization</span>
-            <h2 class="h2">Make the template unmistakably yours.</h2>
-            <p class="lead">
-              Try the controls. Change Oliva's accent, shapes, card treatment,
-              and layout in real time.
-            </p>
-            <div class="controls">
-              <div class="control-group">
-                <span class="control-label">Accent color</span>
-                <div class="swatches">
-                  <button
-                    class="swatch active"
-                    data-color="#7c8b73"
-                    style="background: #7c8b73"
-                    aria-label="Olive"
-                  ></button
-                  ><button
-                    class="swatch"
-                    data-color="#a85c42"
-                    style="background: #a85c42"
-                    aria-label="Terracotta"
-                  ></button
-                  ><button
-                    class="swatch"
-                    data-color="#263f52"
-                    style="background: #263f52"
-                    aria-label="Blue"
-                  ></button
-                  ><button
-                    class="swatch"
-                    data-color="#9a7844"
-                    style="background: #9a7844"
-                    aria-label="Gold"
-                  ></button>
-                </div>
-              </div>
-              <div class="control-group">
-                <span class="control-label">Button shape</span>
-                <div class="segmented">
-                  <button data-demo="radius:0">Square</button
-                  ><button class="active" data-demo="radius:.7rem">
-                    Rounded</button
-                  ><button data-demo="radius:999px">Pill</button>
-                </div>
-              </div>
-              <div class="control-group">
-                <span class="control-label">Card style</span>
-                <div class="segmented">
-                  <button class="active" data-demo="card:flat">Flat</button
-                  ><button data-demo="card:bordered">Bordered</button
-                  ><button data-demo="card:elevated">Elevated</button>
-                </div>
-              </div>
-              <div class="control-group">
-                <span class="control-label">Layout</span>
-                <div class="segmented">
-                  <button class="active" data-demo="layout:list">List</button
-                  ><button data-demo="layout:grid">Grid</button
-                  ><button data-demo="layout:image">Image Focused</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="demo-frame fade-up">
-            <div class="demo-phone">
-              <div class="demo-screen">
-                <small class="mini-meta">Mediterranean kitchen</small>
-                <h3>Oliva</h3>
-                <p>
-                  Season-led cooking, simply served.
-                </p>
-                <div class="demo-nav">
-                  <span>Starters</span><span>Pasta</span><span>Mains</span>
-                </div>
-                <div class="demo-items list">
-                  <article class="demo-item">
-                    <div>
-                      <strong>Whipped feta</strong>
-                      <p>Charred peppers, basil oil</p>
-                    </div>
-                    <b>KD 3.5</b>
-                  </article>
-                  <article class="demo-item">
-                    <div>
-                      <strong>Burrata & tomato</strong>
-                      <p>Peach, sumac, olive</p>
-                    </div>
-                    <b>KD 4.5</b>
-                  </article>
-                  <article class="demo-item">
-                    <div>
-                      <strong>Wild mushroom orzo</strong>
-                      <p>Parmesan, thyme</p>
-                    </div>
-                    <b>KD 6.0</b>
-                  </article>
-                  <article class="demo-item">
-                    <div>
-                      <strong>Sea bass</strong>
-                      <p>Lemon, capers, herbs</p>
-                    </div>
-                    <b>KD 8.5</b>
-                  </article>
-                  <article class="demo-item">
-                    <div>
-                      <strong>Olive oil cake</strong>
-                      <p>Citrus, mascarpone</p>
-                    </div>
-                    <b>KD 3.0</b>
-                  </article>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="section">
-        <div class="container qr-grid">
-          <div class="photo-arch fade-up">
-            <img
-              src="assets/images/qr-table.png"
-              loading="lazy"
-              alt="Elegant restaurant table with a blank MenuFlow QR card"
-            />
-            <div class="qr-overlay" aria-hidden="true">
-              <div class="qr-code"></div>
-            </div>
-          </div>
-          <div class="fade-up">
-            <span class="eyebrow">Always current</span>
-            <h2 class="h2">Scan. Browse. Choose with confidence.</h2>
-            <p class="lead qr-lead">
-              One QR code opens your latest menu—no app, no pinch-to-zoom PDF,
-              no reprinting when a dish changes.
-            </p>
-            <ul class="steps steps--light">
-              <li class="step">
-                <span>01</span>
-                <p>Place a beautifully branded QR card on every table.</p>
-              </li>
-              <li class="step">
-                <span>02</span>
-                <p>Guests scan with their phone camera and browse instantly.</p>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-      <section class="section section--dark">
+
+      <section class="section home-templates">
         <div class="container">
-          <div class="video-card fade-up">
-            <button class="play" aria-label="Play MenuFlow product story">
-              ▶
-            </button>
-            <div class="video-copy">
-              <span class="eyebrow">Product story</span>
-              <h2 class="h2">See MenuFlow in 60 seconds.</h2>
-              <p>
-                This prototype placeholder is ready for your final launch film.
-              </p>
-            </div>
+          <div class="home-section-head" data-aos="fade-up"><div><span class="eyebrow">Nine art-directed templates</span><h2 class="h2">A point of view<br />for every kind of table.</h2></div><a class="btn btn--ghost" href="templates.html">See every template</a></div>
+          <div class="home-template-gallery" data-aos="fade-up">
+            <a href="template-preview.html?template=feast"><img src="assets/images/template-previews/feast.jpg" alt="Feast menu template" /><span><small>MODERN</small><b>Feast</b></span></a>
+            <a href="template-preview.html?template=noir"><img src="assets/images/template-previews/noir.jpg" alt="Noir menu template" /><span><small>DARK LUXURY</small><b>Noir</b></span></a>
+            <a href="template-preview.html?template=amalfi"><img src="assets/images/template-previews/amalfi.jpg" alt="Amalfi menu template" /><span><small>MEDITERRANEAN</small><b>Amalfi</b></span></a>
           </div>
         </div>
       </section>
-      <section class="section benefits-section">
+
+      <section class="section home-pricing" id="pricing">
         <div class="container">
-          <div class="split-head">
-            <div>
-              <span class="eyebrow">Less admin. Better experience.</span>
-              <h2 class="h2">Good design where it matters most.</h2>
-            </div>
-            <p class="lead">
-              Every choice is there to help your team move faster and your
-              guests choose more comfortably.
-            </p>
-          </div>
-          <div class="benefit-list fade-up">
-            <article class="benefit">
-              <span class="benefit-num">01</span>
-              <div>
-                <h3>Beautiful by default</h3>
-                <p>
-                  Every template begins with strong typography and considered
-                  spacing.
-                </p>
-              </div>
-            </article>
-            <article class="benefit">
-              <span class="benefit-num">02</span>
-              <div>
-                <h3>Fully customizable</h3>
-                <p>
-                  Shape colors, cards, buttons, sections, and layouts around
-                  your brand.
-                </p>
-              </div>
-            </article>
-            <article class="benefit">
-              <span class="benefit-num">03</span>
-              <div>
-                <h3>Built for mobile</h3>
-                <p>
-                  Fast, readable menus designed for the device already in every
-                  guest's hand.
-                </p>
-              </div>
-            </article>
-            <article class="benefit">
-              <span class="benefit-num">04</span>
-              <div>
-                <h3>Instant updates</h3>
-                <p>
-                  Change a sold-out dish or seasonal price without sending
-                  anything to print.
-                </p>
-              </div>
-            </article>
-            <article class="benefit">
-              <span class="benefit-num">05</span>
-              <div>
-                <h3>QR ready</h3>
-                <p>
-                  A simple bridge from table to menu, with no customer app
-                  required.
-                </p>
-              </div>
-            </article>
-            <article class="benefit">
-              <span class="benefit-num">06</span>
-              <div>
-                <h3>Simple for staff</h3>
-                <p>A calm structure anyone on the team can learn.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-      <section class="section">
-        <div class="container story-feature">
-          <img
-            class="story-photo fade-up"
-            src="assets/images/restaurant-interior.png"
-            loading="lazy"
-            alt="Warm contemporary interior of fictional restaurant Oliva"
-          />
-          <div class="fade-up">
-            <span class="eyebrow">Restaurant story · Oliva, Kuwait City</span>
-            <blockquote class="quote">
-              “Our menu finally feels as considered as the room and the food.”
-            </blockquote>
-            <p class="story-meta">
-              The Oliva team moved its seasonal Mediterranean menu from a rigid
-              PDF to the warm, editorial Atelier template. Updating the evening
-              specials now takes minutes instead of another print run.
-            </p>
-            <a
-              class="btn btn--ghost"
-              href="about.html">Why MenuFlow</a
-            >
-          </div>
-        </div>
-      </section>
-      <section class="section" id="pricing">
-        <div class="container">
-          <div class="center">
-            <span class="eyebrow">Try first. Choose later.</span>
-            <h2 class="h2">Pick a plan after you see it working.</h2>
-            <p class="lead pricing-lead">
-              Every self-serve plan starts with 14 days of full access. Build,
-              customize, and publish before paying anything.
-            </p>
-          </div>
+          <div class="home-pricing-head" data-aos="fade-up"><span class="eyebrow">Straightforward plans</span><h2 class="h2">Start with the experience.<br />Choose the plan later.</h2><p>Every self-serve plan begins with 14 days of full access.</p></div>
           <div class="pricing-grid">
-            <article class="price-card">
-              <span class="eyebrow">Starter · 14 days free</span>
-              <div class="price">$12<small>/month after trial</small></div>
-              <p>For one restaurant getting off the PDF.</p>
-              <ul>
-                <li>1 digital menu</li>
-                <li>Core templates</li>
-                <li>QR code</li>
-                <li>Essential customization</li>
-              </ul>
-              <span class="price-trial">No credit card required</span>
-              <a class="btn btn--ghost" href="signup.html">Start 14-Day Free Trial</a>
-            </article>
-            <article class="price-card featured">
-              <span class="eyebrow">Pro · Most popular</span>
-              <div class="price">$29<small>/month after trial</small></div>
-              <p>For growing restaurants with a distinct brand.</p>
-              <ul>
-                <li>3 restaurant menus</li>
-                <li>All templates</li>
-                <li>Advanced customization</li>
-                <li>Custom branding</li>
-              </ul>
-              <span class="price-trial">14-day Pro trial · No card</span>
-              <a class="btn btn--light" href="signup.html">Try Pro Free</a>
-            </article>
-            <article class="price-card">
-              <span class="eyebrow">Business</span>
-              <div class="price">$69<small>/month</small></div>
-              <p>For groups managing several locations.</p>
-              <ul>
-                <li>10 restaurants</li>
-                <li>Shared brand styles</li>
-                <li>Priority support</li>
-                <li>Analytics — coming later</li>
-              </ul>
-              <a class="btn btn--ghost" href="contact.html">Contact Sales</a>
-            </article>
+            <article class="price-card" data-aos="fade-up"><span class="eyebrow">Starter</span><div class="price">$10<small>/month after trial</small></div><p>Everything one restaurant needs to launch.</p><ul><li>1 restaurant · 1 menu</li><li>Arabic + English</li><li>Core templates</li><li>QR code + basic analytics</li></ul><a class="btn btn--ghost" href="signup.html">Start free for 14 days</a></article>
+            <article class="price-card featured" data-aos="fade-up" data-aos-delay="80"><span class="eyebrow">Pro · Most popular</span><div class="price">$15<small>/month after trial</small></div><p>More brand control and insight as you grow.</p><ul><li>Up to 3 digital menus</li><li>All templates</li><li>Advanced customization</li><li>Analytics + scheduling</li></ul><a class="btn btn--light" href="signup.html?plan=pro">Try Pro free</a></article>
+            <article class="price-card" data-aos="fade-up" data-aos-delay="160"><span class="eyebrow">Business</span><div class="price">Custom<small>pricing</small></div><p>For groups, franchises, and multi-location brands.</p><ul><li>Multiple locations</li><li>Shared brand management</li><li>Menu-building assistance</li><li>Dedicated onboarding</li></ul><a class="btn btn--ghost" href="contact.html">Contact sales</a></article>
           </div>
         </div>
       </section>
-      <section class="section" id="faq">
-        <div class="container">
-          <div class="center">
-            <span class="eyebrow">Questions, answered</span>
-            <h2 class="h2">Everything you need to know.</h2>
-          </div>
+
+      <section class="section home-faq" id="faq">
+        <div class="container home-faq-grid">
+          <div data-aos="fade-right"><span class="eyebrow">Questions, answered</span><h2 class="h2">A few things<br />you may be wondering.</h2><p>Still curious? We would love to hear about your restaurant.</p><a href="contact.html">Talk to us ↗</a></div>
           <div class="faq">
-            <article class="faq-item">
-              <button class="faq-question" aria-expanded="false">
-                <span>What is MenuFlow?</span><span>+</span>
-              </button>
-              <div class="faq-answer">
-                <div>
-                  <p>
-                    MenuFlow is a simple platform for creating polished,
-                    mobile-friendly restaurant menus from customizable
-                    templates.
-                  </p>
-                </div>
-              </div>
-            </article>
-            <article class="faq-item">
-              <button class="faq-question" aria-expanded="false">
-                <span>How does the free trial work?</span><span>+</span>
-              </button>
-              <div class="faq-answer">
-                <div>
-                  <p>
-                    Start without a credit card and use every Pro feature for
-                    14 days. Build, customize, and publish your menu, then
-                    choose a plan only if MenuFlow works for your restaurant.
-                  </p>
-                </div>
-              </div>
-            </article>
-            <article class="faq-item">
-              <button class="faq-question" aria-expanded="false">
-                <span>Do customers need an app?</span><span>+</span>
-              </button>
-              <div class="faq-answer">
-                <div>
-                  <p>
-                    No. Guests scan your QR code and open the menu directly in
-                    their phone browser.
-                  </p>
-                </div>
-              </div>
-            </article>
-            <article class="faq-item">
-              <button class="faq-question" aria-expanded="false">
-                <span>Can I use my own colors and branding?</span><span>+</span>
-              </button>
-              <div class="faq-answer">
-                <div>
-                  <p>
-                    Yes. You can customize colors, button and card shapes,
-                    layouts, navigation styles, imagery, and restaurant
-                    branding.
-                  </p>
-                </div>
-              </div>
-            </article>
-            <article class="faq-item">
-              <button class="faq-question" aria-expanded="false">
-                <span>Can I change the menu after publishing?</span
-                ><span>+</span>
-              </button>
-              <div class="faq-answer">
-                <div>
-                  <p>
-                    Yes. Published menus are designed to stay current, so
-                    updates appear without requiring a new QR code.
-                  </p>
-                </div>
-              </div>
-            </article>
-            <article class="faq-item">
-              <button class="faq-question" aria-expanded="false">
-                <span>Can I manage multiple restaurants?</span><span>+</span>
-              </button>
-              <div class="faq-answer">
-                <div>
-                  <p>
-                    The prototype includes multi-restaurant plan concepts. The
-                    final product scope will be confirmed during backend
-                    development.
-                  </p>
-                </div>
-              </div>
-            </article>
+            <article class="faq-item" data-aos="fade-up"><button class="faq-question" aria-expanded="false"><span>What is DAIFY?</span><span>+</span></button><div class="faq-answer"><div><p>DAIFY is a platform for creating polished, mobile-friendly digital menus from customizable templates.</p></div></div></article>
+            <article class="faq-item" data-aos="fade-up"><button class="faq-question" aria-expanded="false"><span>How does the 14-day trial work?</span><span>+</span></button><div class="faq-answer"><div><p>Use every Pro feature for 14 days. Build, customize, and publish your menu, then choose a plan when the trial ends.</p></div></div></article>
+            <article class="faq-item" data-aos="fade-up"><button class="faq-question" aria-expanded="false"><span>Do guests need an app?</span><span>+</span></button><div class="faq-answer"><div><p>No. Guests scan your QR code and open the menu directly in their phone browser.</p></div></div></article>
+            <article class="faq-item" data-aos="fade-up"><button class="faq-question" aria-expanded="false"><span>Can I use my own branding?</span><span>+</span></button><div class="faq-answer"><div><p>Yes. Customize colors, card shapes, layout, navigation, imagery, typography, and restaurant identity.</p></div></div></article>
+            <article class="faq-item" data-aos="fade-up"><button class="faq-question" aria-expanded="false"><span>Can I update a published menu?</span><span>+</span></button><div class="faq-answer"><div><p>Yes. Every change appears on the live menu without requiring a new QR code.</p></div></div></article>
           </div>
         </div>
       </section>
-      <section class="section">
-        <div class="container cta fade-up">
-          <div>
-            <span class="eyebrow">Your next menu starts here</span>
-            <h2 class="h2">Give your food the experience it deserves.</h2>
-          </div>
-          <div class="button-row">
-            <a class="btn btn--dark" href="signup.html">Start Free Trial</a
-            ><a class="btn btn--light" href="templates.html"
-              >Explore Templates</a
-            >
-          </div>
-        </div>
+
+      <section class="section home-final">
+        <div class="container home-final-card" data-aos="zoom-in"><span class="eyebrow">Your next menu starts here</span><h2>Give every dish the digital experience it deserves.</h2><p>Build it today, publish it in minutes, and keep improving it with every service.</p><div class="button-row"><a class="btn btn--light" href="signup.html">Start your free trial ↗</a><a class="btn home-final-link" href="templates.html">Explore templates</a></div></div>
       </section>
     </main>
+
     <footer class="footer">
       <div class="container">
         <div class="footer-grid">
-          <div>
-            <a class="brand" href="index.html" aria-label="MenuFlow home"
-              ><img
-                class="brand-logo"
-                src="assets/icons/menuflow-logo-dark.svg"
-                alt="MenuFlow"
-            /></a>
-            <p class="footer-tagline">
-              Beautiful menus, made to flow.
-            </p>
-          </div>
-          <div>
-            <h4>Product</h4>
-            <ul>
-              <li><a href="features.html">Features</a></li>
-              <li><a href="templates.html">Templates</a></li>
-              <li><a href="pricing.html">Pricing</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4>Company</h4>
-            <ul>
-              <li><a href="about.html">About</a></li>
-              <li><a href="contact.html">Contact</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4>Resources</h4>
-            <ul>
-              <li><a href="#how">How it works</a></li>
-              <li><a href="#faq">FAQ</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4>Legal</h4>
-            <ul>
-              <li><a href="#">Privacy</a></li>
-              <li><a href="#">Terms</a></li>
-              <li><a href="#">Cookies</a></li>
-            </ul>
-          </div>
+          <div class="footer-brand-col"><a class="brand" href="index.html" aria-label="DAIFY home"><img class="brand-logo" src="assets/icons/menuflow-logo-dark.svg" alt="DAIFY" /></a><p>Better Guest Experiences. DAIFY helps restaurants, cafés, and hospitality businesses present, update, and share their menu beautifully.</p></div>
+          <div><h4>Product</h4><ul><li><a href="features.html">Features</a></li><li><a href="templates.html">Templates</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="#how">How it works</a></li></ul></div>
+          <div><h4>Solutions</h4><ul><li><a href="index.html">Restaurants &amp; cafés</a></li><li><a href="contact.html">Hotels &amp; hospitality</a></li><li><a href="contact.html">Multi-location groups</a></li></ul></div>
+          <div><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+          <div><h4>Resources</h4><ul><li><a href="#faq">FAQ</a></li><li><a href="templates.html">Template gallery</a></li></ul></div>
+          <div><h4>Legal</h4><ul><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Cookies</a></li></ul></div>
         </div>
-        <div class="footer-bottom">
-          <span>© 2026 MenuFlow. Front-end prototype.</span
-          ><span>Instagram · LinkedIn · X</span>
-        </div>
+        <div class="footer-bottom"><span>© 2026 DAIFY. Front-end prototype.</span><div class="footer-social" aria-label="DAIFY on social media"><a href="#" aria-label="DAIFY on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6" fill="currentColor" stroke="none"/></svg></a><a href="#" aria-label="DAIFY on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10.5v6M8 7.7v.1M12.2 16.5v-3.4c0-1.4.9-2.2 2-2.2s1.8.8 1.8 2.2v3.4" stroke-linecap="round"/></svg></a><a href="#" aria-label="DAIFY on X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 5l14 14M19 5L5 19" stroke-linecap="round"/></svg></a></div></div>
       </div>
     </footer>
   </body>

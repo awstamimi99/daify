@@ -1,5 +1,5 @@
 (function () {
-  const sec = window.MenuFlowAdminSeed.securityEvents;
+  const sec = window.MenuFlowAdminStore.security();
   const content = window.MenuFlowAdminShell.render({ active: 'security', title: 'Security', subtitle: 'Platform security overview.' });
 
   content.innerHTML = `

@@ -24,7 +24,7 @@
       active: 'restaurant',
       title: 'Restaurant',
       breadcrumb: esc(restaurant.name),
-      subtitle: 'Everything guests and MenuFlow need to know about your restaurant.',
+      subtitle: 'Everything guests and DAIFY need to know about your restaurant.',
       actions: canEdit ? `<span class="save-state" id="saveState" data-state="idle">All changes saved</span><button class="btn btn--dark" type="button" id="saveBtn">Save changes</button>` : `<span class="status-badge status-badge--neutral">View only</span>`,
     });
     if (!window.MenuFlowShell.requirePermission(window.MenuFlowPermissions.PERMISSIONS.RESTAURANT_VIEW, content)) return;

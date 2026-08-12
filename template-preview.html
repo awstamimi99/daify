@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Template Preview — DAIFY</title>
+    <meta name="description" content="Preview a DAIFY template exactly as guests will experience it, on mobile, tablet, and desktop." />
+    <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+    <meta name="robots" content="noindex,follow" />
+    <link rel="stylesheet" href="assets/css/variables.css" />
+    <link rel="stylesheet" href="assets/css/reset.css" />
+    <link rel="stylesheet" href="assets/css/template-preview.css" />
+    <script src="assets/js/menu/templates-config.js"></script>
+    <script src="assets/js/menu/template-preview.js" defer></script>
+  </head>
+  <body class="tpv-body">
+    <header class="tpv-toolbar">
+      <div class="tpv-toolbar-start">
+        <a class="tpv-brand" href="index.html" aria-label="DAIFY home"><img src="assets/icons/menuflow-logo.svg" alt="DAIFY" /></a>
+        <span class="tpv-divider" aria-hidden="true"></span>
+        <a class="tpv-back" href="templates.html"><span aria-hidden="true">←</span> All templates</a>
+      </div>
+      <div class="tpv-toolbar-actions">
+        <button type="button" class="tpv-lang" id="tpvLang">العربية</button>
+        <a class="tpv-customize" id="tpvCustomize" href="template-customizer.html">Use this template <span aria-hidden="true">↗</span></a>
+      </div>
+    </header>
+    <main class="tpv-workspace">
+      <aside class="tpv-sidebar">
+        <div>
+          <span class="tpv-eyebrow">Live preview</span>
+          <h1 id="tpvName">Template</h1>
+          <div class="tpv-category"><span id="tpvCategory">Category</span><i aria-hidden="true"></i> Mobile ready</div>
+          <p id="tpvDescription">A polished starting point for your digital menu.</p>
+        </div>
+
+        <div class="tpv-picker-wrap">
+          <div class="tpv-section-label"><span>Explore styles</span><span id="tpvPosition">1 / 9</span></div>
+          <div class="tpv-picker" id="tpvPicker" aria-label="Choose a template"></div>
+        </div>
+
+        <div class="tpv-note">
+          <span aria-hidden="true">✦</span>
+          <p><strong>Make it yours.</strong> Every color, type style, image, and menu item can be customized.</p>
+        </div>
+      </aside>
+
+      <section class="tpv-stage" aria-label="Template device preview">
+        <div class="tpv-stage-bar">
+          <div class="tpv-live"><span aria-hidden="true"></span> Guest view</div>
+          <div class="tpv-devices" id="tpvDevices" role="group" aria-label="Preview device size">
+            <button type="button" data-device="mobile" aria-label="Mobile preview" title="Mobile preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M10 5h4M11 18.5h2"/></svg><span>Mobile</span></button>
+            <button type="button" data-device="tablet" aria-label="Tablet preview" title="Tablet preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="2.5" width="15" height="19" rx="2"/><path d="M10.5 18.5h3"/></svg><span>Tablet</span></button>
+            <button type="button" data-device="desktop" aria-label="Desktop preview" title="Desktop preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Desktop</span></button>
+          </div>
+          <span class="tpv-hint">Scroll inside the preview</span>
+        </div>
+        <div class="tpv-canvas-wrap" id="tpvCanvasWrap" data-device="mobile">
+          <div class="tpv-device-frame">
+            <div class="tpv-device-detail" aria-hidden="true"></div>
+            <div class="tpv-frame-state" id="tpvFrameState" role="status">
+              <span class="tpv-spinner" aria-hidden="true"></span>
+              <strong>Preparing your preview</strong>
+              <small>Loading the sample menu…</small>
+            </div>
+            <iframe id="tpvFrame" title="DAIFY template preview"></iframe>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

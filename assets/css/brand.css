@@ -16,19 +16,55 @@
 .auth-art .brand { width: 180px; }
 .auth-panel { position: relative; }
 
-.section--olive { background: var(--mf-sage-dark); }
+.section--olive { background: var(--surface-dark); }
 .cta { background: var(--mf-mist); }
 .controls { background: var(--mf-ink); border-color: #30352f; }
-.step span, .benefit-num { color: var(--mf-champagne); }
-.price-card.featured, .template-tab.active, .filter-btn.active {
+.step span, .benefit-num { color: var(--brand-red); }
+.price-card.featured {
   background: var(--mf-ink);
   border-color: var(--mf-ink);
 }
+.template-tab.active, .filter-btn.active {
+  background: var(--brand-red);
+  border-color: var(--brand-red);
+}
 .site-header.scrolled .nav { background: rgba(247, 244, 237, .9); }
-.demo-screen { --demo-accent: var(--mf-sage); }
+.demo-screen { --demo-accent: var(--brand-red); }
 .template-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
 .template-actions a { padding: .55rem .75rem; border: 1px solid var(--mf-stone); border-radius: var(--mf-radius-pill); font-size: .66rem; font-weight: 700; }
 .template-actions a:last-child { background: var(--mf-ink); color: var(--mf-white); border-color: var(--mf-ink); }
+
+/* Template gallery actions — scoped so shared buttons elsewhere are unchanged. */
+#templateGrid .template-actions a:first-child {
+  color: #587ff8;
+  background: #eef1fe;
+  border-color: #587ff8;
+  transition: color .2s ease, background-color .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+#templateGrid .template-actions a:first-child:hover {
+  color: #171717;
+  background: #587ff8;
+  border-color: #587ff8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(88, 127, 248, .28);
+}
+#templateGrid .template-actions a:last-child {
+  color: #fff;
+  background: #e53935;
+  border-color: #e53935;
+  transition: background-color .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+#templateGrid .template-actions a:last-child:hover {
+  color: #fff;
+  background: #b52322;
+  border-color: #b52322;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(229, 57, 53, .28);
+}
+#templateGrid .template-actions a:focus-visible {
+  outline: 3px solid rgba(88, 127, 248, .38);
+  outline-offset: 3px;
+}
 
 @media (max-width: 680px) {
   .brand { width: 144px; }

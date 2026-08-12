@@ -1,7 +1,7 @@
 /**
  * Renders the shell for the Platform Admin area (/admin/*). Deliberately a
  * separate component from shell.js (owner/manager) — an admin manages
- * MenuFlow itself, not one restaurant, and should never be visually
+ * DAIFY itself, not one restaurant, and should never be visually
  * confused with a restaurant's dashboard.
  */
 (function () {
@@ -25,6 +25,7 @@
       group: 'Operations',
       items: [
         { id: 'support', label: 'Support', icon: '?', href: 'support.html' },
+        { id: 'notifications', label: 'Notifications', icon: '🔔', href: 'notifications.html' },
         { id: 'security', label: 'Security', icon: '⛊', href: 'security.html' },
         { id: 'audit-logs', label: 'Audit Logs', icon: '▦', href: 'audit-logs.html' },
       ],
@@ -44,11 +45,34 @@
     ).join('');
     return `
       <a class="admin-back-link" href="../dashboard/index.html">← Back to restaurant dashboards</a>
-      <a class="brand" href="../index.html" aria-label="MenuFlow home"><img class="brand-logo" src="../assets/icons/menuflow-logo-dark.svg" alt="MenuFlow" /></a>
+      <a class="brand" href="index.html" aria-label="Go to Platform Overview"><img class="brand-logo" src="../assets/icons/menuflow-logo.svg" alt="DAIFY" /></a>
       <span class="admin-badge">Platform Admin</span>
       ${groups}
       <div class="dash-sidebar-footer">
         <a href="#" id="dashLogoutLink">Log out</a>
+      </div>`;
+  }
+
+  function iconFor(type) {
+    return { success: '✓', warning: '!', error: '✕', info: 'i' }[type] || 'i';
+  }
+
+  function notifBellHtml() {
+    const notifications = window.MenuFlowStore.listNotifications();
+    const unread = notifications.filter(n => !n.read).length;
+    return `
+      <div class="dash-popover">
+        <button type="button" class="dash-topbar-icon-btn dash-notif-btn" id="notifBtn" aria-haspopup="true" aria-label="Notifications">
+          🔔<span class="dash-notif-dot ${unread ? 'show' : ''}"></span>
+        </button>
+        <div class="dash-notif-panel" id="notifPanel">
+          <div class="dash-notif-panel-header"><strong>Notifications</strong><button type="button" id="notifMarkRead">Mark all read</button></div>
+          <div class="dash-notif-list">
+            ${notifications.length
+              ? notifications.map(n => `<div class="dash-notif-item ${n.read ? '' : 'unread'}"><span class="dash-notif-icon ${n.type}">${iconFor(n.type)}</span><div><div>${esc(n.text)}</div><time>${esc(n.time)}</time></div></div>`).join('')
+              : `<div class="dash-empty">No notifications yet.</div>`}
+          </div>
+        </div>
       </div>`;
   }
 
@@ -71,6 +95,7 @@
             <div class="dash-topbar-actions">
               ${options.actions || ''}
               <div class="dash-topbar-utils">
+                ${notifBellHtml()}
                 <div class="dash-popover">
                   <button type="button" class="dash-avatar-btn" id="userMenuBtn" aria-haspopup="true">${esc(user.avatarInitial)}</button>
                   <div class="dash-popover-panel" id="userMenuPanel">
@@ -101,9 +126,19 @@
     $('#userMenuBtn')?.addEventListener('click', () => {
       $('#userMenuPanel').classList.toggle('open');
     });
+    $('#notifBtn')?.addEventListener('click', () => {
+      $('#notifPanel').classList.toggle('open');
+      window.MenuFlowStore.markNotificationsRead();
+      $('.dash-notif-dot')?.classList.remove('show');
+    });
+    $('#notifMarkRead')?.addEventListener('click', () => {
+      window.MenuFlowStore.markNotificationsRead();
+      $$('.dash-notif-item').forEach(el => el.classList.remove('unread'));
+    });
     document.addEventListener('click', event => {
-      const panel = $('#userMenuPanel');
-      if (panel && !panel.contains(event.target) && !event.target.closest('#userMenuBtn')) panel.classList.remove('open');
+      $$('.dash-notif-panel.open, .dash-popover-panel.open').forEach(panel => {
+        if (!panel.contains(event.target) && !event.target.closest('.dash-notif-btn, .dash-avatar-btn')) panel.classList.remove('open');
+      });
     });
     $('#userMenuLogout')?.addEventListener('click', doLogout);
     $('#dashLogoutLink')?.addEventListener('click', event => {

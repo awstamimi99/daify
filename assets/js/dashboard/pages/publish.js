@@ -34,6 +34,7 @@
       title: 'QR & Publish',
       breadcrumb: esc(restaurant.name),
       subtitle: 'One code, always pointing at your latest menu.',
+      workspaceTabs: menuId ? window.MenuFlowShellCommon.menuWorkspaceTabs('publish', menuId) : undefined,
     });
     if (!window.MenuFlowShell.requirePermission(window.MenuFlowPermissions.PERMISSIONS.QR_VIEW, content)) return;
 
@@ -139,7 +140,7 @@
     const url = liveUrl(currentMenu());
     $('#liveUrl').value = url;
     $('#openLiveBtn').href = url;
-    window.QRCode.toCanvas($('#qrCanvas'), url, { width: 240, margin: 1, color: { dark: '#171A17', light: '#FFFFFF' } }, () => {});
+    window.QRCode.toCanvas($('#qrCanvas'), url, { width: 240, margin: 1, color: { dark: '#000000', light: '#FFFFFF' } }, () => {});
 
     $('#copyLinkBtn').addEventListener('click', async () => {
       try {
@@ -159,7 +160,7 @@
       window.MenuFlowShell.toast('QR downloaded (PNG)');
     });
     $('#downloadSvgBtn')?.addEventListener('click', () => {
-      window.QRCode.toString(url, { type: 'svg', margin: 1, color: { dark: '#171A17', light: '#FFFFFF' } }, (error, svg) => {
+      window.QRCode.toString(url, { type: 'svg', margin: 1, color: { dark: '#000000', light: '#FFFFFF' } }, (error, svg) => {
         if (error) return;
         const blob = new Blob([svg], { type: 'image/svg+xml' });
         const link = document.createElement('a');

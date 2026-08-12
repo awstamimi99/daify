@@ -2,7 +2,8 @@
   const tokenMap = {
     background:'--restaurant-bg', surface:'--restaurant-surface', primary:'--restaurant-primary',
     accent:'--restaurant-accent', text:'--restaurant-text', muted:'--restaurant-muted',
-    cardRadius:'--restaurant-radius-card', buttonRadius:'--restaurant-radius-button'
+    cardRadius:'--restaurant-radius-card', buttonRadius:'--restaurant-radius-button',
+    gridColumns:'--restaurant-grid-columns'
   };
   function applyTheme(theme, target = document.documentElement) {
     Object.entries(theme || {}).forEach(([key,value]) => {

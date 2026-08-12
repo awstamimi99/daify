@@ -21,12 +21,13 @@
   function render() {
     const restaurant = store.getActiveRestaurant();
     const role = store.getSession().role;
+    const primary = primaryMenu(restaurant);
     const content = window.MenuFlowShell.render({
       active: 'overview',
       title: `Welcome back, ${restaurant.name}.`,
       subtitle: role === 'manager' ? "Here's today's operations snapshot." : "Here's what's happening with your restaurant.",
-      actions: can(window.MenuFlowPermissions.PERMISSIONS.QR_VIEW)
-        ? `<a class="btn btn--ghost" href="publish.html">View live menu ↗</a>`
+      actions: can(window.MenuFlowPermissions.PERMISSIONS.QR_VIEW) && primary
+        ? `<a class="btn btn--ghost" href="publish.html?menu=${primary.id}">View live menu ↗</a>`
         : '',
     });
 
@@ -108,15 +109,16 @@
         label: 'Menu status',
         value: `<span class="status-badge status-badge--${menu.status === 'published' ? 'success' : 'neutral'}">${menu.status === 'published' ? 'Published' : 'Draft'}</span>`,
         note: unpublished ? 'Unpublished changes' : menu.status === 'published' ? 'Live for guests' : 'Not visible yet',
+        href: `publish.html?menu=${menu.id}`,
       },
     ];
     if (can(window.MenuFlowPermissions.PERMISSIONS.ANALYTICS_VIEW)) {
-      cards.push({ label: 'Menu views (30d)', value: views === null ? '—' : views.toLocaleString(), note: views === null ? 'No data yet' : 'vs. last period' });
-      cards.push({ label: 'QR scans (30d)', value: scans === null ? '—' : scans.toLocaleString(), note: scans === null ? 'No data yet' : 'vs. last period' });
+      cards.push({ label: 'Menu views (30d)', value: views === null ? '—' : views.toLocaleString(), note: views === null ? 'No data yet' : 'vs. last period', href: 'analytics.html' });
+      cards.push({ label: 'QR scans (30d)', value: scans === null ? '—' : scans.toLocaleString(), note: scans === null ? 'No data yet' : 'vs. last period', href: 'analytics.html' });
     }
-    cards.push({ label: 'Total items', value: String(menu.sections.reduce((s, sec) => s + sec.items.length, 0)), note: `${menu.sections.length} sections` });
+    cards.push({ label: 'Total items', value: String(menu.sections.reduce((s, sec) => s + sec.items.length, 0)), note: `${menu.sections.length} sections`, href: `menu-builder.html?menu=${menu.id}` });
     if (can(window.MenuFlowPermissions.PERMISSIONS.BILLING_VIEW)) {
-      cards.push({ label: 'Current plan', value: plan ? plan.name : '—', note: sub?.status === 'trial' ? 'Trial' : 'Active' });
+      cards.push({ label: 'Current plan', value: plan ? plan.name : '—', note: sub?.status === 'trial' ? 'Trial' : 'Active', href: 'billing.html' });
     }
     return cards.slice(0, 4);
   }
@@ -127,13 +129,13 @@
 
     return `
       <div class="dash-stats">
-        ${statCards(restaurant, menu).map(c => `<div class="dash-stat"><span>${c.label}</span><strong>${c.value}</strong><small>${c.note}</small></div>`).join('')}
+        ${statCards(restaurant, menu).map(c => `<a class="dash-stat" href="${c.href}"><span>${c.label}</span><strong>${c.value}</strong><small>${c.note}</small></a>`).join('')}
       </div>
 
       <div class="dash-quick-actions" style="margin-bottom:1.75rem">
         ${quickAction('menu-builder.html?menu=' + menu.id, 'Edit menu', 'Add dishes, update prices.', window.MenuFlowPermissions.PERMISSIONS.MENU_EDIT)}
-        ${quickAction('design.html', 'Customize design', 'Tune colors, layout, and template.', window.MenuFlowPermissions.PERMISSIONS.THEME_EDIT)}
-        ${quickAction('publish.html', unpublished ? 'Publish changes' : 'View QR', unpublished ? `${menu.name} has unpublished edits.` : 'Share your menu link and QR.', window.MenuFlowPermissions.PERMISSIONS.QR_VIEW)}
+        ${quickAction('design.html?menu=' + menu.id, 'Customize design', 'Tune colors, layout, and template.', window.MenuFlowPermissions.PERMISSIONS.THEME_EDIT)}
+        ${quickAction('publish.html?menu=' + menu.id, unpublished ? 'Publish changes' : 'View QR', unpublished ? `${menu.name} has unpublished edits.` : 'Share your menu link and QR.', window.MenuFlowPermissions.PERMISSIONS.QR_VIEW)}
       </div>
 
       <div class="dash-design-grid">
@@ -161,10 +163,10 @@
 
     return `
       <div class="dash-stats">
-        <div class="dash-stat"><span>Menu status</span><strong><span class="status-badge status-badge--${menu.status === 'published' ? 'success' : 'neutral'}">${menu.status === 'published' ? 'Published' : 'Draft'}</span></strong></div>
-        <div class="dash-stat"><span>Unavailable items</span><strong>${unavailable}</strong><small>out of ${items.length}</small></div>
-        <div class="dash-stat"><span>Unpublished changes</span><strong>${unpublished ? 'Yes' : 'No'}</strong><small>${unpublished ? 'Ready to publish' : 'All caught up'}</small></div>
-        <div class="dash-stat"><span>Total items</span><strong>${items.length}</strong><small>${menu.sections.length} sections</small></div>
+        <a class="dash-stat" href="publish.html"><span>Menu status</span><strong><span class="status-badge status-badge--${menu.status === 'published' ? 'success' : 'neutral'}">${menu.status === 'published' ? 'Published' : 'Draft'}</span></strong></a>
+        <a class="dash-stat" href="menu-builder.html?menu=${menu.id}"><span>Unavailable items</span><strong>${unavailable}</strong><small>out of ${items.length}</small></a>
+        <a class="dash-stat" href="publish.html"><span>Unpublished changes</span><strong>${unpublished ? 'Yes' : 'No'}</strong><small>${unpublished ? 'Ready to publish' : 'All caught up'}</small></a>
+        <a class="dash-stat" href="menu-builder.html?menu=${menu.id}"><span>Total items</span><strong>${items.length}</strong><small>${menu.sections.length} sections</small></a>
       </div>
       <div class="dash-quick-actions">
         ${quickAction(`menu-builder.html?menu=${menu.id}&action=add`, 'Add item', 'Quickly add a new dish.', window.MenuFlowPermissions.PERMISSIONS.MENU_CREATE)}

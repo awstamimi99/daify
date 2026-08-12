@@ -1,34 +1,128 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap");
+
 :root {
-  /* MenuFlow brand kit — single source of truth, consumed directly everywhere */
-  --mf-ink: #171a17;
-  --mf-ivory: #f7f4ed;
+  /* ==== DAIFY brand tokens — single source of truth ====
+     Shared by the marketing site and the dashboard. Marketing- and
+     dashboard-specific CSS builds ON these, never redefines them. */
+
+  /* Brand red */
+  --brand-red: #e53935;
+  --brand-red-hover: #c92f2b;
+  --brand-red-strong: #b52322;
+  --brand-red-soft: #fdecec;
+  --brand-red-tint: #fff5f4;
+
+  /* Surfaces */
+  --surface-primary: #ffffff;
+  --surface-secondary: #fcfaf9; /* warm white — marketing backgrounds */
+  --surface-muted: #f6f5f4; /* light neutral — dashboard/page background */
+  --surface-dark: #171717;
+
+  /* Text */
+  --text-primary: #202020;
+  --text-secondary: #66615f;
+  --text-muted: #8c8784;
+  --text-on-brand: #ffffff;
+
+  /* Structure */
+  --border-default: #e8e5e3;
+
+  /* Status */
+  --success: #238a57;
+  --success-bg: #e8f5ee;
+  --warning: #d98713;
+  --warning-bg: #fbf1e1;
+  --error: #d93636;
+  --error-bg: #fbeaea;
+
+  /* Secondary brand accent — a utility blue for links, info states, and
+     charts, so red stays reserved for primary actions and brand moments
+     rather than carrying every interactive color in the interface. */
+  --brand-blue: #587ff8;
+  --brand-blue-hover: #4068e0;
+  --info: #587ff8;
+  --info-bg: #eef1fe;
+
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --radius-pill: 999px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  --shadow-soft: 0 12px 40px rgba(23, 26, 23, 0.08);
+  --shadow-medium: 0 18px 50px rgba(23, 26, 23, 0.1);
+  --shadow-large: 0 32px 80px rgba(23, 26, 23, 0.16);
+
+  --container: 1200px;
+  --font-serif: "DM Serif Display", Georgia, serif;
+  --font-sans: "Manrope", system-ui, sans-serif;
+  --font-arabic: "Noto Kufi Arabic", "Manrope", system-ui, sans-serif;
+
+  /* Type scale — confident, Maqsam-style hierarchy: big display/H1, then a
+     clear step down per level. Sizes fluid via clamp() so headlines don't
+     need separate mobile overrides everywhere they appear. */
+  --fs-display: clamp(2.75rem, 3.4vw + 1.6rem, 4.75rem);
+  --fs-h1: clamp(2.25rem, 2.2vw + 1.5rem, 3.25rem);
+  --fs-h2: clamp(1.75rem, 1.2vw + 1.35rem, 2.5rem);
+  --fs-h3: clamp(1.3rem, 0.5vw + 1.1rem, 1.55rem);
+  --fs-h4: 1.125rem;
+  --fs-eyebrow: 0.78rem;
+  --fs-body-lg: 1.15rem;
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-caption: 0.75rem;
+
+  /* ==== Legacy tokens (--mf- prefix predates the DAIFY rename; kept as
+     internal identifiers, documented in docs/DESIGN_SYSTEM.md) ====
+     Kept defined so anything not yet swept in the brand redesign keeps
+     rendering (same roles, most values refined to match the new neutral
+     palette). New code should reach for the tokens above instead — see
+     docs/DESIGN_SYSTEM.md. --mf-sage/--mf-champagne intentionally keep
+     their original green/gold values rather than aliasing to red: they
+     held the "accent" role, and blindly redirecting that role to brand
+     red everywhere it's referenced risks combinations never visually
+     checked. Files are being swept to the new tokens directly instead. */
+  --mf-ink: #202020;
+  --mf-ivory: #fcfaf9;
   --mf-sage: #7c8b73;
   --mf-sage-dark: #5e6b57;
   --mf-champagne: #c8a96b;
-  --mf-stone: #d9d4c8;
-  --mf-mist: #eef0ea;
+  --mf-stone: #e8e5e3;
+  --mf-mist: #f6f5f4;
   --mf-white: #ffffff;
-  --mf-text-muted: #5c625c;
+  --mf-text-muted: #66615f;
 
-  --mf-radius-sm: 10px;
-  --mf-radius-md: 18px;
-  --mf-radius-lg: 28px;
-  --mf-radius-pill: 999px;
+  --mf-radius-sm: var(--radius-sm);
+  --mf-radius-md: var(--radius-md);
+  --mf-radius-lg: var(--radius-lg);
+  --mf-radius-pill: var(--radius-pill);
 
-  --mf-space-1: 4px;
-  --mf-space-2: 8px;
-  --mf-space-3: 12px;
-  --mf-space-4: 16px;
-  --mf-space-6: 24px;
-  --mf-space-8: 32px;
-  --mf-space-12: 48px;
-  --mf-space-16: 64px;
+  --mf-space-1: var(--space-1);
+  --mf-space-2: var(--space-2);
+  --mf-space-3: var(--space-3);
+  --mf-space-4: var(--space-4);
+  --mf-space-6: var(--space-6);
+  --mf-space-8: var(--space-8);
+  --mf-space-12: var(--space-12);
+  --mf-space-16: var(--space-16);
 
-  --mf-shadow-soft: 0 12px 40px rgba(23, 26, 23, 0.08);
-  --mf-shadow-medium: 0 18px 50px rgba(23, 26, 23, 0.1);
-  --mf-shadow-large: 0 32px 80px rgba(23, 26, 23, 0.16);
+  --mf-shadow-soft: var(--shadow-soft);
+  --mf-shadow-medium: var(--shadow-medium);
+  --mf-shadow-large: var(--shadow-large);
 
-  --mf-container: 1200px;
-  --mf-font-serif: "DM Serif Display", Georgia, serif;
-  --mf-font-sans: "Inter", system-ui, sans-serif;
+  --mf-container: var(--container);
+  --mf-font-serif: var(--font-serif);
+  --mf-font-sans: var(--font-sans);
+}
+
+html[dir="rtl"] body {
+  font-family: var(--font-arabic);
 }

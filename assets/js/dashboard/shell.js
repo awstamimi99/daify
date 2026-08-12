@@ -57,7 +57,7 @@
       .join('');
 
     return `
-      <a class="brand" href="../index.html" aria-label="MenuFlow home"><img class="brand-logo" src="../assets/icons/menuflow-logo-dark.svg" alt="MenuFlow" /></a>
+      <a class="brand" href="index.html" aria-label="Go to your dashboard"><img class="brand-logo" src="../assets/icons/menuflow-logo.svg" alt="DAIFY" /></a>
       ${restaurantSwitcherHtml(restaurant)}
       ${groups}
       <div class="dash-sidebar-footer">
@@ -156,6 +156,7 @@
               <div class="dash-topbar-utils">${topbarUtilsHtml()}</div>
             </div>
           </div>
+          ${options.workspaceTabs ? `<div class="dash-workspace-tabs">${options.workspaceTabs.map(tab => `<a href="${tab.href}" class="${tab.active ? 'active' : ''}">${tab.label}</a>`).join('')}</div>` : ''}
           <div id="dashContent"></div>
         </main>
       </div>
@@ -181,9 +182,7 @@
         location.reload();
       });
     });
-    $('#switcherAdd')?.addEventListener('click', () => {
-      toast('Adding another restaurant will be available once billing supports multiple locations.', 'info');
-    });
+    $('#switcherAdd')?.addEventListener('click', openAddRestaurantDialog);
 
     $('#notifBtn')?.addEventListener('click', () => {
       togglePanel('#notifPanel', '#notifBtn');
@@ -238,6 +237,70 @@
         window.MenuFlowStore.switchRole(btn.dataset.role);
         location.href = 'index.html';
       });
+    });
+  }
+
+  function ensureDialog(id) {
+    let dialog = $(`#${id}`);
+    if (!dialog) {
+      dialog = document.createElement('dialog');
+      dialog.id = id;
+      dialog.className = 'dash-modal';
+      document.body.appendChild(dialog);
+    }
+    return dialog;
+  }
+
+  function openAddRestaurantDialog() {
+    const store = window.MenuFlowStore;
+    const gate = store.checkLimit('restaurants');
+    const dialog = ensureDialog('addRestaurantDialog');
+
+    if (!gate.allowed) {
+      dialog.innerHTML = `<div class="dash-modal-body">
+        <h2>Add another location</h2>
+        <p>Your ${esc(gate.plan?.name || 'current')} plan supports ${gate.limit} restaurant${gate.limit === 1 ? '' : 's'}. Multi-location accounts are part of Business — upgrade to add more.</p>
+        <div class="dash-modal-actions">
+          <button class="btn btn--ghost" type="button" data-choice="cancel">Not now</button>
+          <a class="btn btn--dark" href="../pricing.html">View plans</a>
+        </div>
+      </div>`;
+      dialog.showModal();
+      dialog.querySelector('[data-choice="cancel"]').addEventListener('click', () => dialog.close());
+      dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
+      return;
+    }
+
+    dialog.innerHTML = `<div class="dash-modal-body">
+      <h2>Add a restaurant location</h2>
+      <form id="addRestaurantForm" novalidate>
+        <div class="field"><label for="newRestName">Restaurant name</label><input id="newRestName" required /></div>
+        <div class="field" style="margin-top:1rem"><label for="newRestLocation">Location</label><input id="newRestLocation" placeholder="City or neighborhood" /></div>
+        <div class="field" style="margin-top:1rem"><label for="newRestCuisine">Cuisine type</label><input id="newRestCuisine" /></div>
+        <div class="dash-modal-actions">
+          <button class="btn btn--ghost" type="button" data-choice="cancel">Cancel</button>
+          <button class="btn btn--dark" type="submit">Add restaurant</button>
+        </div>
+      </form>
+    </div>`;
+    dialog.showModal();
+    dialog.querySelector('[data-choice="cancel"]').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
+    $('#addRestaurantForm', dialog).addEventListener('submit', e => {
+      e.preventDefault();
+      const name = $('#newRestName', dialog).value.trim();
+      if (!name) return;
+      const result = store.createRestaurant(store.getActiveRestaurant().id, {
+        name,
+        location: $('#newRestLocation', dialog).value.trim(),
+        cuisineType: $('#newRestCuisine', dialog).value.trim(),
+      });
+      if (result.ok) {
+        store.switchRestaurant(result.id);
+        location.href = 'index.html';
+      } else {
+        toast("Couldn't add that restaurant — plan limit reached.", 'error');
+      }
     });
   }
 

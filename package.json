@@ -1,0 +1,12 @@
+{
+  "name": "daify",
+  "private": true,
+  "version": "0.1.0",
+  "description": "DAIFY — static front-end prototype (no backend). See docs/TEMPLATE_ENGINE.md.",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0"
+  }
+}

@@ -1,43 +1,62 @@
 (function () {
+  // Every classic template exposes the full shared vocabulary — all nine
+  // templates use the same renderer/DOM (menu-renderer.js), so every value
+  // here already works for all of them; nothing is template-specific.
   const shared = {
     cardShape: ['square','soft','rounded'],
     cardStyle: ['flat','bordered','elevated'],
     buttonShape: ['square','rounded','pill'],
     itemLayout: ['list','grid','image-focus'],
     sectionNav: ['tabs','chips','minimal'],
-    imageStyle: ['square','rounded','circle','full-bleed']
+    imageStyle: ['square','rounded','circle','full-bleed'],
+    gridColumns: ['2','3','4']
   };
   const make = (id, name, category, description, defaults, supports = {}) => ({
     id, name, category, description, defaults,
     supports: Object.assign({}, shared, supports),
-    presets: {}
+    presets: {},
+    family: 'classic'
+  });
+
+  // Non-classic families own their full DOM/layout, so their `supports` list
+  // isn't merged with the classic family's `shared` vocabulary — a family
+  // only exposes the customizer knobs its own renderer actually understands.
+  const makeFamily = (family, id, name, category, description, defaults, supports = {}) => ({
+    id, name, category, description, defaults, supports, presets: {}, family
   });
 
   const configs = {
     atelier: make('atelier','Atelier','Fine Dining','Editorial restraint for refined dining.',{
-      background:'#f4efe5',surface:'#fbf8f2',primary:'#211f1b',accent:'#b5965b',text:'#211f1b',muted:'#716c63',cardRadius:'2px',buttonRadius:'4px',itemLayout:'list',sectionNav:'minimal',cardStyle:'flat',imageStyle:'square'
-    },{itemLayout:['list','image-focus'],sectionNav:['minimal','tabs'],imageStyle:['square','full-bleed']}),
+      background:'#f4efe5',surface:'#fbf8f2',primary:'#211f1b',accent:'#b5965b',text:'#211f1b',muted:'#716c63',cardRadius:'2px',buttonRadius:'4px',itemLayout:'list',sectionNav:'minimal',cardStyle:'flat',imageStyle:'square',gridColumns:'3'
+    }),
     verde: make('verde','Verde','Cafe / Organic','Fresh, rounded, and naturally bright.',{
-      background:'#eff1e8',surface:'#fffdf7',primary:'#486047',accent:'#8aa17d',text:'#263126',muted:'#6b756a',cardRadius:'24px',buttonRadius:'999px',itemLayout:'grid',sectionNav:'chips',cardStyle:'bordered',imageStyle:'rounded'
-    },{sectionNav:['chips','tabs'],imageStyle:['rounded','circle']}),
+      background:'#eff1e8',surface:'#fffdf7',primary:'#486047',accent:'#8aa17d',text:'#263126',muted:'#6b756a',cardRadius:'24px',buttonRadius:'999px',itemLayout:'grid',gridColumns:'3',sectionNav:'chips',cardStyle:'bordered',imageStyle:'rounded'
+    }),
     noir: make('noir','Noir','Dark Luxury','Cinematic contrast and quiet evening drama.',{
-      background:'#11120f',surface:'#1b1d19',primary:'#f5efe2',accent:'#c6a769',text:'#f5efe2',muted:'#a7a397',cardRadius:'2px',buttonRadius:'999px',itemLayout:'image-focus',sectionNav:'minimal',cardStyle:'bordered',imageStyle:'full-bleed'
-    },{itemLayout:['list','image-focus'],sectionNav:['minimal','tabs'],imageStyle:['square','full-bleed']}),
+      background:'#11120f',surface:'#1b1d19',primary:'#f5efe2',accent:'#c6a769',text:'#f5efe2',muted:'#a7a397',cardRadius:'2px',buttonRadius:'999px',itemLayout:'image-focus',sectionNav:'minimal',cardStyle:'bordered',imageStyle:'full-bleed',gridColumns:'3'
+    }),
     amalfi: make('amalfi','Amalfi','Mediterranean','Sunlit, social, and generous.',{
-      background:'#fff5df',surface:'#fffdf7',primary:'#244c3d',accent:'#d36943',text:'#27352e',muted:'#716b5e',cardRadius:'18px',buttonRadius:'999px',itemLayout:'image-focus',sectionNav:'chips',cardStyle:'flat',imageStyle:'rounded'
-    },{sectionNav:['chips','tabs','minimal'],imageStyle:['rounded','full-bleed']}),
+      background:'#fff5df',surface:'#fffdf7',primary:'#244c3d',accent:'#d36943',text:'#27352e',muted:'#716b5e',cardRadius:'18px',buttonRadius:'999px',itemLayout:'image-focus',gridColumns:'3',sectionNav:'chips',cardStyle:'flat',imageStyle:'rounded'
+    }),
     sora: make('sora','Sora','Japanese Minimal','Precise rhythm and spacious clarity.',{
-      background:'#f6f5f1',surface:'#ffffff',primary:'#202321',accent:'#9f4b43',text:'#202321',muted:'#737571',cardRadius:'0px',buttonRadius:'0px',itemLayout:'grid',sectionNav:'tabs',cardStyle:'bordered',imageStyle:'square'
-    },{cardShape:['square','soft'],sectionNav:['tabs','minimal'],imageStyle:['square','rounded']}),
+      background:'#f6f5f1',surface:'#ffffff',primary:'#202321',accent:'#9f4b43',text:'#202321',muted:'#737571',cardRadius:'0px',buttonRadius:'0px',itemLayout:'grid',gridColumns:'3',sectionNav:'tabs',cardStyle:'bordered',imageStyle:'square'
+    }),
     ember: make('ember','Ember','Grill / Fast Casual','Bold, visual, and appetite-led.',{
-      background:'#efe6d5',surface:'#fff9ed',primary:'#1b1a17',accent:'#df542f',text:'#1b1a17',muted:'#6d665d',cardRadius:'14px',buttonRadius:'8px',itemLayout:'grid',sectionNav:'tabs',cardStyle:'elevated',imageStyle:'full-bleed'
-    },{sectionNav:['tabs','chips'],imageStyle:['rounded','full-bleed']}),
+      background:'#efe6d5',surface:'#fff9ed',primary:'#1b1a17',accent:'#df542f',text:'#1b1a17',muted:'#6d665d',cardRadius:'14px',buttonRadius:'8px',itemLayout:'grid',gridColumns:'3',sectionNav:'tabs',cardStyle:'elevated',imageStyle:'full-bleed'
+    }),
     souk: make('souk','Souk','Middle Eastern','Warm modern hospitality, ready for Arabic.',{
-      background:'#eee2ce',surface:'#f9f1e4',primary:'#304a3c',accent:'#a77b44',text:'#29261f',muted:'#71695c',cardRadius:'10px',buttonRadius:'999px',itemLayout:'list',sectionNav:'chips',cardStyle:'bordered',imageStyle:'rounded'
-    },{itemLayout:['list','grid','image-focus'],sectionNav:['chips','minimal'],imageStyle:['rounded','circle']}),
+      background:'#eee2ce',surface:'#f9f1e4',primary:'#304a3c',accent:'#a77b44',text:'#29261f',muted:'#71695c',cardRadius:'10px',buttonRadius:'999px',itemLayout:'list',gridColumns:'3',sectionNav:'chips',cardStyle:'bordered',imageStyle:'rounded'
+    }),
     mellow: make('mellow','Mellow','Bakery / Coffee','Soft, tactile, and image-forward.',{
-      background:'#f5ebe2',surface:'#fffaf5',primary:'#5b4338',accent:'#9b8f72',text:'#3d302a',muted:'#7d6e67',cardRadius:'28px',buttonRadius:'999px',itemLayout:'grid',sectionNav:'chips',cardStyle:'flat',imageStyle:'rounded'
-    },{sectionNav:['chips','minimal'],imageStyle:['rounded','circle','full-bleed']})
+      background:'#f5ebe2',surface:'#fffaf5',primary:'#5b4338',accent:'#9b8f72',text:'#3d302a',muted:'#7d6e67',cardRadius:'28px',buttonRadius:'999px',itemLayout:'grid',gridColumns:'3',sectionNav:'chips',cardStyle:'flat',imageStyle:'rounded'
+    }),
+    // Feast owns a distinct DOM (sticky category grid, tap-to-open sheet) so
+    // layout-shape knobs (itemLayout/sectionNav/gridColumns) genuinely don't
+    // apply — but its cards already read --restaurant-radius-card/-button
+    // like every classic template, so shape + button controls work as-is.
+    feast: makeFamily('feast','feast','Feast','Modern Food Menu','Image-forward browsing built for fast mobile ordering.',{
+      background:'#f7f5f0',surface:'#ffffff',primary:'#1a1d1b',accent:'#1f6f5c',text:'#1a1d1b',muted:'#6b6f6a',cardRadius:'20px',buttonRadius:'999px',cardStyle:'flat',imageStyle:'rounded'
+    },{cardShape:['square','soft','rounded'],buttonShape:['square','rounded','pill'],cardStyle:['flat','bordered','elevated'],imageStyle:['rounded','square']})
   };
 
   configs.atelier.presets = {
@@ -52,6 +71,7 @@
   configs.ember.presets = {Fire:{background:'#efe6d5',surface:'#fff9ed',primary:'#1b1a17',accent:'#df542f'},Smoke:{background:'#ddd9d0',surface:'#f7f3ea',primary:'#222421',accent:'#a54d37'}};
   configs.souk.presets = {Olive:{background:'#eee2ce',surface:'#f9f1e4',primary:'#304a3c',accent:'#a77b44'},Sand:{background:'#f2e8d7',surface:'#fffaf0',primary:'#4c4032',accent:'#b88d52'}};
   configs.mellow.presets = {Cocoa:{background:'#f5ebe2',surface:'#fffaf5',primary:'#5b4338',accent:'#9b8f72'},Rose:{background:'#f6e9e5',surface:'#fffafa',primary:'#694b48',accent:'#b68c83'}};
+  configs.feast.presets = {Fresh:{background:'#f7f5f0',surface:'#ffffff',primary:'#1a1d1b',accent:'#1f6f5c'},Sunset:{background:'#fbf3ec',surface:'#ffffff',primary:'#221c17',accent:'#d8672f'},Berry:{background:'#f6f1f2',surface:'#ffffff',primary:'#241a1c',accent:'#a13b56'}};
 
   window.MenuFlowTemplateConfigs = configs;
 })();

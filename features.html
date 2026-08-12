@@ -3,30 +3,31 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Features — MenuFlow</title><link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+    <title>Features — DAIFY</title><link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
     <meta
       name="description"
-      content="Explore MenuFlow's digital menu builder, templates, customization, QR publishing, and mobile-first restaurant menus."
+      content="Explore DAIFY's digital menu builder, templates, customization, QR publishing, and mobile-first restaurant menus."
     />
     <link rel="stylesheet" href="assets/css/variables.css" />
     <link rel="stylesheet" href="assets/css/reset.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
-    <script>document.documentElement.classList.add('has-js');addEventListener('load',()=>setTimeout(()=>document.querySelectorAll('.fade-up:not(.visible)').forEach(el=>el.classList.add('visible')),2500));</script>
+    <link rel="stylesheet" href="assets/css/vendor/aos.css" />
+    <script src="assets/js/vendor/aos.js" defer></script>
     <script src="assets/js/main.js" defer></script>
-    <link rel="canonical" href="https://menuflow.app/features.html" />
-    <meta property="og:site_name" content="MenuFlow" />
-    <meta property="og:title" content="Features — MenuFlow" />
-    <meta property="og:description" content="Explore MenuFlow's digital menu builder, templates, customization, QR publishing, and mobile-first restaurant menus." />
+    <link rel="canonical" href="https://daify.net/features.html" />
+    <meta property="og:site_name" content="DAIFY" />
+    <meta property="og:title" content="Features — DAIFY" />
+    <meta property="og:description" content="Explore DAIFY's digital menu builder, templates, customization, QR publishing, and mobile-first restaurant menus." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://menuflow.app/features.html" />
-    <meta property="og:image" content="https://menuflow.app/assets/images/og-cover.png" />
+    <meta property="og:url" content="https://daify.net/features.html" />
+    <meta property="og:image" content="https://daify.net/assets/images/og-cover.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Features — MenuFlow" />
-    <meta name="twitter:description" content="Explore MenuFlow's digital menu builder, templates, customization, QR publishing, and mobile-first restaurant menus." />
-    <meta name="twitter:image" content="https://menuflow.app/assets/images/og-cover.png" />
+    <meta name="twitter:title" content="Features — DAIFY" />
+    <meta name="twitter:description" content="Explore DAIFY's digital menu builder, templates, customization, QR publishing, and mobile-first restaurant menus." />
+    <meta name="twitter:image" content="https://daify.net/assets/images/og-cover.png" />
     <meta name="theme-color" content="#F7F4ED" />
     <script type="application/ld+json">
 {
@@ -37,22 +38,22 @@
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://menuflow.app/"
+      "item": "https://daify.net/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Features",
-      "item": "https://menuflow.app/features.html"
+      "item": "https://daify.net/features.html"
     }
   ]
 }
     </script>
   </head>
-  <body>
+  <body class="features-page">
     <header class="site-header scrolled">
       <nav class="nav">
-        <a class="brand" href="index.html" aria-label="MenuFlow home"><img class="brand-logo" src="assets/icons/menuflow-logo.svg" alt="MenuFlow"></a>
+        <a class="brand" href="index.html" aria-label="DAIFY home"><img class="brand-logo" src="assets/icons/menuflow-logo.svg" alt="DAIFY"></a>
         <div class="nav-links">
           <a href="features.html">Features</a
           ><a href="templates.html">Templates</a
@@ -67,132 +68,187 @@
       </nav>
     </header>
     <main>
-      <section class="page-hero">
-        <div class="flow-motif flow-motif--sm" aria-hidden="true"><svg viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M-50 420C120 460 220 320 380 340C540 360 600 500 780 480C940 462 1000 320 1180 300" stroke="#C8A96B" stroke-width="2.5" stroke-linecap="round"/><circle cx="1180" cy="300" r="6" fill="#C8A96B"/><path d="M-50 500C140 540 240 400 420 420C600 440 660 560 840 540C1000 522 1060 400 1240 380" stroke="#7C8B73" stroke-width="2" stroke-linecap="round" opacity="0.75"/></svg></div>
-        <div class="container">
-          <span class="eyebrow">The complete menu experience</span>
-          <h1 class="h1">Everything your menu needs. Nothing it doesn’t.</h1>
-          <p class="lead">
-            A focused set of tools for turning restaurant content into a clear,
-            beautiful experience your team can keep current.
-          </p>
-          <div class="button-row page-hero-actions">
-            <a class="btn btn--dark" href="signup.html">Start Free Trial ↗</a>
-            <span class="trial-inline-note">14 days · No credit card</span>
+      <section class="features-hero">
+        <div class="features-orb features-orb--blue" aria-hidden="true"></div>
+        <div class="features-orb features-orb--red" aria-hidden="true"></div>
+        <div class="container features-hero-grid">
+          <div class="features-hero-copy" data-aos="fade-up">
+            <span class="eyebrow">Your menu, made remarkable</span>
+            <h1>Everything between your first dish and your guest’s first scan.</h1>
+            <p>
+              Build, style, publish, and improve a digital menu that feels like
+              your restaurant—not another piece of restaurant software.
+            </p>
+            <div class="button-row">
+              <a class="btn btn--dark" href="signup.html">Start Free Trial <span>↗</span></a>
+              <a class="btn btn--ghost" href="templates.html">Explore templates</a>
+            </div>
+            <div class="features-hero-proof" aria-label="Product highlights">
+              <span><b>09</b> art-directed templates</span>
+              <span><b>2</b> languages supported</span>
+              <span><b>∞</b> instant updates</span>
+            </div>
+          </div>
+          <div class="features-hero-product" data-aos="zoom-in" data-aos-delay="120">
+            <div class="features-editor">
+              <div class="features-editor-bar">
+                <span><i></i><i></i><i></i></span>
+                <b>Oliva / Dinner menu</b>
+                <small>Saved</small>
+              </div>
+              <div class="features-editor-body">
+                <aside>
+                  <b>Menu</b><span class="is-active">Dishes</span><span>Design</span><span>Publish</span>
+                </aside>
+                <div class="features-dish-list">
+                  <div class="features-list-head"><span>MAIN COURSES</span><button>＋ Add dish</button></div>
+                  <article><img src="assets/images/menu/charred-lemon-chicken.jpg" alt="" /><div><strong>Charred lemon chicken</strong><small>Garlic yoghurt · garden herbs</small></div><b>KD 7.5</b></article>
+                  <article><img src="assets/images/menu/truffle-rigatoni.jpg" alt="" /><div><strong>Truffle rigatoni</strong><small>Wild mushroom · parmesan</small></div><b>KD 6.5</b></article>
+                  <article><img src="assets/images/menu/charred-octopus.jpg" alt="" /><div><strong>Charred octopus</strong><small>Chickpea · smoked paprika</small></div><b>KD 8.0</b></article>
+                </div>
+              </div>
+            </div>
+            <div class="features-phone" aria-label="Guest mobile menu preview">
+              <div class="features-phone-cover"></div>
+              <div class="features-phone-content"><small>MEDITERRANEAN KITCHEN</small><h2>Oliva</h2><div><span>Starters</span><span>Mains</span></div><article><b>Sea bass</b><strong>KD 8.5</strong></article><article><b>Wild mushroom orzo</b><strong>KD 6.0</strong></article></div>
+            </div>
+            <div class="features-live-pill"><i></i> Live for guests</div>
           </div>
         </div>
       </section>
-      <section class="section">
+
+      <section class="features-ribbon" aria-label="DAIFY capabilities">
         <div class="container">
-          <article class="feature-row fade-up">
-            <div>
-              <span class="eyebrow">01 · Menu builder</span>
-              <h2 class="h2">Structure every dish with ease.</h2>
-              <p class="lead">
-                Create sections for starters, pasta, mains, desserts, and
-                drinks. Add descriptions, prices, dietary notes, and images
-                without wrestling with page layouts.
-              </p>
-            </div>
-            <div class="feature-visual">
-              <div class="ui-window">
-                <div class="ui-bar"></div>
-                <div class="ui-content">
-                  <strong>Oliva Menu</strong>
-                  <div class="ui-row">
-                    <span>Whipped feta</span><b>KD 3.5</b>
-                  </div>
-                  <div class="ui-row">
-                    <span>Wild mushroom orzo</span><b>KD 6.0</b>
-                  </div>
-                  <div class="ui-row"><span>Sea bass</span><b>KD 8.5</b></div>
-                </div>
-              </div>
-            </div>
-          </article>
-          <article class="feature-row fade-up">
-            <div>
-              <span class="eyebrow">02 · Templates</span>
-              <h2 class="h2">Start from a point of view.</h2>
-              <p class="lead">
-                Choose from art-directed styles for fine dining, cafés, fast
-                casual concepts, and everything between. Every template remains
-                fully responsive.
-              </p>
-              <a class="btn btn--ghost" href="templates.html">Browse templates</a>
-            </div>
-            <div class="feature-visual feature-visual--dark">
-              <div
-                class="template-mini"
-                style="
-                  --card-accent: #c8a96b;
-                  background: #171916;
-                  color: white;
-                "
-              >
-                <small>Evening dining</small>
-                <h3>Noir</h3>
-                <i></i><i></i><i></i>
-              </div>
-            </div>
-          </article>
-          <article class="feature-row fade-up">
-            <div>
-              <span class="eyebrow">03 · Customization</span>
-              <h2 class="h2">Every detail can sound like you.</h2>
-              <p class="lead">
-                Tune background, card, text, and accent colors. Switch button
-                shapes, card radii, navigation patterns, and item layouts
-                without touching code.
-              </p>
-            </div>
-            <div class="feature-visual">
-              <div class="controls" style="width: 100%">
-                <div class="control-group">
-                  <span class="control-label">Theme colors</span>
-                  <div class="swatches">
-                    <i class="swatch" style="background: #68765b"></i
-                    ><i class="swatch" style="background: #a85c42"></i
-                    ><i class="swatch" style="background: #263f52"></i>
-                  </div>
-                </div>
-                <div class="control-group">
-                  <span class="control-label">Layout</span>
-                  <div class="segmented">
-                    <button class="active">List</button><button>Grid</button
-                    ><button>Image focused</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-          <article class="feature-row fade-up">
-            <div>
-              <span class="eyebrow">04 · Publish & QR</span>
-              <h2 class="h2">One scan. Always your latest menu.</h2>
-              <p class="lead">
-                Preview the guest experience before publishing. Then share a QR
-                code that keeps pointing to the latest version, even after
-                edits.
-              </p>
-            </div>
-            <div class="feature-visual feature-visual--qr"></div>
-          </article>
+          <span>Menu builder</span><i></i><span>Brand styling</span><i></i><span>Mobile preview</span><i></i><span>QR publishing</span><i></i><span>Live updates</span><i></i><span>Analytics</span>
         </div>
       </section>
-      <section class="section">
-        <div class="container cta">
-          <div>
-            <span class="eyebrow">Ready when you are</span>
-            <h2 class="h2">Build a menu worth browsing.</h2>
+
+      <section class="section features-suite">
+        <div class="container">
+          <div class="features-section-head" data-aos="fade-up">
+            <div><span class="eyebrow">One focused workspace</span><h2 class="h2">Powerful where it matters.<br />Effortless everywhere else.</h2></div>
+            <p>Every feature is designed around the pace of hospitality—from a five-minute price change to a complete seasonal relaunch.</p>
           </div>
-          <a class="btn btn--dark" href="signup.html">Start Free Trial</a>
+          <div class="features-bento">
+            <article class="feature-tile feature-tile--builder" data-aos="fade-up">
+              <div class="feature-tile-copy"><span>01 / BUILD</span><h3>A menu builder that thinks in dishes, not documents.</h3><p>Organize sections, reorder items, add dietary notes, and manage availability without touching a layout.</p></div>
+              <div class="builder-scene" aria-hidden="true"><div class="builder-category"><b>Starters</b><span>6 dishes</span></div><div class="builder-row"><span>⠿</span><img src="assets/images/menu/whipped-feta.jpg" alt="" /><div><b>Whipped feta</b><small>Charred pepper · basil oil</small></div><strong>KD 3.5</strong></div><div class="builder-row"><span>⠿</span><img src="assets/images/menu/burrata-tomato.jpg" alt="" /><div><b>Burrata &amp; tomato</b><small>Heirloom tomato · za’atar</small></div><strong>KD 4.5</strong></div></div>
+            </article>
+
+            <article class="feature-tile feature-tile--templates" data-aos="fade-up" data-aos-delay="80">
+              <div class="feature-tile-copy"><span>02 / DESIGN</span><h3>Start with a distinct point of view.</h3><p>Nine responsive templates for everything from quiet fine dining to vibrant fast casual.</p><a href="templates.html">Meet every template ↗</a></div>
+              <div class="template-fan" aria-hidden="true"><img src="assets/images/template-previews/feast.jpg" alt="" /><img src="assets/images/template-previews/noir.jpg" alt="" /><img src="assets/images/template-previews/amalfi.jpg" alt="" /></div>
+            </article>
+
+            <article class="feature-tile feature-tile--brand" data-aos="fade-up">
+              <div class="feature-tile-copy"><span>03 / CUSTOMIZE</span><h3>Your colors. Your rhythm. Your restaurant.</h3><p>Shape typography, cards, navigation, imagery, and layout with visual controls.</p></div>
+              <div class="brand-controls" aria-hidden="true"><div><small>BRAND COLOR</small><span><i></i>#E53935</span></div><div><small>CARD STYLE</small><b>Soft</b><b class="is-active">Rounded</b><b>Sharp</b></div><div><small>LAYOUT</small><span class="layout-choice"><i></i><i></i><i></i></span></div></div>
+            </article>
+
+            <article class="feature-tile feature-tile--mobile" data-aos="fade-up" data-aos-delay="80">
+              <div class="feature-tile-copy"><span>04 / MOBILE FIRST</span><h3>Made for the hand holding it.</h3><p>Fast, readable menus with no app download and no pinch-to-zoom PDFs.</p></div>
+              <div class="mobile-card-stack" aria-hidden="true"><article><img src="assets/images/menu/lemon-linguine.jpg" alt="" /><div><b>Lemon linguine</b><small>Capers · herbs</small></div><strong>9.0</strong></article><article><img src="assets/images/menu/fig-panna-cotta.jpg" alt="" /><div><b>Fig panna cotta</b><small>Vanilla · pistachio</small></div><strong>4.0</strong></article></div>
+            </article>
+
+            <article class="feature-tile feature-tile--insights" data-aos="fade-up">
+              <div class="feature-tile-copy"><span>05 / INSIGHTS</span><h3>See what guests are drawn to.</h3><p>Understand scans, visits, and popular items without drowning in dashboards.</p></div>
+              <div class="insight-chart" aria-hidden="true"><div><b>1,284</b><small>MENU VIEWS</small></div><svg viewBox="0 0 440 130" preserveAspectRatio="none"><defs><linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#587ff8" stop-opacity=".35"/><stop offset="1" stop-color="#587ff8" stop-opacity="0"/></linearGradient></defs><path d="M0 108C45 104 58 62 101 77S165 103 205 68S258 25 300 52S360 88 440 18V130H0Z" fill="url(#chartFill)"/><path d="M0 108C45 104 58 62 101 77S165 103 205 68S258 25 300 52S360 88 440 18" fill="none" stroke="#587ff8" stroke-width="4" stroke-linecap="round"/></svg></div>
+            </article>
+
+            <article class="feature-tile feature-tile--language" data-aos="fade-up" data-aos-delay="80">
+              <div class="feature-tile-copy"><span>06 / LANGUAGE</span><h3>English and Arabic, beautifully side by side.</h3><p>Built-in RTL support keeps every menu intentional in either language.</p></div>
+              <div class="language-switch" aria-hidden="true"><span class="is-active">English</span><span>العربية</span></div><div class="arabic-sample" lang="ar" dir="rtl"><b>سمك البحر المشوي</b><small>ليمون · أعشاب الحديقة · نبات الكبر</small></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section features-publish">
+        <div class="container">
+          <div class="features-publish-head" data-aos="fade-up"><span class="eyebrow">From edit to table</span><h2 class="h2">Change it once.<br />See it everywhere.</h2><p>Your QR never changes. Your menu always can.</p></div>
+          <div class="publish-flow" data-aos="fade-up" data-aos-delay="100">
+            <article><span>01</span><div class="publish-icon">✎</div><h3>Edit</h3><p>Update a price, photo, description, or availability.</p></article>
+            <i class="publish-arrow">→</i>
+            <article><span>02</span><div class="publish-icon publish-icon--blue">✓</div><h3>Publish</h3><p>Preview the real guest experience and make it live.</p></article>
+            <i class="publish-arrow">→</i>
+            <article><span>03</span><div class="publish-qr" aria-hidden="true"></div><h3>Scan</h3><p>Every table opens the newest version instantly.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section features-final">
+        <div class="container features-final-card" data-aos="zoom-in">
+          <span class="eyebrow">Ready for your first menu?</span>
+          <h2>Give every dish the digital experience it deserves.</h2>
+          <p>Start with every Pro feature for 14 days and publish when it feels right.</p>
+          <div class="button-row"><a class="btn btn--light" href="signup.html">Start Free Trial ↗</a><a class="btn features-final-link" href="templates.html">Explore templates</a></div>
         </div>
       </section>
     </main>
     <footer class="footer">
-      <div class="container footer-bottom footer-bottom--flush">
-        <a class="brand" href="index.html" aria-label="MenuFlow home"><img class="brand-logo" src="assets/icons/menuflow-logo-dark.svg" alt="MenuFlow"></a><span>© 2026 MenuFlow · Front-end prototype</span>
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand-col">
+            <a class="brand" href="index.html" aria-label="DAIFY home"
+              ><img
+                class="brand-logo"
+                src="assets/icons/menuflow-logo-dark.svg"
+                alt="DAIFY"
+            /></a>
+            <p>
+              Better Guest Experiences. DAIFY helps restaurants, cafés, and
+              hospitality businesses present, update, and share their menu
+              beautifully — on any phone, no app required.
+            </p>
+          </div>
+          <div>
+            <h4>Product</h4>
+            <ul>
+              <li><a href="features.html">Features</a></li>
+              <li><a href="templates.html">Templates</a></li>
+              <li><a href="pricing.html">Pricing</a></li>
+              <li><a href="index.html#how">How it works</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Solutions</h4>
+            <ul>
+              <li><a href="index.html">Restaurants &amp; cafés</a></li>
+              <li><a href="index.html#beyond">Hotels &amp; hospitality</a></li>
+              <li><a href="index.html#beyond">Spas &amp; salons</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Company</h4>
+            <ul>
+              <li><a href="about.html">About</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="index.html#faq">FAQ</a></li>
+              <li><a href="templates.html">Template gallery</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy</a></li>
+              <li><a href="#">Terms</a></li>
+              <li><a href="#">Cookies</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 DAIFY. Front-end prototype.</span>
+          <div class="footer-social" aria-label="DAIFY on social media">
+            <a href="#" aria-label="DAIFY on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" stroke="none"/></svg></a>
+            <a href="#" aria-label="DAIFY on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10.5v6M8 7.7v.1M12.2 16.5v-3.4c0-1.4.9-2.2 2-2.2s1.8.8 1.8 2.2v3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a href="#" aria-label="DAIFY on X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 5l14 14M19 5L5 19" stroke-linecap="round"/></svg></a>
+          </div>
+        </div>
       </div>
     </footer>
   </body>

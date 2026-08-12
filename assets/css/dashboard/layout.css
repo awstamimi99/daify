@@ -11,10 +11,13 @@
   min-height: 100vh;
 }
 
-/* Sidebar */
+/* Sidebar — light surface, dark text, red active state (see
+   docs/DESIGN_SYSTEM.md). Logo sizing is height-based so a future SVG
+   replacement (horizontal or icon-only) drops in without touching layout. */
 .dash-sidebar {
-  background: var(--mf-ink);
-  color: var(--mf-ivory);
+  background: var(--surface-primary);
+  color: var(--text-primary);
+  border-inline-end: 1px solid var(--border-default);
   display: flex;
   flex-direction: column;
   padding: 1.5rem 1.1rem;
@@ -27,14 +30,21 @@
   margin-bottom: 1.5rem;
   padding: 0 0.15rem;
 }
+.dash-sidebar .brand-logo,
+.customizer-brand img {
+  height: 1.6rem;
+  width: auto;
+  max-width: 100%;
+  display: block;
+}
 .admin-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   padding: 0.3rem 0.65rem;
-  border-radius: var(--mf-radius-pill);
-  background: rgba(122, 143, 168, 0.22);
-  color: #9fb6cc;
+  border-radius: var(--radius-pill);
+  background: var(--brand-red-soft);
+  color: var(--brand-red-strong);
   font-size: 0.64rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -48,18 +58,14 @@
   border-radius: 50%;
   background: currentColor;
 }
-.dash-sidebar.admin-sidebar .dash-nav a.active {
-  background: var(--dash-chart-3, #7a8fa6);
-  color: #fff;
-}
 .admin-back-link {
   display: block;
   font-size: 0.76rem;
-  color: rgba(247, 244, 237, 0.55);
+  color: var(--text-muted);
   margin-bottom: 1rem;
 }
 .admin-back-link:hover {
-  color: #fff;
+  color: var(--text-primary);
 }
 .dash-nav-group {
   margin-bottom: 1.4rem;
@@ -69,7 +75,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(247, 244, 237, 0.4);
+  color: var(--text-muted);
   padding: 0 0.85rem;
   margin-bottom: 0.5rem;
 }
@@ -82,19 +88,19 @@
   align-items: center;
   gap: 0.7rem;
   padding: 0.62rem 0.85rem;
-  border-radius: var(--mf-radius-sm);
+  border-radius: var(--radius-sm);
   font-size: 0.85rem;
   font-weight: 600;
-  color: rgba(247, 244, 237, 0.68);
+  color: var(--text-secondary);
   transition: 0.2s;
 }
 .dash-nav a:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  background: var(--surface-muted);
 }
 .dash-nav a.active {
-  color: #fff;
-  background: var(--mf-sage-dark);
+  color: var(--brand-red-strong);
+  background: var(--brand-red-soft);
 }
 .dash-nav-icon {
   width: 1.05rem;
@@ -104,9 +110,16 @@
 .dash-sidebar-footer {
   margin-top: auto;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid var(--border-default);
   display: grid;
   gap: 0.6rem;
+}
+.dash-sidebar-footer a {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+.dash-sidebar-footer a:hover {
+  color: var(--text-primary);
 }
 
 /* Restaurant switcher */
@@ -120,10 +133,10 @@
   align-items: center;
   gap: 0.65rem;
   padding: 0.6rem 0.7rem;
-  border-radius: var(--mf-radius-sm);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
   cursor: pointer;
   text-align: left;
 }
@@ -131,11 +144,11 @@
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background: var(--mf-sage);
+  background: var(--brand-red);
   color: #fff;
   display: grid;
   place-items: center;
-  font-family: var(--mf-font-serif);
+  font-family: var(--font-serif);
   font-size: 0.95rem;
   flex: 0 0 auto;
 }
@@ -147,7 +160,7 @@
 .dash-switcher-trigger span {
   display: block;
   font-size: 0.68rem;
-  color: rgba(247, 244, 237, 0.6);
+  color: var(--text-muted);
 }
 .dash-switcher-caret {
   margin-left: auto;
@@ -156,15 +169,18 @@
 }
 .dash-switcher-panel {
   position: absolute;
-  bottom: calc(100% + 0.4rem);
+  top: calc(100% + 0.4rem);
   left: 0;
   right: 0;
   background: #fff;
-  border-radius: var(--mf-radius-md);
-  box-shadow: var(--mf-shadow-large);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-large);
   padding: 0.5rem;
   z-index: 50;
   display: none;
+  max-height: 60vh;
+  overflow-y: auto;
 }
 .dash-switcher-panel.open {
   display: block;
@@ -175,8 +191,8 @@
   gap: 0.6rem;
   width: 100%;
   padding: 0.55rem 0.6rem;
-  border-radius: var(--mf-radius-sm);
-  color: var(--mf-ink);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
   font-size: 0.82rem;
   text-align: left;
   cursor: pointer;
@@ -185,7 +201,8 @@
   background: var(--dash-bg);
 }
 .dash-switcher-option.active {
-  background: color-mix(in srgb, var(--mf-sage) 12%, transparent);
+  background: var(--brand-red-soft);
+  color: var(--brand-red-strong);
   font-weight: 700;
 }
 .dash-switcher-option small {
@@ -203,8 +220,8 @@
   gap: 0.5rem;
   width: 100%;
   padding: 0.55rem 0.6rem;
-  border-radius: var(--mf-radius-sm);
-  color: var(--mf-sage-dark);
+  border-radius: var(--radius-sm);
+  color: var(--brand-red-strong);
   font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
@@ -238,10 +255,10 @@
   color: var(--dash-text-muted);
 }
 .dash-breadcrumb a:hover {
-  color: var(--mf-ink);
+  color: var(--text-primary);
 }
 .dash-topbar h1 {
-  font-family: var(--mf-font-serif);
+  font-family: var(--font-serif);
   font-size: clamp(1.7rem, 3vw, 2.2rem);
   font-weight: 400;
   letter-spacing: -0.02em;
@@ -268,11 +285,33 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.5rem 0.9rem;
-  border-radius: var(--mf-radius-pill);
-  background: color-mix(in srgb, var(--mf-champagne) 20%, transparent);
-  color: #7a5a1f;
+  border-radius: var(--radius-pill);
+  background: var(--warning-bg);
+  color: var(--warning);
   font-size: 0.74rem;
   font-weight: 700;
+}
+
+.dash-workspace-tabs {
+  display: flex;
+  gap: 0.4rem;
+  margin: -1rem 0 1.5rem;
+  border-bottom: 1px solid var(--dash-border);
+}
+.dash-workspace-tabs a {
+  padding: 0.7rem 0.2rem;
+  margin-right: 1.4rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--dash-text-muted);
+  border-bottom: 2px solid transparent;
+}
+.dash-workspace-tabs a:hover {
+  color: var(--text-primary);
+}
+.dash-workspace-tabs a.active {
+  color: var(--brand-red-strong);
+  border-color: var(--brand-red);
 }
 
 .dash-menu-toggle {
@@ -280,7 +319,7 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  background: var(--mf-ink);
+  background: var(--brand-red);
   color: #fff;
   cursor: pointer;
   flex: 0 0 auto;

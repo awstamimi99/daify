@@ -1,4 +1,4 @@
-/* Image-led visual system shared by every MenuFlow restaurant template. */
+/* Image-led visual system shared by every DAIFY restaurant template. */
 .restaurant-brand-row{display:flex;align-items:center;gap:1rem;margin-bottom:2rem}
 .restaurant-brand-row .restaurant-monogram{margin:0;flex:0 0 auto}
 .restaurant-brand-row>span{font-size:.6rem;font-weight:700;letter-spacing:.18em;color:var(--restaurant-muted)}
@@ -87,6 +87,31 @@ html[dir="rtl"] .restaurant-footer-visual::after{background:linear-gradient(-90d
 html[dir="rtl"] .restaurant-footer-visual figcaption{inset:auto clamp(1.5rem,6vw,6rem) clamp(2rem,6vw,6rem) auto}
 html[dir="rtl"] .restaurant-footer .menu-credit{text-align:start}
 
+/* Story block: editorial split of a photo and copy, addable/removable from the dashboard Layout tab. */
+.menu-story{width:min(calc(100% - 2rem),var(--restaurant-content-width));margin:clamp(3rem,7vw,6rem) auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+.menu-story[data-image-position="right"] .menu-story-media{order:2}
+.menu-story-media{margin:0;aspect-ratio:4/5;border-radius:var(--restaurant-radius-card);overflow:hidden;background:var(--restaurant-surface)}
+.menu-story-media img{width:100%;height:100%;object-fit:cover}
+.menu-story-copy h2{font-family:var(--restaurant-font-heading);font-size:clamp(2rem,4.4vw,3.6rem);font-weight:500;line-height:1;letter-spacing:-.03em;margin-bottom:1.1rem}
+.menu-story-copy p{color:var(--restaurant-muted);font-size:.9rem;line-height:1.75;max-width:34rem}
+.menu-story.no-media{grid-template-columns:1fr;text-align:center}
+.menu-story.no-media .menu-story-copy p{margin-inline:auto}
+@media(max-width:1024px){.menu-story{grid-template-columns:1fr;gap:1.5rem}.menu-story-media{order:-1!important;aspect-ratio:16/10}}
+
+/* Gallery block: a simple photo grid, addable/removable from the dashboard Layout tab. */
+.menu-gallery{width:min(calc(100% - 2rem),var(--restaurant-content-width));margin:clamp(3rem,7vw,6rem) auto}
+.menu-gallery>header{margin-bottom:1.5rem}
+.menu-gallery>header h2{font-family:var(--restaurant-font-heading);font-size:clamp(2rem,4.4vw,3.6rem);font-weight:500;line-height:1;letter-spacing:-.03em}
+.menu-gallery-grid{display:grid;gap:.8rem}
+.menu-gallery-grid[data-columns="2"]{grid-template-columns:repeat(2,1fr)}
+.menu-gallery-grid[data-columns="3"]{grid-template-columns:repeat(3,1fr)}
+.menu-gallery-grid[data-columns="4"]{grid-template-columns:repeat(4,1fr)}
+.menu-gallery-grid figure{margin:0;aspect-ratio:1;border-radius:var(--restaurant-radius-card);overflow:hidden;background:var(--restaurant-surface)}
+.menu-gallery-grid img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.menu-gallery-grid figure:hover img{transform:scale(1.04)}
+@media(max-width:1024px){.menu-gallery-grid[data-columns="3"],.menu-gallery-grid[data-columns="4"]{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.menu-gallery-grid{grid-template-columns:repeat(2,1fr)!important}}
+
 /* Atelier — sharp, restrained and editorial. */
 .restaurant-menu[data-template="atelier"] .menu-featured{width:min(calc(100% - 3rem),1180px)}
 .restaurant-menu[data-template="atelier"] .featured-track{gap:1px;background:color-mix(in srgb,var(--restaurant-text) 18%,transparent);border:1px solid color-mix(in srgb,var(--restaurant-text) 18%,transparent)}
@@ -96,6 +121,7 @@ html[dir="rtl"] .restaurant-footer .menu-credit{text-align:start}
 .restaurant-menu[data-template="atelier"] .menu-item{border-width:0 0 1px}
 .restaurant-menu[data-template="atelier"] .menu-item-media{filter:saturate(.78)}
 .restaurant-menu[data-template="atelier"] .menu-section,.restaurant-menu[data-template="atelier"] .restaurant-footer,.restaurant-menu[data-template="atelier"] .restaurant-footer-visual{border-radius:0}
+.restaurant-menu[data-template="atelier"] .menu-story-media,.restaurant-menu[data-template="atelier"] .menu-gallery-grid figure{border-radius:0}
 
 /* Verde — garden softness with clean white cards. */
 .restaurant-menu[data-template="verde"] .menu-featured{padding:clamp(1.3rem,3vw,2rem);border-radius:32px;background:color-mix(in srgb,var(--restaurant-primary) 8%,var(--restaurant-bg))}
@@ -127,6 +153,7 @@ html[dir="rtl"] .restaurant-footer .menu-credit{text-align:start}
 .restaurant-menu[data-template="sora"] .restaurant-actions a{border-radius:0}
 .restaurant-menu[data-template="sora"] .menu-item{border-width:1px 0 0!important}
 .restaurant-menu[data-template="sora"] .menu-section,.restaurant-menu[data-template="sora"] .restaurant-footer,.restaurant-menu[data-template="sora"] .restaurant-footer-visual{border-radius:0}
+.restaurant-menu[data-template="sora"] .menu-story-media,.restaurant-menu[data-template="sora"] .menu-gallery-grid figure{border-radius:0}
 
 /* Ember — bold grill-house poster energy. */
 .restaurant-menu[data-template="ember"] .menu-featured>header h2{text-transform:uppercase;font-family:var(--restaurant-font-heading);font-weight:700;letter-spacing:-.07em}

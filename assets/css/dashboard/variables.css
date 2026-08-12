@@ -1,26 +1,32 @@
-/* Dashboard-only tokens layered on top of the shared --mf-* brand tokens. */
+/* Dashboard-only tokens layered on top of the shared brand tokens in
+   assets/css/variables.css — see docs/DESIGN_SYSTEM.md. */
 :root {
-  --dash-bg: var(--mf-mist);
-  --dash-surface: #fff;
-  --dash-border: var(--mf-stone);
-  --dash-text-muted: var(--mf-text-muted);
+  --dash-bg: var(--surface-muted);
+  --dash-surface: var(--surface-primary);
+  --dash-border: var(--border-default);
+  --dash-text-muted: var(--text-secondary);
+  --dash-text-faint: var(--text-muted);
 
-  --dash-success: #3f7a4f;
-  --dash-success-bg: #e4ecdf;
-  --dash-warning: #8a6a1f;
-  --dash-warning-bg: #f5ecd8;
-  --dash-danger: #a8402f;
-  --dash-danger-bg: #f7e6e2;
-  --dash-info: #3a5a78;
-  --dash-info-bg: #e6edf3;
-  --dash-neutral: var(--mf-text-muted);
-  --dash-neutral-bg: var(--mf-mist);
+  --dash-accent: var(--brand-red);
+  --dash-accent-hover: var(--brand-red-hover);
+  --dash-accent-soft: var(--brand-red-soft);
 
-  --dash-chart-1: var(--mf-sage);
-  --dash-chart-2: var(--mf-champagne);
-  --dash-chart-3: #7a8fa6;
-  --dash-chart-4: #b5765a;
+  --dash-success: var(--success);
+  --dash-success-bg: var(--success-bg);
+  --dash-warning: var(--warning);
+  --dash-warning-bg: var(--warning-bg);
+  --dash-danger: var(--error);
+  --dash-danger-bg: var(--error-bg);
+  --dash-info: var(--info);
+  --dash-info-bg: var(--info-bg);
+  --dash-neutral: var(--text-secondary);
+  --dash-neutral-bg: var(--surface-muted);
+
+  --dash-chart-1: var(--brand-red);
+  --dash-chart-2: var(--brand-blue);
+  --dash-chart-3: #238a57;
+  --dash-chart-4: #d98713;
 
   --dash-sidebar-w: 260px;
-  --dash-radius: var(--mf-radius-lg);
+  --dash-radius: var(--radius-lg);
 }

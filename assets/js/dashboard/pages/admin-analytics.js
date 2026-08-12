@@ -1,6 +1,6 @@
 (function () {
-  const data = window.MenuFlowAdminSeed.platformAnalytics;
-  const content = window.MenuFlowAdminShell.render({ active: 'analytics', title: 'Platform Analytics', subtitle: 'Growth and usage across MenuFlow.' });
+  const data = window.MenuFlowAdminStore.analytics();
+  const content = window.MenuFlowAdminShell.render({ active: 'analytics', title: 'Platform Analytics', subtitle: 'Growth and usage across DAIFY.' });
 
   const maxSignups = Math.max(...data.signupsOverTime, 1);
   const maxTemplate = Math.max(...data.templatePopularity.map(t => t.value), 1);

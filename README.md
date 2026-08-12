@@ -1,4 +1,4 @@
-# MenuFlow marketing prototype
+# DAIFY marketing prototype
 
 A framework-free static prototype for a premium restaurant-menu SaaS product.
 
@@ -28,7 +28,7 @@ Then open `http://localhost:8080`.
 - `assets/js/main.js` — navigation, demo, filters, pricing, forms, and motion
 - `assets/js/vendor/qrcode.min.js` — vendored `qrcode` (MIT) build for real client-side QR generation, no network dependency
 - `assets/images/` — original generated editorial photography
-- `assets/icons/` — official MenuFlow light, dark, icon, and favicon SVGs
+- `assets/icons/` — official DAIFY light, dark, icon, and favicon SVGs
 - `docs/` — supplied brand guide and raw brand-token reference
 
 No framework or runtime dependency is required. Google Fonts are the only external network request; the site falls back to system fonts when offline.

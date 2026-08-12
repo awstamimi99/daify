@@ -58,5 +58,14 @@
     });
   }
 
-  window.MenuFlowShellCommon = { toast, confirmDialog, esc };
+  function menuWorkspaceTabs(active, menuId) {
+    const q = menuId ? `?menu=${encodeURIComponent(menuId)}` : '';
+    return [
+      { id: 'content', label: 'Content', href: `menu-builder.html${q}` },
+      { id: 'design', label: 'Design', href: `design.html${q}` },
+      { id: 'publish', label: 'Publish', href: `publish.html${q}` },
+    ].map(tab => Object.assign({}, tab, { active: tab.id === active }));
+  }
+
+  window.MenuFlowShellCommon = { toast, confirmDialog, esc, menuWorkspaceTabs };
 })();

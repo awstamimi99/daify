@@ -18,7 +18,7 @@
   white-space: nowrap;
 }
 .dash-table th[data-sortable] { cursor: pointer; }
-.dash-table th[data-sortable]:hover { color: var(--mf-ink); }
+.dash-table th[data-sortable]:hover { color: var(--text-primary); }
 .dash-table th .sort-arrow { margin-left: 0.3rem; opacity: 0.5; }
 .dash-table td {
   padding: 0.9rem 1.2rem;
@@ -26,7 +26,7 @@
   vertical-align: middle;
 }
 .dash-table tbody tr:last-child td { border-bottom: 0; }
-.dash-table tbody tr:hover { background: color-mix(in srgb, var(--mf-sage) 4%, transparent); }
+.dash-table tbody tr:hover { background: var(--surface-muted); }
 .dash-table .cell-primary { font-weight: 700; }
 .dash-table .cell-muted { color: var(--dash-text-muted); }
 .dash-table .cell-actions { display: flex; gap: 0.4rem; justify-content: flex-end; }

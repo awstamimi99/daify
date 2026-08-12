@@ -21,7 +21,7 @@
       <div class="dash-card-header"><div><h2>Defaults</h2></div></div>
       <div class="field-row">
         <div class="field"><label for="trialLength">Default trial length (days)</label><input id="trialLength" type="number" value="14" /></div>
-        <div class="field"><label for="supportEmail">Support email</label><input id="supportEmail" type="email" value="support@menuflow.app" /></div>
+        <div class="field"><label for="supportEmail">Support email</label><input id="supportEmail" type="email" value="support@daify.net" /></div>
       </div>
       <button class="btn btn--dark" type="button" id="saveBtn" style="margin-top:.5rem">Save settings</button>
     </div>`;

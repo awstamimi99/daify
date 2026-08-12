@@ -51,7 +51,7 @@
       <td data-label="Status"><span class="status-badge status-badge--${statusKind}">${m.status === 'active' ? 'Active' : 'Pending invitation'}</span></td>
       <td data-label="Last active" class="cell-muted">${m.lastActive ? esc(m.lastActive) : '—'}</td>
       <td data-label="" class="cell-actions">
-        ${canManage && m.role === 'manager' ? `<button class="icon-btn" type="button" data-action="edit" title="Edit permissions">✎</button><button class="icon-btn icon-btn--danger" type="button" data-action="remove" title="Remove">✕</button>` : ''}
+        ${canManage && m.role === 'manager' ? `<button class="icon-btn" type="button" data-action="edit" title="Edit member">✎</button><button class="icon-btn icon-btn--danger" type="button" data-action="remove" title="Remove">✕</button>` : ''}
       </td>
     </tr>`;
   }
@@ -83,6 +83,23 @@
 
   function openInviteDialog(restaurant) {
     const dialog = ensureDialog('inviteDialog');
+
+    const gate = store.checkLimit('managers');
+    if (!gate.allowed) {
+      dialog.innerHTML = `<div class="dash-modal-body">
+        <h2>Manager seat limit reached</h2>
+        <p>Your ${esc(gate.plan?.name || 'current')} plan includes ${gate.limit} manager account${gate.limit === 1 ? '' : 's'}. Upgrade to invite more.</p>
+        <div class="dash-modal-actions">
+          <button class="btn btn--ghost" type="button" data-choice="cancel">Not now</button>
+          <a class="btn btn--dark" href="../pricing.html">View plans</a>
+        </div>
+      </div>`;
+      dialog.showModal();
+      dialog.querySelector('[data-choice="cancel"]').addEventListener('click', () => dialog.close());
+      dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
+      return;
+    }
+
     dialog.innerHTML = `<div class="dash-modal-body">
       <h2>Invite manager</h2>
       <form id="inviteForm" novalidate>
@@ -131,11 +148,19 @@
     const member = restaurant.team.find(m => m.id === memberId);
     const dialog = ensureDialog('permsDialog');
     dialog.innerHTML = `<div class="dash-modal-body">
-      <h2>${esc(member.name)}'s permissions</h2>
-      <div class="permission-grid">${permissionChecklist(member.permissions)}</div>
+      <h2>Edit ${esc(member.name)}</h2>
+      <div class="field-row">
+        <div class="field"><label for="memberName">Name</label><input id="memberName" value="${esc(member.name)}" /></div>
+        <div class="field"><label for="memberEmail">Email</label><input id="memberEmail" type="email" value="${esc(member.email)}" /></div>
+      </div>
+      <div class="field" style="margin-top:1rem"><label for="memberPhone">Phone</label><input id="memberPhone" type="tel" value="${esc(member.phone || '')}" /></div>
+      <div class="dash-option-group" style="margin-top:1.25rem">
+        <span>Permissions</span>
+        <div class="permission-grid">${permissionChecklist(member.permissions)}</div>
+      </div>
       <div class="dash-modal-actions">
         <button class="btn btn--ghost" type="button" id="permsCancel">Cancel</button>
-        <button class="btn btn--dark" type="button" id="permsSave">Save permissions</button>
+        <button class="btn btn--dark" type="button" id="permsSave">Save changes</button>
       </div>
     </div>`;
     dialog.showModal();
@@ -143,9 +168,13 @@
     dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
     $('#permsSave').addEventListener('click', () => {
       const permissions = $$('.permission-grid input:checked', dialog).map(el => el.value);
-      store.updateTeamMember(restaurant.id, memberId, { permissions });
+      const name = $('#memberName').value.trim() || member.name;
+      const email = $('#memberEmail').value.trim() || member.email;
+      const phone = $('#memberPhone').value.trim();
+      store.updateTeamMember(restaurant.id, memberId, { permissions, name, email, phone });
       dialog.close();
-      window.MenuFlowShell.toast('Permissions updated');
+      window.MenuFlowShell.toast('Team member updated');
+      renderTable(store.getActiveRestaurant());
     });
   }
 

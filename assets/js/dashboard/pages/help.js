@@ -1,13 +1,15 @@
 (function () {
   const $ = s => document.querySelector(s);
   const store = window.MenuFlowStore;
+  const esc = window.MenuFlowShell.esc;
 
   function render() {
-    const content = window.MenuFlowShell.render({ active: 'help', title: 'Help', subtitle: 'Get support or learn how MenuFlow works.' });
+    const restaurant = store.getActiveRestaurant();
+    const content = window.MenuFlowShell.render({ active: 'help', title: 'Help', subtitle: 'Get support or learn how DAIFY works.' });
     content.innerHTML = `
       <div class="dash-quick-actions" style="margin-bottom:1.75rem">
         <a class="dash-quick-action" href="../features.html"><strong>Help Center</strong><span>Guides on menus, design, and publishing.</span></a>
-        <a class="dash-quick-action" href="../contact.html"><strong>Contact Support</strong><span>Reach the MenuFlow team directly.</span></a>
+        <a class="dash-quick-action" href="../contact.html"><strong>Contact Support</strong><span>Reach the DAIFY team directly.</span></a>
         <a class="dash-quick-action" href="#" id="reportProblem"><strong>Report a Problem</strong><span>Tell us what went wrong.</span></a>
       </div>
       <div class="dash-card">
@@ -20,7 +22,52 @@
       </div>`;
     $('#reportProblem').addEventListener('click', e => {
       e.preventDefault();
-      window.MenuFlowShell.toast('Problem reports will route to support once the backend is connected.');
+      openReportDialog(restaurant);
+    });
+  }
+
+  function ensureDialog(id) {
+    let dialog = $(`#${id}`);
+    if (!dialog) {
+      dialog = document.createElement('dialog');
+      dialog.id = id;
+      dialog.className = 'dash-modal';
+      document.body.appendChild(dialog);
+    }
+    return dialog;
+  }
+
+  function openReportDialog(restaurant) {
+    const dialog = ensureDialog('reportDialog');
+    dialog.innerHTML = `<div class="dash-modal-body">
+      <h2>Report a problem</h2>
+      <form id="reportForm" novalidate>
+        <div class="field"><label for="reportSubject">Subject</label><input id="reportSubject" required placeholder="What went wrong?" /></div>
+        <div class="field" style="margin-top:1rem"><label for="reportDetail">Details</label><textarea id="reportDetail" rows="4" placeholder="The more detail, the faster we can help."></textarea></div>
+        <div class="dash-modal-actions">
+          <button class="btn btn--ghost" type="button" data-choice="cancel">Cancel</button>
+          <button class="btn btn--dark" type="submit">Send report</button>
+        </div>
+      </form>
+    </div>`;
+    dialog.showModal();
+    dialog.querySelector('[data-choice="cancel"]').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
+    $('#reportForm', dialog).addEventListener('submit', e => {
+      e.preventDefault();
+      const subject = $('#reportSubject', dialog).value.trim();
+      if (!subject) return;
+      const detail = $('#reportDetail', dialog).value.trim();
+      const user = store.currentUser();
+      window.MenuFlowAdminStore.tickets.add({
+        client: `${user.name} — ${restaurant.name}`,
+        userId: user.id,
+        subject: detail ? `${subject} — ${detail}` : subject,
+        priority: 'Medium',
+      });
+      store.pushNotification('info', `New support ticket from ${user.name}: ${subject}`, window.MenuFlowUsers.admin.id);
+      window.MenuFlowShell.toast('Report sent — our team will follow up by email.');
+      dialog.close();
     });
   }
 

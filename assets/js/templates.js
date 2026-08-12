@@ -1,5 +1,14 @@
 window.MenuFlowTemplates = [
   {
+    slug: "feast",
+    name: "Feast",
+    type: "Modern",
+    tone: "Image-forward browsing built for fast mobile ordering.",
+    bg: "#e4e7e0",
+    mini: "#ffffff",
+    accent: "#1f6f5c",
+  },
+  {
     slug: "atelier",
     name: "Atelier",
     type: "Fine Dining",

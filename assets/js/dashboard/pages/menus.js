@@ -70,7 +70,7 @@
       const menuId = row.dataset.menu;
       row.querySelector('[data-action="preview"]')?.addEventListener('click', () => {
         const menu = store.getMenu(menuId, restaurant.id);
-        window.open(`../templates/${menu.template}.html?preview=1`, '_blank');
+        window.open(`../templates/${menu.template}.html`, '_blank');
       });
       row.querySelector('[data-action="duplicate"]')?.addEventListener('click', () => {
         store.duplicateMenu(restaurant.id, menuId);
@@ -109,6 +109,23 @@
       dialog.className = 'dash-modal';
       document.body.appendChild(dialog);
     }
+
+    const gate = store.checkLimit('menus');
+    if (!gate.allowed) {
+      dialog.innerHTML = `<div class="dash-modal-body">
+        <h2>Menu limit reached</h2>
+        <p>Your ${gate.plan?.name || 'current'} plan includes ${gate.limit} menu${gate.limit === 1 ? '' : 's'}. Upgrade to create another.</p>
+        <div class="dash-modal-actions">
+          <button class="btn btn--ghost" type="button" data-choice="cancel">Not now</button>
+          <a class="btn btn--dark" href="../pricing.html">View plans</a>
+        </div>
+      </div>`;
+      dialog.showModal();
+      dialog.querySelector('[data-choice="cancel"]').addEventListener('click', () => dialog.close());
+      dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
+      return;
+    }
+
     dialog.innerHTML = `<div class="dash-modal-body">
       <h2>Create menu</h2>
       <form id="createMenuForm" novalidate>

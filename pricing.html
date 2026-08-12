@@ -3,29 +3,32 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Pricing &amp; Free Trial — MenuFlow</title><link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+    <title>Pricing &amp; Free Trial — DAIFY</title><link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
     <meta
       name="description"
-      content="Try MenuFlow free for 14 days with no credit card, then choose the plan that fits your restaurant."
+      content="Explore DAIFY pricing for independent restaurants, growing teams, and multi-location hospitality brands."
     />
     <link rel="stylesheet" href="assets/css/variables.css" />
     <link rel="stylesheet" href="assets/css/reset.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/vendor/aos.css" />
+    <script src="assets/js/dashboard/data/subscriptions.js"></script>
+    <script src="assets/js/vendor/aos.js" defer></script>
     <script src="assets/js/main.js" defer></script>
-    <link rel="canonical" href="https://menuflow.app/pricing.html" />
-    <meta property="og:site_name" content="MenuFlow" />
-    <meta property="og:title" content="Pricing &amp; Free Trial — MenuFlow" />
-    <meta property="og:description" content="Try MenuFlow free for 14 days with no credit card, then choose the plan that fits your restaurant." />
+    <link rel="canonical" href="https://daify.net/pricing.html" />
+    <meta property="og:site_name" content="DAIFY" />
+    <meta property="og:title" content="Pricing &amp; Free Trial — DAIFY" />
+    <meta property="og:description" content="Explore DAIFY pricing for independent restaurants, growing teams, and multi-location hospitality brands." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://menuflow.app/pricing.html" />
-    <meta property="og:image" content="https://menuflow.app/assets/images/og-cover.png" />
+    <meta property="og:url" content="https://daify.net/pricing.html" />
+    <meta property="og:image" content="https://daify.net/assets/images/og-cover.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Pricing &amp; Free Trial — MenuFlow" />
-    <meta name="twitter:description" content="Try MenuFlow free for 14 days with no credit card, then choose the plan that fits your restaurant." />
-    <meta name="twitter:image" content="https://menuflow.app/assets/images/og-cover.png" />
+    <meta name="twitter:title" content="Pricing &amp; Free Trial — DAIFY" />
+    <meta name="twitter:description" content="Explore DAIFY pricing for independent restaurants, growing teams, and multi-location hospitality brands." />
+    <meta name="twitter:image" content="https://daify.net/assets/images/og-cover.png" />
     <meta name="theme-color" content="#F7F4ED" />
     <script type="application/ld+json">
 {
@@ -36,22 +39,22 @@
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://menuflow.app/"
+      "item": "https://daify.net/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Pricing",
-      "item": "https://menuflow.app/pricing.html"
+      "item": "https://daify.net/pricing.html"
     }
   ]
 }
     </script>
   </head>
-  <body>
+  <body class="pricing-page">
     <header class="site-header scrolled">
       <nav class="nav">
-        <a class="brand" href="index.html" aria-label="MenuFlow home"><img class="brand-logo" src="assets/icons/menuflow-logo.svg" alt="MenuFlow"></a>
+        <a class="brand" href="index.html" aria-label="DAIFY home"><img class="brand-logo" src="assets/icons/menuflow-logo.svg" alt="DAIFY"></a>
         <div class="nav-links">
           <a href="features.html">Features</a
           ><a href="templates.html">Templates</a
@@ -66,128 +69,239 @@
       </nav>
     </header>
     <main>
-      <section class="page-hero center">
-        <div class="flow-motif flow-motif--sm" aria-hidden="true"><svg viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M-50 420C120 460 220 320 380 340C540 360 600 500 780 480C940 462 1000 320 1180 300" stroke="#C8A96B" stroke-width="2.5" stroke-linecap="round"/><circle cx="1180" cy="300" r="6" fill="#C8A96B"/><path d="M-50 500C140 540 240 400 420 420C600 440 660 560 840 540C1000 522 1060 400 1240 380" stroke="#7C8B73" stroke-width="2" stroke-linecap="round" opacity="0.75"/></svg></div>
-        <div class="container">
-          <span class="eyebrow">14 days free · No credit card</span>
-          <h1 class="h1">Try everything before you choose a plan.</h1>
-          <p class="lead" style="margin: 1rem auto">
-            Build your menu, customize the design, publish your QR, and see how
-            MenuFlow fits your service. Choose a plan only when the trial ends.
-          </p>
-          <div class="billing-toggle" aria-label="Billing period">
-            <button class="active" data-billing="monthly">Monthly</button
-            ><button data-billing="yearly">Yearly</button>
+      <section class="pricing-hero">
+        <div class="pricing-orb pricing-orb--blue" aria-hidden="true"></div>
+        <div class="pricing-orb pricing-orb--red" aria-hidden="true"></div>
+        <div class="container pricing-hero-grid">
+          <div class="pricing-hero-copy" data-aos="fade-up">
+            <span class="eyebrow">Simple plans. Serious hospitality.</span>
+            <h1>Pricing that grows with your service.</h1>
+            <p>Start with one beautiful menu. Add more flexibility, insight, and locations when your restaurant is ready.</p>
+            <div class="button-row">
+              <a class="btn btn--dark" href="#plans">See the plans <span>↓</span></a>
+              <a class="btn btn--ghost" href="contact.html">Talk to our team</a>
+            </div>
+            <div class="pricing-hero-proof" aria-label="Pricing highlights">
+              <span><b>14</b> days to explore</span>
+              <span><b>3</b> plans for every stage</span>
+              <span><b>2</b> months saved yearly</span>
+            </div>
           </div>
-          <p class="billing-note microcopy">Billed monthly</p>
+          <div class="pricing-hero-product" data-aos="zoom-in" data-aos-delay="120" aria-label="DAIFY Starter plan preview">
+            <div class="pricing-plan-window">
+              <header><div><i></i><i></i><i></i></div><b>Oliva / Subscription</b><small>Active</small></header>
+              <div class="pricing-plan-body">
+                <span>YOUR DAIFY PLAN</span>
+                <div class="pricing-plan-name"><div><h2>Starter</h2><p>Everything you need to launch your first restaurant menu.</p></div><i>START HERE</i></div>
+                <div class="pricing-plan-amount"><b>$10</b><span>per month</span></div>
+                <div class="pricing-plan-usage"><div><span>Digital menus</span><strong>1 of 1</strong></div><i><b class="is-full"></b></i></div>
+                <ul><li>One restaurant and digital menu</li><li>Arabic and English support</li><li>QR publishing and basic insights</li></ul>
+              </div>
+            </div>
+            <div class="pricing-live-pill"><i></i><span>Menu live<br /><small>Everything in sync</small></span></div>
+            <div class="pricing-save-badge"><b>2</b><span>months<br />saved yearly</span></div>
+          </div>
         </div>
       </section>
-      <section class="section" style="padding-top: 0">
+
+      <section class="pricing-ribbon" aria-label="Every DAIFY plan includes">
+        <div class="container"><span>Mobile first</span><i></i><span>English + Arabic</span><i></i><span>Instant updates</span><i></i><span>QR publishing</span><i></i><span>Secure hosting</span></div>
+      </section>
+
+      <section class="section pricing-plans" id="plans">
         <div class="container">
-          <div class="pricing-grid">
-            <article class="price-card">
-              <span class="eyebrow">Starter · 14 days free</span>
-              <div class="price">
-                <span data-monthly="$12" data-yearly="$10">$12</span
-                ><small>/month after trial</small>
-              </div>
-              <p>For one restaurant getting off the PDF.</p>
-              <ul>
-                <li>1 digital menu</li>
-                <li>Core templates</li>
-                <li>Essential customization</li>
-                <li>QR code</li>
-              </ul>
-              <span class="price-trial">14-day free trial · No credit card</span>
-              <a class="btn btn--ghost" href="signup.html">Start 14-Day Free Trial</a>
-            </article>
-            <article class="price-card featured">
-              <span class="eyebrow">Pro · Most popular</span>
-              <div class="price">
-                <span data-monthly="$29" data-yearly="$24">$29</span
-                ><small>/month after trial</small>
-              </div>
-              <p>For restaurants building a distinctive brand.</p>
-              <ul>
-                <li>3 restaurant menus</li>
-                <li>All templates</li>
-                <li>Advanced customization</li>
-                <li>Custom branding</li>
-              </ul>
-              <span class="price-trial">Full Pro access · No card</span>
-              <a class="btn btn--light" href="signup.html">Start Pro Trial</a>
-            </article>
-            <article class="price-card">
-              <span class="eyebrow">Business</span>
-              <div class="price">
-                <span data-monthly="$69" data-yearly="$58">$69</span
-                ><small>/month</small>
-              </div>
-              <p>For groups with several locations.</p>
-              <ul>
-                <li>10 restaurants</li>
-                <li>Shared brand styles</li>
-                <li>Priority support</li>
-                <li>Analytics — coming later</li>
-              </ul>
-              <a class="btn btn--ghost" href="contact.html">Contact Sales</a>
-            </article>
+          <div class="pricing-section-head" data-aos="fade-up">
+            <div><span class="eyebrow">Choose your fit</span><h2 class="h2">Start focused.<br />Scale without friction.</h2></div>
+            <div class="pricing-billing"><div class="billing-toggle" aria-label="Billing period" id="billingToggle"><button class="active" data-billing="monthly">Monthly</button><button data-billing="yearly">Yearly <b>Save</b></button></div><p class="microcopy" id="billingNote">Billed monthly</p></div>
           </div>
-          <table class="comparison-table">
-            <thead>
-              <tr>
-                <th>Feature</th>
-                <th>Starter</th>
-                <th class="pro-col">Pro</th>
-                <th>Business</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Digital menus</td>
-                <td>1</td>
-                <td class="pro-col">3</td>
-                <td>10</td>
-              </tr>
-              <tr>
-                <td>QR access</td>
-                <td>✓</td>
-                <td class="pro-col">✓</td>
-                <td>✓</td>
-              </tr>
-              <tr>
-                <td>All templates</td>
-                <td>—</td>
-                <td class="pro-col">✓</td>
-                <td>✓</td>
-              </tr>
-              <tr>
-                <td>Advanced branding</td>
-                <td>—</td>
-                <td class="pro-col">✓</td>
-                <td>✓</td>
-              </tr>
-              <tr>
-                <td>Shared brand styles</td>
-                <td>—</td>
-                <td class="pro-col">—</td>
-                <td>✓</td>
-              </tr>
-              <tr>
-                <td>Analytics</td>
-                <td>Later</td>
-                <td class="pro-col">Later</td>
-                <td>Later</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="pricing-grid" id="pricingGrid"></div>
+        </div>
+      </section>
+
+      <section class="section pricing-compare"><div class="container" id="compareWrap"></div></section>
+
+      <section class="section pricing-value">
+        <div class="container">
+          <div class="pricing-section-head" data-aos="fade-up"><div><span class="eyebrow">Included from day one</span><h2 class="h2">The essentials never feel basic.</h2></div><p>Every plan begins with the quality your guests notice: a fast menu, effortless publishing, and a polished mobile experience.</p></div>
+          <div class="pricing-value-grid">
+            <article data-aos="fade-up"><span>01 / CREATE</span><h3>Build around dishes, not documents.</h3><p>Organize categories, imagery, pricing, descriptions, and availability in one calm workspace.</p><div class="pricing-mini-list"><b>Whipped feta</b><strong>KD 3.5</strong><b>Sea bass</b><strong>KD 8.5</strong></div></article>
+            <article class="pricing-value-dark" data-aos="fade-up" data-aos-delay="80"><span>02 / PUBLISH</span><h3>One QR.<br />Every update.</h3><p>Publish once and keep every table, receipt, and window connected to the latest menu.</p><div class="pricing-qr" aria-hidden="true"></div></article>
+            <article data-aos="fade-up" data-aos-delay="160"><span>03 / SUPPORT</span><h3>Help that understands hospitality.</h3><p>Clear guidance when you need it, with priority and dedicated support as your operation grows.</p><div class="pricing-support-status"><i></i><span>DAIFY support<br /><small>Ready when you are</small></span></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section pricing-final">
+        <div class="container pricing-final-card" data-aos="zoom-in">
+          <span class="eyebrow">Your next menu starts here</span>
+          <h2>Make the first scan feel unmistakably yours.</h2>
+          <p>Explore every Pro feature for 14 days, then choose the plan that fits the way you serve.</p>
+          <div class="button-row"><a class="btn btn--light" href="signup.html?plan=pro">Start Pro Trial ↗</a><a class="btn pricing-final-link" href="contact.html">Talk to our team</a></div>
         </div>
       </section>
     </main>
     <footer class="footer">
-      <div class="container footer-bottom footer-bottom--flush">
-        <a class="brand" href="index.html" aria-label="MenuFlow home"><img class="brand-logo" src="assets/icons/menuflow-logo-dark.svg" alt="MenuFlow"></a><span>© 2026 MenuFlow · Front-end prototype</span>
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand-col">
+            <a class="brand" href="index.html" aria-label="DAIFY home"
+              ><img
+                class="brand-logo"
+                src="assets/icons/menuflow-logo-dark.svg"
+                alt="DAIFY"
+            /></a>
+            <p>
+              Better Guest Experiences. DAIFY helps restaurants, cafés, and
+              hospitality businesses present, update, and share their menu
+              beautifully — on any phone, no app required.
+            </p>
+          </div>
+          <div>
+            <h4>Product</h4>
+            <ul>
+              <li><a href="features.html">Features</a></li>
+              <li><a href="templates.html">Templates</a></li>
+              <li><a href="pricing.html">Pricing</a></li>
+              <li><a href="index.html#how">How it works</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Solutions</h4>
+            <ul>
+              <li><a href="index.html">Restaurants &amp; cafés</a></li>
+              <li><a href="index.html#beyond">Hotels &amp; hospitality</a></li>
+              <li><a href="index.html#beyond">Spas &amp; salons</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Company</h4>
+            <ul>
+              <li><a href="about.html">About</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="index.html#faq">FAQ</a></li>
+              <li><a href="templates.html">Template gallery</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy</a></li>
+              <li><a href="#">Terms</a></li>
+              <li><a href="#">Cookies</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 DAIFY. Front-end prototype.</span>
+          <div class="footer-social" aria-label="DAIFY on social media">
+            <a href="#" aria-label="DAIFY on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" stroke="none"/></svg></a>
+            <a href="#" aria-label="DAIFY on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10.5v6M8 7.7v.1M12.2 16.5v-3.4c0-1.4.9-2.2 2-2.2s1.8.8 1.8 2.2v3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a href="#" aria-label="DAIFY on X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 5l14 14M19 5L5 19" stroke-linecap="round"/></svg></a>
+          </div>
+        </div>
       </div>
     </footer>
+    <script>
+      (function () {
+        var plans = window.MenuFlowPlansSeed || [];
+        var grid = document.getElementById('pricingGrid');
+        var compareWrap = document.getElementById('compareWrap');
+
+        function priceHtml(plan, yearly) {
+          if (plan.customPricing) {
+            return '<div class="price"><span>Custom Pricing</span></div>';
+          }
+          var amount = yearly ? plan.yearlyMonthlyPrice : plan.monthlyPrice;
+          return '<div class="price"><span data-monthly="$' + plan.monthlyPrice + '" data-yearly="$' + plan.yearlyMonthlyPrice + '">$' + amount + '</span><small>/month' + (yearly ? '' : ' after trial') + '</small></div>' +
+            (yearly ? '<p class="price-yearly-note" data-yearly-note>Billed $' + plan.yearlyTotal + ' annually · Save $' + plan.yearlySavings + '</p>' : '<p class="price-yearly-note" data-yearly-note hidden></p>');
+        }
+
+        function cardHtml(plan, index) {
+          var featured = plan.badge ? ' featured' : '';
+          var highlights = (plan.highlights || []).map(function (h) { return '<li>' + h + '</li>'; }).join('');
+          return '<article class="price-card' + featured + '" data-plan="' + plan.id + '" data-aos="fade-up" data-aos-delay="' + (index * 90) + '">' +
+            '<span class="eyebrow">' + plan.name + (plan.badge ? ' · ' + plan.badge : '') + '</span>' +
+            priceHtml(plan, false) +
+            '<p>' + (plan.tagline || '') + '</p>' +
+            '<ul>' + highlights + '</ul>' +
+            (plan.customPricing ? '<span class="price-trial">Built around your locations</span>' : '<span class="price-trial">Explore free for 14 days</span>') +
+            '<a class="btn ' + (plan.badge ? 'btn--light' : 'btn--ghost') + '" href="' + (plan.cta ? plan.cta.href : 'signup.html') + '">' + (plan.cta ? plan.cta.label : 'Get started') + ' <span>↗</span></a>' +
+            '</article>';
+        }
+
+        function renderCards() {
+          grid.innerHTML = plans.map(cardHtml).join('');
+          window.AOS && window.AOS.refreshHard();
+        }
+
+        function applyBilling(yearly) {
+          document.querySelectorAll('[data-plan]').forEach(function (card) {
+            var plan = plans.find(function (p) { return p.id === card.dataset.plan; });
+            if (!plan || plan.customPricing) return;
+            var priceEl = card.querySelector('[data-monthly]');
+            var noteEl = card.querySelector('[data-yearly-note]');
+            priceEl.textContent = yearly ? priceEl.dataset.yearly : priceEl.dataset.monthly;
+            if (noteEl) {
+              noteEl.hidden = !yearly;
+              if (yearly) noteEl.textContent = 'Billed $' + plan.yearlyTotal + ' annually · Save $' + plan.yearlySavings;
+            }
+          });
+          var note = document.getElementById('billingNote');
+          note.textContent = yearly ? 'Billed annually — two months free on Starter and Pro' : 'Billed monthly';
+        }
+
+        document.getElementById('billingToggle').addEventListener('click', function (e) {
+          var btn = e.target.closest('button[data-billing]');
+          if (!btn) return;
+          document.querySelectorAll('#billingToggle button').forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          applyBilling(btn.dataset.billing === 'yearly');
+        });
+
+        function compareRow(label, key, extract) {
+          var cols = ['starter', 'pro', 'business'].map(function (id) {
+            var plan = plans.find(function (p) { return p.id === id; });
+            return '<td' + (id === 'pro' ? ' class="pro-col"' : '') + '>' + (plan ? extract(plan) : '—') + '</td>';
+          }).join('');
+          return '<tr><td>' + label + '</td>' + cols + '</tr>';
+        }
+
+        function yn(v) { return v ? '✓' : '—'; }
+        function limitText(v) { return v === 'custom' ? 'Custom' : v; }
+
+        function renderCompare() {
+          var rows = [
+            compareRow('Restaurants', 'restaurants', function (p) { return limitText(p.limits.restaurants); }),
+            compareRow('Digital menus', 'menus', function (p) { return limitText(p.limits.menus); }),
+            compareRow('Manager accounts', 'managers', function (p) { return limitText(p.limits.managers) + (p.id === 'starter' ? ' minimum' : ''); }),
+            compareRow('Arabic + English', 'lang', function () { return '✓'; }),
+            compareRow('Templates', 'templates', function (p) { return p.templateAccess === 'all' ? 'All templates' : p.templateAccess === 'custom' ? 'Custom templates' : 'Core templates'; }),
+            compareRow('Custom design & branding', 'design', function (p) { return yn(p.customDesign); }),
+            compareRow('Remove DAIFY branding', 'branding', function (p) { return yn(p.id !== 'starter'); }),
+            compareRow('QR code', 'qr', function (p) { return p.id === 'starter' ? 'Standard' : 'Custom design'; }),
+            compareRow('Analytics', 'analytics', function (p) { return p.analyticsTier === 'basic' ? 'Basic (views, scans)' : p.analyticsTier === 'advanced' ? 'Advanced (views, scans, top items, categories, search, trends)' : 'Advanced + cross-location'; }),
+            compareRow('Menu &amp; item scheduling', 'sched', function (p) { return yn(p.id !== 'starter'); }),
+            compareRow('Multi-location dashboard', 'multi', function (p) { return yn(p.id === 'business'); }),
+            compareRow('Shared brand styles across locations', 'shared', function (p) { return yn(p.id === 'business'); }),
+            compareRow('Advanced roles &amp; permissions', 'roles', function (p) { return yn(p.id === 'business'); }),
+            compareRow('Menu Builder Assistance', 'builder', function (p) { return yn(p.id === 'business'); }),
+            compareRow('Dedicated onboarding', 'onboarding', function (p) { return yn(p.id === 'business'); }),
+            compareRow('API &amp; integrations', 'api', function (p) { return p.id === 'business' ? 'When available' : '—'; }),
+            compareRow('Support', 'support', function (p) { return p.id === 'starter' ? 'Standard' : p.id === 'pro' ? 'Priority' : 'Priority / dedicated'; }),
+          ].join('');
+          compareWrap.innerHTML = '<div class="pricing-compare-head" data-aos="fade-up"><div><span class="eyebrow">Plan by plan</span><h2 class="h2">Compare every detail.</h2></div><p>Find the right level of menus, branding, insights, team access, and support for your operation.</p></div>' +
+            '<div class="pricing-table-shell" data-aos="fade-up"><table class="comparison-table"><thead><tr><th>Feature</th><th>Starter</th><th class="pro-col">Pro <small>POPULAR</small></th><th>Business</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+          window.AOS && window.AOS.refreshHard();
+        }
+
+        renderCards();
+        renderCompare();
+      })();
+    </script>
   </body>
 </html>

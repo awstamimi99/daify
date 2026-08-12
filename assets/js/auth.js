@@ -2,9 +2,9 @@
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const DEMO_EMAIL = 'demo@menuflow.app';
-  const DEMO_PASSWORD = 'menuflow123';
-  const ERROR_EMAIL = 'error@menuflow.app';
+  const DEMO_EMAIL = 'demo@daify.net';
+  const DEMO_PASSWORD = 'daify123';
+  const ERROR_EMAIL = 'error@daify.net';
   const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
   function setFieldError(form, name, message) {
@@ -130,8 +130,12 @@
       const nameEl = $('#signupSuccessName');
       const bodyEl = $('#signupSuccessBody');
       if (nameEl) nameEl.textContent = `You're in, ${firstName}!`;
-      if (bodyEl) bodyEl.textContent = `Your 14-day Pro trial has started. We've sent a confirmation to ${email}.`;
+      if (bodyEl) bodyEl.textContent = `Your 14-day Pro trial has started. We've sent a confirmation to ${email}. Taking you to your dashboard…`;
       revealSuccess(form, successPanel);
+      // New accounts land as Owner (the only role a signup can create) on the
+      // dashboard Overview, which already carries the onboarding checklist.
+      await wait(1400);
+      window.location.href = 'dashboard/index.html';
     });
   }
 
@@ -171,6 +175,8 @@
 
       if (email.toLowerCase() === DEMO_EMAIL && password === DEMO_PASSWORD) {
         revealSuccess(form, successPanel);
+        await wait(900);
+        window.location.href = 'dashboard/index.html';
         return;
       }
 

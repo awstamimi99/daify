@@ -118,7 +118,7 @@
   body .site-header .nav-links.open > a:nth-of-type(6) { transition-delay: .32s; }
 
   body .site-header .nav-links > a:hover,
-  body .site-header .nav-links > a:focus-visible { color: var(--mf-sage); }
+  body .site-header .nav-links > a:focus-visible { color: var(--brand-red-strong); }
 
   body .site-header .nav-links > a::after { display: none; }
 

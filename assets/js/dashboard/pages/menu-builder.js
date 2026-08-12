@@ -57,6 +57,7 @@
         canPublish && menu.status !== 'published' ? `<button class="btn btn--dark" type="button" id="publishBtn">Publish</button>` : '',
         canPublish && menu.status === 'published' && store.hasUnpublishedChanges(menu) ? `<button class="btn btn--dark" type="button" id="publishBtn">Publish changes</button>` : '',
       ].join(''),
+      workspaceTabs: window.MenuFlowShellCommon.menuWorkspaceTabs('content', menuId),
     });
 
     content.innerHTML = `

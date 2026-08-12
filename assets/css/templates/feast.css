@@ -1,0 +1,128 @@
+/* Feast — Modern Visual Food Menu family. Mobile-first: every rule below is
+   written for a phone first, then progressively enhanced for tablet/desktop
+   via min-width @media/@container pairs (the pair mirrors the convention
+   already used by the classic family's iframe-preview support). */
+
+.feast-header{position:relative;height:min(52vh,420px);min-height:280px;overflow:hidden;background:var(--restaurant-primary)}
+.feast-header-media{position:absolute;inset:0;margin:0}
+.feast-header-media img{width:100%;height:100%;object-fit:cover}
+.feast-header::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.72) 100%)}
+.feast-header-overlay{position:absolute;inset:auto 0 0;z-index:1;padding:1.1rem 1.25rem 1.4rem;display:flex;flex-direction:column;gap:.75rem;color:#fff}
+.feast-header-brand{display:flex;align-items:center;gap:.75rem}
+.feast-monogram{width:2.75rem;height:2.75rem;border-radius:50%;border:1px solid rgba(255,255,255,.6);display:grid;place-items:center;font-family:var(--restaurant-font-heading);font-size:1.15rem;flex:0 0 auto}
+.feast-header-brand strong{display:block;font-family:var(--restaurant-font-heading);font-size:1.55rem;font-weight:500;line-height:1.1}
+.feast-header-brand span{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;opacity:.85}
+.feast-header-status{display:flex;align-items:center;gap:.5rem;font-size:.7rem;font-weight:600}
+.feast-header-status span{width:.5rem;height:.5rem;border-radius:50%;background:var(--restaurant-accent);flex:0 0 auto}
+
+.feast-tools-wrap{position:sticky;top:0;z-index:20;background:var(--restaurant-bg);padding:.75rem 1rem .65rem;box-shadow:0 4px 16px rgba(0,0,0,.05)}
+.feast-search{display:flex;align-items:center;gap:.5rem;padding:.68rem .9rem;border-radius:var(--restaurant-radius-button);background:var(--restaurant-surface);border:1px solid color-mix(in srgb,var(--restaurant-text) 12%,transparent);margin-bottom:.65rem}
+.feast-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--restaurant-text);font-size:.85rem}
+.feast-search input::placeholder{color:var(--restaurant-muted)}
+.feast-category-bar{display:flex;gap:.5rem;overflow-x:auto;scrollbar-width:none;padding-bottom:.1rem}
+.feast-category-bar::-webkit-scrollbar{display:none}
+.feast-category-bar a{flex:0 0 auto;padding:.55rem 1.05rem;border-radius:var(--restaurant-radius-button);font-size:.76rem;font-weight:700;color:var(--restaurant-muted);background:color-mix(in srgb,var(--restaurant-text) 5%,transparent);white-space:nowrap;transition:.2s;scroll-snap-align:start}
+.feast-category-bar a.active{background:var(--restaurant-primary);color:var(--restaurant-bg)}
+
+.feast-content{padding:1.5rem 1rem 3rem}
+.feast-section{scroll-margin-top:7.25rem;margin-bottom:2.5rem}
+.feast-section:last-of-type{margin-bottom:1rem}
+.feast-section-heading{font-family:var(--restaurant-font-heading);font-size:1.65rem;font-weight:500;margin-bottom:1rem;letter-spacing:-.01em}
+.feast-empty-section{color:var(--restaurant-muted);font-size:.85rem;padding:1.25rem 0}
+
+.feast-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.85rem}
+.feast-card{display:block;width:100%;text-align:start;background:var(--restaurant-surface);border:0;border-radius:var(--restaurant-radius-card);overflow:hidden;cursor:pointer;transition:transform .15s ease;-webkit-tap-highlight-color:transparent}
+.feast-card:active{transform:scale(.97)}
+.feast-card:focus-visible{outline:2px solid var(--restaurant-accent);outline-offset:2px}
+.feast-card-media{position:relative;aspect-ratio:1;margin:0;background:color-mix(in srgb,var(--restaurant-primary) 8%,var(--restaurant-surface))}
+.feast-card-media img{width:100%;height:100%;object-fit:cover;display:block}
+.feast-card-media-placeholder{display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-family:var(--restaurant-font-heading);font-size:1.9rem;color:color-mix(in srgb,var(--restaurant-primary) 32%,transparent)}
+.feast-badge{position:absolute;inset-block-start:.5rem;inset-inline-start:.5rem;padding:.28rem .55rem;border-radius:var(--restaurant-radius-button);background:var(--restaurant-accent);color:#fff;font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.feast-sold-out{position:absolute;z-index:1;inset-inline-start:.5rem;inset-block-end:.5rem;padding:.3rem .55rem;border-radius:var(--restaurant-radius-button);background:#171a17;color:#f7f4ed;font-size:.56rem;font-weight:700;text-transform:uppercase}
+.feast-card-body{padding:.75rem .85rem .95rem}
+.feast-card-body h3{font-size:.86rem;font-weight:700;line-height:1.28;margin-bottom:.3rem;overflow-wrap:break-word}
+.feast-card-body p{font-size:.72rem;color:var(--restaurant-muted);line-height:1.42;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:.5rem}
+.feast-card-price{font-size:.8rem;color:var(--restaurant-primary)}
+.feast-card.is-unavailable{opacity:.55}
+.feast-card.is-unavailable .feast-card-media img{filter:grayscale(.75)}
+.feast-card.is-featured{grid-column:1/-1}
+.feast-card.is-featured .feast-card-media{aspect-ratio:16/9}
+.feast-card.is-featured .feast-card-body h3{font-size:1.05rem}
+
+.feast-menu[data-card-style="bordered"] .feast-card{border:1px solid color-mix(in srgb,var(--restaurant-text) 14%,transparent)}
+.feast-menu[data-card-style="elevated"] .feast-card{box-shadow:0 10px 26px color-mix(in srgb,var(--restaurant-text) 12%,transparent)}
+.feast-menu[data-image-style="square"] .feast-card-media{border-radius:0}
+/* The photo sits flush against the card (no margin), so its top corners
+   must equal the card's own radius exactly — anything smaller leaves a
+   crescent of the card's background showing through between the photo's
+   curve and the card's overflow:hidden clip boundary. */
+.feast-menu[data-image-style="rounded"] .feast-card-media{border-radius:var(--restaurant-radius-card) var(--restaurant-radius-card) 0 0}
+
+.feast-empty{text-align:center;padding:3.5rem 1rem;color:var(--restaurant-muted);font-size:.85rem}
+
+.feast-footer{padding:2.5rem 1.25rem 2rem;background:var(--restaurant-primary);color:var(--restaurant-bg)}
+.feast-footer-brand{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem}
+.feast-footer-brand span{width:2.5rem;height:2.5rem;border-radius:50%;border:1px solid currentColor;display:grid;place-items:center;font-family:var(--restaurant-font-heading);flex:0 0 auto}
+.feast-footer-brand strong{font-family:var(--restaurant-font-heading);font-size:1.25rem;font-weight:500}
+.feast-footer-info p,.feast-footer-info a{display:block;font-size:.78rem;color:color-mix(in srgb,var(--restaurant-bg) 72%,transparent);margin-bottom:.4rem}
+.feast-footer-credit{margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid color-mix(in srgb,var(--restaurant-bg) 18%,transparent);font-size:.7rem;color:color-mix(in srgb,var(--restaurant-bg) 55%,transparent);text-align:center}
+.feast-footer-credit a{color:var(--restaurant-accent)}
+
+/* Item detail — a bottom sheet on phones (thumb-reachable, native-app
+   feeling), a centered modal from tablet width up. */
+dialog.feast-sheet{position:fixed;inset:auto 0 0 0;margin:0;width:100%;border:0;padding:0;background:var(--restaurant-surface);color:var(--restaurant-text);max-height:86vh;overflow:hidden auto;border-radius:22px 22px 0 0}
+dialog.feast-sheet::backdrop{background:rgba(10,10,8,.5)}
+dialog.feast-sheet[open]{animation:feast-sheet-in-up .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes feast-sheet-in-up{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.feast-sheet-close{position:absolute;top:.85rem;inset-inline-end:.85rem;z-index:2;width:2.2rem;height:2.2rem;border:0;border-radius:50%;background:rgba(20,20,18,.45);color:#fff;display:grid;place-items:center;font-size:.8rem;cursor:pointer;backdrop-filter:blur(4px)}
+.feast-sheet-media{margin:0;aspect-ratio:4/3;background:color-mix(in srgb,var(--restaurant-primary) 8%,var(--restaurant-surface))}
+.feast-sheet-media:empty{display:none}
+.feast-sheet-media img{width:100%;height:100%;object-fit:cover;display:block}
+.feast-sheet-body{padding:1.25rem 1.35rem 2rem}
+.feast-sheet-body h3{font-family:var(--restaurant-font-heading);font-size:1.4rem;font-weight:500;margin-bottom:.6rem;overflow-wrap:break-word}
+.feast-sheet-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.75rem}
+.feast-sheet-tags:empty{display:none}
+.feast-sheet-tags span{padding:.3rem .6rem;border-radius:var(--restaurant-radius-button);background:color-mix(in srgb,var(--restaurant-accent) 14%,transparent);color:var(--restaurant-primary);font-size:.66rem;font-weight:600}
+.feast-sheet-body p{color:var(--restaurant-muted);font-size:.88rem;line-height:1.6;margin-bottom:1rem;overflow-wrap:break-word}
+.feast-sheet-body p:empty{display:none}
+.feast-sheet-price{font-size:1.1rem;color:var(--restaurant-primary)}
+.feast-sheet.is-unavailable .feast-sheet-media{filter:grayscale(.7)}
+
+html[dir="rtl"] .feast-card,html[dir="rtl"] .feast-card-body{text-align:right}
+html[dir="rtl"] .feast-card-price{direction:ltr}
+html[dir="rtl"] .feast-sheet-price{direction:ltr}
+html[dir="rtl"] .feast-footer-info a[href^="tel:"]{direction:ltr;text-align:right}
+
+@media(min-width:680px){
+  .feast-header{height:min(46vh,380px)}
+  .feast-grid{grid-template-columns:repeat(3,1fr)}
+  .feast-card.is-featured{grid-column:span 2}
+  dialog.feast-sheet{inset:0;margin:auto;width:min(480px,88vw);max-height:80vh;border-radius:24px}
+  dialog.feast-sheet[open]{animation:feast-sheet-in-scale .25s ease}
+  @keyframes feast-sheet-in-scale{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+}
+@media(min-width:1024px){
+  .feast-tools-wrap{padding:1rem 2.5rem}
+  .feast-content{padding:2rem 2.5rem 4rem;max-width:1240px;margin:auto}
+  .feast-grid{grid-template-columns:repeat(4,1fr);gap:1.25rem}
+  .feast-card.is-featured{grid-column:span 2}
+  .feast-header{height:min(56vh,520px)}
+  .feast-footer{padding:3rem 2.5rem}
+}
+@container(min-width:680px){
+  .feast-header{height:min(46vh,380px)}
+  .feast-grid{grid-template-columns:repeat(3,1fr)}
+  .feast-card.is-featured{grid-column:span 2}
+}
+@container(min-width:1024px){
+  .feast-tools-wrap{padding:1rem 2.5rem}
+  .feast-content{padding:2rem 2.5rem 4rem;max-width:1240px;margin:auto}
+  .feast-grid{grid-template-columns:repeat(4,1fr);gap:1.25rem}
+  .feast-card.is-featured{grid-column:span 2}
+  .feast-header{height:min(56vh,520px)}
+  .feast-footer{padding:3rem 2.5rem}
+}
+@media(prefers-reduced-motion:reduce){
+  dialog.feast-sheet[open]{animation:none}
+  .feast-card{transition:none}
+}

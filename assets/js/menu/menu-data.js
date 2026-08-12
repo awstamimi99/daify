@@ -96,6 +96,11 @@
     ]
   };
 
+  // Template gallery previews must always show the complete example menu.
+  // Saved dashboard content is intentionally ignored in sample mode so an
+  // empty draft or a custom block layout cannot make a template look empty.
+  if (new URLSearchParams(location.search).get('sample') === '1') return;
+
   try {
     const saved = localStorage.getItem('menuflow_platform_v1');
     if (saved) {
@@ -109,7 +114,8 @@
         if (published) {
           window.MenuFlowMenuData = {
             restaurant: Object.assign({}, window.MenuFlowMenuData.restaurant, restaurant.info, { name: restaurant.name }),
-            sections: published.publishedSnapshot.sections
+            sections: published.publishedSnapshot.sections,
+            layout: published.publishedSnapshot.layout || {}
           };
         }
       }

@@ -1,7 +1,7 @@
 (function () {
   const $ = (s, c) => (c || document).querySelector(s);
   const $$ = (s, c) => [...(c || document).querySelectorAll(s)];
-  const tickets = window.MenuFlowAdminSeed.supportTickets;
+  const tickets = window.MenuFlowAdminStore.tickets;
   let filter = 'all';
 
   function statusKind(s) {
@@ -28,7 +28,7 @@
   }
 
   function renderTable() {
-    const rows = tickets.filter(t => filter === 'all' || t.status === filter);
+    const rows = tickets.list().filter(t => filter === 'all' || t.status === filter);
     $('#tableWrap').innerHTML = `<div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>ID</th><th>Client</th><th>Subject</th><th>Priority</th><th>Status</th><th>Created</th><th></th></tr></thead><tbody>
       ${rows.map(t => `<tr data-id="${t.id}">
         <td data-label="ID" class="cell-muted">${t.id}</td>
@@ -42,8 +42,12 @@
     </tbody></table></div>`;
 
     $$('[data-action="resolve"]').forEach(btn => btn.addEventListener('click', () => {
-      const ticket = tickets.find(t => t.id === btn.closest('tr').dataset.id);
-      ticket.status = 'Resolved';
+      const ticket = tickets.list().find(t => t.id === btn.closest('tr').dataset.id);
+      tickets.update(ticket.id, { status: 'Resolved' });
+      if (ticket.userId) {
+        window.MenuFlowStore.pushNotification('success', `Your support ticket "${ticket.subject}" has been resolved.`, ticket.userId);
+      }
+      window.MenuFlowAdminStore.addAudit('DAIFY Admin', 'Resolved support ticket', `${ticket.id} — ${ticket.subject}`);
       window.MenuFlowShellCommon.toast(`${ticket.id} marked resolved`);
       renderTable();
     }));
