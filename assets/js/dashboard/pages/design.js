@@ -18,10 +18,22 @@
     { key: 'text', label: 'Text' },
     { key: 'muted', label: 'Muted' },
   ];
+  // Same vocabulary, same order, and same "items per row is device-specific"
+  // behavior as the public template-customizer.html studio, so switching
+  // between the dashboard and the website customizer never feels different.
+  const SHAPE_ORDER = ['buttonShape', 'cardShape', 'cardStyle', 'itemLayout', 'gridColumns', 'sectionNav', 'imageStyle'];
   const capabilityLabels = {
-    cardShape: 'Card shape', buttonShape: 'Button shape', itemLayout: 'Item layout',
-    sectionNav: 'Navigation', imageStyle: 'Image style', cardStyle: 'Card style',
+    buttonShape: 'Button shape', cardShape: 'Card shape', cardStyle: 'Card style', itemLayout: 'Item layout',
+    gridColumns: 'Items per row', sectionNav: 'Navigation', imageStyle: 'Image style',
   };
+  const GRID_COLUMN_VALUES = ['1', '2', '3', '4'];
+  const GRID_COLUMNS_ALLOWED = { mobile: ['1', '2'], tablet: ['1', '2', '3'], desktop: ['1', '2', '3', '4'] };
+  const GRID_COLUMNS_NOTES = {
+    mobile: 'Mobile menus begin with one generous card per row. Choose two only for a denser visual menu.',
+    tablet: 'Tablet columns are saved separately from mobile and desktop.',
+    desktop: 'Desktop columns are saved separately, so phone readability stays protected.',
+  };
+  const OPTION_GLYPHS = { flat: '▭', bordered: '▣', elevated: '◫', list: '☷', grid: '⊞', 'image-focus': '▧', tabs: '━', chips: '◉', minimal: '—', square: '□', rounded: '▢', circle: '○', 'full-bleed': '▰' };
   const BLOCK_META = {
     featured: { label: 'Featured dishes', desc: 'Dishes marked "Featured" in Menu Builder.', locked: false, removable: false, editable: false },
     menu: { label: 'Menu', desc: 'Your categories and dishes. Always visible.', locked: true, removable: false, editable: false },
@@ -42,6 +54,8 @@
   ];
 
   let restaurant, menuId, activeConfig, theme = {}, layout = {}, device = 'mobile', subtab = 'style', expandedBlock = null;
+  let designStage = '';
+  let guideAdvanceScheduled = false;
 
   function currentMenu() {
     return store.getMenu(menuId, restaurant.id);
@@ -49,8 +63,8 @@
 
   function init() {
     restaurant = store.getActiveRestaurant();
-    store.updateRestaurantFlags(restaurant.id, { designVisited: true });
     const params = new URLSearchParams(location.search);
+    designStage = params.get('stage') || '';
     const menus = Object.values(restaurant.menus);
     menuId = params.get('menu') && restaurant.menus[params.get('menu')] ? params.get('menu') : (menus.find(m => m.id === 'main-menu') || menus[0])?.id;
 
@@ -117,6 +131,16 @@
     renderTemplateGrid();
     loadTemplate();
     bindDevice();
+    const choosingTemplate = designStage !== 'customize';
+    window.MenuFlowShellCommon.showGuide({
+      step: choosingTemplate ? 'STEP 06 OF 09' : 'STEP 07 OF 09',
+      title: choosingTemplate ? 'Choose your visual direction' : 'Make the design yours',
+      message: choosingTemplate
+        ? 'Pick the template that best fits your restaurant. Your menu content stays safely in place.'
+        : 'Change any preset, color, shape, or layout option. The live mobile preview updates instantly.',
+      actionLabel: choosingTemplate ? 'See templates' : 'Open controls',
+      action: () => (choosingTemplate ? $('#templateGrid') : $('#customizeTitle'))?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
+    });
     $('#publishBtn')?.addEventListener('click', () => {
       store.publishMenu(restaurant.id, menuId);
       window.MenuFlowShell.toast('Design published');
@@ -147,7 +171,10 @@
   }
 
   function selectTemplate(id) {
-    if (id === currentMenu().template) return;
+    if (id === currentMenu().template) {
+      finishTemplateChoice();
+      return;
+    }
     window.MenuFlowShell.confirmDialog({
       title: `Switch to ${window.MenuFlowTemplateConfigs[id].name}?`,
       message: 'Your fine-tuned colors and shapes for the current template will reset to its defaults. Menu content and layout are never affected.',
@@ -158,6 +185,16 @@
       renderTemplateGrid();
       loadTemplate();
       markSaved();
+      finishTemplateChoice();
+    });
+  }
+
+  function finishTemplateChoice() {
+    store.updateRestaurantFlags(restaurant.id, { templateChosen: true });
+    window.MenuFlowShell.toast('Template selected');
+    window.MenuFlowShellCommon.completeGuide({
+      title: 'Template selected',
+      nextUrl: `design.html?menu=${encodeURIComponent(menuId)}&stage=customize`,
     });
   }
 
@@ -245,27 +282,42 @@
     host.innerHTML = ratio < 3 ? `<div class="contrast-warning">⚠ Text and background are hard to read together (contrast ${ratio.toFixed(1)}:1). Try a darker text or lighter background.</div>` : '';
   }
 
+  function columnThemeKey(dev) {
+    return `${dev || device}Columns`;
+  }
+
+  function optionGlyphHtml(key, value) {
+    if (shapeValues[key]) return `<i class="dash-opt-glyph${key === 'buttonShape' ? ' dash-opt-glyph--wide' : ''}" style="border-radius:${shapeValues[key][value]}" aria-hidden="true"></i>`;
+    if (key === 'gridColumns') return `<i class="dash-opt-glyph--cols" aria-hidden="true">${'<b></b>'.repeat(Number(value) || 0)}</i>`;
+    return `<i class="dash-opt-symbol" aria-hidden="true">${OPTION_GLYPHS[value] || '◇'}</i>`;
+  }
+
   function renderShapeControls() {
     const host = $('#shapeControls');
-    host.innerHTML = Object.entries(activeConfig.supports)
-      .filter(([key]) => capabilityLabels[key])
-      .map(([key]) => `<div class="dash-option-group"><span>${capabilityLabels[key]}</span><div class="segmented" data-options="${key}"></div></div>`)
-      .join('');
-    Object.entries(activeConfig.supports).forEach(([key, values]) => {
+    const keys = SHAPE_ORDER.filter(key => key === 'gridColumns' ? activeConfig.supports.itemLayout : activeConfig.supports[key]);
+    host.innerHTML = keys.map(key => `<div class="dash-option-group" data-capability="${key}">
+        <span>${capabilityLabels[key]}</span>
+        <div class="segmented" data-options="${key}"></div>
+        ${key === 'gridColumns' ? '<p class="dash-option-group-note" id="gridColumnsNote"></p>' : ''}
+      </div>`).join('');
+    keys.forEach(key => {
       const optHost = host.querySelector(`[data-options="${key}"]`);
       if (!optHost) return;
-      optHost.innerHTML = values.map(v => `<button type="button" data-value="${v}" ${canEdit ? '' : 'disabled'}>${v.replace('-', ' ')}</button>`).join('');
-      syncShapeActive(key, optHost);
+      const values = key === 'gridColumns' ? GRID_COLUMN_VALUES : activeConfig.supports[key];
+      optHost.innerHTML = values.map(v => `<button type="button" data-value="${v}" ${canEdit ? '' : 'disabled'}>${optionGlyphHtml(key, v)}<span>${v.replace('-', ' ')}</span></button>`).join('');
       optHost.querySelectorAll('button').forEach(btn => {
         btn.addEventListener('click', () => {
           if (shapeValues[key]) theme[key === 'cardShape' ? 'cardRadius' : 'buttonRadius'] = shapeValues[key][btn.dataset.value];
+          else if (key === 'gridColumns') theme[columnThemeKey()] = btn.dataset.value;
           else theme[key] = btn.dataset.value;
-          optHost.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
+          syncShapeActive(key, optHost);
+          syncGridColumnsControl();
           scheduleSave();
         });
       });
+      syncShapeActive(key, optHost);
     });
+    syncGridColumnsControl();
   }
 
   function syncShapeActive(key, optHost) {
@@ -273,8 +325,21 @@
     if (shapeValues[key]) {
       const prop = key === 'cardShape' ? 'cardRadius' : 'buttonRadius';
       current = Object.keys(shapeValues[key]).find(name => shapeValues[key][name] === theme[prop]);
+    } else if (key === 'gridColumns') {
+      current = theme[columnThemeKey()] || '1';
     }
     optHost.querySelectorAll('button').forEach(btn => btn.classList.toggle('active', btn.dataset.value === current));
+  }
+
+  function syncGridColumnsControl() {
+    const group = $('[data-capability="gridColumns"]');
+    if (!group) return;
+    group.classList.toggle('is-disabled', theme.itemLayout !== 'grid');
+    const allowed = GRID_COLUMNS_ALLOWED[device];
+    group.querySelectorAll('[data-options="gridColumns"] button').forEach(btn => { btn.hidden = !allowed.includes(btn.dataset.value); });
+    syncShapeActive('gridColumns', group.querySelector('[data-options="gridColumns"]'));
+    const note = $('#gridColumnsNote');
+    if (note) note.textContent = GRID_COLUMNS_NOTES[device];
   }
 
   // ---- Layout tab ----
@@ -623,7 +688,16 @@
     clearTimeout(saveTimer);
     saveTimer = setTimeout(() => {
       store.updateMenu(restaurant.id, menuId, { theme, layout });
+      store.updateRestaurantFlags(restaurant.id, { designVisited: true });
       markSaved();
+      if (designStage === 'customize' && !guideAdvanceScheduled) {
+        guideAdvanceScheduled = true;
+        window.MenuFlowShellCommon.completeGuide({
+          title: 'Design personalized',
+          nextUrl: `publish.html?menu=${encodeURIComponent(menuId)}&stage=publish`,
+          delay: 850,
+        });
+      }
     }, 350);
     sendPreview();
   }
@@ -634,6 +708,7 @@
 
   function sendPreview() {
     const frame = $('#previewFrame');
+    theme.gridColumns = theme[columnThemeKey()] || '1';
     const targetOrigin = location.protocol === 'file:' ? '*' : location.origin;
     frame.contentWindow?.postMessage({ type: 'menuflow-preview', theme, layout }, targetOrigin);
   }
@@ -645,6 +720,8 @@
         btn.classList.add('active');
         device = btn.dataset.device;
         $('#previewViewport').dataset.device = device;
+        syncGridColumnsControl();
+        sendPreview();
       });
     });
     $('#previewFrame').addEventListener('load', sendPreview);

@@ -11,7 +11,7 @@
     });
     const shell = document.querySelector('.restaurant-menu');
     if (!shell) return;
-    ['itemLayout','sectionNav','cardStyle','imageStyle'].forEach(key => {
+    ['itemLayout','sectionNav','cardStyle','imageStyle','gridColumns','mobileColumns','tabletColumns','desktopColumns'].forEach(key => {
       if (theme[key]) shell.dataset[key] = theme[key];
     });
   }

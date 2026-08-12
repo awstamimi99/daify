@@ -11,8 +11,11 @@
     imageStyle: ['square','rounded','circle','full-bleed'],
     gridColumns: ['2','3','4']
   };
+  const responsiveDefaults = defaults => Object.assign({
+    mobileColumns:'1', tabletColumns:'2', desktopColumns:String(defaults.gridColumns || '3')
+  }, defaults);
   const make = (id, name, category, description, defaults, supports = {}) => ({
-    id, name, category, description, defaults,
+    id, name, category, description, defaults:responsiveDefaults(defaults),
     supports: Object.assign({}, shared, supports),
     presets: {},
     family: 'classic'
@@ -22,7 +25,7 @@
   // isn't merged with the classic family's `shared` vocabulary — a family
   // only exposes the customizer knobs its own renderer actually understands.
   const makeFamily = (family, id, name, category, description, defaults, supports = {}) => ({
-    id, name, category, description, defaults, supports, presets: {}, family
+    id, name, category, description, defaults:responsiveDefaults(defaults), supports, presets: {}, family
   });
 
   const configs = {
@@ -50,13 +53,12 @@
     mellow: make('mellow','Mellow','Bakery / Coffee','Soft, tactile, and image-forward.',{
       background:'#f5ebe2',surface:'#fffaf5',primary:'#5b4338',accent:'#9b8f72',text:'#3d302a',muted:'#7d6e67',cardRadius:'28px',buttonRadius:'999px',itemLayout:'grid',gridColumns:'3',sectionNav:'chips',cardStyle:'flat',imageStyle:'rounded'
     }),
-    // Feast owns a distinct DOM (sticky category grid, tap-to-open sheet) so
-    // layout-shape knobs (itemLayout/sectionNav/gridColumns) genuinely don't
-    // apply — but its cards already read --restaurant-radius-card/-button
-    // like every classic template, so shape + button controls work as-is.
+    // Feast keeps its distinct interaction model, but honours the same studio
+    // vocabulary as every other template so clients never lose controls when
+    // they compare designs.
     feast: makeFamily('feast','feast','Feast','Modern Food Menu','Image-forward browsing built for fast mobile ordering.',{
-      background:'#f7f5f0',surface:'#ffffff',primary:'#1a1d1b',accent:'#1f6f5c',text:'#1a1d1b',muted:'#6b6f6a',cardRadius:'20px',buttonRadius:'999px',cardStyle:'flat',imageStyle:'rounded'
-    },{cardShape:['square','soft','rounded'],buttonShape:['square','rounded','pill'],cardStyle:['flat','bordered','elevated'],imageStyle:['rounded','square']})
+      background:'#f7f5f0',surface:'#ffffff',primary:'#1a1d1b',accent:'#1f6f5c',text:'#1a1d1b',muted:'#6b6f6a',cardRadius:'20px',buttonRadius:'999px',cardStyle:'flat',imageStyle:'rounded',itemLayout:'grid',sectionNav:'chips',gridColumns:'2'
+    },Object.assign({}, shared))
   };
 
   configs.atelier.presets = {

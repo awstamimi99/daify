@@ -3,12 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>DAIFY Template Customizer</title>
+    <title>DAIFY Design Studio</title>
     <meta
       name="description"
-      content="Live development customizer for DAIFY restaurant menu templates."
+      content="Create a branded, mobile-first restaurant menu in the DAIFY Design Studio."
     />
-    <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="assets/icons/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
     <link rel="stylesheet" href="assets/css/variables.css" />
     <link rel="stylesheet" href="assets/css/reset.css" />
     <link rel="stylesheet" href="assets/css/customizer.css" />
@@ -49,18 +50,18 @@
   <body class="customizer-page">
     <aside class="customizer-panel">
       <header class="customizer-brand">
-        <a class="customizer-logo" href="index.html" aria-label="DAIFY home"><img src="assets/icons/menuflow-logo.svg" alt="DAIFY" /></a>
-        <a class="customizer-back" href="templates.html"><span aria-hidden="true">←</span> Gallery</a>
+        <a class="customizer-logo" href="index.html" aria-label="DAIFY home"><img src="assets/branding/daify-logo-light.png" alt="DAIFY" /></a>
+        <a class="customizer-back" href="templates.html" data-leave-link><span aria-hidden="true">←</span> All templates</a>
       </header>
       <div class="customizer-scroll">
         <div class="customizer-intro">
-          <span class="studio-eyebrow">Template studio</span>
+          <span class="studio-eyebrow">Live design studio</span>
           <div class="customizer-title-row">
             <div><h1 id="panelTemplateName">Atelier</h1><p id="panelTemplateCategory">Fine Dining</p></div>
             <span class="sample-badge"><i aria-hidden="true"></i> 24 dishes</span>
           </div>
           <p id="panelTemplateDescription">Editorial restraint for refined dining.</p>
-          <div class="palette-strip" id="paletteStrip" aria-hidden="true">
+          <div class="palette-strip" id="paletteStrip" aria-label="Current color palette">
             <span data-swatch="background"></span>
             <span data-swatch="primary"></span>
             <span data-swatch="accent"></span>
@@ -70,7 +71,7 @@
         </div>
 
         <section class="customizer-section customizer-section--setup" aria-labelledby="setupTitle">
-          <div class="section-heading"><span>01</span><div><strong id="setupTitle">Starting point</strong><small>Choose a template and preset</small></div></div>
+          <div class="section-heading"><span>01</span><div><strong id="setupTitle">Choose your direction</strong><small>Switch designs without changing menu content</small></div></div>
           <div class="customizer-group">
             <label for="templateSelect">Template</label>
             <div class="select-wrap"><select id="templateSelect"></select></div>
@@ -91,7 +92,7 @@
         </section>
 
         <fieldset class="customizer-section color-section">
-          <legend class="section-heading"><span>02</span><span><strong>Brand palette</strong><small>Fine-tune your menu colors</small></span></legend>
+          <legend class="section-heading"><span>02</span><span><strong>Make it recognizably yours</strong><small>Build a palette around your restaurant</small></span></legend>
           <div class="color-grid">
             <label><span>Background<code data-color-value="background"></code></span><input type="color" data-theme="background" /></label>
             <label><span>Primary<code data-color-value="primary"></code></span><input type="color" data-theme="primary" /></label>
@@ -102,7 +103,7 @@
         </fieldset>
 
         <section class="customizer-section customizer-section--options" aria-labelledby="optionsTitle">
-          <div class="section-heading"><span>03</span><div><strong id="optionsTitle">Components &amp; layout</strong><small>Adjust supported template options</small></div></div>
+          <div class="section-heading"><span>03</span><div><strong id="optionsTitle">Shape the experience</strong><small>The same controls work across every template</small></div></div>
           <fieldset class="customizer-group" data-capability="buttonShape">
             <legend>Button shape</legend>
             <div class="option-row" data-options="buttonShape"></div>
@@ -120,8 +121,9 @@
             <div class="option-row" data-options="itemLayout"></div>
           </fieldset>
           <fieldset class="customizer-group" data-capability="gridColumns">
-            <legend>Items per row</legend>
+            <legend class="responsive-option-label"><span>Items per row</span><small id="columnDeviceLabel">Mobile setting</small></legend>
             <div class="option-row" data-options="gridColumns"></div>
+            <p class="responsive-option-note" id="columnDeviceNote">Mobile menus always begin with one generous card per row.</p>
           </fieldset>
           <fieldset class="customizer-group" data-capability="sectionNav">
             <legend>Section navigation</legend>
@@ -134,8 +136,11 @@
         </section>
       </div>
       <footer class="customizer-footer">
-        <button type="button" id="resetTheme" class="reset-theme"><span aria-hidden="true">↺</span> Reset</button>
-        <a id="openTemplateMobile" class="panel-preview-link" href="template-preview.html?template=atelier">Full preview <span aria-hidden="true">↗</span></a>
+        <div class="studio-save-state"><i aria-hidden="true"></i><span id="saveState">Ready to customize</span></div>
+        <div class="studio-footer-actions">
+          <button type="button" id="resetTheme" class="reset-theme"><span aria-hidden="true">↺</span> Reset</button>
+          <button type="button" id="claimDesign" class="claim-design">Make it yours <span aria-hidden="true">→</span></button>
+        </div>
       </footer>
     </aside>
 
@@ -146,13 +151,13 @@
           <div><strong id="workspaceTitle">Atelier</strong><span id="workspaceMeta">Fine Dining · Sample menu</span></div>
         </div>
         <div class="device-switcher" aria-label="Preview size">
-          <button data-device="mobile" aria-label="Mobile preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M10 5h4M11 18.5h2"/></svg><span>Mobile</span></button>
+          <button data-device="mobile" class="active" aria-label="Mobile preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M10 5h4M11 18.5h2"/></svg><span>Mobile</span></button>
           <button data-device="tablet" aria-label="Tablet preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="2.5" width="15" height="19" rx="2"/><path d="M10.5 18.5h3"/></svg><span>Tablet</span></button>
-          <button data-device="desktop" class="active" aria-label="Desktop preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Desktop</span></button>
+          <button data-device="desktop" aria-label="Desktop preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Desktop</span></button>
         </div>
         <a id="openTemplate" href="template-preview.html?template=atelier" target="_blank">Open full preview <span aria-hidden="true">↗</span></a>
       </header>
-      <div class="preview-canvas" data-device="desktop">
+      <div class="preview-canvas" data-device="mobile">
         <div class="preview-device">
           <span class="preview-device-detail" aria-hidden="true"></span>
           <div class="preview-loading" id="previewLoading" role="status"><i aria-hidden="true"></i><strong>Updating preview</strong><span>Applying your template settings…</span></div>
@@ -160,5 +165,23 @@
         </div>
       </div>
     </main>
+
+    <dialog class="claim-dialog" id="claimDialog" aria-labelledby="claimTitle">
+      <button class="claim-dialog-close" type="button" aria-label="Continue editing" data-claim-close>×</button>
+      <div class="claim-dialog-art" aria-hidden="true">
+        <span>DAIFY / YOUR DESIGN</span>
+        <div class="claim-phone"><i></i><b id="claimTemplateName">Atelier</b><small>Live menu</small><em></em><em></em><em></em></div>
+        <div class="claim-orbit"><span>DESIGN</span><span>PUBLISH</span><span>SERVE</span></div>
+      </div>
+      <div class="claim-dialog-copy">
+        <span class="studio-eyebrow">Your design is ready</span>
+        <h2 id="claimTitle">Make this menu yours.</h2>
+        <p>You have shaped a guest experience worth keeping. Start your free trial to save the design, add your dishes, and publish your own QR menu.</p>
+        <ul><li><i>✓</i> Keep this exact design</li><li><i>✓</i> Add your real menu and branding</li><li><i>✓</i> Publish when you are ready</li></ul>
+        <a class="claim-dialog-primary" id="claimSignup" href="signup.html">Start with this design <span>→</span></a>
+        <button class="claim-dialog-secondary" type="button" data-claim-close>Keep customizing</button>
+        <a class="claim-dialog-leave" id="claimLeave" href="templates.html" hidden>Leave without keeping it</a>
+      </div>
+    </dialog>
   </body>
 </html>

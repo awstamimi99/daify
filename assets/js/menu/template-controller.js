@@ -1,5 +1,5 @@
 (function () {
-  let config, lang, sectionObserver;
+  let config, lang, sectionObserver, previewCoverImage = '';
 
   function init() {
     const root = document.querySelector('#menu-root');
@@ -8,6 +8,9 @@
     config = window.MenuFlowTemplateConfigs[template];
     const params = new URLSearchParams(location.search);
     lang = params.get('lang') === 'ar' ? 'ar' : 'en';
+    previewCoverImage = params.get('embed') === '1'
+      ? `../assets/images/template-covers-v2/${template}.png`
+      : '';
     const customTheme = readTheme(params.get('theme'));
     rerender(window.MenuFlowMenuData);
     window.MenuFlowTheme.apply(Object.assign({}, config.defaults, customTheme));
@@ -22,7 +25,12 @@
 
   function rerender(data) {
     const root = document.querySelector('#menu-root');
-    renderer().render(root, data, { template: document.body.dataset.template, name: config.name, lang });
+    renderer().render(root, data, {
+      template: document.body.dataset.template,
+      name: config.name,
+      lang,
+      previewCoverImage
+    });
     bindSearch();
     bindNavigation();
     bindItemDetail();

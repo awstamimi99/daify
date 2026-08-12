@@ -23,6 +23,12 @@
 .feast-category-bar::-webkit-scrollbar{display:none}
 .feast-category-bar a{flex:0 0 auto;padding:.55rem 1.05rem;border-radius:var(--restaurant-radius-button);font-size:.76rem;font-weight:700;color:var(--restaurant-muted);background:color-mix(in srgb,var(--restaurant-text) 5%,transparent);white-space:nowrap;transition:.2s;scroll-snap-align:start}
 .feast-category-bar a.active{background:var(--restaurant-primary);color:var(--restaurant-bg)}
+.feast-menu[data-section-nav="tabs"] .feast-category-bar{gap:1.1rem;border-bottom:1px solid color-mix(in srgb,var(--restaurant-text) 14%,transparent)}
+.feast-menu[data-section-nav="tabs"] .feast-category-bar a{padding:.5rem 0 .65rem;border-radius:0;background:transparent;border-bottom:2px solid transparent}
+.feast-menu[data-section-nav="tabs"] .feast-category-bar a.active{color:var(--restaurant-primary);border-bottom-color:var(--restaurant-accent)}
+.feast-menu[data-section-nav="minimal"] .feast-category-bar{gap:1.1rem}
+.feast-menu[data-section-nav="minimal"] .feast-category-bar a{padding:.35rem 0;background:transparent;border-radius:0}
+.feast-menu[data-section-nav="minimal"] .feast-category-bar a.active{color:var(--restaurant-primary);background:transparent;text-decoration:underline;text-decoration-color:var(--restaurant-accent);text-underline-offset:.35rem}
 
 .feast-content{padding:1.5rem 1rem 3rem}
 .feast-section{scroll-margin-top:7.25rem;margin-bottom:2.5rem}
@@ -57,6 +63,22 @@
    crescent of the card's background showing through between the photo's
    curve and the card's overflow:hidden clip boundary. */
 .feast-menu[data-image-style="rounded"] .feast-card-media{border-radius:var(--restaurant-radius-card) var(--restaurant-radius-card) 0 0}
+.feast-menu[data-image-style="circle"] .feast-card-media{width:calc(100% - 1.3rem);margin:.65rem auto 0;border-radius:50%;overflow:hidden}
+.feast-menu[data-image-style="full-bleed"] .feast-card-media{border-radius:0}
+.feast-menu[data-item-layout="grid"][data-grid-columns="2"] .feast-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.feast-menu[data-item-layout="grid"][data-grid-columns="3"] .feast-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.feast-menu[data-item-layout="grid"][data-grid-columns="4"] .feast-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.feast-menu[data-item-layout="list"] .feast-grid{grid-template-columns:1fr}
+.feast-menu[data-item-layout="list"] .feast-card{display:grid;grid-template-columns:108px minmax(0,1fr);text-align:start}
+.feast-menu[data-item-layout="list"] .feast-card-media{width:108px;height:100%;min-height:108px;aspect-ratio:auto;margin:0;border-radius:0}
+.feast-menu[data-item-layout="list"] .feast-card-body{align-self:center}
+.feast-menu[data-item-layout="list"] .feast-card.is-featured{grid-column:auto}
+.feast-menu[data-item-layout="image-focus"] .feast-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.feast-menu[data-item-layout="image-focus"] .feast-card.is-featured{grid-column:1/-1}
+.feast-menu[data-item-layout="image-focus"] .feast-card.is-featured .feast-card-media{aspect-ratio:16/9}
+html[dir="rtl"] .feast-menu[data-item-layout="list"] .feast-card{text-align:right;grid-template-columns:minmax(0,1fr) 108px}
+html[dir="rtl"] .feast-menu[data-item-layout="list"] .feast-card-media{grid-column:2;grid-row:1}
+html[dir="rtl"] .feast-menu[data-item-layout="list"] .feast-card-body{grid-column:1;grid-row:1}
 
 .feast-empty{text-align:center;padding:3.5rem 1rem;color:var(--restaurant-muted);font-size:.85rem}
 
@@ -125,4 +147,27 @@ html[dir="rtl"] .feast-footer-info a[href^="tel:"]{direction:ltr;text-align:righ
 @media(prefers-reduced-motion:reduce){
   dialog.feast-sheet[open]{animation:none}
   .feast-card{transition:none}
+}
+
+/* Responsive per-device density. The mobile default is deliberately one
+   card per row; a client can opt into two without inheriting desktop counts. */
+.feast-menu[data-item-layout="grid"][data-desktop-columns="1"] .feast-grid{grid-template-columns:1fr!important}
+.feast-menu[data-item-layout="grid"][data-desktop-columns="2"] .feast-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.feast-menu[data-item-layout="grid"][data-desktop-columns="3"] .feast-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.feast-menu[data-item-layout="grid"][data-desktop-columns="4"] .feast-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+@container(max-width:1024px){
+  .feast-menu[data-item-layout="grid"][data-tablet-columns="1"] .feast-grid{grid-template-columns:1fr!important}
+  .feast-menu[data-item-layout="grid"][data-tablet-columns="2"] .feast-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .feast-menu[data-item-layout="grid"][data-tablet-columns="3"] .feast-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@container(max-width:520px){
+  .feast-menu[data-item-layout="grid"][data-mobile-columns="1"] .feast-grid{grid-template-columns:1fr!important}
+  .feast-menu[data-item-layout="grid"][data-mobile-columns="2"] .feast-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .feast-menu[data-item-layout="grid"][data-mobile-columns="1"] .feast-card-media{aspect-ratio:16/10}
+  .feast-menu[data-item-layout="grid"][data-mobile-columns="1"] .feast-card-body{padding:1rem 1.05rem 1.15rem}
+  .feast-menu[data-item-layout="grid"][data-mobile-columns="1"] .feast-card-body h3{font-size:1rem}
+  .feast-menu[data-item-layout="list"] .feast-card{grid-template-columns:96px minmax(0,1fr);min-height:112px;border:1px solid color-mix(in srgb,var(--restaurant-text) 12%,transparent)}
+  .feast-menu[data-item-layout="list"] .feast-card-media{width:96px;min-height:112px}
+  .feast-menu[data-item-layout="list"] .feast-card-body{padding:.8rem;align-self:center}
+  html[dir="rtl"] .feast-menu[data-item-layout="list"] .feast-card{grid-template-columns:minmax(0,1fr) 96px}
 }

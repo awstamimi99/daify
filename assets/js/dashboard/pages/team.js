@@ -17,6 +17,36 @@
     [P.QR_MANAGE]: { label: 'Manage QR & publishing', desc: 'Download QR assets and card styling.' },
   };
 
+  // The checklist only shows the meaningful "can do X" checkboxes — nobody
+  // wants a separate "can view" toggle for every area. But the dashboard nav
+  // gates on the *.view permission specifically (see shell.js NAV), so every
+  // edit/manage-tier permission below must silently carry its view-tier
+  // counterpart, or checking e.g. "Edit design" without a way to also check
+  // "theme.view" leaves the Design nav item permanently hidden.
+  const VIEW_IMPLIED_BY = {
+    [P.RESTAURANT_EDIT]: P.RESTAURANT_VIEW,
+    [P.MENU_CREATE]: P.MENU_VIEW,
+    [P.MENU_EDIT]: P.MENU_VIEW,
+    [P.MENU_DELETE]: P.MENU_VIEW,
+    [P.MENU_PUBLISH]: P.MENU_VIEW,
+    [P.THEME_EDIT]: P.THEME_VIEW,
+    [P.QR_MANAGE]: P.QR_VIEW,
+  };
+
+  // View-tier permissions have no checkbox of their own — they're only ever
+  // granted as a side effect of their edit-tier sibling above. That means
+  // they must be treated as sticky once a member has one: there's no control
+  // in this UI to represent "has qr.view but not qr.manage", so unchecking
+  // qr.manage must never silently revoke a qr.view the member already held.
+  const VIEW_TIER = new Set(Object.values(VIEW_IMPLIED_BY));
+
+  function expandPermissions(checked, existing) {
+    const set = new Set(checked);
+    checked.forEach(p => { const view = VIEW_IMPLIED_BY[p]; if (view) set.add(view); });
+    (existing || []).forEach(p => { if (VIEW_TIER.has(p)) set.add(p); });
+    return [...set];
+  }
+
   function render() {
     const restaurant = store.getActiveRestaurant();
     const content = window.MenuFlowShell.render({
@@ -86,17 +116,16 @@
 
     const gate = store.checkLimit('managers');
     if (!gate.allowed) {
-      dialog.innerHTML = `<div class="dash-modal-body">
-        <h2>Manager seat limit reached</h2>
-        <p>Your ${esc(gate.plan?.name || 'current')} plan includes ${gate.limit} manager account${gate.limit === 1 ? '' : 's'}. Upgrade to invite more.</p>
-        <div class="dash-modal-actions">
-          <button class="btn btn--ghost" type="button" data-choice="cancel">Not now</button>
-          <a class="btn btn--dark" href="../pricing.html">View plans</a>
-        </div>
-      </div>`;
-      dialog.showModal();
-      dialog.querySelector('[data-choice="cancel"]').addEventListener('click', () => dialog.close());
-      dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
+      window.MenuFlowShell.openPlanUpgradeDialog({
+        mode: 'change-plan',
+        restaurantId: restaurant.id,
+        onSubmit: async ({ planId, billingCycle }) => {
+          store.updateSubscription(restaurant.id, { planId, billingCycle, status: 'active' });
+          window.MenuFlowShell.toast('Plan updated — you can invite another manager now.');
+          openInviteDialog(restaurant);
+          return { ok: true };
+        },
+      });
       return;
     }
 
@@ -136,7 +165,11 @@
       if (!name) { $('[data-field="name"]').classList.add('has-error'); $('#inviteName-error').textContent = 'Enter a name.'; hasError = true; }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { $('[data-field="email"]').classList.add('has-error'); $('#inviteEmail-error').textContent = 'Enter a valid email.'; hasError = true; }
       if (hasError) return;
-      const permissions = $$('.permission-grid input:checked', dialog).map(el => el.value);
+      // Baseline against MANAGER_DEFAULT_PERMISSIONS (not just the checked
+      // boxes) so bare view-tier defaults with no checkbox of their own —
+      // e.g. qr.view, granted by default without qr.manage — still land on
+      // a brand-new invite, matching what permissionChecklist() below claims.
+      const permissions = expandPermissions($$('.permission-grid input:checked', dialog).map(el => el.value), window.MenuFlowPermissions.MANAGER_DEFAULT_PERMISSIONS);
       store.inviteManager(restaurant.id, { name, email, permissions });
       dialog.close();
       window.MenuFlowShell.toast(`Invitation sent to ${email}`);
@@ -167,7 +200,7 @@
     $('#permsCancel').addEventListener('click', () => dialog.close());
     dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
     $('#permsSave').addEventListener('click', () => {
-      const permissions = $$('.permission-grid input:checked', dialog).map(el => el.value);
+      const permissions = expandPermissions($$('.permission-grid input:checked', dialog).map(el => el.value), member.permissions);
       const name = $('#memberName').value.trim() || member.name;
       const email = $('#memberEmail').value.trim() || member.email;
       const phone = $('#memberPhone').value.trim();

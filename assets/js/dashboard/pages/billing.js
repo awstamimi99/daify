@@ -49,7 +49,7 @@
           </div>
         </div>` : ''}
         <div class="button-row">
-          ${canManage ? `<a class="btn btn--dark" href="../pricing.html">Change plan</a><button class="btn btn--ghost" type="button" id="cancelBtn">Cancel subscription</button>` : `<span class="status-badge status-badge--neutral">Only the owner can manage billing</span>`}
+          ${canManage ? `<button class="btn btn--dark" type="button" id="changePlanBtn">Change plan</button><button class="btn btn--ghost" type="button" id="cancelBtn">Cancel subscription</button>` : `<span class="status-badge status-badge--neutral">Only the owner can manage billing</span>`}
         </div>
       </div>
 
@@ -92,6 +92,18 @@
   }
 
   function bindActions(restaurant, plan, sub) {
+    $('#changePlanBtn')?.addEventListener('click', () => {
+      window.MenuFlowShell.openPlanUpgradeDialog({
+        mode: 'change-plan',
+        restaurantId: restaurant.id,
+        onSubmit: async ({ planId, billingCycle }) => {
+          store.updateSubscription(restaurant.id, { planId, billingCycle, status: 'active' });
+          window.MenuFlowShell.toast('Plan updated.');
+          render();
+          return { ok: true };
+        },
+      });
+    });
     $$('#cycleToggle button').forEach(btn => btn.addEventListener('click', () => {
       const cycle = btn.dataset.cycle;
       if (cycle === sub.billingCycle) return;

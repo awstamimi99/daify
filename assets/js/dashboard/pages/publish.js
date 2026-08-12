@@ -45,6 +45,17 @@
 
     content.innerHTML = `<div id="publishBody"></div>`;
     renderBody();
+    const stage = params.get('stage') || (currentMenu().status === 'published' ? 'qr' : 'publish');
+    const publishing = stage !== 'qr';
+    window.MenuFlowShellCommon.showGuide({
+      step: publishing ? 'STEP 08 OF 09' : 'STEP 09 OF 09',
+      title: publishing ? 'Put your menu live' : 'Bring it to every table',
+      message: publishing
+        ? 'Publish when the preview feels right. Your live link and permanent QR code will appear next.'
+        : 'Download the QR in the format you need. The same code stays current whenever your menu changes.',
+      actionLabel: publishing ? 'Review publishing' : 'See QR downloads',
+      action: () => (publishing ? $('#publishBtn') : $('#downloadPngBtn'))?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
+    });
   }
 
   function renderBody() {
@@ -124,7 +135,10 @@
     $('#publishBtn')?.addEventListener('click', () => {
       store.publishMenu(restaurant.id, menuId);
       window.MenuFlowShell.toast('Menu published');
-      renderBody();
+      if (!window.MenuFlowShellCommon.completeGuide({
+        title: 'Menu published',
+        nextUrl: `publish.html?menu=${encodeURIComponent(menuId)}&stage=qr`,
+      })) renderBody();
     });
     $('#unpublishBtn')?.addEventListener('click', () => {
       window.MenuFlowShell.confirmDialog({ title: 'Unpublish this menu?', message: "Guests scanning your QR code won't see it until you publish again.", confirmLabel: 'Unpublish', danger: true }).then(ok => {
@@ -158,6 +172,7 @@
       link.href = $('#qrCanvas').toDataURL('image/png');
       link.click();
       window.MenuFlowShell.toast('QR downloaded (PNG)');
+      finishQrStep();
     });
     $('#downloadSvgBtn')?.addEventListener('click', () => {
       window.QRCode.toString(url, { type: 'svg', margin: 1, color: { dark: '#000000', light: '#FFFFFF' } }, (error, svg) => {
@@ -168,6 +183,7 @@
         link.href = URL.createObjectURL(blob);
         link.click();
         window.MenuFlowShell.toast('QR downloaded (SVG)');
+        finishQrStep();
       });
     });
 
@@ -185,6 +201,15 @@
       );
       renderCardPreview();
     }
+  }
+
+  function finishQrStep() {
+    store.updateRestaurantFlags(restaurant.id, { qrVisited: true });
+    window.MenuFlowShellCommon.completeGuide({
+      title: 'Your launch sequence is complete',
+      nextUrl: 'index.html',
+      delay: 1000,
+    });
   }
 
   function renderCardPreview() {

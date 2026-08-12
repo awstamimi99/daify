@@ -44,6 +44,17 @@
         </form>
       </div>`;
 
+    window.MenuFlowShellCommon.showGuide({
+      step: 'STEP 02 OF 09',
+      title: 'Tell guests who you are',
+      message: 'Add a short restaurant description, then save. We’ll take you straight to creating your first menu.',
+      actionLabel: 'Start with the story',
+      action: () => {
+        document.querySelector('[data-tab="general"]')?.click();
+        $('#description')?.focus();
+      },
+    });
+
     bindTabs();
     bindForm(restaurant);
   }
@@ -208,6 +219,15 @@
         saveState.dataset.state = 'saved';
         saveState.textContent = 'All changes saved';
         window.MenuFlowShell.toast('Restaurant details saved');
+        if (data.description?.trim()) {
+          window.MenuFlowShellCommon.completeGuide({
+            title: 'Restaurant details saved',
+            nextUrl: 'menus.html?create=1',
+          });
+        } else if (window.MenuFlowShellCommon.guideMode()) {
+          window.MenuFlowShell.toast('Add a short description to complete this step', 'error');
+          $('#description')?.focus();
+        }
       }, 450);
     });
   }

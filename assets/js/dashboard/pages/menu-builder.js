@@ -34,6 +34,9 @@
     const params = new URLSearchParams(location.search);
     const menus = Object.values(restaurant.menus);
     menuId = params.get('menu') && restaurant.menus[params.get('menu')] ? params.get('menu') : (menus.find(m => m.id === 'main-menu') || menus[0])?.id;
+    const requestedFilter = params.get('filter');
+    if (['available', 'unavailable', 'featured'].includes(requestedFilter)) query.filter = requestedFilter;
+    const createMode = params.get('create') || (params.get('action') === 'add' ? 'item' : '');
 
     const guardContent = window.MenuFlowShell.render({ active: 'menus', title: 'Menu Builder' });
     if (!window.MenuFlowShell.requirePermission(P.MENU_VIEW, guardContent)) return;
@@ -69,10 +72,10 @@
         <div>
           <div class="dash-filter-bar">
             <div class="dash-search"><span aria-hidden="true">⌕</span><input type="search" id="itemSearch" placeholder="Search dishes…" /></div>
-            <button class="dash-filter-chip active" data-filter="all">All</button>
-            <button class="dash-filter-chip" data-filter="available">Available</button>
-            <button class="dash-filter-chip" data-filter="unavailable">Unavailable</button>
-            <button class="dash-filter-chip" data-filter="featured">Featured</button>
+            <button class="dash-filter-chip${query.filter === 'all' ? ' active' : ''}" data-filter="all">All</button>
+            <button class="dash-filter-chip${query.filter === 'available' ? ' active' : ''}" data-filter="available">Available</button>
+            <button class="dash-filter-chip${query.filter === 'unavailable' ? ' active' : ''}" data-filter="unavailable">Unavailable</button>
+            <button class="dash-filter-chip${query.filter === 'featured' ? ' active' : ''}" data-filter="featured">Featured</button>
             ${canEdit ? `<button class="btn btn--ghost" type="button" id="bulkModeBtn" style="margin-left:auto">Select items</button>` : ''}
           </div>
           <div class="dash-bulk-bar" id="bulkBar">
@@ -91,6 +94,19 @@
     renderItems();
     bindTop();
     bindDialogsAndDrawer();
+    const needsSection = currentMenu().sections.length === 0;
+    const guideIsAddingSection = needsSection || createMode === 'section';
+    window.MenuFlowShellCommon.showGuide({
+      step: guideIsAddingSection ? 'STEP 04 OF 09' : 'STEP 05 OF 09',
+      title: guideIsAddingSection ? 'Build your first section' : 'Add your first dish',
+      message: guideIsAddingSection
+        ? 'Create a clear category such as Starters, Mains, or Drinks. Your dish step will open next.'
+        : 'Add a name and price. A description and photo will make the guest view feel complete.',
+      actionLabel: guideIsAddingSection ? 'Add section' : 'Add dish',
+      action: () => guideIsAddingSection ? openSectionDialog(null) : activeSectionId && openItemDrawer(activeSectionId, null),
+    });
+    if (createMode === 'section' && canCreate) requestAnimationFrame(() => openSectionDialog(null));
+    if (createMode === 'item' && canCreate && activeSectionId) requestAnimationFrame(() => openItemDrawer(activeSectionId, null));
   }
 
   // ---- Sections nav ----
@@ -389,6 +405,12 @@
       renderSectionsNav();
       renderItems();
       window.MenuFlowShell.toast(section ? 'Section updated' : 'Section added');
+      if (!section) {
+        window.MenuFlowShellCommon.completeGuide({
+          title: 'First section added',
+          nextUrl: `menu-builder.html?menu=${encodeURIComponent(menuId)}&create=item`,
+        });
+      }
     });
   }
 
@@ -516,6 +538,7 @@
       sku: form.sku.value.trim(),
     };
 
+    const isNewItem = !itemDraft.itemId;
     if (itemDraft.itemId) {
       store.updateItem(menuId, itemDraft.sectionId, itemDraft.itemId, payload);
       window.MenuFlowShell.toast('Dish updated');
@@ -526,6 +549,12 @@
     closeItemDrawer();
     renderSectionsNav();
     renderItems();
+    if (isNewItem) {
+      window.MenuFlowShellCommon.completeGuide({
+        title: 'First dish added',
+        nextUrl: `design.html?menu=${encodeURIComponent(menuId)}&stage=choose`,
+      });
+    }
   }
 
   init();

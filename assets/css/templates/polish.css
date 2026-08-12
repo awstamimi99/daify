@@ -229,6 +229,19 @@ html[dir="rtl"] .restaurant-menu[data-template="souk"] .featured-card{border-rad
   html[dir="rtl"] .restaurant-footer-visual figcaption{inset:auto 1.2rem 1.5rem}
 }
 
+/* The live studio exposes one shared grid control on every template. These
+   explicit attributes keep it observable inside narrow iframe previews too. */
+.restaurant-menu[data-item-layout="grid"][data-grid-columns="2"] .menu-items{grid-template-columns:repeat(2,minmax(0,1fr))}
+.restaurant-menu[data-item-layout="grid"][data-grid-columns="3"] .menu-items{grid-template-columns:repeat(3,minmax(0,1fr))}
+.restaurant-menu[data-item-layout="grid"][data-grid-columns="4"] .menu-items{grid-template-columns:repeat(4,minmax(0,1fr))}
+@container(max-width:520px){
+  .restaurant-menu[data-item-layout="grid"][data-grid-columns="2"] .menu-items{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .restaurant-menu[data-item-layout="grid"][data-grid-columns="3"] .menu-items{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .restaurant-menu[data-item-layout="grid"][data-grid-columns="4"] .menu-items{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .restaurant-menu[data-item-layout="grid"] .menu-item{display:block;min-width:0}
+  .restaurant-menu[data-item-layout="grid"] .menu-item-media{width:100%;height:auto;min-height:0;aspect-ratio:1;margin:0}
+}
+
 /* Container-query parity keeps the toolbar and iframe previews truly responsive. */
 @container (max-width:1024px){
   .menu-featured{display:none!important}
@@ -290,6 +303,51 @@ html[dir="rtl"] .restaurant-menu[data-template="souk"] .featured-card{border-rad
   .restaurant-footer-brand{grid-column:auto}
   .restaurant-footer-meta{margin-inline:1rem}
   html[dir="rtl"] .restaurant-footer-visual figcaption{inset:auto 1.2rem 1.5rem}
+}
+
+/* Responsive menu composition — shared by every classic template. Each
+   viewport owns its column count; phones never inherit a desktop density. */
+.restaurant-menu[data-item-layout="list"] .menu-items{grid-template-columns:1fr!important;gap:.75rem!important}
+.restaurant-menu[data-item-layout="list"] .menu-item{display:grid!important;grid-template-columns:132px minmax(0,1fr)!important;min-height:132px!important;border:1px solid color-mix(in srgb,var(--restaurant-text) 12%,transparent)!important;border-radius:var(--restaurant-radius-card)!important;background:var(--restaurant-surface)!important;box-shadow:none!important}
+.restaurant-menu[data-item-layout="list"] .menu-item-media{grid-column:1!important;grid-row:1!important;width:132px!important;height:100%!important;min-height:132px!important;margin:0!important;border-radius:0!important;aspect-ratio:auto!important}
+.restaurant-menu[data-item-layout="list"] .menu-item-content{grid-column:2!important;grid-row:1!important;align-self:center!important;padding:1rem 1.15rem!important}
+.restaurant-menu[data-item-layout="list"] .menu-item-line{display:flex!important}
+.restaurant-menu[data-item-layout="list"] .menu-item p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+html[dir="rtl"] .restaurant-menu[data-item-layout="list"] .menu-item{grid-template-columns:minmax(0,1fr) 132px!important}
+html[dir="rtl"] .restaurant-menu[data-item-layout="list"] .menu-item-media{grid-column:2!important}
+html[dir="rtl"] .restaurant-menu[data-item-layout="list"] .menu-item-content{grid-column:1!important}
+
+.restaurant-menu[data-item-layout="grid"][data-desktop-columns="1"] .menu-items{grid-template-columns:1fr!important}
+.restaurant-menu[data-item-layout="grid"][data-desktop-columns="2"] .menu-items{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.restaurant-menu[data-item-layout="grid"][data-desktop-columns="3"] .menu-items{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.restaurant-menu[data-item-layout="grid"][data-desktop-columns="4"] .menu-items{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+
+@container(max-width:1024px){
+  .restaurant-menu[data-item-layout="grid"][data-tablet-columns="1"] .menu-items{grid-template-columns:1fr!important}
+  .restaurant-menu[data-item-layout="grid"][data-tablet-columns="2"] .menu-items{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .restaurant-menu[data-item-layout="grid"][data-tablet-columns="3"] .menu-items{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@container(max-width:520px){
+  .restaurant-menu[data-item-layout="grid"][data-mobile-columns="1"] .menu-items{grid-template-columns:1fr!important}
+  .restaurant-menu[data-item-layout="grid"][data-mobile-columns="2"] .menu-items{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:.65rem!important}
+  .restaurant-menu[data-item-layout="grid"] .menu-item{display:block!important;min-height:0!important;border-radius:var(--restaurant-radius-card)!important}
+  .restaurant-menu[data-item-layout="grid"] .menu-item-media{width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:4/3!important;margin:0!important;border-radius:0!important}
+  .restaurant-menu[data-item-layout="grid"] .menu-item-content{padding:1rem!important}
+  .restaurant-menu[data-item-layout="grid"] .menu-item-line{display:flex!important;align-items:start!important}
+  .restaurant-menu[data-item-layout="grid"] .menu-price{margin:0!important}
+  .restaurant-menu[data-item-layout="grid"][data-mobile-columns="2"] .menu-item-media{aspect-ratio:1!important}
+  .restaurant-menu[data-item-layout="grid"][data-mobile-columns="2"] .menu-item-content{padding:.75rem!important}
+  .restaurant-menu[data-item-layout="grid"][data-mobile-columns="2"] .menu-item-line{display:block!important}
+  .restaurant-menu[data-item-layout="grid"][data-mobile-columns="2"] .menu-price{display:block!important;margin-top:.25rem!important}
+  .restaurant-menu[data-item-layout="grid"][data-mobile-columns="2"] .menu-item p{font-size:.68rem;-webkit-line-clamp:2}
+  .restaurant-menu[data-item-layout="grid"][data-mobile-columns="2"] .menu-item-tags{display:none}
+  .restaurant-menu[data-item-layout="list"] .menu-item{grid-template-columns:92px minmax(0,1fr)!important;min-height:112px!important}
+  .restaurant-menu[data-item-layout="list"] .menu-item-media{width:92px!important;min-height:112px!important}
+  .restaurant-menu[data-item-layout="list"] .menu-item-content{padding:.85rem!important}
+  .restaurant-menu[data-item-layout="list"] .menu-item-line{display:block!important}
+  .restaurant-menu[data-item-layout="list"] .menu-price{display:block!important;margin-top:.2rem!important}
+  .restaurant-menu[data-item-layout="list"] .menu-item-tags{margin-top:.5rem}
+  html[dir="rtl"] .restaurant-menu[data-item-layout="list"] .menu-item{grid-template-columns:minmax(0,1fr) 92px!important}
 }
 
 @media(prefers-reduced-motion:reduce){.menu-section{animation:none!important}}

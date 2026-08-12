@@ -47,46 +47,83 @@
     const hasMenu = menus.length > 0;
     const menu = primaryMenu(restaurant);
     const steps = [
-      { label: 'Create restaurant', done: true },
-      { label: 'Add restaurant details', done: Boolean(restaurant.info.description) },
-      { label: 'Create your first menu', done: hasMenu },
-      { label: 'Add sections', done: Boolean(menu && menu.sections.length) },
-      { label: 'Add menu items', done: false },
-      { label: 'Choose a template', done: Boolean(menu && menu.template) },
-      { label: 'Customize design', done: Boolean(restaurant.flags?.designVisited) },
-      { label: 'Publish your menu', done: Boolean(menu && menu.status === 'published') },
-      { label: 'Generate your QR code', done: Boolean(restaurant.flags?.qrVisited) },
+      { label: 'Restaurant created', note: 'Your DAIFY workspace is ready.', done: true },
+      { label: 'Add restaurant details', note: 'Story, location, contact, and hours.', done: Boolean(restaurant.info.description) },
+      { label: 'Create your first menu', note: 'Name the menu your guests will see.', done: hasMenu },
+      { label: 'Build your sections', note: 'Starters, mains, drinks, and more.', done: Boolean(menu && menu.sections.length) },
+      { label: 'Add your dishes', note: 'Descriptions, prices, and photography.', done: Boolean(menu && menu.sections.some(section => section.items.length)) },
+      { label: 'Choose a template', note: 'Set the visual direction.', done: Boolean(restaurant.flags?.templateChosen) },
+      { label: 'Make it yours', note: 'Tune color, type, cards, and layout.', done: Boolean(restaurant.flags?.designVisited) },
+      { label: 'Publish your menu', note: 'Put the guest experience live.', done: Boolean(menu && menu.status === 'published') },
+      { label: 'Download your QR', note: 'Bring the menu to every table.', done: Boolean(restaurant.flags?.qrVisited) },
     ];
     const doneCount = steps.filter(s => s.done).length;
+    const nextIndex = steps.findIndex(step => !step.done);
+    const activeIndex = nextIndex < 0 ? steps.length - 1 : nextIndex;
+    const progress = Math.round((doneCount / steps.length) * 100);
+    const phases = [
+      { index: '01', label: 'Foundation', steps: steps.slice(0, 3), offset: 0 },
+      { index: '02', label: 'Build the menu', steps: steps.slice(3, 5), offset: 3 },
+      { index: '03', label: 'Design & launch', steps: steps.slice(5), offset: 5 },
+    ];
 
     return `
-      <div class="dash-card">
-        <div class="dash-card-header">
-          <div>
-            <h2>Let's get ${window.MenuFlowShell.esc(restaurant.name)} live.</h2>
-            <p>A few steps and your menu is ready to share with guests.</p>
+      <section class="onboarding-dashboard">
+        <div class="onboarding-hero" style="--onboarding-progress:${progress * 3.6}deg">
+          <div class="onboarding-hero-copy">
+            <span class="onboarding-kicker">DAIFY / LAUNCH SEQUENCE</span>
+            <h2>Bring ${window.MenuFlowShell.esc(restaurant.name)}<br>to every table.</h2>
+            <p>Your workspace is ready. Follow one clear path from restaurant details to a live, scannable menu.</p>
+            <div class="onboarding-next">
+              <span>Next · ${String(activeIndex + 1).padStart(2, '0')}</span>
+              <div><strong>${steps[activeIndex].label}</strong><small>${steps[activeIndex].note}</small></div>
+              <a class="btn" href="${onboardingHref(activeIndex)}">${onboardingCta(activeIndex)} <i>↗</i></a>
+            </div>
+          </div>
+          <div class="onboarding-meter" aria-label="${doneCount} of ${steps.length} setup steps complete">
+            <div><strong>${String(progress).padStart(2, '0')}<small>%</small></strong><span>SETUP<br>COMPLETE</span></div>
+            <p><b>${doneCount}</b> of ${steps.length} milestones</p>
           </div>
         </div>
-        <div class="onboarding-progress">
-          <div class="onboarding-progress-track"><div class="onboarding-progress-fill" style="width:${(doneCount / steps.length) * 100}%"></div></div>
-          <span class="onboarding-progress-label">${doneCount} of ${steps.length} steps complete</span>
+        <div class="onboarding-phase-grid">
+          ${phases.map(phase => `<article class="onboarding-phase">
+            <header><span>${phase.index}</span><div><small>PHASE</small><h3>${phase.label}</h3></div></header>
+            <div class="onboarding-phase-steps">
+              ${phase.steps.map((step, localIndex) => {
+                const index = phase.offset + localIndex;
+                const state = step.done ? 'done' : index === activeIndex ? 'active' : 'pending';
+                return `<div class="onboarding-phase-step ${state}">
+                  <i>${step.done ? '✓' : String(index + 1).padStart(2, '0')}</i>
+                  <div><strong>${step.label}</strong><small>${step.note}</small></div>
+                  ${state === 'active' ? `<a href="${onboardingHref(index)}" aria-label="${onboardingCta(index)}">→</a>` : ''}
+                </div>`;
+              }).join('')}
+            </div>
+          </article>`).join('')}
         </div>
-        <div class="onboarding-steps">
-          ${steps
-            .map(
-              (step, i) => `<div class="onboarding-step ${step.done ? 'done' : ''}">
-                <span class="onboarding-step-num">${step.done ? '✓' : i + 1}</span>
-                <div><strong>${step.label}</strong></div>
-                ${!step.done && i === doneCount ? `<a class="btn btn--dark" href="${onboardingHref(i)}">${onboardingCta(i)}</a>` : ''}
-              </div>`
-            )
-            .join('')}
-        </div>
-      </div>`;
+        <footer class="onboarding-assurance">
+          <span><i></i> Changes save automatically</span>
+          <p>Need a hand? <a href="help.html">Open the setup guide ↗</a></p>
+        </footer>
+      </section>`;
   }
 
   function onboardingHref(stepIndex) {
-    return ['restaurant.html', 'restaurant.html', 'menus.html', 'menu-builder.html', 'menu-builder.html', 'design.html', 'design.html', 'publish.html', 'publish.html'][stepIndex] || 'menus.html';
+    const restaurant = store.getActiveRestaurant();
+    const menu = primaryMenu(restaurant);
+    const menuQuery = menu ? `?menu=${encodeURIComponent(menu.id)}` : '';
+    const destinations = [
+      'restaurant.html',
+      'restaurant.html',
+      'menus.html?create=1',
+      menu ? `menu-builder.html${menuQuery}&create=section` : 'menus.html?create=1',
+      menu ? `menu-builder.html${menuQuery}&create=item` : 'menus.html?create=1',
+      menu ? `design.html${menuQuery}&stage=choose` : 'menus.html?create=1',
+      menu ? `design.html${menuQuery}&stage=customize` : 'menus.html?create=1',
+      menu ? `publish.html${menuQuery}&stage=publish` : 'menus.html?create=1',
+      menu ? `publish.html${menuQuery}&stage=qr` : 'menus.html?create=1',
+    ];
+    return window.MenuFlowShellCommon.guidedUrl(destinations[stepIndex] || 'menus.html?create=1');
   }
   function onboardingCta(stepIndex) {
     return ['Create restaurant', 'Add details', 'Create menu', 'Add a section', 'Add a dish', 'Choose template', 'Customize', 'Publish', 'Get QR'][stepIndex] || 'Continue';
@@ -171,7 +208,7 @@
       <div class="dash-quick-actions">
         ${quickAction(`menu-builder.html?menu=${menu.id}&action=add`, 'Add item', 'Quickly add a new dish.', window.MenuFlowPermissions.PERMISSIONS.MENU_CREATE)}
         ${quickAction(`menu-builder.html?menu=${menu.id}`, 'Edit menu', 'Update dishes and pricing.', window.MenuFlowPermissions.PERMISSIONS.MENU_EDIT)}
-        ${quickAction(`menu-builder.html?menu=${menu.id}`, 'Update availability', 'Mark sold-out items.', window.MenuFlowPermissions.PERMISSIONS.MENU_EDIT)}
+        ${quickAction(`menu-builder.html?menu=${menu.id}&filter=unavailable`, 'Update availability', 'Mark sold-out items.', window.MenuFlowPermissions.PERMISSIONS.MENU_EDIT)}
         ${quickAction('publish.html', 'Preview menu', 'See the live guest view.', window.MenuFlowPermissions.PERMISSIONS.QR_VIEW)}
       </div>`;
   }

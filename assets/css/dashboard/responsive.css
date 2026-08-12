@@ -54,4 +54,9 @@
     width: calc(100vw - 2rem);
     right: -0.5rem;
   }
+
+  /* Prototype role switcher is collapsed by default at every width (see
+     components.css) — this just keeps the open state from running off the
+     edge of a narrow viewport. */
+  .dash-devtools { right: 0.75rem; bottom: 0.75rem; max-width: calc(100vw - 1.5rem); }
 }

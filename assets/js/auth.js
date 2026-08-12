@@ -144,11 +144,6 @@
     if (!form) return;
     const successPanel = $('#loginSuccess');
 
-    $('#forgotPasswordLink')?.addEventListener('click', event => {
-      event.preventDefault();
-      showMessage(form, "Password reset isn't wired up in this prototype yet.", 'error');
-    });
-
     form.addEventListener('submit', async event => {
       event.preventDefault();
       clearErrors(form);
@@ -169,24 +164,128 @@
         return;
       }
 
-      setLoading(form, true, 'Logging in…');
-      await wait(700);
-      setLoading(form, false);
-
       if (email.toLowerCase() === DEMO_EMAIL && password === DEMO_PASSWORD) {
-        revealSuccess(form, successPanel);
-        await wait(900);
         window.location.href = 'dashboard/index.html';
         return;
       }
 
+      setLoading(form, true, 'Logging in…');
+      await wait(700);
+      setLoading(form, false);
       showMessage(form, 'Incorrect email or password.', 'error');
+    });
+  }
+
+  function initForgotPassword() {
+    const form = $('#forgotPasswordForm');
+    if (!form) return;
+    const successPanel = $('#forgotPasswordSuccess');
+    const bodyEl = $('#forgotPasswordSuccessBody');
+    const continueLink = $('#continueToReset');
+
+    $('#tryDifferentEmail')?.addEventListener('click', event => {
+      event.preventDefault();
+      successPanel.classList.add('hidden');
+      form.classList.remove('hidden');
+      form.closest('.auth-box')?.querySelector('.auth-switch')?.classList.remove('hidden');
+      clearErrors(form);
+      hideMessage(form);
+      form.reset();
+      $('#email', form)?.focus();
+    });
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      clearErrors(form);
+      hideMessage(form);
+
+      const data = Object.fromEntries(new FormData(form).entries());
+      const email = (data.email || '').trim();
+
+      let hasError = false;
+      if (!email) { setFieldError(form, 'email', 'Enter your email address.'); hasError = true; }
+      else if (!EMAIL_RE.test(email)) { setFieldError(form, 'email', 'Enter a valid email address.'); hasError = true; }
+
+      if (hasError) {
+        showMessage(form, 'Please fix the highlighted fields.', 'error');
+        focusFirstError(form);
+        return;
+      }
+
+      setLoading(form, true, 'Sending link…');
+      await wait(800);
+
+      if (email.toLowerCase() === ERROR_EMAIL) {
+        setLoading(form, false);
+        showMessage(form, 'Something went wrong on our end. Please try again.', 'error');
+        return;
+      }
+
+      setLoading(form, false);
+      if (bodyEl) bodyEl.textContent = `If an account exists for ${email}, we've sent a link to reset your password. It expires in 15 minutes.`;
+      if (continueLink) continueLink.href = `reset-password.html?email=${encodeURIComponent(email)}`;
+      revealSuccess(form, successPanel);
+    });
+  }
+
+  function initResetPassword() {
+    const form = $('#resetPasswordForm');
+    if (!form) return;
+    const successPanel = $('#resetPasswordSuccess');
+    const strengthMeter = $('.password-strength', form);
+    const passwordInput = $('#password', form);
+    const introEl = $('#resetPasswordIntro');
+    const ERROR_PASSWORD = 'error1234';
+
+    const email = new URLSearchParams(location.search).get('email');
+    if (introEl && email) introEl.textContent = `Choose a strong password for ${email}.`;
+
+    passwordInput?.addEventListener('input', () => {
+      strengthMeter.dataset.level = passwordInput.value ? String(passwordStrength(passwordInput.value)) : '0';
+    });
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      clearErrors(form);
+      hideMessage(form);
+
+      const data = Object.fromEntries(new FormData(form).entries());
+      const password = data.password || '';
+      const confirmPassword = data.confirmPassword || '';
+
+      let hasError = false;
+      if (!password) { setFieldError(form, 'password', 'Enter a password.'); hasError = true; }
+      else if (password.length < 8) { setFieldError(form, 'password', 'Use at least 8 characters.'); hasError = true; }
+      if (!confirmPassword) { setFieldError(form, 'confirmPassword', 'Confirm your password.'); hasError = true; }
+      else if (password && password !== confirmPassword) { setFieldError(form, 'confirmPassword', "Passwords don't match."); hasError = true; }
+
+      if (hasError) {
+        showMessage(form, 'Please fix the highlighted fields.', 'error');
+        focusFirstError(form);
+        return;
+      }
+
+      setLoading(form, true, 'Resetting…');
+      await wait(800);
+
+      if (password === ERROR_PASSWORD) {
+        setLoading(form, false);
+        showMessage(form, 'Something went wrong on our end. Please try again.', 'error');
+        return;
+      }
+
+      setLoading(form, false);
+      revealSuccess(form, successPanel);
+      await wait(1400);
+      window.location.href = 'login.html';
     });
   }
 
   function init() {
     initSignup();
     initLogin();
+    initForgotPassword();
+    initResetPassword();
   }
 
   document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init) : init();

@@ -242,7 +242,7 @@
 
   const templateGrid = $('#templateGrid');
   if (templateGrid && window.MenuFlowTemplates) {
-    const render = filter => { templateGrid.innerHTML = window.MenuFlowTemplates.filter(t => filter === 'All' || t.type === filter).map((t,i) => `
+    const render = filter => { const visibleTemplates = window.MenuFlowTemplates.filter(t => filter === 'All' || t.type === filter); templateGrid.innerHTML = visibleTemplates.map((t,i) => `
       <article class="template-card" data-type="${t.type}" style="--card-bg:${t.bg};--card-accent:${t.accent}" data-aos="fade-up" data-aos-delay="${(i % 3) * 80}">
         <a class="template-preview" href="template-preview.html?template=${t.slug}" aria-label="Preview ${t.name} template">
           <img class="template-cover" src="assets/images/template-covers-v2/${t.slug}.png" alt="${t.name} restaurant atmosphere" loading="lazy" onerror="this.src='assets/images/template-previews/${t.slug}.jpg'">
@@ -256,7 +256,12 @@
           <p>${t.tone}</p>
           <div class="template-actions"><a class="btn template-action-preview" href="template-preview.html?template=${t.slug}">Preview <span>↗</span></a><a class="btn template-action-customize" href="template-customizer.html?template=${t.slug}">Customize <span>＋</span></a></div>
         </div>
-      </article>`).join(''); window.AOS?.refreshHard(); };
+      </article>`).join('');
+      const resultCount = $('#templateResultCount');
+      const resultLabel = $('#templateResultLabel');
+      if (resultCount) resultCount.textContent = String(visibleTemplates.length).padStart(2, '0');
+      if (resultLabel) resultLabel.textContent = filter === 'All' ? 'designs in the collection' : `${filter} ${visibleTemplates.length === 1 ? 'design' : 'designs'}`;
+      window.AOS?.refreshHard(); };
     render('All');
     $$('.filter-btn').forEach(btn => btn.addEventListener('click', () => { $$('.filter-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); render(btn.dataset.filter); }));
   }

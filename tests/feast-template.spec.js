@@ -125,12 +125,34 @@ test.describe('Feast — cross-system integration', () => {
     expect(chrome).toBeNull();
   });
 
-  test('Customizer only exposes capabilities Feast actually supports', async ({ page }) => {
+  test('Customizer exposes the same complete design system for Feast', async ({ page }) => {
     await page.goto('/template-customizer.html?template=feast');
-    await expect(page.locator('[data-capability="itemLayout"]')).toBeHidden();
-    await expect(page.locator('[data-capability="sectionNav"]')).toBeHidden();
-    await expect(page.locator('[data-capability="cardStyle"]')).toBeVisible();
-    await expect(page.locator('[data-capability="imageStyle"]')).toBeVisible();
+    await expect(page.locator('.preview-canvas')).toHaveAttribute('data-device', 'mobile');
+    for (const capability of ['buttonShape','cardShape','cardStyle','itemLayout','gridColumns','sectionNav','imageStyle']) {
+      await expect(page.locator(`[data-capability="${capability}"]`)).toBeVisible();
+    }
+    await expect(page.locator('[data-options="gridColumns"] [data-value="1"]')).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('[data-options="gridColumns"] [data-value="3"]')).toBeHidden();
+    await page.click('[data-options="itemLayout"] [data-value="list"]');
+    await expect(page.frameLocator('#menuPreview').locator('.feast-menu')).toHaveAttribute('data-item-layout', 'list');
+    await page.click('[data-options="sectionNav"] [data-value="tabs"]');
+    await expect(page.frameLocator('#menuPreview').locator('.feast-menu')).toHaveAttribute('data-section-nav', 'tabs');
+  });
+
+  test('Customizer keeps independent mobile, tablet, and desktop column counts', async ({ page }) => {
+    await page.goto('/template-customizer.html?template=atelier');
+    await page.click('[data-options="itemLayout"] [data-value="grid"]');
+    await expect(page.locator('[data-options="gridColumns"] [data-value="1"]')).toHaveAttribute('aria-pressed', 'true');
+    await page.click('[data-options="gridColumns"] [data-value="2"]');
+    await page.click('[data-device="tablet"]');
+    await expect(page.locator('[data-options="gridColumns"] [data-value="2"]')).toHaveAttribute('aria-pressed', 'true');
+    await page.click('[data-device="desktop"]');
+    await expect(page.locator('[data-options="gridColumns"] [data-value="3"]')).toHaveAttribute('aria-pressed', 'true');
+    await page.click('[data-device="mobile"]');
+    await expect(page.locator('[data-options="gridColumns"] [data-value="2"]')).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.frameLocator('#menuPreview').locator('.restaurant-menu')).toHaveAttribute('data-mobile-columns', '2');
+    await expect(page.frameLocator('#menuPreview').locator('.restaurant-menu')).toHaveAttribute('data-tablet-columns', '2');
+    await expect(page.frameLocator('#menuPreview').locator('.restaurant-menu')).toHaveAttribute('data-desktop-columns', '3');
   });
 
   test('Customizer theme edits apply live to the Feast preview iframe', async ({ page }) => {

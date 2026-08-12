@@ -63,7 +63,7 @@
     const r = data.restaurant;
     const rt = r.translations?.[lang] || {};
     const layout = data.layout || {};
-    const heroImage = layout.hero?.image || r.coverImage || '';
+    const heroImage = layout.hero?.image || options.previewCoverImage || r.coverImage || '';
     const sections = data.sections || [];
     document.documentElement.lang = lang;
     document.documentElement.dir = rtl ? 'rtl' : 'ltr';

@@ -100,7 +100,7 @@
     const rt = r.translations?.[lang] || {};
     const layout = data.layout || {};
     const blocks = layout.blocks && layout.blocks.length ? layout.blocks : DEFAULT_BLOCKS;
-    const heroImage = layout.hero?.image || r.coverImage;
+    const heroImage = layout.hero?.image || options.previewCoverImage || r.coverImage;
     const footerImage = layout.footer?.image || r.footerImage || r.coverImage;
     const firstSection = data.sections[0]?.id || 'menu';
     document.documentElement.lang = lang;

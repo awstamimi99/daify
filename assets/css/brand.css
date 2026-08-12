@@ -1,19 +1,22 @@
 .brand {
   display: inline-flex;
   align-items: center;
-  width: clamp(150px, 13vw, 178px);
-  line-height: 0;
+  width: auto;
+  line-height: 1;
   flex: 0 0 auto;
 }
 
 .brand-logo {
   display: block;
-  width: 100%;
-  height: auto;
+  width: auto;
+  height: 3.55rem;
+  object-fit: contain;
 }
 
-.footer .brand { width: 172px; }
-.auth-art .brand { width: 180px; }
+.footer .brand,
+.auth-art .brand { width: auto; }
+.footer .brand-logo { height: 5.75rem; }
+.auth-art .brand-logo { height: 5rem; }
 .auth-panel { position: relative; }
 
 .section--olive { background: var(--surface-dark); }
@@ -67,6 +70,6 @@
 }
 
 @media (max-width: 680px) {
-  .brand { width: 144px; }
-  .footer .brand { width: 156px; }
+  .brand-logo { height: 3.15rem; }
+  .footer .brand-logo { height: 5rem; }
 }

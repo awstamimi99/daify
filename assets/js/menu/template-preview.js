@@ -31,7 +31,7 @@
     $('#tpvPicker').innerHTML = slugs.map(id => {
       const item = configs[id];
       return `<button type="button" data-template="${id}" aria-label="Preview ${item.name}">
-        <span class="tpv-thumb"><img src="assets/images/template-previews/${id}.jpg" alt="" loading="lazy" /></span>
+        <span class="tpv-thumb"><img src="assets/images/template-covers-v2/${id}.png" alt="${item.name} restaurant atmosphere" loading="lazy" onerror="this.onerror=null;this.src='assets/images/template-previews/${id}.jpg'" /></span>
         <span class="tpv-thumb-meta"><strong>${item.name}</strong><small>${item.category}</small></span>
       </button>`;
     }).join('');

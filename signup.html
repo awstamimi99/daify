@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Start Your Free Trial — DAIFY</title><link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+    <title>Start Your Free Trial — DAIFY</title><link rel="icon" href="assets/icons/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
     <meta
       name="description"
       content="Start a 14-day DAIFY trial with no credit card and build your first digital restaurant menu."
@@ -32,48 +33,45 @@
     <meta name="twitter:image" content="https://daify.net/assets/images/og-cover.png" />
     <meta name="theme-color" content="#F7F4ED" />
   </head>
-  <body>
-    <main class="auth-page">
-      <section
-        class="auth-art"
-        data-aos="fade-right"
-        style="
-          background-image: url(&quot;assets/images/oliva-seabass.png&quot;);
-        "
-      >
-        <a class="brand" href="index.html" aria-label="DAIFY home"><img class="brand-logo" src="assets/icons/menuflow-logo-dark.svg" alt="DAIFY"></a>
-        <div>
-          <span class="eyebrow">Your first menu starts today</span>
-          <p class="quote" style="max-width: 620px">
-            Build it today. Put it on the table this week.
-          </p>
+  <body class="login-page signup-page">
+    <main class="auth-page login-shell signup-shell">
+      <section class="auth-art login-scene signup-scene" aria-label="DAIFY menu publishing experience" data-aos="fade-right">
+        <div class="login-scene-top">
+          <a class="brand login-scene-brand" href="index.html" aria-label="DAIFY home"><img class="brand-logo" src="assets/branding/daify-logo-dark.png" alt="DAIFY"></a>
+          <a class="login-back-link" href="index.html">Back to website <span>↗</span></a>
         </div>
-        <small>14 days free · No credit card required</small>
+        <div class="login-scene-copy signup-scene-copy">
+          <span class="login-scene-index">DAIFY / YOUR FIRST SERVICE</span>
+          <h2>From your idea<br />to every table.</h2>
+          <p>Create a menu that feels like your restaurant, then keep it beautifully current from one calm workspace.</p>
+        </div>
+        <div class="signup-journey" aria-label="DAIFY setup journey">
+          <article><span>01</span><div><strong>Design</strong><small>Choose your visual direction</small></div></article>
+          <article><span>02</span><div><strong>Publish</strong><small>Bring your menu online</small></div></article>
+          <article><span>03</span><div><strong>Serve</strong><small>Share it at every table</small></div></article>
+        </div>
       </section>
-      <section class="auth-panel">
-        <a
-          class="brand"
-          href="index.html"
-          style="position: absolute; top: 1.5rem; left: 1.5rem"
-          aria-label="DAIFY home"><img class="brand-logo" src="assets/icons/menuflow-logo.svg" alt="DAIFY"></a>
-        <div class="auth-box" data-aos="fade-left">
-          <span class="eyebrow">14-day free trial</span>
-          <h1 class="h2">Create your first menu.</h1>
-          <p>
-            Get full Pro access for 14 days. Build, customize, and publish
-            without entering payment details.
-          </p>
-          <ul class="signup-trial-list" aria-label="Free trial benefits">
-            <li>All templates</li>
-            <li>QR publishing</li>
-            <li>Cancel anytime</li>
+      <section class="auth-panel login-panel signup-panel">
+        <header class="login-mobile-head">
+          <a class="brand" href="index.html" aria-label="DAIFY home"><img class="brand-logo" src="assets/branding/daify-logo-light.png" alt="DAIFY"></a>
+          <a href="login.html">Log in</a>
+        </header>
+        <div class="auth-box login-box signup-box" data-aos="fade-left">
+          <div class="login-heading signup-heading">
+            <span class="eyebrow">Your 14-day studio pass</span>
+            <h1>Build something<br />worth scanning.</h1>
+            <p>Create your DAIFY workspace and turn your restaurant menu into a guest-first digital experience.</p>
+          </div>
+          <ul class="signup-trial-list" aria-label="Trial benefits">
+            <li>Every template</li>
+            <li>Live QR publishing</li>
+            <li>English + Arabic</li>
           </ul>
           <form
             id="signupForm"
-            class="form"
+            class="form login-form signup-form"
             data-auth="signup"
             novalidate
-            style="padding: 0; box-shadow: none; background: transparent"
           >
             <div class="field-row">
               <div class="field" data-field="firstName">
@@ -83,6 +81,7 @@
                   name="firstName"
                   autocomplete="given-name"
                   aria-describedby="firstName-error"
+                  placeholder="First name"
                   required
                 />
                 <small class="field-error" id="firstName-error"></small>
@@ -94,6 +93,7 @@
                   name="lastName"
                   autocomplete="family-name"
                   aria-describedby="lastName-error"
+                  placeholder="Last name"
                   required
                 />
                 <small class="field-error" id="lastName-error"></small>
@@ -107,6 +107,7 @@
                 type="email"
                 autocomplete="email"
                 aria-describedby="email-error"
+                placeholder="you@restaurant.com"
                 required
               />
               <small class="field-error" id="email-error"></small>
@@ -121,6 +122,7 @@
                   minlength="8"
                   autocomplete="new-password"
                   aria-describedby="password-error"
+                  placeholder="Create a password"
                   required
                 /><button class="password-toggle" type="button">Show</button>
               </div>
@@ -140,40 +142,41 @@
                   minlength="8"
                   autocomplete="new-password"
                   aria-describedby="confirmPassword-error"
+                  placeholder="Repeat your password"
                   required
                 /><button class="password-toggle" type="button">Show</button>
               </div>
               <small class="field-error" id="confirmPassword-error"></small>
             </div>
-            <label class="checkbox-field" data-field="terms">
+            <label class="checkbox-field signup-terms" data-field="terms">
               <input type="checkbox" id="terms" name="terms" aria-describedby="terms-error" required />
               <span>I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</span>
             </label>
             <small class="field-error" id="terms-error"></small>
-            <button class="btn btn--dark" type="submit">
-              <span class="btn-label">Start My Free Trial</span>
+            <button class="btn login-submit signup-submit" type="submit">
+              <span class="btn-label">Create my DAIFY workspace</span><i aria-hidden="true">↗</i>
             </button>
             <div class="form-message" role="status" aria-live="polite"></div>
           </form>
           <div class="auth-success hidden" id="signupSuccess" tabindex="-1">
             <div class="auth-success-icon" aria-hidden="true">✓</div>
-            <h2 class="h2" style="font-size: 2rem" id="signupSuccessName">You're in.</h2>
+            <h2 class="h2" id="signupSuccessName">You're in.</h2>
             <p id="signupSuccessBody">
               Your 14-day Pro trial has started. We've sent a confirmation to
               your email.
             </p>
             <a class="btn btn--dark" href="dashboard/menu-builder.html">Start building your menu →</a>
           </div>
-          <p class="center auth-switch" style="font-size: 0.85rem">
+          <p class="center auth-switch">
             Already have an account?
-            <a class="small-link" href="login.html">Log In</a>
+            <a class="small-link" href="login.html">Log in ↗</a>
           </p>
-          <p class="auth-prototype-hint">
-            Prototype tip — try <code>demo@daify.net</code> for the
-            "already registered" case, or <code>error@daify.net</code> for
-            a simulated server error. Any other valid details succeed.
-          </p>
+          <details class="signup-demo-hint">
+            <summary>Prototype testing details</summary>
+            <p>Use <code>demo@daify.net</code> for an existing account or <code>error@daify.net</code> for a server error. Any other valid details succeed.</p>
+          </details>
         </div>
+        <footer class="login-panel-footer"><span>© 2026 DAIFY</span><div><a href="#">Privacy</a><a href="#">Terms</a></div></footer>
       </section>
     </main>
   </body>

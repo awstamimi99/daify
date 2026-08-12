@@ -45,7 +45,7 @@
     ).join('');
     return `
       <a class="admin-back-link" href="../dashboard/index.html">← Back to restaurant dashboards</a>
-      <a class="brand" href="index.html" aria-label="Go to Platform Overview"><img class="brand-logo" src="../assets/icons/menuflow-logo.svg" alt="DAIFY" /></a>
+      <a class="brand" href="index.html" aria-label="Go to Platform Overview"><img class="brand-logo" src="../assets/branding/daify-logo-light.png" alt="DAIFY" /></a>
       <span class="admin-badge">Platform Admin</span>
       ${groups}
       <div class="dash-sidebar-footer">

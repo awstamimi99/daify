@@ -134,8 +134,20 @@
 
 .dash-option-group { margin-bottom: 1.5rem; }
 .dash-option-group > span { display: block; font-size: 0.76rem; font-weight: 700; margin-bottom: 0.6rem; }
-.dash-main .segmented button { background: #fff; color: var(--text-primary); border: 1px solid var(--dash-border); text-transform: capitalize; }
+.dash-option-group-note { margin-top: 0.5rem; font-size: 0.72rem; color: var(--dash-text-muted); line-height: 1.5; }
+.dash-option-group.is-disabled { opacity: 0.5; pointer-events: none; }
+.dash-main .segmented { flex-wrap: wrap; }
+.dash-main .segmented button { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; min-width: 3.6rem; padding: 0.55rem 0.7rem; background: #fff; color: var(--text-primary); border: 1px solid var(--dash-border); text-transform: capitalize; }
 .dash-main .segmented button.active { background: var(--brand-red); color: #fff; border-color: var(--brand-red); }
+.dash-main .segmented button[hidden] { display: none; }
+
+.dash-opt-glyph { display: block; width: 18px; height: 18px; border: 1.5px solid currentColor; background: color-mix(in srgb, currentColor 18%, transparent); opacity: 0.75; }
+.dash-opt-glyph--wide { width: 27px; height: 13px; }
+.dash-main .segmented button.active .dash-opt-glyph { opacity: 1; }
+.dash-opt-glyph--cols { width: 26px; height: 15px; display: flex; align-items: stretch; gap: 2px; border: 0; padding: 0; background: none; opacity: 0.75; }
+.dash-opt-glyph--cols b { flex: 1; display: block; border-radius: 2px; border: 1.5px solid currentColor; background: color-mix(in srgb, currentColor 22%, transparent); }
+.dash-main .segmented button.active .dash-opt-glyph--cols { opacity: 1; }
+.dash-opt-symbol { display: grid; place-items: center; height: 18px; font-size: 1rem; font-style: normal; line-height: 1; }
 
 .preset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
 .preset-swatch {

@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Restaurant Menu Templates — DAIFY</title>
-    <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="assets/icons/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
     <meta
       name="description"
       content="Explore premium digital menu templates for fine dining, cafés, fast casual restaurants, and modern hospitality brands."
@@ -55,15 +56,13 @@
   <body class="templates-page">
     <header class="site-header scrolled">
       <nav class="nav">
-        <a class="brand" href="index.html" aria-label="DAIFY home"
-          ><img
-            class="brand-logo"
-            src="assets/icons/menuflow-logo.svg"
-            alt="DAIFY"
-        /></a>
+        <a class="brand" href="index.html" aria-label="DAIFY home">
+          <img class="brand-logo templates-logo templates-logo--light" src="assets/branding/daify-logo-light.png" alt="DAIFY" />
+          <img class="brand-logo templates-logo templates-logo--dark" src="assets/branding/daify-logo-dark.png" alt="" aria-hidden="true" />
+        </a>
         <div class="nav-links">
           <a href="features.html">Features</a
-          ><a href="templates.html">Templates</a
+          ><a href="templates.html" aria-current="page">Templates</a
           ><a href="index.html#how">How It Works</a
           ><a href="pricing.html">Pricing</a><a href="about.html">About</a>
         </div>
@@ -75,68 +74,42 @@
       </nav>
     </header>
     <main>
-      <section class="templates-hero">
-        <div class="templates-orb templates-orb--blue" aria-hidden="true"></div>
-        <div class="templates-orb templates-orb--red" aria-hidden="true"></div>
-        <div class="container templates-hero-grid">
-          <div class="templates-hero-copy" data-aos="fade-up">
-            <span class="eyebrow">Nine points of view, one system</span>
-            <h1>Find the look your menu deserves.</h1>
-            <p>
-              Art-directed templates for fine dining, cafés, fast casual, and
-              everything between — each fully responsive, fully yours to
-              customize, and ready to publish in minutes.
-            </p>
-            <div class="button-row">
-              <a class="btn btn--dark" href="signup.html">Start Free Trial <span>↗</span></a>
-              <a class="btn btn--ghost" href="template-customizer.html">Open the customizer</a>
-            </div>
-            <div class="templates-hero-proof" aria-label="Template collection highlights">
-              <span><b>09</b> art-directed templates</span>
-              <span><b>2</b> languages, EN + AR</span>
-              <span><b>100%</b> fully responsive</span>
-            </div>
+      <section class="template-catalog-head">
+        <div class="container template-catalog-intro">
+          <div data-aos="fade-up">
+            <span class="template-catalog-index">DAIFY / COLLECTION 01</span>
+            <h1>Menus with<br />a point of view.</h1>
           </div>
-          <div class="templates-hero-stage" data-aos="zoom-in" data-aos-delay="120">
-            <div class="templates-fan" aria-hidden="true">
-              <img src="assets/images/template-previews/noir.jpg" alt="" />
-              <img src="assets/images/template-previews/feast.jpg" alt="" />
-              <img src="assets/images/template-previews/amalfi.jpg" alt="" />
+          <div class="template-catalog-note" data-aos="fade-up" data-aos-delay="60">
+            <span>09 / DESIGNS</span>
+            <p>Every template is mobile-first, bilingual, and completely customizable.</p>
+            <a href="template-customizer.html?template=feast">Enter the studio <i>↗</i></a>
+          </div>
+        </div>
+        <div class="template-catalog-filters">
+          <div class="container template-catalog-filter-row">
+            <span class="template-filter-label">Browse by mood</span>
+            <div class="template-tabs" aria-label="Template filters">
+              <button class="filter-btn active" data-filter="All">All</button>
+              <button class="filter-btn" data-filter="Modern">Modern</button>
+              <button class="filter-btn" data-filter="Fine Dining">Fine Dining</button>
+              <button class="filter-btn" data-filter="Cafe">Cafe</button>
+              <button class="filter-btn" data-filter="Fast Casual">Fast Casual</button>
+              <button class="filter-btn" data-filter="Dark Luxury">Dark Luxury</button>
+              <button class="filter-btn" data-filter="Mediterranean">Mediterranean</button>
+              <button class="filter-btn" data-filter="Minimal">Minimal</button>
+              <button class="filter-btn" data-filter="Middle Eastern">Middle Eastern</button>
+              <button class="filter-btn" data-filter="Bakery">Bakery</button>
             </div>
-            <div class="templates-fan-badge"><i></i> 9 art-directed templates</div>
-            <div class="templates-fan-tag">Dark Luxury · Modern · Mediterranean</div>
           </div>
         </div>
       </section>
 
-      <section class="templates-ribbon" aria-label="Template styles">
-        <div class="templates-ribbon-track">
-          <span>Modern</span><i></i><span>Fine Dining</span><i></i><span>Cafe</span><i></i><span>Fast Casual</span><i></i><span>Dark Luxury</span><i></i><span>Mediterranean</span><i></i><span>Minimal</span><i></i><span>Middle Eastern</span><i></i><span>Bakery</span><i></i><span>Modern</span><i></i><span>Fine Dining</span><i></i><span>Cafe</span><i></i><span>Fast Casual</span><i></i><span>Dark Luxury</span><i></i><span>Mediterranean</span><i></i><span>Minimal</span><i></i><span>Middle Eastern</span><i></i><span>Bakery</span>
-        </div>
-      </section>
-
-      <section class="section">
+      <section class="templates-collection" aria-labelledby="collectionTitle">
         <div class="container">
-          <div class="templates-section-head" data-aos="fade-up">
-            <div>
-              <span class="eyebrow">Browse the collection</span>
-              <h2 class="h2">Filter by feel,<br />not just by name.</h2>
-            </div>
-            <p>Every template starts polished. Preview any of them instantly, or open the customizer to make one your own.</p>
-          </div>
-          <div class="template-tabs" aria-label="Template filters" data-aos="fade-up">
-            <button class="filter-btn active" data-filter="All">All</button
-            ><button class="filter-btn" data-filter="Modern">Modern</button
-            ><button class="filter-btn" data-filter="Fine Dining">
-              Fine Dining</button
-            ><button class="filter-btn" data-filter="Cafe">Cafe</button
-            ><button class="filter-btn" data-filter="Fast Casual">
-              Fast Casual</button
-            ><button class="filter-btn" data-filter="Dark Luxury">Dark Luxury</button
-            ><button class="filter-btn" data-filter="Mediterranean">Mediterranean</button
-            ><button class="filter-btn" data-filter="Minimal">Minimal</button
-            ><button class="filter-btn" data-filter="Middle Eastern">Middle Eastern</button
-            ><button class="filter-btn" data-filter="Bakery">Bakery</button>
+          <div class="templates-collection-meta">
+            <h2 id="collectionTitle"><span id="templateResultCount">09</span><b id="templateResultLabel">designs in the collection</b></h2>
+            <p>Preview the guest view · Customize the details</p>
           </div>
           <div class="template-grid" id="templateGrid"></div>
         </div>
@@ -146,7 +119,7 @@
         <div class="container templates-final-card" data-aos="zoom-in">
           <span class="eyebrow">Found your look?</span>
           <h2>Bring your menu to life today.</h2>
-          <p>Start your 14-day free trial and publish with any template — no credit card, no design team required.</p>
+          <p>Start your 14-day free trial and publish with any template—beautifully adapted to your restaurant.</p>
           <div class="button-row">
             <a class="btn btn--light" href="signup.html">Start Free Trial ↗</a>
             <a class="btn templates-final-link" href="pricing.html">See pricing</a>
@@ -197,7 +170,7 @@
             <a class="brand" href="index.html" aria-label="DAIFY home"
               ><img
                 class="brand-logo"
-                src="assets/icons/menuflow-logo-dark.svg"
+                src="assets/branding/daify-logo-dark.png"
                 alt="DAIFY"
             /></a>
             <p>

@@ -22,6 +22,16 @@
     content.innerHTML = `<div id="menusList"></div>`;
     renderList(restaurant);
     $('#createMenuBtn')?.addEventListener('click', openCreateDialog);
+    window.MenuFlowShellCommon.showGuide({
+      step: 'STEP 03 OF 09',
+      title: 'Create your first menu',
+      message: 'Give the menu a guest-facing name. Dinner Menu, All Day, or Seasonal are good starting points.',
+      actionLabel: 'Create menu',
+      action: openCreateDialog,
+    });
+    if (new URLSearchParams(location.search).get('create') === '1' && canCreate) {
+      requestAnimationFrame(openCreateDialog);
+    }
   }
 
   function renderList(restaurant) {
@@ -112,17 +122,16 @@
 
     const gate = store.checkLimit('menus');
     if (!gate.allowed) {
-      dialog.innerHTML = `<div class="dash-modal-body">
-        <h2>Menu limit reached</h2>
-        <p>Your ${gate.plan?.name || 'current'} plan includes ${gate.limit} menu${gate.limit === 1 ? '' : 's'}. Upgrade to create another.</p>
-        <div class="dash-modal-actions">
-          <button class="btn btn--ghost" type="button" data-choice="cancel">Not now</button>
-          <a class="btn btn--dark" href="../pricing.html">View plans</a>
-        </div>
-      </div>`;
-      dialog.showModal();
-      dialog.querySelector('[data-choice="cancel"]').addEventListener('click', () => dialog.close());
-      dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
+      window.MenuFlowShell.openPlanUpgradeDialog({
+        mode: 'change-plan',
+        restaurantId: store.getActiveRestaurant().id,
+        onSubmit: async ({ planId, billingCycle }) => {
+          store.updateSubscription(store.getActiveRestaurant().id, { planId, billingCycle, status: 'active' });
+          window.MenuFlowShell.toast('Plan updated — you can create another menu now.');
+          openCreateDialog();
+          return { ok: true };
+        },
+      });
       return;
     }
 
@@ -155,7 +164,12 @@
       const restaurant = store.getActiveRestaurant();
       const id = store.createMenu(restaurant.id, { name, template: 'atelier' });
       dialog.close();
-      window.location.href = `menu-builder.html?menu=${id}`;
+      if (!window.MenuFlowShellCommon.completeGuide({
+        title: 'First menu created',
+        nextUrl: `menu-builder.html?menu=${encodeURIComponent(id)}&create=section`,
+      })) {
+        window.location.href = `menu-builder.html?menu=${id}`;
+      }
     });
   }
 

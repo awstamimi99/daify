@@ -1,5 +1,8 @@
 .dash-body {
-  background: var(--dash-bg);
+  background:
+    radial-gradient(40% 50% at 6% 0%, rgba(88, 127, 248, 0.07), transparent 65%),
+    radial-gradient(34% 42% at 100% 100%, rgba(229, 57, 53, 0.055), transparent 60%),
+    var(--dash-bg);
   color: var(--mf-ink);
   font-family: var(--mf-font-sans);
   min-height: 100vh;
@@ -26,11 +29,29 @@
   height: 100vh;
   overflow-y: auto;
 }
+.dash-sidebar::before {
+  content: "";
+  position: absolute;
+  top: -7rem;
+  left: -6rem;
+  width: 15rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(229, 57, 53, 0.09), transparent 70%);
+  pointer-events: none;
+}
 .dash-sidebar .brand {
+  display: inline-flex;
+  align-items: center;
   margin-bottom: 1.5rem;
   padding: 0 0.15rem;
 }
-.dash-sidebar .brand-logo,
+.dash-sidebar .brand-logo {
+  height: 4.2rem;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
 .customizer-brand img {
   height: 1.6rem;
   width: auto;
@@ -140,18 +161,29 @@
   cursor: pointer;
   text-align: left;
 }
-.dash-switcher-avatar {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  background: var(--brand-red);
-  color: #fff;
-  display: grid;
-  place-items: center;
-  font-family: var(--font-serif);
-  font-size: 0.95rem;
+.dash-switcher-marker {
+  position: relative;
+  width: .28rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #587ff8 0 48%, #e53935 48% 100%);
+  box-shadow: 0 4px 12px rgba(88,127,248,.18);
   flex: 0 0 auto;
 }
+.dash-switcher-marker i {
+  position: absolute;
+  width: .48rem;
+  height: .48rem;
+  right: 50%;
+  bottom: .05rem;
+  border: 2px solid var(--surface-muted,#f5f5f3);
+  border-radius: 50%;
+  background: var(--brand-red);
+  transform: translate(50%,50%);
+  box-shadow: 0 0 0 1px rgba(229,57,53,.12);
+}
+.dash-switcher-marker--small { height:1.75rem; width:.2rem; margin-inline:.35rem .15rem; }
+.dash-switcher-marker--small i { width:.4rem; height:.4rem; border-width:1.5px; }
 .dash-switcher-trigger strong {
   display: block;
   font-size: 0.82rem;
@@ -213,6 +245,19 @@
 .dash-switcher-divider {
   margin: 0.4rem 0.6rem;
   border-top: 1px solid var(--dash-border);
+}
+/* Pinned to the bottom of the scrollable panel so it's always reachable
+   without hunting through a long restaurant list — see .dash-switcher-panel's
+   overflow-y:auto above. */
+.dash-switcher-footer {
+  position: sticky;
+  bottom: -0.5rem;
+  margin: 0 -0.5rem -0.5rem;
+  padding: 0 0.5rem 0.5rem;
+  background: #fff;
+}
+.dash-switcher-footer .dash-switcher-divider {
+  margin-inline: 0.1rem;
 }
 .dash-switcher-add {
   display: flex;

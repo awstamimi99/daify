@@ -57,7 +57,7 @@
       .join('');
 
     return `
-      <a class="brand" href="index.html" aria-label="Go to your dashboard"><img class="brand-logo" src="../assets/icons/menuflow-logo.svg" alt="DAIFY" /></a>
+      <a class="brand" href="index.html" aria-label="Go to your dashboard"><img class="brand-logo" src="../assets/branding/daify-logo-light.png" alt="DAIFY" /></a>
       ${restaurantSwitcherHtml(restaurant)}
       ${groups}
       <div class="dash-sidebar-footer">
@@ -74,7 +74,7 @@
     return `
       <div class="dash-switcher">
         <button type="button" class="dash-switcher-trigger" id="switcherTrigger" aria-haspopup="true" aria-expanded="false">
-          <span class="dash-switcher-avatar">${esc((active?.name || '?').charAt(0))}</span>
+          <span class="dash-switcher-marker" aria-hidden="true"><i></i></span>
           <span>
             <strong>${esc(active?.name || 'Select restaurant')}</strong>
             <span>${esc(active?.location || '')}</span>
@@ -85,12 +85,12 @@
           ${visible
             .map(
               r => `<button type="button" class="dash-switcher-option ${r.id === active?.id ? 'active' : ''}" data-restaurant="${r.id}">
-                <span class="dash-switcher-avatar" style="width:1.7rem;height:1.7rem;font-size:.8rem">${esc(r.name.charAt(0))}</span>
+                <span class="dash-switcher-marker dash-switcher-marker--small" aria-hidden="true"><i></i></span>
                 <span><strong>${esc(r.name)}</strong><small>${esc(r.location)}</small></span>
               </button>`
             )
             .join('')}
-          ${role === 'owner' ? `<div class="dash-switcher-divider"></div><button type="button" class="dash-switcher-add" id="switcherAdd">+ Add restaurant</button>` : ''}
+          ${role === 'owner' ? `<div class="dash-switcher-footer"><div class="dash-switcher-divider"></div><button type="button" class="dash-switcher-add" id="switcherAdd">+ Add restaurant</button></div>` : ''}
         </div>
       </div>`;
   }
@@ -161,6 +161,7 @@
         </main>
       </div>
       <div class="dash-devtools" id="dashDevtools">
+        <button type="button" class="dash-devtools-toggle" id="devtoolsToggle" aria-label="Toggle prototype role switcher" aria-expanded="false">⚙</button>
         <span class="dash-devtools-label">Prototype role</span>
         <button type="button" data-role="owner">Owner</button>
         <button type="button" data-role="manager">Manager</button>
@@ -226,7 +227,7 @@
     // Prototype role switcher
     const devtools = $('#dashDevtools');
     const currentRole = window.MenuFlowStore.getSession().role;
-    $$('button', devtools).forEach(btn => {
+    $$('button[data-role]', devtools).forEach(btn => {
       btn.classList.toggle('active', btn.dataset.role === currentRole);
       btn.addEventListener('click', () => {
         if (btn.dataset.role === 'admin') {
@@ -237,6 +238,10 @@
         window.MenuFlowStore.switchRole(btn.dataset.role);
         location.href = 'index.html';
       });
+    });
+    $('#devtoolsToggle')?.addEventListener('click', () => {
+      const open = devtools.classList.toggle('open');
+      $('#devtoolsToggle').setAttribute('aria-expanded', String(open));
     });
   }
 
@@ -254,23 +259,27 @@
   function openAddRestaurantDialog() {
     const store = window.MenuFlowStore;
     const gate = store.checkLimit('restaurants');
-    const dialog = ensureDialog('addRestaurantDialog');
 
     if (!gate.allowed) {
-      dialog.innerHTML = `<div class="dash-modal-body">
-        <h2>Add another location</h2>
-        <p>Your ${esc(gate.plan?.name || 'current')} plan supports ${gate.limit} restaurant${gate.limit === 1 ? '' : 's'}. Multi-location accounts are part of Business — upgrade to add more.</p>
-        <div class="dash-modal-actions">
-          <button class="btn btn--ghost" type="button" data-choice="cancel">Not now</button>
-          <a class="btn btn--dark" href="../pricing.html">View plans</a>
-        </div>
-      </div>`;
-      dialog.showModal();
-      dialog.querySelector('[data-choice="cancel"]').addEventListener('click', () => dialog.close());
-      dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
+      const sourceId = store.getActiveRestaurant().id;
+      openPlanUpgradeDialog({
+        mode: 'add-location',
+        restaurantId: sourceId,
+        onSubmit: async ({ planId, billingCycle, name, location: restLocation, cuisineType }) => {
+          store.updateSubscription(sourceId, { planId, billingCycle, status: 'active' });
+          const result = store.createRestaurant(sourceId, { name, location: restLocation, cuisineType, plan: planId, bypassLimit: true });
+          if (!result.ok) return { ok: false, message: "Couldn't add that restaurant. Please try again." };
+          store.updateSubscription(result.id, { billingCycle, status: 'active' });
+          store.switchRestaurant(result.id);
+          toast(`Payment successful — ${name} is ready.`);
+          window.location.href = 'index.html';
+          return { ok: true };
+        },
+      });
       return;
     }
 
+    const dialog = ensureDialog('addRestaurantDialog');
     dialog.innerHTML = `<div class="dash-modal-body">
       <h2>Add a restaurant location</h2>
       <form id="addRestaurantForm" novalidate>
@@ -323,7 +332,7 @@
     });
   }
 
-  const { toast, confirmDialog } = window.MenuFlowShellCommon;
+  const { toast, confirmDialog, openPlanUpgradeDialog } = window.MenuFlowShellCommon;
 
   /**
    * Guards a page against direct-URL access when the current role lacks the
@@ -346,5 +355,5 @@
     return false;
   }
 
-  window.MenuFlowShell = { render, toast, confirmDialog, esc, requirePermission };
+  window.MenuFlowShell = { render, toast, confirmDialog, esc, requirePermission, openPlanUpgradeDialog };
 })();
