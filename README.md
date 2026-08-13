@@ -58,7 +58,7 @@ assets/
     main.js, auth.js            marketing and auth behavior
     menu/                       template configs, renderers, preview, theme
     dashboard/                  store, permissions, shells, data, page modules
-docs/                           brand, design, template, production architecture
+docs/                           roadmap, milestones, decisions, and architecture
 tests/                          Playwright integration tests
 ```
 
@@ -85,11 +85,16 @@ their concepts into typed modules rather than renaming them in place.
 
 ## Architecture references
 
+- [Master roadmap](docs/ROADMAP.md)
+- [Active milestone: M1 Foundation](docs/MILESTONES/M1_FOUNDATION.md)
+- [Production architecture](docs/PRODUCTION_ARCHITECTURE.md)
+- [Architecture decisions](docs/DECISIONS/)
 - [Brand guide](docs/BRAND_GUIDE.md)
 - [Design system](docs/DESIGN_SYSTEM.md)
 - [Template engine](docs/TEMPLATE_ENGINE.md)
-- [Production architecture](docs/PRODUCTION_ARCHITECTURE.md)
 
 The production direction is Next.js/React/TypeScript, NestJS, PostgreSQL, and
 Prisma. No production framework or database implementation is part of this
-prototype cleanup.
+prototype cleanup. `docs/ROADMAP.md` owns milestone status; the active milestone
+file owns execution details. Architecture decisions must be documented before
+their implementation changes direction.
