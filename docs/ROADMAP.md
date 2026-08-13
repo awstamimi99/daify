@@ -57,12 +57,32 @@ M0's deliverables were planning and cleanup, not production code, and all of the
 
 See [MILESTONES/M0_PRE_MILESTONE.md](MILESTONES/M0_PRE_MILESTONE.md) for the full account, including what was intentionally deferred rather than finished.
 
-## Rules for this roadmap
+## Working rules
+
+These apply to every milestone, not just documentation bookkeeping. Codex, Claude, and the project owner all follow the same list.
+
+**Documentation & process**
 
 1. `docs/ROADMAP.md` (this file) is the master progress tracker — if it disagrees with a milestone file, this file is stale and should be corrected first.
 2. `docs/PRODUCTION_ARCHITECTURE.md` is the main architecture reference.
-3. The milestone marked **NEXT** or **IN PROGRESS** is the active execution plan; do not start a later milestone early unless it is a hard dependency.
+3. The milestone marked **NEXT** or **IN PROGRESS** is the active execution plan. Do not start a later milestone early, and do not start the next milestone automatically when the current one finishes — a milestone is kicked off explicitly, not inferred.
 4. `docs/DECISIONS/` stores decisions that should not be repeatedly reconsidered without a documented reason.
-5. When a task completes, update its milestone file. When a milestone completes, update this file.
-6. Architecture decisions are not changed silently — if implementation forces a change, document the reason in the relevant `DECISIONS/` file first.
+5. Update the active milestone's document while working on it. Update this file only when a milestone's status actually changes — not for every task inside it.
+6. Architecture decisions are never changed silently. If implementation forces a change, document the reason in the relevant `DECISIONS/` file first, then update the architecture reference.
 7. Keep this document aligned with the actual repository. A status here is only as good as the last person who verified it against real commits, branches, and files — not against intent.
+8. Keep changes committed and logically separated where practical, rather than one large undifferentiated commit.
+
+**Preserving the product**
+
+9. Preserve the strong parts of the existing prototype (see `MILESTONES/M0_PRE_MILESTONE.md` and `PRODUCTION_ARCHITECTURE.md`'s "Legacy prototype contract" for what those are and why). Migration is not a license to redesign what already works.
+10. Do not remove working functionality without a replacement landing in the same change.
+11. Keep Arabic, English, and RTL support at parity throughout the migration — see [DECISIONS/LOCALIZATION.md](DECISIONS/LOCALIZATION.md).
+12. Keep the existing DAIFY visual identity (brand tokens, type pairing, red-as-accent discipline) — see [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) and [BRAND_GUIDE.md](BRAND_GUIDE.md). Porting tokens into the new stack is expected; abandoning them is not.
+
+**Engineering**
+
+13. Security authorization must eventually be enforced server-side. Frontend/UI guards are for UX only — see [DECISIONS/AUTH_RBAC.md](DECISIONS/AUTH_RBAC.md).
+14. Every milestone includes tests as part of its definition of done, not as a follow-up.
+15. Never mark a task or milestone complete while its tests are failing.
+16. Avoid unnecessary rewrites. Prefer the smallest change that gets a milestone's deliverables to a real, maintainable state over rewriting something that already works.
+17. Prefer maintainable production architecture over shortcuts, even when the shortcut is faster this week.
