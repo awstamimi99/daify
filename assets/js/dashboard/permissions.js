@@ -2,9 +2,9 @@
  * Permission configuration — prototype/front-end phase.
  *
  * This is UI-layer authorization only: it decides what renders, not what's
- * allowed. The real backend (Drupal) MUST re-check every one of these
- * server-side before performing the corresponding action — nothing here is
- * a security boundary. See README-DASHBOARD.md "Drupal preparation".
+ * allowed. The production backend MUST re-check every one of these server-side
+ * before performing the corresponding action — nothing here is a security
+ * boundary. See docs/PRODUCTION_ARCHITECTURE.md.
  */
 (function () {
   const PERMISSIONS = {

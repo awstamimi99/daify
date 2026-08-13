@@ -10,7 +10,7 @@
       <div class="dash-quick-actions" style="margin-bottom:1.75rem">
         <a class="dash-quick-action" href="../features.html"><strong>Help Center</strong><span>Guides on menus, design, and publishing.</span></a>
         <a class="dash-quick-action" href="../contact.html"><strong>Contact Support</strong><span>Reach the DAIFY team directly.</span></a>
-        <a class="dash-quick-action" href="#" id="reportProblem"><strong>Report a Problem</strong><span>Tell us what went wrong.</span></a>
+        <button class="dash-quick-action" type="button" id="reportProblem"><strong>Report a Problem</strong><span>Tell us what went wrong.</span></button>
       </div>
       <div class="dash-card">
         <div class="dash-card-header"><div><h2>Frequently asked</h2></div></div>
@@ -20,10 +20,7 @@
           <li><span style="flex:1"><strong style="font-weight:600">Will changing templates lose my menu content?</strong><br><small style="color:var(--dash-text-muted)">No — templates only change the design. Your sections and dishes stay exactly as they are.</small></span></li>
         </ul>
       </div>`;
-    $('#reportProblem').addEventListener('click', e => {
-      e.preventDefault();
-      openReportDialog(restaurant);
-    });
+    $('#reportProblem').addEventListener('click', () => openReportDialog(restaurant));
   }
 
   function ensureDialog(id) {

@@ -1,6 +1,6 @@
 /**
- * Demo user directory. In production this comes from Drupal's user/role
- * system — this file exists only so the prototype has consistent people
+ * Demo user directory. In production this comes from the identity and
+ * organization-membership services — this file exists only so the prototype has consistent people
  * to reference across restaurants, team lists, and audit logs.
  */
 (function () {

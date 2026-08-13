@@ -49,7 +49,7 @@
       <span class="admin-badge">Platform Admin</span>
       ${groups}
       <div class="dash-sidebar-footer">
-        <a href="#" id="dashLogoutLink">Log out</a>
+        <button type="button" id="dashLogoutLink">Log out</button>
       </div>`;
   }
 
@@ -142,10 +142,7 @@
       });
     });
     $('#userMenuLogout')?.addEventListener('click', doLogout);
-    $('#dashLogoutLink')?.addEventListener('click', event => {
-      event.preventDefault();
-      doLogout();
-    });
+    $('#dashLogoutLink')?.addEventListener('click', doLogout);
 
     const devtools = $('#dashDevtools');
     const currentRole = window.MenuFlowStore.getSession().role;

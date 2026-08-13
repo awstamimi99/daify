@@ -3,9 +3,9 @@
  *
  * Persists to localStorage under `menuflow_platform_v1`. Seeded once from
  * assets/js/dashboard/data/*.js on first visit, then fully owns reads/writes
- * for the rest of the session. This is a stand-in for what Drupal will serve
- * over an authenticated API — see README-DASHBOARD.md for what changes when
- * that backend exists.
+ * for the rest of the session. This is a stand-in for what the production
+ * backend will serve over an authenticated API — see
+ * docs/PRODUCTION_ARCHITECTURE.md for the target model.
  *
  * Data shape:
  * {

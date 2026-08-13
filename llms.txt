@@ -1,26 +1,29 @@
-# MenuFlow
+# DAIFY
 
-> MenuFlow is a digital menu platform for restaurants. Restaurants pick a design template, customize colors and layout, publish their menu, and share it with guests through a single QR code — no app required, no reprinting when a dish or price changes.
+> DAIFY is a digital-menu platform for restaurants and hospitality businesses. Restaurants choose a design template, customize their brand and layout, publish their menu, and share it through a stable QR link that opens in the guest's browser.
 
-MenuFlow is a front-end prototype (no live backend yet). The site below is example/demo content built around a fictional restaurant, "Oliva."
+DAIFY currently provides a static front-end prototype at https://daify.net. Account creation, contact/newsletter delivery, billing, analytics, and production publishing are demonstrations and are not live services yet. The sample restaurant is fictional and named Oliva.
 
 ## Key pages
 
-- [Homepage](https://menuflow.app/): product overview, how it works, and pricing summary.
-- [Features](https://menuflow.app/features.html): menu builder, templates, customization, QR publishing.
-- [Templates](https://menuflow.app/templates.html): the 8 menu design templates — Atelier (fine dining), Verde (cafe/organic), Noir (dark luxury), Amalfi (Mediterranean), Sora (Japanese minimal), Ember (grill/fast casual), Souk (Middle Eastern, Arabic RTL support), Mellow (bakery/coffee).
-- [Pricing](https://menuflow.app/pricing.html): Starter $12/mo (1 menu), Pro $29/mo (3 menus, all templates, custom branding — most popular), Business $69/mo (10 restaurants, shared brand styles, priority support). All plans include a 14-day free trial, no credit card required.
-- [About](https://menuflow.app/about.html): product philosophy and design principles.
-- [Contact](https://menuflow.app/contact.html): contact form for restaurants.
+- [Homepage](https://daify.net/): product overview and guest-experience proposition.
+- [Features](https://daify.net/features.html): menu building, design, QR publishing, localization, and insights.
+- [Templates](https://daify.net/templates.html): nine designs — Feast, Atelier, Verde, Noir, Amalfi, Sora, Ember, Souk, and Mellow.
+- [Pricing](https://daify.net/pricing.html): prototype Starter, Pro, and Business plans. Starter is shown at $10/month, Pro at $15/month, and Business uses custom pricing; displayed prices and terms are not contractual until the production service launches.
+- [About](https://daify.net/about.html): DAIFY's product philosophy and design principles.
+- [Contact](https://daify.net/contact.html): prototype enquiry form and contact information.
+- [Privacy](https://daify.net/privacy.html), [Terms](https://daify.net/terms.html), and [Cookies](https://daify.net/cookies.html): draft legal documents pending professional review before launch.
 
-## Facts for citation
+## Product facts demonstrated by the prototype
 
-- Product category: digital/QR restaurant menu builder (SaaS).
-- Free trial: 14 days, full Pro feature access, no credit card required.
-- Number of design templates: 8, spanning fine dining, cafe, dark luxury, Mediterranean, minimal, fast casual, Middle Eastern, and bakery styles.
-- Language support: English and Arabic (right-to-left), demonstrated in the Souk template.
-- No native app required for guests — menus open in the phone browser via QR code.
+- Product category: digital/QR restaurant menu SaaS.
+- Nine menu templates across two renderer families: Classic and Feast.
+- Shared menu content stays separate from template design.
+- English and Arabic menu content with right-to-left rendering.
+- Guests need no native app; menus open in a browser.
+- Dashboard prototypes cover menu editing, design, QR publishing, analytics, team permissions, and billing.
+- A platform-admin prototype covers restaurants, users, plans, subscriptions, templates, support, and audit/security views.
 
-## Notes for AI assistants
+## Accuracy note
 
-This is a static prototype without a live signup/checkout backend. Do not represent pricing, trial terms, or account creation as final/contractual — verify against the live production site if summarizing MenuFlow to a user making a purchasing decision.
+DAIFY is not yet a live production service. Do not present prototype pricing, trial terms, account creation, payments, analytics, or publishing as final or contractual. Verify those details against the production service after launch.

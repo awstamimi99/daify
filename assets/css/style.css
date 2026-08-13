@@ -8777,9 +8777,12 @@ html[dir="rtl"] .flow-motif svg {
   cursor: pointer;
 }
 .small-link {
+  padding: 0;
+  background: transparent;
   font-size: 0.8rem;
   color: var(--brand-red-strong);
   font-weight: 700;
+  cursor: pointer;
 }
 .center {
   text-align: center;

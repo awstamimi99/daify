@@ -97,7 +97,7 @@
               <input type="text" id="liveUrl" readonly />
               <button class="btn btn--dark" type="button" id="copyLinkBtn">Copy link</button>
             </div>
-            <a class="btn btn--ghost" id="openLiveBtn" href="#" target="_blank" rel="noopener" style="margin-top:1rem">Open live menu ↗</a>
+            <a class="btn btn--ghost" id="openLiveBtn" href="${esc(liveUrl(menu))}" target="_blank" rel="noopener" style="margin-top:1rem">Open live menu ↗</a>
           </div>
           ${
             canManageQr

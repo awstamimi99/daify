@@ -358,12 +358,16 @@ a.dash-stat:hover {
 }
 .dash-quick-action {
   display: block;
+  width: 100%;
   padding: 1.4rem;
   border-radius: var(--dash-radius);
   background: var(--dash-surface);
   border: 1px solid var(--dash-border);
   box-shadow: 0 1px 2px rgba(23, 26, 23, 0.035);
   transition: 0.2s;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 .dash-quick-action:hover { border-color: var(--brand-red); transform: translateY(-2px); box-shadow: var(--shadow-soft); }
 .dash-quick-action strong { display: block; font-size: 0.95rem; margin-bottom: 0.3rem; }

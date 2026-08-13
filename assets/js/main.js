@@ -269,7 +269,7 @@
 
   $$('form[data-prototype="contact"]').forEach(form => form.addEventListener('submit', e => {
     e.preventDefault(); const message = $('.form-message', form); if (!form.checkValidity()) { form.reportValidity(); return; }
-    message.textContent = 'Thanks — your message is ready. Form delivery will be connected in the Drupal phase.';
+    message.textContent = 'Thanks — your message is ready. Form delivery will be connected to the production backend.';
     message.classList.add('show', 'form-message--success');
   }));
   $$('.password-toggle').forEach(btn => btn.addEventListener('click', () => { const input = btn.previousElementSibling; input.type = input.type === 'password' ? 'text' : 'password'; btn.textContent = input.type === 'password' ? 'Show' : 'Hide'; }));

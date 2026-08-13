@@ -1,79 +1,77 @@
-# DAIFY design system
+# DAIFY prototype design system
 
-Single source of truth: `assets/css/variables.css`. Marketing (`style.css`) and
-dashboard (`assets/css/dashboard/*.css`) both build on these tokens rather than
-redefining color/spacing/radius values — that duplication was the original
-problem this file fixes.
+`assets/css/variables.css` is the prototype's shared token source. Marketing,
+authentication, dashboard/admin, preview chrome, and the guest-menu engine build
+on it, while guest restaurant branding is intentionally isolated.
 
-## Layering
+## Layers
 
+```text
+assets/css/variables.css
+  ├─ style.css                       legacy marketing/auth components and pages
+  ├─ brand.css / mobile-menu.css    public-site brand/navigation refinements
+  ├─ dashboard/
+  │    variables.css                --dash-* aliases
+  │    layout.css
+  │    components.css
+  │    forms.css
+  │    tables.css
+  │    responsive.css
+  ├─ customizer.css                 Design Studio chrome
+  ├─ template-preview.css           preview workspace chrome
+  └─ templates/
+       base-menu.css                --restaurant-* guest brand namespace
+       polish.css                   Classic-family presentation
+       feast.css                    Feast-family presentation
+       [template].css               Classic template palette/art direction
 ```
-variables.css        → brand tokens: color, type scale, radius, space, shadow
-  ├─ style.css        → marketing-only components (hero, pricing cards, footer…)
-  └─ dashboard/
-       variables.css  → --dash-* tokens, all aliased to the tokens above
-       layout.css/components.css/forms.css/tables.css/responsive.css
-                       → dashboard-only components (sidebar, tables, cards…)
-customizer.css / template-preview.css → chrome around the template engine,
-       same brand tokens. The rendered menu inside stays on its own
-       `--restaurant-*` token namespace (base-menu.css) — that's the
-       customer's brand, deliberately isolated from DAIFY's own.
-```
 
-## Color
+`style.css` is intentionally left as a legacy monolith during Pre-Milestone 0;
+splitting it belongs to the production rebuild rather than this cleanup.
 
-Red is the *only* brand accent — never mix in another accent hue. Budget:
-roughly 60–70% white/warm-white/light-neutral, 20–30% charcoal/text/structure,
-5–10% red. Red should feel intentional: primary CTAs, active nav/tab states,
-"most popular" emphasis, selected states, key icons. Not every card, icon, or
-heading.
+## Tokens
 
-| Token | Value | Use |
-|---|---|---|
-| `--brand-red` | `#e53935` | Primary CTA, active states, key accents |
-| `--brand-red-hover` | `#c92f2b` | Hover/pressed |
-| `--brand-red-strong` | `#b52322` | Strong emphasis, text on light bg |
-| `--brand-red-soft` | `#fdecec` | Soft red card/badge backgrounds |
-| `--brand-red-tint` | `#fff5f4` | Subtle highlighted sections |
-| `--surface-primary` | `#ffffff` | Cards, main surfaces |
-| `--surface-secondary` | `#fcfaf9` | Marketing page background |
-| `--surface-muted` | `#f6f5f4` | Dashboard page background |
-| `--surface-dark` | `#171717` | Optional dark sections |
-| `--text-primary` | `#202020` | Headings, primary content |
-| `--text-secondary` | `#66615f` | Secondary content |
-| `--text-muted` | `#8c8784` | Metadata, placeholders only |
-| `--text-on-brand` | `#ffffff` | Text on red/dark surfaces |
-| `--border-default` | `#e8e5e3` | Borders, dividers |
-| `--success` / `--warning` / `--error` / `--info` | see `variables.css` | Status only |
+- Brand: `--brand-red`, hover/strong/soft/tint variants.
+- Functional UI: `--brand-blue`, semantic success/warning/error/info tokens.
+- Surfaces: primary, secondary, muted, and dark.
+- Text: primary, secondary, muted, and on-brand.
+- Structure: border, radii, spacing, shadows, and container width.
+- Typography: fluid display/body scales, Manrope, DM Serif Display, and Arabic
+  fallbacks.
 
-`--brand-red` on white is ~4.25:1 contrast — below the 4.5:1 AA text threshold
-but the same value as Material Design's red-600, a widely-shipped accessible
-convention for bold white-on-red button labels. Keep red button/badge text at
-600+ weight; never use red as small/regular body text on white.
+Legacy `--mf-*` aliases remain because thousands of prototype selectors depend
+on them. They are internal compatibility tokens, not public branding. New
+production tokens should use neutral names in typed theme contracts.
 
-## Type scale
+## Color policy
 
-`--fs-display` → `--fs-caption`, all `clamp()`-based (see `variables.css`).
-Headline font stays `--font-serif` (DM Serif Display) — a deliberate DAIFY
-identity choice distinct from typical bold-sans SaaS sites. Body/UI stays
-`--font-sans` (Inter). RTL swaps to `--font-arabic` (Noto Kufi Arabic) via
-`html[dir="rtl"] body`.
+DAIFY red is the primary brand action color. Utility blue may be used for
+information, links, charts, or focus within product UI. Semantic colors should
+remain restricted to their meaning. Guest templates do not inherit DAIFY brand
+colors: each restaurant uses validated `--restaurant-*` values.
 
-## Buttons
+The raw red `#e53935` is below WCAG AA for small regular red text on white; use
+`--brand-red-strong` for small text and reserve the base red for sufficiently
+large/bold labels, graphics, and primary surfaces. Production must automate
+contrast checks for both DAIFY UI and restaurant-defined themes.
 
-One system, three variants, used identically on marketing and dashboard:
-`.btn` (base) + `.btn--primary` (red/white), `.btn--secondary` (white/dark
-border), `.btn--tertiary` (text link). Legacy `.btn--dark` / `.btn--ghost` /
-`.btn--light` selectors are kept as aliases during the redesign sweep — new
-markup should use the `--primary/--secondary/--tertiary` names.
+## Typography
 
-## What's aliased vs. what's swept
+- `--font-sans`: Manrope, then system sans-serif.
+- `--font-serif`: DM Serif Display, then Georgia.
+- `--font-arabic`: Noto Kufi Arabic, then Manrope/system sans-serif.
+- `--fs-display` through `--fs-caption`: fluid prototype type scale.
 
-`--mf-*` tokens still exist and resolve to the new values for structural
-roles (ink, ivory, stone, mist, radius, space, shadow) — those are genuine
-1:1 role matches, safe to alias. `--mf-sage` / `--mf-champagne` keep their
-**original** green/gold values on purpose: they held the "accent" role, and
-blindly redirecting that to red everywhere would apply an unreviewed color
-change. Files get moved to `--brand-red` directly as they're touched, not by
-alias — check a given file's actual color usage before assuming it's on the
-new system.
+## Components
+
+Buttons use `.btn` plus primary, secondary, tertiary, and light-on-dark roles.
+Legacy names (`.btn--dark`, `.btn--ghost`) remain as aliases because they are
+widely used by generated markup. Dashboard components live in the dashboard
+styles rather than being duplicated in page files.
+
+## Production migration rule
+
+Preserve visual roles and the isolated restaurant theme contract, not legacy
+class names. The React application should express DAIFY components as typed
+components/tokens and map validated Theme records into `--restaurant-*` CSS
+variables for guest menus.

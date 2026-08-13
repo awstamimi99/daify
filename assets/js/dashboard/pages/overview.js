@@ -3,8 +3,8 @@
   const store = window.MenuFlowStore;
   const can = store.can;
 
-  // Illustrative demo activity — a real build would source this from Drupal's
-  // audit trail (see admin/audit-logs.html for the platform-wide version).
+  // Illustrative demo activity — a real build will source this from the
+  // production audit trail (see admin/audit-logs.html for the platform view).
   const DEMO_ACTIVITY = [
     { text: 'Menu published', who: 'Adam Kareem', time: '2 hours ago' },
     { text: 'Updated Truffle Rigatoni price to 8.750 KD', who: 'Sara Hassan', time: 'Yesterday' },

@@ -118,7 +118,7 @@
       });
       window.MenuFlowShell.toast('Account details saved');
     });
-    $('#changePasswordBtn')?.addEventListener('click', () => window.MenuFlowShell.toast('Password change will be available once accounts connect to Drupal.'));
+    $('#changePasswordBtn')?.addEventListener('click', () => window.MenuFlowShell.toast('Password change will be available once accounts connect to the production backend.'));
     $('#deleteRestaurantBtn')?.addEventListener('click', () => {
       window.MenuFlowShell.confirmDialog({
         title: `Delete ${restaurant.name}?`,

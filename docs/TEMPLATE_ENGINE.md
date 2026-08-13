@@ -16,7 +16,14 @@ Every restaurant template consumes the same normalized object from `assets/js/me
 
 ### The renderer registry
 
-Each renderer file self-registers into `window.MenuFlowRendererRegistry[familyId]` (see the last few lines of `menu-renderer.js`/`feast-renderer.js`). `template-controller.js` looks up `registry[config.family]` and calls `.render(root, data, options)` on it — that's the entire contract between the controller and a family. Nothing else about a family is assumed.
+Each renderer file self-registers into the legacy internal registry
+`window.MenuFlowRendererRegistry[familyId]` (see the last few lines of
+`menu-renderer.js`/`feast-renderer.js`). `template-controller.js` looks up
+`registry[config.family]` and calls `.render(root, data, options)` on it — that's
+the entire contract between the controller and a family. Nothing else about a
+family is assumed. The `MenuFlow*` name is intentionally retained only as a
+prototype compatibility identifier; production will expose the same contract
+through typed DAIFY modules.
 
 ### The shared interaction contract
 
@@ -32,7 +39,7 @@ This is why adding a new family never touches `template-controller.js` — a fam
 
 ## Adding a new template
 
-**To an existing family** (e.g. a ninth *classic* palette):
+**To an existing family** (e.g. another *classic* palette):
 1. Add an entry to `MenuFlowTemplateConfigs` via `make(...)` with controlled defaults, presets, and supported options.
 2. Add a CSS file in `assets/css/templates/` that changes presentation without duplicating menu data.
 3. Copy one minimal HTML shell in `templates/`, change `data-template`, title, and its template CSS link.
@@ -52,10 +59,31 @@ This is why adding a new family never touches `template-controller.js` — a fam
 
 `menu-renderer.js` always renders a `.menu-item-media` figure, even when an item has no `image`, so grid and image-focus layouts keep equal card heights. A missing photo falls back to a `.menu-item-media-placeholder` showing the dish's first initial. Unavailable items (`available: false`) get a `.sold-out-flag` badge rendered on top of the media (solid ink background, always legible regardless of the photo or template palette) in addition to the existing text tag — don't rely on opacity/grayscale alone to signal unavailability, since pale dishes on light templates lose contrast almost entirely.
 
-## Drupal migration
+## Production migration contract
 
-Drupal can serialize Restaurant, Menu Section, and Menu Item entities into the same JSON shape currently exposed as `window.MenuFlowMenuData`. A Twig template can provide the empty `#menu-root` shell and attach the shared renderer/library. No template-specific content markup needs to be generated.
+The production TypeScript application must preserve the concepts in this
+engine, not copy its global-variable implementation:
 
-Theme configuration can come from validated Drupal fields or configuration entities. Drupal should emit only supported values from the selected template's capability definition. Those values can be serialized into the page and passed to `MenuFlowTheme.apply()`, producing scoped CSS custom properties such as `--restaurant-bg`, `--restaurant-accent`, and `--restaurant-radius-card`.
+- A normalized, renderer-independent menu view model.
+- A renderer registry keyed by a stable template-family identifier.
+- Independent Classic and Feast families.
+- A validated template capability/configuration contract.
+- Content/design separation and scoped `--restaurant-*` variables.
+- English/Arabic rendering, correct `lang`/`dir`, and future locales.
+- Same-origin iframe preview with an explicit, versioned `postMessage` schema.
+- A shared interaction contract for search, sections, availability, and item
+  details.
 
-The customizer already sends this same theme object to its preview iframe through `postMessage`, demonstrating the future dashboard-to-preview boundary without coupling the public menu to dashboard code.
+The future Next.js renderer can receive the normalized menu payload from the
+NestJS API and render the selected family server-side or at the edge. Theme
+configuration must be validated against the template's capabilities before it
+is mapped to CSS variables. No family should require template-specific menu
+content markup from the API.
+
+The current Design Studio and Dashboard Design page already send equivalent
+theme/layout objects to preview iframes, demonstrating the desired boundary.
+The production contract should add a message `version`, explicit origin checks,
+and typed payload validation.
+
+See `docs/PRODUCTION_ARCHITECTURE.md` for the target data, publishing,
+localization, and public-menu architecture.

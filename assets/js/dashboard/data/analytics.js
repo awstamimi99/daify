@@ -1,6 +1,7 @@
 /**
  * Demo analytics. Numbers are illustrative only — real analytics will be
- * fed by Drupal (page views / QR scan events) once the backend exists.
+ * fed by the production event pipeline (page views / QR scan events) once the
+ * backend exists.
  */
 (function () {
   function series(days, base, variance) {

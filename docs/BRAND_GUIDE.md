@@ -1,47 +1,64 @@
-# DAIFY Brand Kit
+# DAIFY brand guide
 
 ## Brand idea
 
 **Better Guest Experiences.**
 
-DAIFY (Arabic: ضيفي) is a premium hospitality product built with the restraint of a modern SaaS company. Food & Beverage is the primary identity; hospitality and spa/salon/service use cases are supported without visually equalizing them with F&B. The identity avoids obvious forks, cloches, plates, QR codes, and restaurant clichés. Domain direction: daify.net.
+DAIFY (Arabic: ضيفي) is a premium hospitality product. Food and beverage is the
+primary product category; hotel, spa, salon, and related hospitality use cases
+are secondary. The visual language is restrained, warm, editorial, and avoids
+generic restaurant clichés. The confirmed public domain used by the prototype
+is `daify.net`.
 
-## Logo concept — placeholder notice
+## Current logo assets
 
-The real DAIFY mark (a red "D"/ribbon icon, provided by the user as reference images) has not yet been supplied as usable asset files, so the files below currently hold a **temporary text-based placeholder** (a red circle + "D" monogram, plus a plain "DAIFY" wordmark) — not a redesign attempt. Swap in the final vector files once available; filenames were kept as-is (legacy `menuflow-*` names) so no code references need to change.
+The prototype uses the supplied DAIFY red ribbon/D mark and bilingual wordmark:
 
-Primary assets:
+- `assets/branding/daify-logo-light.png` — for light surfaces.
+- `assets/branding/daify-logo-dark.png` — for dark surfaces.
+- `assets/icons/favicon.png` — browser icon.
+- `assets/icons/apple-touch-icon.png` — touch icon.
 
-- `assets/icons/menuflow-logo.svg` — primary logo for light backgrounds *(placeholder)*
-- `assets/icons/menuflow-logo-dark.svg` — reversed logo for dark backgrounds *(placeholder)*
-- `assets/icons/menuflow-icon.svg` — standalone symbol *(placeholder)*
-- `assets/icons/favicon.svg` — browser icon derived from the symbol *(placeholder)*
+The older SVG files under `assets/icons/` whose filenames begin with the legacy
+product name are unused placeholder assets. They remain only to avoid an
+unnecessary destructive asset cleanup before Milestone 1 and must not be used
+for new DAIFY UI.
 
-Sizing note: containers holding these logos use height-based sizing (`height: X; width: auto`), not a fixed width tied to the current SVG's aspect ratio, so a differently-proportioned final logo (e.g. a wider horizontal lockup) will drop in cleanly.
+Use height-based sizing with `width: auto`, preserve clear space, and never
+stretch, skew, recolor, or add effects to the supplied lockup.
 
 ## Brand colors
 
-| Name | Hex | Use |
-|---|---|---|
-| Brand Red | `#E53935` | Primary actions, active states, small brand highlights (5–10% of any screen — not a red interface) |
-| Near-Black | `#0D1117` | Primary text, dark sections |
-| Dark Gray | `#2A2F36` | Secondary dark surfaces |
-| Medium Gray | `#5A6068` | Secondary text |
-| Off-White | `#F7F3EE` | Main website background |
-| White | `#FFFFFF` | Cards, contrast on dark backgrounds |
+The source of truth is `assets/css/variables.css`.
 
-Recommended balance: 60–70% white/neutral, 20–30% near-black/gray, 5–10% red. Full token table (including hover/soft/tint variants and semantic success/warning/error colors) lives in `assets/css/variables.css`, documented in `docs/DESIGN_SYSTEM.md`.
+| Token | Value | Role |
+|---|---:|---|
+| Brand Red | `#e53935` | Primary CTA and selected brand moments |
+| Brand Red Hover | `#c92f2b` | Hover/pressed primary state |
+| Brand Red Strong | `#b52322` | Accessible red text on light surfaces |
+| Warm White | `#fcfaf9` | Marketing background |
+| White | `#ffffff` | Primary cards/surfaces |
+| Muted Surface | `#f6f5f4` | Dashboard/page background |
+| Charcoal | `#171717` | Dark surfaces |
+| Primary Text | `#202020` | Main text |
+| Secondary Text | `#66615f` | Supporting text |
+| Utility Blue | `#587ff8` | Information, links, and data visualization |
+
+Red remains the defining brand accent. Blue is a functional UI/status color,
+not a second brand color. Semantic success, warning, error, and information
+tokens are documented in the design system.
 
 ## Typography
 
-- **Poppins** (Latin) for navigation, buttons, and product UI — falls back to Inter where Poppins isn't loaded.
-- **Tajawal / Cairo** (Arabic) for RTL content — see `--font-arabic` in `assets/css/variables.css`.
-- **DM Serif Display** selectively for hero, stories, and editorial headings.
+- **Manrope**: body copy, navigation, controls, and product UI.
+- **DM Serif Display**: editorial headings and selected brand moments.
+- **Noto Kufi Arabic**, with Manrope/system fallbacks: Arabic/RTL content.
 
-## Brand voice
+Fonts are currently requested from Google Fonts in `variables.css`; production
+should self-host or use an equivalent privacy/performance-conscious strategy.
 
-Clear, elegant, confident, warm, short, and visually driven. Avoid exaggerated startup language and AI claims.
+## Voice
 
-## Logo usage
-
-Maintain generous clear space around the full logo. The horizontal logo should not appear below 140px on the web; 160–190px is preferred in navigation. Do not stretch, skew, recolor individual pieces, add effects, or place the logo directly over busy photography without sufficient contrast. These rules carry over unchanged once the placeholder is replaced with the final logo.
+Clear, elegant, confident, warm, short, and visually driven. Avoid exaggerated
+startup language, unsupported claims, and AI language unless it describes a
+real shipped capability.

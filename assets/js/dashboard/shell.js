@@ -61,8 +61,8 @@
       ${restaurantSwitcherHtml(restaurant)}
       ${groups}
       <div class="dash-sidebar-footer">
-        <a href="#" id="dashResetLink">Reset demo data</a>
-        <a href="#" id="dashLogoutLink">Log out</a>
+        <button type="button" id="dashResetLink">Reset demo data</button>
+        <button type="button" id="dashLogoutLink">Log out</button>
       </div>`;
   }
 
@@ -197,12 +197,8 @@
 
     $('#userMenuBtn')?.addEventListener('click', () => togglePanel('#userMenuPanel', '#userMenuBtn'));
     $('#userMenuLogout')?.addEventListener('click', doLogout);
-    $('#dashLogoutLink')?.addEventListener('click', event => {
-      event.preventDefault();
-      doLogout();
-    });
-    $('#dashResetLink')?.addEventListener('click', event => {
-      event.preventDefault();
+    $('#dashLogoutLink')?.addEventListener('click', doLogout);
+    $('#dashResetLink')?.addEventListener('click', () => {
       confirmDialog({
         title: 'Reset demo data?',
         message: 'This clears every change made across the whole dashboard and restores the original Oliva demo. This cannot be undone.',

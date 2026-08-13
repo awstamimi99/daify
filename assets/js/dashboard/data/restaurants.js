@@ -1,6 +1,6 @@
 /**
  * Seed data for restaurants an owner/manager can access. Real data will
- * come from Drupal Restaurant entities. Kept separate from menu content
+ * come from production Location records. Kept separate from menu content
  * (menus.js) so the two can be swapped independently later.
  */
 (function () {
