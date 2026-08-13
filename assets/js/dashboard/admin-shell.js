@@ -110,6 +110,7 @@
         </main>
       </div>
       <div class="dash-devtools" id="dashDevtools">
+        <button type="button" class="dash-devtools-toggle" id="devtoolsToggle" aria-label="Toggle prototype role switcher" aria-expanded="false">⚙</button>
         <span class="dash-devtools-label">Prototype role</span>
         <button type="button" data-role="owner">Owner</button>
         <button type="button" data-role="manager">Manager</button>
@@ -146,12 +147,19 @@
       doLogout();
     });
 
-    $$('#dashDevtools button').forEach(btn => {
+    const devtools = $('#dashDevtools');
+    const currentRole = window.MenuFlowStore.getSession().role;
+    $$('button[data-role]', devtools).forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.role === currentRole);
       btn.addEventListener('click', () => {
         if (btn.dataset.role === 'admin') return;
         window.MenuFlowStore.switchRole(btn.dataset.role);
         location.href = '../dashboard/index.html';
       });
+    });
+    $('#devtoolsToggle')?.addEventListener('click', () => {
+      const open = devtools.classList.toggle('open');
+      $('#devtoolsToggle').setAttribute('aria-expanded', String(open));
     });
   }
 
