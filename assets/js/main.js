@@ -273,4 +273,28 @@
     message.classList.add('show', 'form-message--success');
   }));
   $$('.password-toggle').forEach(btn => btn.addEventListener('click', () => { const input = btn.previousElementSibling; input.type = input.type === 'password' ? 'text' : 'password'; btn.textContent = input.type === 'password' ? 'Show' : 'Hide'; }));
+
+  $$('form[data-prototype="newsletter"]').forEach(form => form.addEventListener('submit', e => {
+    e.preventDefault(); const message = $('.form-message', form); if (!form.checkValidity()) { form.reportValidity(); return; }
+    message.textContent = `Subscribed — we'll send updates to ${form.email.value}.`;
+    message.classList.remove('form-message--error'); message.classList.add('show', 'form-message--success');
+    form.reset();
+  }));
+
+  $$('.footer-to-top').forEach(btn => btn.addEventListener('click', () => scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })));
+
+  const footerAccordionQuery = matchMedia('(max-width: 560px)');
+  $$('.footer-col > h4').forEach(heading => {
+    const col = heading.closest('.footer-col');
+    heading.setAttribute('role', 'button');
+    heading.setAttribute('tabindex', '0');
+    heading.setAttribute('aria-expanded', 'false');
+    const toggle = () => {
+      if (!footerAccordionQuery.matches) return;
+      const open = col.classList.toggle('open');
+      heading.setAttribute('aria-expanded', String(open));
+    };
+    heading.addEventListener('click', toggle);
+    heading.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+  });
 })();
