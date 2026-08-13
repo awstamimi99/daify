@@ -1,0 +1,19 @@
+import type { InputHTMLAttributes } from "react";
+import styles from "./text-field.module.css";
+
+export interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
+  readonly label: string;
+  readonly hint?: string;
+}
+
+export function TextField({ label, hint, id, className, ...props }: TextFieldProps) {
+  const inputId = id ?? props.name;
+  const hintId = hint && inputId ? `${inputId}-hint` : undefined;
+  return (
+    <label className={[styles.field, className].filter(Boolean).join(" ")} htmlFor={inputId}>
+      <span>{label}</span>
+      <input id={inputId} aria-describedby={hintId} {...props} />
+      {hint ? <small id={hintId}>{hint}</small> : null}
+    </label>
+  );
+}

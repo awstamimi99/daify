@@ -1,0 +1,36 @@
+.main { min-height: 75vh; }
+.hero { padding: clamp(5rem, 11vw, 10rem) 0 clamp(3rem, 7vw, 6rem); background: radial-gradient(circle at 80% 10%, var(--brand-red-soft), transparent 30%), var(--surface-secondary); }
+.hero h1 { max-width: 14ch; margin-block: 1rem 1.25rem; font-family: var(--font-serif); font-size: var(--fs-display); font-weight: 400; line-height: .92; letter-spacing: -.045em; }
+.hero p { max-width: 46rem; color: var(--text-secondary); font-size: clamp(1rem, 1.5vw, 1.2rem); }
+.actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+.editorial { padding: 0 0 clamp(5rem, 9vw, 8rem); }
+.sectionHead { display: grid; grid-template-columns: .5fr 1fr; align-items: end; gap: 2rem; margin-bottom: 2rem; }
+.sectionHead h2 { font-family: var(--font-serif); font-size: var(--fs-h2); font-weight: 400; line-height: 1; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.card { min-height: 19rem; display: flex; flex-direction: column; padding: clamp(1.5rem, 3vw, 2.5rem); }
+.card small { color: var(--brand-red-strong); font-weight: 800; }
+.card h3 { margin-top: auto; padding-top: 3rem; font-family: var(--font-serif); font-size: 1.8rem; font-weight: 400; }
+.card p { margin-top: .7rem; color: var(--text-secondary); font-size: .82rem; }
+.flow { padding: clamp(5rem, 10vw, 9rem) 0; background: var(--surface-dark); color: white; }
+.flow h2 { margin-block: .8rem 2.5rem; font-family: var(--font-serif); font-size: var(--fs-h2); font-weight: 400; line-height: 1; }
+.flow > div > div { display: grid; grid-template-columns: repeat(3, 1fr); border-block: 1px solid rgb(255 255 255 / 18%); }
+.flow article { display: grid; gap: 2rem; padding: 2rem; border-inline-end: 1px solid rgb(255 255 255 / 18%); }
+.flow article:last-child { border: 0; }
+.flow article b { color: var(--brand-red); font-size: .7rem; }
+.flow article span { font-family: var(--font-serif); font-size: 1.5rem; }
+.manifesto { padding: clamp(5rem, 10vw, 10rem) 0; background: var(--surface-dark); color: white; }
+.manifesto p { max-width: 19ch; font-family: var(--font-serif); font-size: clamp(2.3rem, 6vw, 5.5rem); line-height: .98; }
+.manifesto div div { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 3rem; color: rgb(255 255 255 / 58%); font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.contact { position: relative; overflow: hidden; padding: clamp(5rem, 10vw, 9rem) 0; background: radial-gradient(circle at 12% 18%, var(--brand-red-soft), transparent 30%), radial-gradient(circle at 90% 70%, rgb(88 127 248 / 12%), transparent 28%), var(--surface-secondary); }
+.contactGrid { display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: clamp(3rem, 8vw, 8rem); }
+.contact h1 { max-width: 10ch; margin-block: 1rem 1.25rem; font-family: var(--font-serif); font-size: var(--fs-display); font-weight: 400; line-height: .9; }
+.contact h1 em { color: var(--brand-red-strong); font-weight: 400; }
+.contactGrid > div > p { max-width: 34rem; color: var(--text-secondary); }
+.promises { display: grid; gap: .65rem; margin-block: 2rem; }
+.promises span { display: flex; align-items: center; gap: .8rem; font-size: .78rem; font-weight: 700; }
+.promises b { color: var(--brand-red-strong); font-size: .62rem; }
+.direct { display: flex; flex-wrap: wrap; gap: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-default); }
+.direct span { display: grid; color: var(--text-muted); font-size: .65rem; }
+.direct a, .direct strong { margin-top: .25rem; color: var(--text-primary); font-size: .75rem; }
+@media (max-width: 820px) { .contactGrid { grid-template-columns: 1fr; } .sectionHead { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .grid, .flow > div > div { grid-template-columns: 1fr; } .card { min-height: auto; } .flow article { border-inline-end: 0; border-bottom: 1px solid rgb(255 255 255 / 18%); } }

@@ -1,4 +1,10 @@
 node_modules/
+.next/
+apps/web/.next/
+apps/web/playwright-report/
+apps/web/test-results/
+apps/web/next-env.d.ts
+*.tsbuildinfo
 test-results/
 playwright-report/
 blob-report/

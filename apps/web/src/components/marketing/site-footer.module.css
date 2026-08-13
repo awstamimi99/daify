@@ -1,0 +1,30 @@
+.footer { padding: clamp(3rem, 7vw, 6rem) 1rem 1.5rem; background: var(--surface-dark); color: white; }
+.grid, .base { width: min(100%, var(--container)); margin: auto; }
+.grid { display: grid; grid-template-columns: 1.35fr repeat(3, .65fr) 1.4fr; gap: clamp(1.5rem, 4vw, 4rem); }
+.grid > div { display: flex; flex-direction: column; gap: .7rem; }
+.grid strong { margin-bottom: .35rem; font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; }
+.grid a, .grid p, .base { color: rgb(255 255 255 / 62%); font-size: .78rem; }
+.grid a:hover { color: white; }
+.column > button { display: flex; align-items: center; justify-content: space-between; background: transparent; color: white; padding: 0; text-align: left; }
+.column > button strong { margin: 0; }
+.column > button span { display: none; }
+.column > div { display: flex; flex-direction: column; gap: .7rem; }
+.brand p { max-width: 13rem; }
+.newsletter form { display: flex; gap: .5rem; margin-top: .5rem; }
+.newsletter input { min-width: 0; flex: 1; border: 1px solid rgb(255 255 255 / 20%); border-radius: var(--radius-pill); background: rgb(255 255 255 / 8%); padding: .7rem 1rem; color: white; }
+.base { display: flex; justify-content: space-between; gap: 1rem; margin-top: 4rem; padding-top: 1.25rem; border-top: 1px solid rgb(255 255 255 / 12%); }
+.base button { margin-inline-start: auto; background: transparent; color: rgb(255 255 255 / 72%); cursor: pointer; font-size: .72rem; }
+.base button:hover { color: white; }
+@media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } .brand, .newsletter { grid-column: 1 / -1; } }
+@media (max-width: 520px) {
+  .grid { grid-template-columns: 1fr; }
+  .brand, .newsletter { grid-column: auto; }
+  .column { padding-block: .8rem; border-top: 1px solid rgb(255 255 255 / 12%); }
+  .column > button { width: 100%; cursor: pointer; }
+  .column > button span { display: inline; transition: transform .2s; }
+  .column > div { display: none; padding-top: .8rem; }
+  .column.open > div { display: flex; }
+  .column.open > button span { transform: rotate(180deg); }
+  .base { display: grid; gap: .35rem; }
+  .base button { margin: .5rem 0 0; justify-self: start; }
+}

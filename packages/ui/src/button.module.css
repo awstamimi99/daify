@@ -1,0 +1,21 @@
+.button {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+  padding: .7rem 1.15rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  font-weight: 750;
+  text-decoration: none;
+  transition: transform .2s, background .2s, border-color .2s;
+}
+
+.button:hover { transform: translateY(-2px); }
+.primary { background: var(--surface-dark); color: white; }
+.primary:hover { background: var(--brand-red); }
+.secondary { border-color: var(--border-default); background: white; }
+.quiet { padding-inline: .4rem; background: transparent; }
+.light { background: white; color: var(--surface-dark); }

@@ -1,25 +1,39 @@
-# DAIFY prototype
+# DAIFY
 
-DAIFY is a framework-free front-end prototype for a premium digital-menu SaaS
-product. It demonstrates the marketing site, authentication journeys,
-restaurant dashboard, platform-admin dashboard, and a reusable restaurant-menu
-template engine. It is not the production application and has no live backend.
+DAIFY is a premium digital-menu SaaS product. The repository now contains the
+M1 production frontend foundation alongside the preserved framework-free
+prototype. Neither surface has a production backend yet.
 
 ## Run locally
 
-```bash
-python3 -m http.server 8080
-```
-
-Open `http://localhost:8080`.
-
-Run the existing end-to-end tests with:
+Run the production frontend:
 
 ```bash
-npm test
+npm install
+npm run dev:web
 ```
 
-## What is implemented
+Open `http://localhost:3000`. Quality commands are `npm run lint`,
+`npm run typecheck`, `npm run build`, and `npm run test:web`.
+
+Run the preserved prototype with `python3 -m http.server 8080`, then open
+`http://localhost:8080`. Its original browser suite remains available through
+`npm run test:prototype`; `npm test` runs both prototype and production-web
+browser suites.
+
+## Production frontend foundation
+
+- Next.js App Router, React, and strict TypeScript under `apps/web`.
+- Shared domain contracts in `packages/types`, UI primitives in `packages/ui`,
+  and strict shared compiler settings in `packages/config`.
+- DAIFY tokens, self-hosted brand fonts, reusable buttons/cards/form fields,
+  shared loading/error/not-found states, and responsive shell conventions.
+- Shared marketing shell and real homepage, auth shell, responsive role-aware
+  dashboard shell, and an Atelier renderer proof with English/Arabic RTL.
+- Playwright coverage plus GitHub Actions checks for lint, typecheck, build, and
+  Chromium tests.
+
+## Preserved prototype
 
 - Marketing: home, features, nine-template gallery, pricing, about, contact,
   privacy, terms, and cookies.
@@ -41,6 +55,11 @@ operations are simulated. Prototype state lives only in the current browser.
 ## Repository structure
 
 ```text
+apps/web/                       production Next.js frontend
+packages/
+  config/                       shared strict TypeScript configuration
+  types/                        shared domain and renderer contracts
+  ui/                           reusable React UI primitives
 index.html, features.html, ...   public marketing/auth/legal pages
 dashboard/                      restaurant owner/manager application
 admin/                          DAIFY platform-admin application
@@ -93,8 +112,7 @@ their concepts into typed modules rather than renaming them in place.
 - [Design system](docs/DESIGN_SYSTEM.md)
 - [Template engine](docs/TEMPLATE_ENGINE.md)
 
-The production direction is Next.js/React/TypeScript, NestJS, PostgreSQL, and
-Prisma. No production framework or database implementation is part of this
-prototype cleanup. `docs/ROADMAP.md` owns milestone status; the active milestone
-file owns execution details. Architecture decisions must be documented before
-their implementation changes direction.
+The production direction remains Next.js/React/TypeScript, NestJS, PostgreSQL,
+and Prisma. M1 implements only the frontend boundary; backend, database, and
+real authentication work remain intentionally deferred. `docs/ROADMAP.md` owns
+milestone status; the active milestone file owns execution details.

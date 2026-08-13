@@ -2,7 +2,7 @@
 
 ## Status
 
-**NEXT.** Not started. Do not begin implementation until this plan is reviewed and the kickoff is explicit — see `docs/ROADMAP.md`.
+**IN PROGRESS — implementation ready for independent review.** Kickoff was explicit on 2026-08-13. The production frontend foundation is implemented and all local automated gates pass. M1 is deliberately not marked complete until independent visual/accessibility review confirms the Atelier parity and migrated-page quality gates, and the first GitHub Actions run is observed green.
 
 ## Goal
 
@@ -32,7 +32,7 @@ Each sub-phase lists its own specific learning goal below. At the milestone leve
 - Next.js (App Router), React, TypeScript.
 - No backend calls yet — M1 pages either render static/prototype data or reuse the same `localStorage`-backed data the current prototype uses, as a bridge. Real API integration is M2/M3/M4.
 - No production authentication yet — the dashboard shell can be migrated with the existing prototype's simulated session, not real login.
-- Styling approach for the new app must be decided at the start of M1.5 (CSS Modules, Tailwind, or another CSS-in-TS approach are all compatible with the locked stack; none is chosen yet — pick one before porting tokens, and record the choice in this file's Notes once made).
+- Styling approach: CSS Modules for component/layout isolation plus a small global token/reset layer. This preserves the existing CSS expertise and DAIFY tokens without copying the legacy monolith or introducing another styling runtime.
 
 ## Tasks
 
@@ -154,13 +154,69 @@ Each sub-phase below follows the same four-part breakdown: **LEARN** (concept to
 
 ## Completion Checklist
 
-- [ ] Styling approach decided and recorded in this file.
-- [ ] Domain TypeScript types written and checked against real prototype data.
-- [ ] Next.js app created and running.
-- [ ] Project structure decided and documented.
-- [ ] Design tokens and base components ported.
-- [ ] All 15 marketing pages migrated with generated (not hand-duplicated) metadata.
-- [ ] Dashboard shell migrated with working role-based navigation.
-- [ ] Template migration interface designed and validated against one template (Atelier).
-- [ ] Playwright running locally and in CI.
+- [x] Styling approach decided and recorded in this file.
+- [x] Domain TypeScript types written against the documented prototype contracts.
+- [x] Next.js app created and running.
+- [x] Project structure decided and documented.
+- [x] Design tokens and base components ported.
+- [ ] All 15 prototype top-level pages migrated. The nine marketing/legal routes and four auth routes are migrated; the legacy preview/customizer remain intentionally in place for M5.
+- [x] Dashboard shell migrated with working role-based navigation.
+- [x] Template migration interface designed and structurally validated against one template (Atelier).
+- [ ] Playwright runs locally and CI is configured; the first remote GitHub Actions run still needs to be observed.
 - [ ] `docs/ROADMAP.md` updated to mark M1 complete and M2 as next.
+
+## Implementation record — 2026-08-13
+
+### Architecture created
+
+```text
+apps/web/
+  src/app/                    App Router layouts, routes, and shared states
+  src/components/             brand, marketing, auth, and dashboard components
+  src/data/                   typed static M1 content and fixtures
+  src/features/templates/     renderer registry, Atelier proof, migration notes
+  src/lib/                    production asset bridge to preserved legacy assets
+  tests/                      M1 Playwright coverage
+packages/
+  config/                     strict shared TypeScript configuration
+  types/                      domain, localization, role, menu, and renderer contracts
+  ui/                         accessible Button, Card, and TextField primitives
+```
+
+The root remains an npm-workspaces monorepo. `apps/web` is the only production application in M1. Server Components are the default; client boundaries are limited to responsive navigation, form demonstrations, role-view switching, and locale switching. No API abstraction, database client, auth provider, or mock server was introduced.
+
+### Migrated surfaces
+
+- Shared marketing layout, DAIFY header/navigation, compact footer/newsletter interaction, homepage, features, templates, pricing, about, contact, privacy, terms, and cookies.
+- Login, signup, forgot-password, and reset-password shells. Submissions prove UI behavior only and state explicitly that no account or API call exists.
+- Responsive dashboard shell, overview, role-aware navigation fixture, and bounded placeholder routes for the remaining dashboard destinations.
+- DAIFY brand tokens, Manrope/DM Serif Display/Noto Kufi Arabic fonts, focus states, buttons, cards, and form fields.
+- Loading, error, and not-found patterns.
+- Typed Atelier renderer proof with English/Arabic content, `dir` switching, stable slug/family/capabilities, `--restaurant-*` theme variables, and renderer-registry isolation.
+
+### Intentionally retained prototype
+
+The existing root HTML, CSS, JavaScript, dashboard/admin pages, nine guest templates, Design Studio, preview workspace, localStorage contracts, iframe/postMessage renderer, assets, and the legacy 17-test suite were not modified or removed. They remain the behavioral and visual reference. Full dashboard/admin migration belongs to M4/M7; full renderer, customizer, publishing, and public-route migration belongs to M5.
+
+### Quality evidence
+
+| Gate | Result |
+| --- | --- |
+| `npm run lint` | PASS — zero warnings |
+| `npm run typecheck` | PASS — web, types, and UI workspaces |
+| `npm run build` | PASS — Next.js production build, 24 generated routes/pages |
+| `npm run test:web` | PASS — 6/6 Chromium tests |
+| `npm run test:prototype` | PASS — retained baseline 17/17 |
+
+GitHub Actions is configured in `.github/workflows/frontend.yml` for pushes to `main`/`Milestone-1` and pull requests. It runs lint, typecheck, build, and the production Playwright suite.
+
+### Review gate and remaining issues
+
+M1 is ready for an independent review but not yet complete. The reviewer should:
+
+1. Compare the new homepage, auth shell, dashboard shell, and Atelier proof against the preserved prototype at desktop and mobile sizes.
+2. Confirm keyboard order, visible focus, contrast, reduced-width navigation, and Arabic RTL behavior manually.
+3. Decide whether the original “all 15 pages” line is a required M1 deliverable despite the same plan deferring preview/customizer migration to M5; those two tools are intentionally not migrated here.
+4. Observe a green GitHub Actions run after the branch is pushed.
+
+If those gates pass without required changes, mark M1 `COMPLETE` and make M2 `NEXT`. Do not start M2 automatically.

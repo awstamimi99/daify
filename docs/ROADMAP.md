@@ -11,7 +11,7 @@ Status legend: `COMPLETE` · `IN PROGRESS` · `NEXT` · `NOT STARTED` · `BLOCKE
 | # | Milestone | Status | One-line objective |
 | --- | --- | --- | --- |
 | M0 | Prototype Cleanup + Architecture Lock | **COMPLETE** | Clean up DAIFY branding, review the MenuFlow legacy, and lock production architecture decisions before writing production code. |
-| M1 | Foundation — TypeScript / React / Next.js | **NEXT** | Stand up the production web foundation and migrate the design system, marketing shell, dashboard shell, and template-migration strategy onto it. |
+| M1 | Foundation — TypeScript / React / Next.js | **IN PROGRESS** | Production web foundation implemented; independent visual/accessibility review and first observed CI run remain before completion. |
 | M2 | Core Backend — NestJS / PostgreSQL / Prisma | NOT STARTED | Stand up the API, database, and migrations that M1's frontend will eventually call. |
 | M3 | Auth / Organizations / RBAC | NOT STARTED | Real accounts, sessions, organizations, membership, and server-enforced roles. |
 | M4 | Menu Platform | NOT STARTED | Locations, menus, sections, items, and multilingual menu content as real backend resources. |
@@ -40,9 +40,7 @@ The table above owns status and objective. These compact gates record the other 
 
 ## Current focus
 
-**M1 — Foundation.** See [MILESTONES/M1_FOUNDATION.md](MILESTONES/M1_FOUNDATION.md) for the sub-phase breakdown (M1.1–M1.9) and for what to learn, what to build yourself, and what to build with Codex at each step.
-
-M1 has not started yet. Implementation begins only when explicitly kicked off — see "Rules for this roadmap" below.
+**M1 — Foundation is in progress and ready for independent review.** See [MILESTONES/M1_FOUNDATION.md](MILESTONES/M1_FOUNDATION.md) for the implementation record, local quality evidence, deliberately retained prototype scope, and the remaining review gates. M2 has not started and must not start automatically.
 
 ## Why M0 is marked complete
 

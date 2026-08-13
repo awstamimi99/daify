@@ -2,9 +2,19 @@
   "name": "daify",
   "private": true,
   "version": "0.1.0",
-  "description": "DAIFY — static front-end prototype (no backend). See docs/TEMPLATE_ENGINE.md.",
+  "description": "DAIFY monorepo: preserved static prototype plus the production frontend foundation.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "test": "playwright test"
+    "dev:web": "npm run dev --workspace @daify/web",
+    "build": "npm run build --workspace @daify/web",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test:prototype && npm run test:web",
+    "test:prototype": "playwright test",
+    "test:web": "playwright test --config apps/web/playwright.config.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.48.0"
