@@ -2,7 +2,7 @@
 
 ## Status
 
-NOT STARTED. Detailed task breakdown will be written when M2 is complete and this milestone is about to start.
+**IN PROGRESS.** Explicitly started by the owner on 2026-08-13 after M2 completion and audit remediation.
 
 ## Goal
 
@@ -31,9 +31,25 @@ Session/token-based authentication, password handling (or provider-based auth), 
 - MFA/step-up authentication for Platform Admin and sensitive actions, per the same document.
 - Authentication provider, session duration, and MFA recovery mechanics are explicitly deferred in `AUTH_RBAC.md` — this milestone is where those get decided, not before.
 
-## Tasks
+## Tasks and execution status — 2026-09-12
 
-Detailed task breakdown deferred until M2 is complete and this milestone starts.
+- Implemented identity with Argon2id, revocable opaque sessions, verification,
+  verification resend, password reset and TOTP enforcement for existing platform admins.
+- Implemented SMTP delivery with local SMTP integration tests, failure reporting,
+  timeouts and production TLS requirements. External provider delivery is not yet validated.
+- Fixed Origin validation at the Next proxy, one-time token consumption races,
+  last-owner invitation bypass/concurrent demotion, malformed cookies, duplicate
+  location conflicts, and organization/location input validation.
+- Organization and membership mutations serialize on a PostgreSQL organization
+  row lock; token claims and password/session changes are transactional.
+- Implemented actual workspace identity, first organization/location setup,
+  scoped navigation, team invitation acceptance, member role/status management,
+  and member listing limited to the actor's grant authority.
+- Fixed desktop logout, logout failure reporting, return-to paths, verification
+  effects, field labels and mobile sidebar keyboard/focus behavior.
+- Remaining: platform-admin recoverable MFA enrollment, shared-proxy rate-limit
+  isolation, SMTP provider smoke test, complete OpenAPI request/response schemas,
+  and final milestone review. Menu CRUD remains M4.
 
 ## Deliverables
 
@@ -61,8 +77,20 @@ API tests asserting the permission matrix directly — for each role, which endp
 ## Risks / Notes
 
 - This is the first milestone where getting something wrong has real security consequences — treat the permission-matrix tests as a gate, not an afterthought.
-- Authentication provider choice (build vs. a hosted provider) is still open; resolve it early in this milestone since most other tasks depend on it.
+- The identity decision is recorded in `AUTH_RBAC.md`: first-party email/password
+  sessions. SMTP delivery is implemented; deployment credentials remain external.
 
 ## Completion Checklist
 
-Not applicable yet — a real checklist will be written from the detailed task breakdown when this milestone starts.
+- [x] Real account/session and organization membership API.
+- [x] Tenant/location isolation and last-owner/manager grant regression tests.
+- [x] Native PostgreSQL 17 migration and concurrency verification.
+- [x] Local SMTP transport success and rejection tests.
+- [x] Browser journey for verification, login, workspace/first branch creation,
+  invitation, acceptance, scoped navigation, suspension and logout.
+- [ ] Provider delivery/retry operational validation using deployment settings.
+- [ ] Recoverable MFA enrollment before enabling real platform administrators.
+- [ ] Proxy-aware per-client rate limiting verified for multiple clients.
+- [ ] Complete OpenAPI schemas and final M3 acceptance review.
+
+Evidence and remaining QA findings: [remediation record](../QA/REMEDIATION_2026-09-12.md).

@@ -1,4 +1,16 @@
 node_modules/
+.env
+.env.*
+!.env.example
+apps/api/dist/
+apps/api/coverage/
+apps/api/src/generated/
+apps/api/prisma.config.js
+apps/api/prisma.config.js.map
+apps/api/prisma.config.d.ts
+apps/api/prisma/seed.js
+apps/api/prisma/seed.js.map
+apps/api/prisma/seed.d.ts
 .next/
 apps/web/.next/
 apps/web/playwright-report/

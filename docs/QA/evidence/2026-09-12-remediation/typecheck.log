@@ -1,0 +1,32 @@
+
+> daify@0.1.0 typecheck
+> npm run typecheck --workspaces --if-present
+
+
+> @daify/api@0.1.0 typecheck
+> npm run prisma:generate && tsc --noEmit
+
+
+> @daify/api@0.1.0 prisma:generate
+> prisma generate
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (7.9.1) to ./src/generated/prisma in 59ms
+
+
+> @daify/web@0.1.0 typecheck
+> next typegen && tsc --noEmit
+
+Generating route types...
+✓ Types generated successfully
+
+> @daify/types@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @daify/ui@0.1.0 typecheck
+> tsc --noEmit
+

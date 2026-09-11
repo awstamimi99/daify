@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-12",
+  "baseCommit": "9b41ff4",
+  "workingTree": "Pre-existing uncommitted product changes included in review",
+  "build": "passed with explicit disposable DATABASE_URL",
+  "typecheck": "passed after resolving missing DATABASE_URL configuration",
+  "lint": { "passed": false, "file": "apps/web/src/app/(auth)/verify-email/page.tsx", "line": 12, "rule": "react-hooks/set-state-in-effect" },
+  "unit": { "suites": 5, "passed": 24, "failed": 0 },
+  "integration": { "suites": 1, "passed": 9, "failed": 0, "database": "PGlite PostgreSQL17.5 WASM via socket; not native PostgreSQL" },
+  "prototype": { "passed": 17, "failed": 0, "browser": "Chromium" },
+  "web": { "passed": 17, "failed": 1, "failure": "Email verification heading is invalid after development effect sends201 then401 requests", "browser": "Chromium" },
+  "routeAudit": { "distinctPages": 55, "viewportWidths": [1440, 390], "checks": 110 },
+  "accessibility": { "pages": 6, "tool": "installed axe-core", "tags": ["wcag2a", "wcag2aa", "wcag21aa"] },
+  "migrationDeployment": "Not verified: Prisma schema engine failed against local PGlite socket. Both checked-in migration SQL files applied directly to fresh isolated database."
+}

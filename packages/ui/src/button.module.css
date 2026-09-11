@@ -16,6 +16,6 @@
 .button:hover { transform: translateY(-2px); }
 .primary { background: var(--surface-dark); color: white; }
 .primary:hover { background: var(--brand-red); }
-.secondary { border-color: var(--border-default); background: white; }
+.secondary { border-color: var(--border-default); background: white; color: var(--text-primary); }
 .quiet { padding-inline: .4rem; background: transparent; }
 .light { background: white; color: var(--surface-dark); }

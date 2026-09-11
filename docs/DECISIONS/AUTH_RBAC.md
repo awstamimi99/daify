@@ -1,6 +1,6 @@
 # Authentication and RBAC Decision
 
-Status: Role model accepted; authentication provider deferred
+Status: Accepted; M3 authentication/session strategy locked
 Decision date: 2026-08-13
 Implementation milestone: M3
 
@@ -62,9 +62,44 @@ Roles are presets over granular permissions. Resource assignments can narrow a r
 - Rate limiting for login, signup, password reset, verification, invitation, and token refresh.
 - Account linking, session duration, MFA recovery, and exact provider remain deferred until the M3 decision review.
 
+## M3 authentication implementation decision
+
+Decision date: 2026-08-13
+
+- DAIFY owns email/password identity in the NestJS modular monolith for M3. Passwords use Argon2id; plaintext credentials and tokens are never persisted.
+- Browser authentication uses an opaque random session token in an `HttpOnly`, `SameSite=Lax`, path-wide cookie. PostgreSQL stores only its SHA-256 digest, expiry, revocation, authentication assurance level, and minimal device/request metadata. No durable credential is stored in browser JavaScript or `localStorage`.
+- Sessions have a seven-day idle/rolling lifetime and a thirty-day absolute lifetime. Rotation/revocation happens server-side; logout and security-state changes revoke immediately. A separate JWT/refresh-token pair is intentionally unnecessary for the browser architecture.
+- Unsafe cookie-authenticated requests must pass an allowed-origin CSRF check in addition to SameSite cookie behavior. Next.js may proxy requests for same-origin UX, but it is not the authorization boundary.
+- Email verification, password reset, and invitations use separate single-use random tokens. PostgreSQL stores token digests, purpose, expiry, consumption, and subject metadata; delivery is behind an email-delivery port so a provider can be selected without changing domain behavior. Test-only token exposure is fail-closed outside `NODE_ENV=test`.
+- Platform Admin is a global user capability, never an Organization membership role. Platform routes require an active AAL2 session established with TOTP MFA, a support reason, request correlation, and an append-only security/audit event.
+- Rate limiting is applied to signup, login, verification, password reset, invitation, and MFA boundaries. M3 uses Nest's in-process throttler for the single API instance; distributed Redis-backed limiting is required before horizontal production scale in M8.
+- Recovery codes, external identity linking, and managed auth-provider migration remain deferred. Enabling a Platform Admin without a recoverable MFA enrollment is not permitted.
+
+## 2026-09-12 implementation hardening
+
+- Next.js validates the incoming exact Origin and JSON media type before
+  forwarding unsafe requests. NestJS independently applies origin and membership
+  checks. A trusted origin must never be substituted before checking the caller.
+- Token consumption uses a conditional, unexpired, unconsumed update in the
+  same transaction as its effect. User locks serialize login, password reset,
+  verification and replacement-token issuance. Organization locks serialize
+  invitations and membership changes, including concurrent owner demotions.
+- Invitations add/reactivate membership; they cannot alter an active or suspended
+  member. Owners must use the membership endpoint for those changes. Member
+  changes invalidate outstanding invitations for the recipient.
+- Organization lists and detail responses filter locations by current membership
+  scope and active resource status. The frontend receives effective permissions;
+  hidden links are a UX aid, while API authorization remains authoritative.
+- SMTP delivery is awaited after the transaction commits, uses finite timeouts,
+  and enforces TLS in production. Failure returns 503 without leaking message
+  tokens into logs. Verification resend and repeated reset/invite requests replace
+  old links. This is direct SMTP, not a durable queue; queued retries and actual
+  provider deliverability are not established by the local tests.
+- Test-only no-delivery transport is rejected outside `NODE_ENV=test`. SMTP
+  credentials belong in deployment configuration, never in committed files.
+
 ## Related references
 
 - [Data model](DATA_MODEL.md)
 - [Production architecture](../PRODUCTION_ARCHITECTURE.md)
 - [M3 execution plan](../MILESTONES/M3_AUTH_ORGANIZATIONS.md)
-

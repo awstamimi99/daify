@@ -1,0 +1,67 @@
+
+> daify@0.1.0 test:web
+> playwright test --config apps/web/playwright.config.ts --workers=2
+
+
+Running 18 tests using 2 workers
+
+(node:17787) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:17786) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [chromium] › apps/web/tests/foundation.spec.ts:3:5 › marketing shell keeps the DAIFY identity and primary journey (642ms)
+  ✓   1 [chromium] › apps/web/tests/foundation.spec.ts:13:5 › responsive marketing navigation opens on a phone (696ms)
+  ✓   4 [chromium] › apps/web/tests/foundation.spec.ts:48:5 › dashboard rejects visitors without a server session (319ms)
+  ✓   5 [chromium] › apps/web/tests/foundation.spec.ts:53:5 › Atelier renderer switches to Arabic and RTL through the typed contract (389ms)
+  ✓   6 [chromium] › apps/web/tests/foundation.spec.ts:63:5 › unknown routes use the shared not-found pattern (390ms)
+  ✓   7 [chromium] › apps/web/tests/foundation.spec.ts:82:7 › /features has route-specific metadata and content (258ms)
+  ✓   8 [chromium] › apps/web/tests/foundation.spec.ts:82:7 › /templates has route-specific metadata and content (416ms)
+  ✓   9 [chromium] › apps/web/tests/foundation.spec.ts:82:7 › /pricing has route-specific metadata and content (259ms)
+  ✓  10 [chromium] › apps/web/tests/foundation.spec.ts:82:7 › /about has route-specific metadata and content (304ms)
+  ✓  11 [chromium] › apps/web/tests/foundation.spec.ts:82:7 › /contact has route-specific metadata and content (251ms)
+  ✓  12 [chromium] › apps/web/tests/foundation.spec.ts:82:7 › /privacy has route-specific metadata and content (253ms)
+  ✓  13 [chromium] › apps/web/tests/foundation.spec.ts:82:7 › /terms has route-specific metadata and content (260ms)
+  ✓  14 [chromium] › apps/web/tests/foundation.spec.ts:82:7 › /cookies has route-specific metadata and content (239ms)
+  ✓  15 [chromium] › apps/web/tests/foundation.spec.ts:89:5 › contact form validates and completes without transmitting data (312ms)
+  ✓  16 [chromium] › apps/web/tests/foundation.spec.ts:99:5 › template gallery exposes nine designs and working filters (448ms)
+  ✓  17 [chromium] › apps/web/tests/foundation.spec.ts:108:5 › pricing toggle updates visible plan pricing (315ms)
+  ✓  18 [chromium] › apps/web/tests/foundation.spec.ts:116:5 › mobile footer keeps accessible accordions and back-to-top control (461ms)
+  ✘   3 [chromium] › apps/web/tests/foundation.spec.ts:24:5 › real authentication verifies email, protects dashboard, and logs out (5.7s)
+
+
+  1) [chromium] › apps/web/tests/foundation.spec.ts:24:5 › real authentication verifies email, protects dashboard, and logs out 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Email verified.' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Email verified.' })
+
+
+      33 |
+      34 |   await page.goto(`/verify-email?token=${encodeURIComponent(signupBody.verificationToken)}`);
+    > 35 |   await expect(page.getByRole("heading", { name: "Email verified." })).toBeVisible();
+         |                                                                        ^
+      36 |   await page.goto("/login");
+      37 |   await page.getByLabel("Email address").fill(email);
+      38 |   await page.getByLabel("Password", { exact: true }).fill(password);
+        at /Users/awstamimi/Desktop/DAIFY/apps/web/tests/foundation.spec.ts:35:72
+
+    Error Context: apps/web/test-results/foundation-real-authentica-1d8f2-ects-dashboard-and-logs-out-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    apps/web/test-results/foundation-real-authentica-1d8f2-ects-dashboard-and-logs-out-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace apps/web/test-results/foundation-real-authentica-1d8f2-ects-dashboard-and-logs-out-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › apps/web/tests/foundation.spec.ts:24:5 › real authentication verifies email, protects dashboard, and logs out 
+  17 passed (7.1s)

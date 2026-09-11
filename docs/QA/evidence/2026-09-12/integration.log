@@ -1,0 +1,10 @@
+
+> @daify/api@0.1.0 test:integration
+> jest --selectProjects integration --runInBand
+
+Running one project: integration
+Test Suites: 1 passed, 1 total
+Tests:       9 passed, 9 total
+Snapshots:   0 total
+Time:        1.38 s
+Ran all test suites.

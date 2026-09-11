@@ -10,10 +10,10 @@ export function TextField({ label, hint, id, className, ...props }: TextFieldPro
   const inputId = id ?? props.name;
   const hintId = hint && inputId ? `${inputId}-hint` : undefined;
   return (
-    <label className={[styles.field, className].filter(Boolean).join(" ")} htmlFor={inputId}>
-      <span>{label}</span>
+    <div className={[styles.field, className].filter(Boolean).join(" ")}>
+      <label htmlFor={inputId}>{label}</label>
       <input id={inputId} aria-describedby={hintId} {...props} />
       {hint ? <small id={hintId}>{hint}</small> : null}
-    </label>
+    </div>
   );
 }

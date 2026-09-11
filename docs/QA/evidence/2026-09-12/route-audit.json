@@ -1,0 +1,2728 @@
+[
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "index.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/index.html",
+    "title": "DAIFY — Digital Menus Made Remarkable",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Your restaurant deserves more than a PDF."
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "login.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/login.html",
+    "title": "Log In — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Return to yourrestaurant."
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "signup.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/signup.html",
+    "title": "Start Your Free Trial — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Build somethingworth scanning."
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "template-preview.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/template-preview.html",
+    "title": "Atelier — Template Preview — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Atelier"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "template-customizer.html",
+    "status": 200,
+    "title": "Atelier — Design Studio — DAIFY",
+    "overflow": false,
+    "brokenImages": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "dashboard/analytics.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/analytics.html",
+    "title": "Analytics — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Analytics"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "dashboard/billing.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/billing.html",
+    "title": "Billing — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Billing"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "dashboard/design.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/design.html",
+    "title": "Design — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Design"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "dashboard/help.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/help.html",
+    "title": "Help — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Help"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "dashboard/index.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/index.html",
+    "title": "Dashboard — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Welcome back, Oliva."
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "dashboard/menu-builder.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/menu-builder.html",
+    "title": "Menu Builder — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Main Menu"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [
+      {
+        "tag": "INPUT",
+        "id": "itemSearch",
+        "type": "search"
+      }
+    ],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "dashboard/menus.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/menus.html",
+    "title": "Menus — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Menus"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "dashboard/publish.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/publish.html",
+    "title": "QR & Publish — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "QR & Publish"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [
+      {
+        "tag": "INPUT",
+        "id": "liveUrl",
+        "type": "text"
+      }
+    ],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "dashboard/restaurant.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/restaurant.html",
+    "title": "Restaurant — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Restaurant"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "dashboard/settings.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/settings.html",
+    "title": "Settings — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Settings"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "dashboard/team.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/team.html",
+    "title": "Team — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Team"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "admin/analytics.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/analytics.html",
+    "title": "Platform Analytics — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Platform Analytics"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "admin/audit-logs.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/audit-logs.html",
+    "title": "Audit Logs — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Audit Logs"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "admin/index.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/index.html",
+    "title": "Platform Overview — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Platform Overview"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "admin/notifications.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/notifications.html",
+    "title": "Notifications — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Notifications"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "admin/plans.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/plans.html",
+    "title": "Plans — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Plans"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "number"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "number"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      }
+    ],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "admin/restaurant-detail.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/restaurant-detail.html",
+    "title": "Restaurant Detail — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "admin/restaurants.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/restaurants.html",
+    "title": "Restaurants — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Restaurants"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [
+      {
+        "tag": "INPUT",
+        "id": "search",
+        "type": "search"
+      }
+    ],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "admin/security.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/security.html",
+    "title": "Security — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Security"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "admin/settings.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/settings.html",
+    "title": "Platform Settings — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Platform Settings"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "admin/subscriptions.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/subscriptions.html",
+    "title": "Subscriptions — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Subscriptions"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "admin/support.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/support.html",
+    "title": "Support — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Support"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "admin/templates.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/templates.html",
+    "title": "Templates — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Templates"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      }
+    ],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "admin/users.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/users.html",
+    "title": "Users — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Users"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [
+      {
+        "tag": "INPUT",
+        "id": "search",
+        "type": "search"
+      }
+    ],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "templates/amalfi.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/amalfi.html",
+    "title": "Oliva — Amalfi",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "templates/atelier.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/atelier.html",
+    "title": "Oliva — Atelier",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "templates/ember.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/ember.html",
+    "title": "Oliva — Ember",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "templates/feast.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/feast.html",
+    "title": "Oliva — Feast",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "templates/mellow.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/mellow.html",
+    "title": "Oliva — Mellow",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "templates/noir.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/noir.html",
+    "title": "Oliva — Noir",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "templates/sora.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/sora.html",
+    "title": "Oliva — Sora",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "templates/souk.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/souk.html",
+    "title": "Oliva — Souk",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 1440,
+    "route": "templates/verde.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/verde.html",
+    "title": "Oliva — Verde",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "index.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/index.html",
+    "title": "DAIFY — Digital Menus Made Remarkable",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Your restaurant deserves more than a PDF."
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "login.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/login.html",
+    "title": "Log In — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Return to yourrestaurant."
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "signup.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/signup.html",
+    "title": "Start Your Free Trial — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Build somethingworth scanning."
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "template-preview.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/template-preview.html",
+    "title": "Atelier — Template Preview — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Atelier"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "template-customizer.html",
+    "status": 200,
+    "title": "Atelier — Design Studio — DAIFY",
+    "overflow": false,
+    "brokenImages": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "dashboard/analytics.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/analytics.html",
+    "title": "Analytics — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Analytics"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "dashboard/billing.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/billing.html",
+    "title": "Billing — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Billing"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "dashboard/design.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/design.html",
+    "title": "Design — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Design"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "dashboard/help.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/help.html",
+    "title": "Help — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Help"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "dashboard/index.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/index.html",
+    "title": "Dashboard — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Welcome back, Oliva."
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "dashboard/menu-builder.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/menu-builder.html",
+    "title": "Menu Builder — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Main Menu"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [
+      {
+        "tag": "INPUT",
+        "id": "itemSearch",
+        "type": "search"
+      }
+    ],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "dashboard/menus.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/menus.html",
+    "title": "Menus — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Menus"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "dashboard/publish.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/publish.html",
+    "title": "QR & Publish — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "QR & Publish"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [
+      {
+        "tag": "INPUT",
+        "id": "liveUrl",
+        "type": "text"
+      }
+    ],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "dashboard/restaurant.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/restaurant.html",
+    "title": "Restaurant — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Restaurant"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "dashboard/settings.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/settings.html",
+    "title": "Settings — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Settings"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "dashboard/team.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/dashboard/team.html",
+    "title": "Team — DAIFY Dashboard",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Team"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "admin/analytics.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/analytics.html",
+    "title": "Platform Analytics — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Platform Analytics"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "admin/audit-logs.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/audit-logs.html",
+    "title": "Audit Logs — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Audit Logs"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "admin/index.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/index.html",
+    "title": "Platform Overview — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Platform Overview"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "admin/notifications.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/notifications.html",
+    "title": "Notifications — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Notifications"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "admin/plans.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/plans.html",
+    "title": "Plans — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Plans"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "number"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "number"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      },
+      {
+        "tag": "INPUT",
+        "id": "",
+        "type": "text"
+      }
+    ],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "admin/restaurant-detail.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/restaurant-detail.html",
+    "title": "Restaurant Detail — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "admin/restaurants.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/restaurants.html",
+    "title": "Restaurants — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Restaurants"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [
+      {
+        "tag": "INPUT",
+        "id": "search",
+        "type": "search"
+      }
+    ],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "admin/security.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/security.html",
+    "title": "Security — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Security"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "admin/settings.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/settings.html",
+    "title": "Platform Settings — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Platform Settings"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "admin/subscriptions.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/subscriptions.html",
+    "title": "Subscriptions — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Subscriptions"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "admin/support.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/support.html",
+    "title": "Support — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Support"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "admin/templates.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/templates.html",
+    "title": "Templates — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Templates"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      },
+      {
+        "tag": "SELECT",
+        "id": "",
+        "type": "select-one"
+      }
+    ],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "admin/users.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/admin/users.html",
+    "title": "Users — DAIFY Admin",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Users"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [
+      {
+        "tag": "INPUT",
+        "id": "search",
+        "type": "search"
+      }
+    ],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "templates/amalfi.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/amalfi.html",
+    "title": "Oliva — Amalfi",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "templates/atelier.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/atelier.html",
+    "title": "Oliva — Atelier",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "templates/ember.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/ember.html",
+    "title": "Oliva — Ember",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "templates/feast.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/feast.html",
+    "title": "Oliva — Feast",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "templates/mellow.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/mellow.html",
+    "title": "Oliva — Mellow",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "templates/noir.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/noir.html",
+    "title": "Oliva — Noir",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "templates/sora.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/sora.html",
+    "title": "Oliva — Sora",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "templates/souk.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/souk.html",
+    "title": "Oliva — Souk",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "prototype",
+    "width": 390,
+    "route": "templates/verde.html",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:8910/templates/verde.html",
+    "title": "Oliva — Verde",
+    "lang": "en",
+    "dir": "ltr",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 1440,
+    "route": "/",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/",
+    "title": "DAIFY — Digital menus made remarkable — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Your restaurant deserves more than a PDF."
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 1440,
+    "route": "/features",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/features",
+    "title": "Features — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Everything between the edit and the scan."
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 1440,
+    "route": "/templates",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/templates",
+    "title": "Templates — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "A template should feel like your restaurant."
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 1440,
+    "route": "/pricing",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/pricing",
+    "title": "Pricing — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Start with the menu you need today."
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 1440,
+    "route": "/about",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/about",
+    "title": "About — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Hospitality deserves better digital details."
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 1440,
+    "route": "/contact",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/contact",
+    "title": "Contact — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Let’s make your menu feel remarkable."
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 1440,
+    "route": "/privacy",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/privacy",
+    "title": "Privacy — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Privacy Policy"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 1440,
+    "route": "/terms",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/terms",
+    "title": "Terms — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Terms of Service"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 1440,
+    "route": "/cookies",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/cookies",
+    "title": "Cookies — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Cookie Policy"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 1440,
+    "route": "/login",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/login",
+    "title": "Log in — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Welcome back."
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 1440,
+    "route": "/signup",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/signup",
+    "title": "Start free trial — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Build your first menu."
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 1440,
+    "route": "/forgot-password",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/forgot-password",
+    "title": "Forgot password — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Reset your password."
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 1440,
+    "route": "/reset-password",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/reset-password",
+    "title": "Reset password — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Choose a new password."
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 1440,
+    "route": "/verify-email",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/verify-email",
+    "title": "DAIFY — Digital menus made remarkable",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "This link is invalid."
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 1440,
+    "route": "/dashboard",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/login?next=%2Fdashboard",
+    "title": "Log in — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Welcome back."
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 1440,
+    "route": "/admin",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/login?next=%2Fadmin",
+    "title": "Log in — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Welcome back."
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 1440,
+    "route": "/templates/atelier-preview",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/templates/atelier-preview",
+    "title": "Atelier migration proof — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      1440,
+      1440
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 390,
+    "route": "/",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/",
+    "title": "DAIFY — Digital menus made remarkable — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Your restaurant deserves more than a PDF."
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 390,
+    "route": "/features",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/features",
+    "title": "Features — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Everything between the edit and the scan."
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 390,
+    "route": "/templates",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/templates",
+    "title": "Templates — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "A template should feel like your restaurant."
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 390,
+    "route": "/pricing",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/pricing",
+    "title": "Pricing — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Start with the menu you need today."
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 390,
+    "route": "/about",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/about",
+    "title": "About — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Hospitality deserves better digital details."
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 390,
+    "route": "/contact",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/contact",
+    "title": "Contact — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Let’s make your menu feel remarkable."
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 390,
+    "route": "/privacy",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/privacy",
+    "title": "Privacy — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Privacy Policy"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 390,
+    "route": "/terms",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/terms",
+    "title": "Terms — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Terms of Service"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 390,
+    "route": "/cookies",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/cookies",
+    "title": "Cookies — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Cookie Policy"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 390,
+    "route": "/login",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/login",
+    "title": "Log in — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Welcome back."
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 390,
+    "route": "/signup",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/signup",
+    "title": "Start free trial — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Build your first menu."
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 390,
+    "route": "/forgot-password",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/forgot-password",
+    "title": "Forgot password — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Reset your password."
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 390,
+    "route": "/reset-password",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/reset-password",
+    "title": "Reset password — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Choose a new password."
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 390,
+    "route": "/verify-email",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/verify-email",
+    "title": "DAIFY — Digital menus made remarkable",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "This link is invalid."
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 390,
+    "route": "/dashboard",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/login?next=%2Fdashboard",
+    "title": "Log in — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Welcome back."
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 390,
+    "route": "/admin",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/login?next=%2Fadmin",
+    "title": "Log in — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Welcome back."
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  },
+  {
+    "kind": "web",
+    "width": 390,
+    "route": "/templates/atelier-preview",
+    "status": 200,
+    "finalUrl": "http://127.0.0.1:3100/templates/atelier-preview",
+    "title": "Atelier migration proof — DAIFY",
+    "lang": "en",
+    "dir": "",
+    "h1": [
+      "Oliva"
+    ],
+    "overflow": false,
+    "widths": [
+      390,
+      390
+    ],
+    "brokenImages": [],
+    "unnamedControls": [],
+    "errors": [],
+    "badResponses": []
+  }
+]

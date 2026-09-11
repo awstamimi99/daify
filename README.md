@@ -1,8 +1,8 @@
 # DAIFY
 
-DAIFY is a premium digital-menu SaaS product. The repository now contains the
-M1 production frontend foundation alongside the preserved framework-free
-prototype. Neither surface has a production backend yet.
+DAIFY is a premium digital-menu SaaS product. The repository contains the
+production Next.js frontend foundation, a NestJS/PostgreSQL/Prisma backend
+foundation, and the preserved framework-free prototype.
 
 ## Run locally
 
@@ -16,10 +16,53 @@ npm run dev:web
 Open `http://localhost:3000`. Quality commands are `npm run lint`,
 `npm run typecheck`, `npm run build`, and `npm run test:web`.
 
+Run the production API with PostgreSQL:
+
+```bash
+cp apps/api/.env.example apps/api/.env
+cp apps/web/.env.example apps/web/.env.local
+npm run db:up
+docker compose up -d mailpit
+npm run db:migrate
+npm run dev:api
+```
+
+The API defaults to `http://localhost:4000`; liveness is at
+`/api/v1/health`, database readiness uses `/api/v1/health?database=true`, and
+the OpenAPI 3.1 contract is at `/api/docs/openapi.json`. If Docker is not
+available, use `npm run db:dev --workspace @daify/api` and copy its PostgreSQL
+URL into `DATABASE_URL`.
+
+Development verification, reset and invitation emails go to the local SMTP
+inbox at `http://localhost:8025`. Production requires your SMTP provider's
+settings, a verified sender and an HTTPS `WEB_ORIGIN`; see
+`apps/api/.env.example`. Delivery errors are reported, and verification links
+can be requested again at `/resend-verification`. No real provider has been
+configured or validated in this repository. The no-delivery `test` transport
+and raw response tokens are restricted to `NODE_ENV=test`.
+
 Run the preserved prototype with `python3 -m http.server 8080`, then open
 `http://localhost:8080`. Its original browser suite remains available through
-`npm run test:prototype`; `npm test` runs both prototype and production-web
-browser suites.
+`npm run test:prototype`; `npm test` runs the prototype browser suite, the
+production-web browser suite, and API unit/integration suites (the latter needs
+both `DATABASE_URL` and `TEST_DATABASE_URL` pointing at a disposable migrated
+PostgreSQL database whose name contains `test`). API integration tests clear
+that database's fixtures; do not point them at development or production data.
+Web tests start their own API/web processes and use test-only token responses.
+After `npm run build`, `WEB_TEST_PRODUCTION=true npm run test:web` verifies the
+compiled frontend with `next start` as well.
+
+## Current authenticated workspace
+
+M3 now includes real signup, email verification/resend, login/logout, password
+reset, persistent organization and first-location setup, invitation acceptance,
+and team role/status management. The dashboard loads the user's actual
+memberships, permitted locations and navigation, with workspace switching for
+users who belong to multiple organizations. Tenant authorization is enforced
+by the API. Menus, publishing/QR, billing and analytics remain later milestones.
+Platform-admin MFA enrollment/recovery and provider delivery verification are
+still outstanding; M3 remains **in progress**. See the
+[remediation record](docs/QA/REMEDIATION_2026-09-12.md) for tested behavior and limits.
 
 ## Production frontend foundation
 
@@ -56,6 +99,7 @@ operations are simulated. Prototype state lives only in the current browser.
 
 ```text
 apps/web/                       production Next.js frontend
+apps/api/                       production NestJS API and Prisma schema
 packages/
   config/                       shared strict TypeScript configuration
   types/                        shared domain and renderer contracts
@@ -78,6 +122,7 @@ assets/
     menu/                       template configs, renderers, preview, theme
     dashboard/                  store, permissions, shells, data, page modules
 docs/                           roadmap, milestones, decisions, and architecture
+compose.yaml                    local PostgreSQL 17 service
 tests/                          Playwright integration tests
 ```
 
@@ -105,14 +150,15 @@ their concepts into typed modules rather than renaming them in place.
 ## Architecture references
 
 - [Master roadmap](docs/ROADMAP.md)
-- [Active milestone: M1 Foundation](docs/MILESTONES/M1_FOUNDATION.md)
+- [Current milestone: M3 Auth / Organizations](docs/MILESTONES/M3_AUTH_ORGANIZATIONS.md)
 - [Production architecture](docs/PRODUCTION_ARCHITECTURE.md)
 - [Architecture decisions](docs/DECISIONS/)
 - [Brand guide](docs/BRAND_GUIDE.md)
 - [Design system](docs/DESIGN_SYSTEM.md)
 - [Template engine](docs/TEMPLATE_ENGINE.md)
 
-The production direction remains Next.js/React/TypeScript, NestJS, PostgreSQL,
-and Prisma. M1 implements only the frontend boundary; backend, database, and
-real authentication work remain intentionally deferred. `docs/ROADMAP.md` owns
-milestone status; the active milestone file owns execution details.
+The production stack is Next.js/React/TypeScript, NestJS, PostgreSQL, and
+Prisma. M1 established the web boundary, M2 established the API/database
+boundary, and M3 implements real authentication and organization membership.
+`docs/ROADMAP.md` owns milestone status; each milestone file owns execution
+details.

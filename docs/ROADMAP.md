@@ -12,8 +12,8 @@ Status legend: `COMPLETE` · `IN PROGRESS` · `NEXT` · `NOT STARTED` · `BLOCKE
 | --- | --- | --- | --- |
 | M0 | Prototype Cleanup + Architecture Lock | **COMPLETE** | Clean up DAIFY branding, review the MenuFlow legacy, and lock production architecture decisions before writing production code. |
 | M1 | Foundation — TypeScript / React / Next.js | **IN PROGRESS** | Production web foundation implemented; independent visual/accessibility review and first observed CI run remain before completion. |
-| M2 | Core Backend — NestJS / PostgreSQL / Prisma | NOT STARTED | Stand up the API, database, and migrations that M1's frontend will eventually call. |
-| M3 | Auth / Organizations / RBAC | NOT STARTED | Real accounts, sessions, organizations, membership, and server-enforced roles. |
+| M2 | Core Backend — NestJS / PostgreSQL / Prisma | **COMPLETE** | Production API/database foundation passed independent audit remediation and real-PostgreSQL verification. |
+| M3 | Auth / Organizations / RBAC | **IN PROGRESS** | Real accounts, revocable sessions, organizations, membership, and server-enforced object authorization. |
 | M4 | Menu Platform | NOT STARTED | Locations, menus, sections, items, and multilingual menu content as real backend resources. |
 | M5 | Templates / Publishing / QR | NOT STARTED | Migrate the template engine, and build draft → preview → publish → version → rollback with stable public/QR routes. |
 | M6 | Billing / Subscriptions | NOT STARTED | Plans, subscriptions, entitlements, checkout, and webhooks. |
@@ -40,7 +40,12 @@ The table above owns status and objective. These compact gates record the other 
 
 ## Current focus
 
-**M1 — Foundation is in progress and ready for independent review.** See [MILESTONES/M1_FOUNDATION.md](MILESTONES/M1_FOUNDATION.md) for the implementation record, local quality evidence, deliberately retained prototype scope, and the remaining review gates. M2 has not started and must not start automatically.
+2026-09-12 continuation: account/RBAC QA repairs, real workspace and first-branch
+setup, and team invitation/management are implemented and locally verified.
+External SMTP validation, recoverable admin MFA and final M3 gates remain open.
+See [the remediation record](QA/REMEDIATION_2026-09-12.md).
+
+**M3 — Authentication, Organizations and RBAC is in progress.** Its explicit kickoff followed M2 completion and audit remediation. See [MILESTONES/M3_AUTH_ORGANIZATIONS.md](MILESTONES/M3_AUTH_ORGANIZATIONS.md). M1's remaining independent visual/CI review status is unchanged; M3 must not silently rewrite that history or begin M4 scope.
 
 ## Why M0 is marked complete
 

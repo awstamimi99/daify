@@ -1,20 +1,14 @@
 import type { OrganizationRole } from "@daify/types";
 
-export interface DashboardNavItem { readonly href: string; readonly label: string; readonly glyph: string; readonly roles: readonly OrganizationRole[] }
+export interface DashboardNavItem { readonly href: string; readonly label: string; readonly glyph: string; readonly permissions: readonly string[]; readonly roles: readonly OrganizationRole[] }
 
 export const dashboardNavigation: readonly DashboardNavItem[] = [
-  { href: "/dashboard", label: "Overview", glyph: "⌂", roles: ["owner", "manager", "staff", "viewer"] },
-  { href: "/dashboard/restaurant", label: "Restaurant", glyph: "◇", roles: ["owner", "manager", "viewer"] },
-  { href: "/dashboard/menus", label: "Menus", glyph: "≡", roles: ["owner", "manager", "staff", "viewer"] },
-  { href: "/dashboard/design", label: "Design", glyph: "✦", roles: ["owner", "manager"] },
-  { href: "/dashboard/publish", label: "QR & Publish", glyph: "▦", roles: ["owner", "manager"] },
-  { href: "/dashboard/analytics", label: "Analytics", glyph: "↗", roles: ["owner", "manager", "viewer"] },
-  { href: "/dashboard/team", label: "Team", glyph: "◎", roles: ["owner"] },
-  { href: "/dashboard/billing", label: "Billing", glyph: "◫", roles: ["owner"] },
-] as const;
-
-export const overviewStats = [
-  { label: "Menu views", value: "1,284", note: "+18% this week" },
-  { label: "QR scans", value: "842", note: "65.6% of visits" },
-  { label: "Published menu", value: "Dinner", note: "Updated 2h ago" },
+  { href: "/dashboard", permissions: [], label: "Overview", glyph: "⌂", roles: ["owner", "manager", "staff", "viewer"] },
+  { href: "/dashboard/restaurant", permissions: ["organization.read"], label: "Restaurant", glyph: "◇", roles: ["owner", "manager", "viewer"] },
+  { href: "/dashboard/menus", permissions: ["menu.read"], label: "Menus", glyph: "≡", roles: ["owner", "manager", "staff", "viewer"] },
+  { href: "/dashboard/design", permissions: ["menu.design"], label: "Design", glyph: "✦", roles: ["owner", "manager"] },
+  { href: "/dashboard/publish", permissions: ["menu.publish", "qr.manage"], label: "QR & Publish", glyph: "▦", roles: ["owner", "manager"] },
+  { href: "/dashboard/analytics", permissions: ["analytics.read"], label: "Analytics", glyph: "↗", roles: ["owner", "manager", "viewer"] },
+  { href: "/dashboard/team", permissions: ["team.manage"], label: "Team", glyph: "◎", roles: ["owner"] },
+  { href: "/dashboard/billing", permissions: ["billing.read", "billing.manage"], label: "Billing", glyph: "◫", roles: ["owner"] },
 ] as const;

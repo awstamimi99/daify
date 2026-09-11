@@ -1,0 +1,96 @@
+[
+  {
+    "check": "location-scope-list-leak",
+    "organizationStatus": 200,
+    "returnedBranches": [
+      "Restricted Branch",
+      "Allowed Branch"
+    ],
+    "restrictedBranchDirectStatus": 404
+  },
+  {
+    "check": "protected-deep-link",
+    "destination": "http://127.0.0.1:3100/login?next=%2Fdashboard%2Fmenus"
+  },
+  {
+    "check": "password-label",
+    "exactPasswordMatches": 0,
+    "actualLabel": "Password\nUse at least twelve characters."
+  },
+  {
+    "check": "login-discards-next",
+    "requested": "/dashboard/menus",
+    "landed": "/dashboard"
+  },
+  {
+    "check": "desktop-logout",
+    "buttonInDom": 1,
+    "visible": false
+  },
+  {
+    "check": "wrong-restaurant",
+    "ownOrganization": "QA Restaurant",
+    "displaysOliva": 1,
+    "sampleMenuViews": 1
+  },
+  {
+    "check": "dashboard-section",
+    "section": "restaurant",
+    "placeholder": true
+  },
+  {
+    "check": "dashboard-section",
+    "section": "menus",
+    "placeholder": true
+  },
+  {
+    "check": "dashboard-section",
+    "section": "design",
+    "placeholder": true
+  },
+  {
+    "check": "dashboard-section",
+    "section": "publish",
+    "placeholder": true
+  },
+  {
+    "check": "dashboard-section",
+    "section": "analytics",
+    "placeholder": true
+  },
+  {
+    "check": "dashboard-section",
+    "section": "team",
+    "placeholder": true
+  },
+  {
+    "check": "dashboard-section",
+    "section": "billing",
+    "placeholder": true
+  },
+  {
+    "check": "mobile-offscreen-nav-focus",
+    "focusedOffscreen": true
+  },
+  {
+    "check": "mobile-nav-escape",
+    "expandedAfterEscape": "true"
+  },
+  {
+    "check": "failed-logout",
+    "destinationAfterReturn": "/dashboard",
+    "stillAuthenticated": true
+  },
+  {
+    "check": "auth-proxy-origin",
+    "directApiStatus": 403,
+    "webProxyStatus": 200,
+    "webProxySetsSession": true
+  },
+  {
+    "check": "last-owner-invitation-bypass",
+    "inviteStatus": 201,
+    "acceptStatus": 201,
+    "activeOwnersRemaining": 0
+  }
+]

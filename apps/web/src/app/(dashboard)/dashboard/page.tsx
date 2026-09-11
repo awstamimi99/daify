@@ -1,14 +1,25 @@
-import { ButtonLink, Card } from "@daify/ui";
-import { overviewStats } from "@/data/dashboard";
+import { Card } from "@daify/ui";
 import styles from "./overview.module.css";
+import { requireSession } from "@/lib/session";
+import { getWorkspaceContext } from "@/lib/workspace";
+import { WorkspaceSetup } from "@/components/dashboard/workspace-setup";
 
-export default function DashboardOverview() {
+export default async function DashboardOverview() {
+  const session = await requireSession();
+  const { active } = await getWorkspaceContext();
+  const firstName = session.user.displayName?.split(/\s+/)[0] ?? "there";
   return <main id="main-content" className={styles.main}>
-    <header className={styles.heading}><div><span className="eyebrow">Oliva · Salmiya</span><h1>Good evening, Adam.</h1><p>Here’s what guests are seeing and what your team can do next.</p></div><ButtonLink href="/templates/atelier-preview">Preview menu <span aria-hidden="true">↗</span></ButtonLink></header>
-    <section className={styles.stats} aria-label="Restaurant summary">{overviewStats.map(stat => <Card key={stat.label} className={styles.stat}><span>{stat.label}</span><strong>{stat.value}</strong><small>{stat.note}</small></Card>)}</section>
-    <section className={styles.columns}>
-      <Card className={styles.menuCard}><div className={styles.cardHead}><div><span className="eyebrow">Live menu</span><h2>Dinner</h2></div><span className="surface-status">Published</span></div><div className={styles.sections}>{[["Starters",7],["Salads",3],["Main courses",6],["Desserts",4]].map(([name,count]) => <div key={String(name)}><span>{name}</span><b>{count} items</b></div>)}</div><div className={styles.cardActions}><ButtonLink href="/dashboard/menus">Edit menu</ButtonLink><ButtonLink variant="secondary" href="/dashboard/design">Customize design</ButtonLink></div></Card>
-      <Card className={styles.next}><span className="eyebrow">Next best action</span><h2>Keep every table current.</h2><p>Your Dinner menu is live. Use the stable preview route to review the new typed template contract before M5 publishing work begins.</p><ButtonLink variant="secondary" href="/templates/atelier-preview">Open Atelier proof</ButtonLink></Card>
-    </section>
+    <header className={styles.heading}><div><span className="eyebrow">{active?.name ?? "Your first restaurant"}</span><h1>Welcome, {firstName}.</h1><p>{active ? "Your restaurant, locations and team start here." : "Create your restaurant workspace to get started. If you were invited to a team, open the link in your invitation email."}</p></div></header>
+    {!active ? <Card className={styles.menuCard}><h2>Create your workspace</h2><WorkspaceSetup /></Card> : <>
+      <section className={styles.stats} aria-label="Workspace summary">
+        <Card className={styles.stat}><span>Restaurant</span><strong>{active.name}</strong><small>{active.slug}</small></Card>
+        <Card className={styles.stat}><span>Your locations</span><strong>{active.locations.length}</strong><small>Locations you can access</small></Card>
+        <Card className={styles.stat}><span>Your role</span><strong>{active.membership.role}</strong><small>Access is managed by your organization</small></Card>
+      </section>
+      <section className={styles.columns}>
+        <Card className={styles.menuCard}><h2>Locations</h2>{active.locations.length ? <div className={styles.sections}>{active.locations.map(location => <div key={location.id}><span>{location.name}</span><b>{location.currency} · {location.defaultLanguage}</b></div>)}</div> : active.membership.permissions.includes("location.manage") ? <><p>Add the first location for your restaurant.</p><WorkspaceSetup organizationId={active.id} /></> : <p>No locations have been assigned to you. Ask an owner to update your access.</p>}</Card>
+        <Card className={styles.next}><span className="eyebrow">Coming next</span><h2>Your menu starts here.</h2><p>Menu editing, design and publishing are being prepared. Your workspace details are saved and ready for the next step.</p></Card>
+      </section>
+    </>}
   </main>;
 }
