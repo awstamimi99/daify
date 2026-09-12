@@ -1,16 +1,16 @@
 # DAIFY Production Architecture
 
-Status: Architecture direction accepted; implementation not started
-Last reviewed: 2026-08-13
+Status: Architecture direction accepted; M1 web and M2 API/database foundations implemented; M3 identity and authorization in progress
+Last reviewed: 2026-09-12
 
 This is the main answer to: **How is DAIFY designed technically?**
 
-It summarizes the target production system and links to the decision documents that own detailed rules. The current repository is still a static JavaScript prototype; it does not yet include Next.js, NestJS, PostgreSQL, Prisma, durable authentication, live billing, production storage, queues, or production analytics.
+It summarizes the target production system and links to the decision documents that own detailed rules. The repository includes the preserved static prototype, a Next.js production frontend, and a NestJS/PostgreSQL/Prisma backend with durable authentication, recoverable MFA, organizations, memberships and server-enforced permissions. These have local test evidence; deployment and final M3 acceptance remain open. Live billing, production object storage, queues and production analytics are not implemented.
 
 ## Sources of truth
 
 - Progress and milestone state: [ROADMAP.md](ROADMAP.md)
-- Active execution plan: [M1 Foundation](MILESTONES/M1_FOUNDATION.md)
+- Latest completed execution plan: [M2 Core Backend](MILESTONES/M2_CORE_BACKEND.md)
 - Data ownership: [Data model decision](DECISIONS/DATA_MODEL.md)
 - Authentication and permissions: [Auth/RBAC decision](DECISIONS/AUTH_RBAC.md)
 - Draft, publication, public routes, and QR: [Publishing decision](DECISIONS/PUBLISHING.md)

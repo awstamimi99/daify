@@ -1,0 +1,19 @@
+.field {
+  display: grid;
+  gap: .45rem;
+  color: var(--text-primary);
+  font-size: .82rem;
+  font-weight: 700;
+}
+
+.field input {
+  width: 100%;
+  min-height: 50px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  background: white;
+  padding: .75rem .9rem;
+  font-weight: 500;
+}
+
+.field small { color: var(--text-muted); font-weight: 500; }

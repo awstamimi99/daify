@@ -1,0 +1,63 @@
+
+> daify@0.1.0 build
+> npm run build --workspaces --if-present
+
+
+> @daify/api@0.1.0 build
+> npm run prisma:generate && nest build
+
+
+> @daify/api@0.1.0 prisma:generate
+> prisma generate
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (7.9.1) to ./src/generated/prisma in 51ms
+
+
+> @daify/web@0.1.0 build
+> next build
+
+▲ Next.js 16.3.0 (Turbopack)
+✓ Running next.config.ts took 12ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1202ms
+  Running TypeScript ...
+  Finished TypeScript in 1332ms ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/26) ...
+  Generating static pages using 7 workers (6/26) 
+  Generating static pages using 7 workers (12/26) 
+  Generating static pages using 7 workers (19/26) 
+✓ Generating static pages using 7 workers (26/26) in 142ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├   /[slug]
+│ ├ ● /features
+│ ├ ● /templates
+│ ├ ● /pricing
+│ └ ● [+5 more paths]
+├ ƒ /admin
+├ ƒ /api/auth/[action]
+├ ƒ /dashboard
+├ ƒ /dashboard/[section]
+├ ○ /forgot-password
+├ ○ /login
+├ ○ /reset-password
+├ ○ /signup
+├ ○ /templates/atelier-preview
+└ ○ /verify-email
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

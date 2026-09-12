@@ -1,0 +1,86 @@
+
+> daify@0.1.0 test:web
+> playwright test --config apps/web/playwright.config.ts
+
+[WebServer] (node:26887) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:26921) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:26922) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 20 tests using 4 workers
+
+(node:26926) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:26925) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:26928) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:26927) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [chromium] › apps/web/tests/foundation.spec.ts:174:5 › dashboard rejects visitors without a server session (814ms)
+  ✓   3 [chromium] › apps/web/tests/foundation.spec.ts:13:5 › marketing shell keeps the DAIFY identity and primary journey (876ms)
+  ✓   4 [chromium] › apps/web/tests/foundation.spec.ts:23:5 › responsive marketing navigation opens on a phone (933ms)
+[WebServer] (node:26946) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   5 [chromium] › apps/web/tests/foundation.spec.ts:179:5 › account form cannot submit credentials before JavaScript is ready (200ms)
+[WebServer] (node:26951) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 [chromium] › apps/web/tests/foundation.spec.ts:192:5 › Atelier renderer switches to Arabic and RTL through the typed contract (432ms)
+  ✓   8 [chromium] › apps/web/tests/foundation.spec.ts:221:7 › /features has route-specific metadata and content (660ms)
+  ✓   7 [chromium] › apps/web/tests/foundation.spec.ts:202:5 › unknown routes use the shared not-found pattern (752ms)
+[WebServer] (node:26954) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   9 [chromium] › apps/web/tests/foundation.spec.ts:221:7 › /templates has route-specific metadata and content (489ms)
+  ✓  11 [chromium] › apps/web/tests/foundation.spec.ts:221:7 › /about has route-specific metadata and content (535ms)
+  ✓  10 [chromium] › apps/web/tests/foundation.spec.ts:221:7 › /pricing has route-specific metadata and content (548ms)
+[WebServer] (node:26960) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:26959) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  12 [chromium] › apps/web/tests/foundation.spec.ts:221:7 › /contact has route-specific metadata and content (770ms)
+[WebServer] [browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+  ✓  13 [chromium] › apps/web/tests/foundation.spec.ts:221:7 › /privacy has route-specific metadata and content (558ms)
+  ✓  14 [chromium] › apps/web/tests/foundation.spec.ts:221:7 › /terms has route-specific metadata and content (582ms)
+[WebServer] (node:26967) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  15 [chromium] › apps/web/tests/foundation.spec.ts:221:7 › /cookies has route-specific metadata and content (514ms)
+  ✓  16 [chromium] › apps/web/tests/foundation.spec.ts:228:5 › contact form validates and completes without transmitting data (588ms)
+[WebServer] (node:26971) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:26972) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  18 [chromium] › apps/web/tests/foundation.spec.ts:247:5 › pricing toggle updates visible plan pricing (576ms)
+  ✓  20 [chromium] › apps/web/tests/foundation.spec.ts:267:5 › account proxy rejects cross-origin and form-encoded login requests (30ms)
+  ✓  17 [chromium] › apps/web/tests/foundation.spec.ts:238:5 › template gallery exposes nine designs and working filters (946ms)
+[WebServer] (node:26976) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  19 [chromium] › apps/web/tests/foundation.spec.ts:255:5 › mobile footer keeps accessible accordions and back-to-top control (487ms)
+[WebServer] [browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+[WebServer] (node:26977) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:26978) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:26981) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] [browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+[WebServer] (node:26982) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:26987) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] [browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+[WebServer] (node:26990) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:26994) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:26995) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] [browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+[WebServer] (node:26996) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:26997) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › apps/web/tests/foundation.spec.ts:34:5 › real authentication verifies email, protects dashboard, and logs out (12.8s)
+
+  20 passed (17.1s)

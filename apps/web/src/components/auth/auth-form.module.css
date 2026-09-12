@@ -1,0 +1,8 @@
+.panel { width: min(100%, 32rem); padding: clamp(1.5rem, 5vw, 4rem); }
+.panel h1 { margin-block: .8rem 1rem; font-family: var(--font-serif); font-size: var(--fs-h1); font-weight: 400; line-height: .94; }
+.panel > p { color: var(--text-secondary); }
+.panel form { display: grid; gap: 1rem; margin-top: 2rem; }.panel form button { margin-top: .35rem; }
+.links { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; color: var(--brand-red-strong); font-size: .78rem; font-weight: 700; }
+.notice { display: grid; gap: .5rem; margin-top: 2rem; padding: 1.25rem; border: 1px solid var(--border-default); border-radius: var(--radius-md); background: var(--success-bg); }.notice span { color: var(--text-secondary); font-size: .85rem; }.notice a { margin-top: .4rem; color: var(--brand-red-strong); font-weight: 800; }
+@media (max-width: 600px) { .links { display: grid; } }
+.fields { display: grid; gap: 1rem; min-width: 0; border: 0; padding: 0; margin: 0; }

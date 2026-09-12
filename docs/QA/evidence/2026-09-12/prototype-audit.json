@@ -1,0 +1,30 @@
+[
+  {
+    "check": "negative-price",
+    "savedInStore": true
+  },
+  {
+    "check": "same-browser-persistence",
+    "itemRetained": true
+  },
+  {
+    "check": "published-link-other-browser",
+    "url": "http://127.0.0.1:8910/templates/atelier.html",
+    "ownerSeesAddedItem": true,
+    "freshGuestSeesAddedItem": false
+  },
+  {
+    "check": "drawer-escape",
+    "remainsOpen": true
+  },
+  {
+    "check": "drawer-unsaved-cancel",
+    "drawerClosedWithoutConfirmation": true
+  },
+  {
+    "check": "storage-quota-failure",
+    "acceptedInMemory": true,
+    "claimedSuccess": true,
+    "lostAfterReload": true
+  }
+]

@@ -1,0 +1,74 @@
+
+> daify@0.1.0 build
+> npm run build --workspaces --if-present
+
+
+> @daify/api@0.1.0 build
+> npm run prisma:generate && nest build
+
+
+> @daify/api@0.1.0 prisma:generate
+> prisma generate
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (7.9.1) to ./src/generated/prisma in 56ms
+
+
+> @daify/web@0.1.0 build
+> next build
+
+▲ Next.js 16.3.3 (Turbopack)
+✓ Running next.config.ts took 11ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1797ms
+  Running TypeScript ...
+  Finished TypeScript in 1358ms ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/32) ...
+  Generating static pages using 7 workers (8/32) 
+  Generating static pages using 7 workers (16/32) 
+  Generating static pages using 7 workers (24/32) 
+✓ Generating static pages using 7 workers (32/32) in 141ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├   /[slug]
+│ ├ ● /features
+│ ├ ● /templates
+│ ├ ● /pricing
+│ └ ● [+5 more paths]
+├ ƒ /accept-invitation
+├ ƒ /admin
+├ ƒ /api/auth/[action]
+├ ƒ /api/auth/mfa/[action]
+├ ƒ /api/organizations
+├ ƒ /api/organizations/[organizationId]/invitations
+├ ƒ /api/organizations/[organizationId]/locations
+├ ƒ /api/organizations/[organizationId]/members/[memberId]
+├ ƒ /api/organizations/invitations/accept
+├ ƒ /api/workspace
+├ ƒ /dashboard
+├ ƒ /dashboard/[section]
+├ ƒ /dashboard/security
+├ ƒ /dashboard/team
+├ ○ /forgot-password
+├ ○ /login
+├ ○ /resend-verification
+├ ○ /reset-password
+├ ○ /signup
+├ ○ /templates/atelier-preview
+└ ○ /verify-email
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

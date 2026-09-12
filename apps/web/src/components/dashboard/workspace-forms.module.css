@@ -1,0 +1,18 @@
+.stack { display: grid; gap: 1.5rem; min-width: 0; }
+.panel { display: grid; gap: 1rem; padding: clamp(1rem, 3vw, 1.5rem); min-width: 0; }
+.form { display: grid; gap: 1rem; max-width: 32rem; }
+.field { display: grid; gap: .45rem; color: var(--text-primary); font-size: .82rem; font-weight: 700; }
+.field select { width: 100%; min-height: 50px; border: 1px solid var(--border-default); border-radius: var(--radius-sm); background: white; color: var(--text-primary); padding: .75rem .9rem; font: inherit; font-weight: 500; }
+.check { display: flex; align-items: center; gap: .6rem; min-height: 44px; font-size: .85rem; }
+.check input { width: 18px; height: 18px; accent-color: var(--brand-red); flex-shrink: 0; }
+.locations { min-width: 0; border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: .5rem 1rem; }
+.locations legend { padding: 0 .3rem; font-size: .82rem; font-weight: 700; }
+.member { display: flex; align-items: end; gap: 1rem; flex-wrap: wrap; border-bottom: 1px solid var(--border-default); padding-bottom: 1rem; }
+.memberName { flex: 1 1 12rem; overflow-wrap: anywhere; min-width: 0; }
+.memberName p { color: var(--text-secondary); font-size: .82rem; }
+.member .field { flex: 1 1 9rem; min-width: 0; overflow-wrap: anywhere; }
+.error { color: #a51e1e; }
+.message { color: #205838; }
+.securityFields { display: grid; gap: 1rem; min-width: 0; border: 0; padding: 0; margin: 0; }
+.recoveryCodes { display: grid; gap: .6rem; padding-inline-start: 1.2rem; }
+.recoveryCodes code { overflow-wrap: anywhere; font-size: .85rem; }

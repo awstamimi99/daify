@@ -1,0 +1,422 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  DISABLED
+}
+
+enum OrganizationStatus {
+  ACTIVE
+  SUSPENDED
+  ARCHIVED
+}
+
+enum OrganizationRole {
+  OWNER
+  MANAGER
+  STAFF
+  VIEWER
+}
+
+enum MembershipStatus {
+  INVITED
+  ACTIVE
+  SUSPENDED
+  REVOKED
+}
+
+enum LocationStatus {
+  ACTIVE
+  SUSPENDED
+  ARCHIVED
+}
+
+enum MenuStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum AuthenticationAssuranceLevel {
+  AAL1
+  AAL2
+}
+
+enum ActionTokenPurpose {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+  ORGANIZATION_INVITATION
+}
+
+enum SecurityEventType {
+  USER_SIGNED_UP
+  LOGIN_SUCCEEDED
+  LOGIN_FAILED
+  LOGOUT
+  EMAIL_VERIFIED
+  PASSWORD_RESET_REQUESTED
+  PASSWORD_RESET_COMPLETED
+  SESSION_REVOKED
+  ORGANIZATION_CREATED
+  INVITATION_CREATED
+  INVITATION_ACCEPTED
+  MEMBERSHIP_UPDATED
+  PLATFORM_ACCESS
+  MFA_SETUP_STARTED
+  MFA_ENABLED
+  MFA_RECOVERY_USED
+  MENU_UPDATED
+}
+
+model User {
+  id                    String                 @id @default(uuid()) @db.Uuid
+  email                 String                 @unique @db.VarChar(320)
+  displayName           String?                @db.VarChar(160)
+  status                UserStatus             @default(PENDING)
+  passwordHash          String
+  platformAdmin         Boolean                @default(false)
+  mfaSecret             String?
+  mfaLastCounter        Int?
+  mfaRecoveryHashes     String[]               @default([])
+  mfaPendingSecret      String?
+  mfaPendingSessionId   String?                @db.Uuid
+  mfaPendingExpiresAt   DateTime?              @db.Timestamptz(3)
+  emailVerifiedAt       DateTime?              @db.Timestamptz(3)
+  lastLoginAt           DateTime?              @db.Timestamptz(3)
+  createdAt             DateTime               @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime               @updatedAt @db.Timestamptz(3)
+  memberships           OrganizationMember[]
+  sessions              Session[]
+  actionTokens          ActionToken[]
+  securityEvents        SecurityEvent[]        @relation("SecurityEventActor")
+  securityNotifications SecurityNotification[]
+
+  @@index([status])
+  @@map("users")
+}
+
+model RateLimitBucket {
+  key          String   @id
+  hits         Int
+  expiresAt    DateTime @map("expires_at") @db.Timestamptz(3)
+  blockedUntil DateTime @map("blocked_until") @db.Timestamptz(3)
+
+  @@index([expiresAt])
+  @@map("rate_limit_buckets")
+}
+
+model SecurityNotification {
+  id            String    @id @default(uuid()) @db.Uuid
+  userId        String    @db.Uuid
+  kind          String
+  attempts      Int       @default(0)
+  nextAttemptAt DateTime  @default(now()) @db.Timestamptz(3)
+  lockedUntil   DateTime? @db.Timestamptz(3)
+  sentAt        DateTime? @db.Timestamptz(3)
+  failedAt      DateTime? @db.Timestamptz(3)
+  createdAt     DateTime  @default(now()) @db.Timestamptz(3)
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([sentAt, failedAt, nextAttemptAt])
+  @@map("security_notifications")
+}
+
+model Organization {
+  id             String               @id @default(uuid()) @db.Uuid
+  name           String               @db.VarChar(160)
+  slug           String               @unique @db.VarChar(100)
+  status         OrganizationStatus   @default(ACTIVE)
+  defaultLocale  String               @default("en") @db.VarChar(35)
+  timezone       String               @default("Asia/Kuwait") @db.VarChar(100)
+  brandSettings  Json?
+  archivedAt     DateTime?            @db.Timestamptz(3)
+  createdAt      DateTime             @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime             @updatedAt @db.Timestamptz(3)
+  memberships    OrganizationMember[]
+  locations      Location[]
+  actionTokens   ActionToken[]
+  securityEvents SecurityEvent[]
+
+  @@index([status, archivedAt])
+  @@map("organizations")
+}
+
+model OrganizationMember {
+  id             String                       @id @default(uuid()) @db.Uuid
+  organizationId String                       @db.Uuid
+  userId         String                       @db.Uuid
+  role           OrganizationRole
+  status         MembershipStatus             @default(INVITED)
+  allLocations   Boolean                      @default(false)
+  permissions    String[]
+  invitedEmail   String?                      @db.VarChar(320)
+  invitedAt      DateTime?                    @db.Timestamptz(3)
+  acceptedAt     DateTime?                    @db.Timestamptz(3)
+  revokedAt      DateTime?                    @db.Timestamptz(3)
+  createdAt      DateTime                     @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime                     @updatedAt @db.Timestamptz(3)
+  organization   Organization                 @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  user           User                         @relation(fields: [userId], references: [id], onDelete: Restrict)
+  locationScopes OrganizationMemberLocation[]
+
+  @@unique([organizationId, userId])
+  @@unique([organizationId, id])
+  @@index([userId, status])
+  @@index([organizationId, status, role])
+  @@map("organization_members")
+}
+
+model Session {
+  id                String                       @id @default(uuid()) @db.Uuid
+  userId            String                       @db.Uuid
+  tokenHash         String                       @unique @db.Char(64)
+  assuranceLevel    AuthenticationAssuranceLevel @default(AAL1)
+  expiresAt         DateTime                     @db.Timestamptz(3)
+  absoluteExpiresAt DateTime                     @db.Timestamptz(3)
+  lastSeenAt        DateTime                     @default(now()) @db.Timestamptz(3)
+  revokedAt         DateTime?                    @db.Timestamptz(3)
+  ipAddress         String?                      @db.VarChar(64)
+  userAgent         String?                      @db.VarChar(512)
+  createdAt         DateTime                     @default(now()) @db.Timestamptz(3)
+  user              User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, revokedAt, expiresAt])
+  @@map("sessions")
+}
+
+model ActionToken {
+  id             String             @id @default(uuid()) @db.Uuid
+  purpose        ActionTokenPurpose
+  tokenHash      String             @unique @db.Char(64)
+  userId         String?            @db.Uuid
+  organizationId String?            @db.Uuid
+  email          String?            @db.VarChar(320)
+  role           OrganizationRole?
+  allLocations   Boolean?
+  locationIds    String[]
+  permissions    String[]
+  expiresAt      DateTime           @db.Timestamptz(3)
+  consumedAt     DateTime?          @db.Timestamptz(3)
+  createdAt      DateTime           @default(now()) @db.Timestamptz(3)
+  user           User?              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization   Organization?      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([userId, purpose, consumedAt])
+  @@index([organizationId, purpose, consumedAt])
+  @@map("action_tokens")
+}
+
+model SecurityEvent {
+  id             String            @id @default(uuid()) @db.Uuid
+  type           SecurityEventType
+  actorUserId    String?           @db.Uuid
+  organizationId String?           @db.Uuid
+  targetType     String?           @db.VarChar(100)
+  targetId       String?           @db.VarChar(100)
+  requestId      String?           @db.VarChar(128)
+  ipAddress      String?           @db.VarChar(64)
+  outcome        String            @db.VarChar(40)
+  reason         String?           @db.VarChar(500)
+  metadata       Json?
+  createdAt      DateTime          @default(now()) @db.Timestamptz(3)
+  actor          User?             @relation("SecurityEventActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+  organization   Organization?     @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  @@index([actorUserId, createdAt])
+  @@index([organizationId, createdAt])
+  @@index([type, createdAt])
+  @@map("security_events")
+}
+
+model OrganizationMemberLocation {
+  organizationId       String             @db.Uuid
+  organizationMemberId String             @db.Uuid
+  locationId           String             @db.Uuid
+  createdAt            DateTime           @default(now()) @db.Timestamptz(3)
+  organizationMember   OrganizationMember @relation(fields: [organizationId, organizationMemberId], references: [organizationId, id], onDelete: Cascade)
+  location             Location           @relation(fields: [organizationId, locationId], references: [organizationId, id], onDelete: Cascade)
+
+  @@id([organizationId, organizationMemberId, locationId])
+  @@index([organizationId, locationId])
+  @@map("organization_member_locations")
+}
+
+model Location {
+  id               String                       @id @default(uuid()) @db.Uuid
+  organizationId   String                       @db.Uuid
+  name             String                       @db.VarChar(160)
+  slug             String                       @db.VarChar(100)
+  status           LocationStatus               @default(ACTIVE)
+  address          Json?
+  contact          Json?
+  timezone         String                       @db.VarChar(100)
+  currency         String                       @db.Char(3)
+  defaultLanguage  String                       @db.VarChar(35)
+  archivedAt       DateTime?                    @db.Timestamptz(3)
+  createdAt        DateTime                     @default(now()) @db.Timestamptz(3)
+  updatedAt        DateTime                     @updatedAt @db.Timestamptz(3)
+  organization     Organization                 @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  membershipScopes OrganizationMemberLocation[]
+  menus            Menu[]
+
+  @@unique([organizationId, slug])
+  @@unique([organizationId, id])
+  @@index([organizationId, status, archivedAt])
+  @@map("locations")
+}
+
+model Menu {
+  id                 String            @id @default(uuid()) @db.Uuid
+  locationId         String            @db.Uuid
+  name               String            @db.VarChar(160)
+  slug               String            @db.VarChar(100)
+  status             MenuStatus        @default(DRAFT)
+  defaultLanguage    String            @db.VarChar(35)
+  supportedLanguages String[]
+  draftRevision      Int               @default(1)
+  archivedAt         DateTime?         @db.Timestamptz(3)
+  createdAt          DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt          DateTime          @updatedAt @db.Timestamptz(3)
+  location           Location          @relation(fields: [locationId], references: [id], onDelete: Restrict)
+  translations       MenuTranslation[]
+  sections           MenuSection[]
+  theme              Theme?
+
+  @@unique([locationId, slug])
+  @@index([locationId, status, archivedAt])
+  @@map("menus")
+}
+
+model MenuSection {
+  id           String                   @id @default(uuid()) @db.Uuid
+  menuId       String                   @db.Uuid
+  stableKey    String                   @db.VarChar(100)
+  position     Int
+  isVisible    Boolean                  @default(true)
+  schedule     Json?
+  archivedAt   DateTime?                @db.Timestamptz(3)
+  createdAt    DateTime                 @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime                 @updatedAt @db.Timestamptz(3)
+  menu         Menu                     @relation(fields: [menuId], references: [id], onDelete: Restrict)
+  translations MenuSectionTranslation[]
+  items        MenuItem[]
+
+  @@unique([menuId, stableKey])
+  @@index([menuId, archivedAt, position])
+  @@map("menu_sections")
+}
+
+model MenuItem {
+  id           String                @id @default(uuid()) @db.Uuid
+  sectionId    String                @db.Uuid
+  stableKey    String                @db.VarChar(100)
+  position     Int
+  price        Decimal               @db.Decimal(12, 3)
+  currency     String                @db.Char(3)
+  isAvailable  Boolean               @default(true)
+  isFeatured   Boolean               @default(false)
+  translations MenuItemTranslation[]
+  images       MenuItemImage[]
+  allergens    String[]
+  dietaryTags  String[]
+  metadata     Json?
+  archivedAt   DateTime?             @db.Timestamptz(3)
+  createdAt    DateTime              @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime              @updatedAt @db.Timestamptz(3)
+  section      MenuSection           @relation(fields: [sectionId], references: [id], onDelete: Restrict)
+
+  @@unique([sectionId, stableKey])
+  @@index([sectionId, archivedAt, position])
+  @@map("menu_items")
+}
+
+model Theme {
+  id            String   @id @default(uuid()) @db.Uuid
+  menuId        String   @unique @db.Uuid
+  templateKey   String   @db.VarChar(100)
+  schemaVersion Int      @default(1)
+  tokens        Json
+  layout        Json
+  createdAt     DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime @updatedAt @db.Timestamptz(3)
+  menu          Menu     @relation(fields: [menuId], references: [id], onDelete: Restrict)
+
+  @@map("themes")
+}
+
+model MenuTranslation {
+  menuId      String   @db.Uuid
+  languageTag String   @db.VarChar(35)
+  name        String   @db.VarChar(160)
+  description String   @default("") @db.VarChar(2000)
+  createdAt   DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @db.Timestamptz(3)
+  menu        Menu     @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  @@id([menuId, languageTag])
+  @@map("menu_translations")
+}
+
+model MenuSectionTranslation {
+  sectionId   String      @db.Uuid
+  languageTag String      @db.VarChar(35)
+  name        String      @db.VarChar(160)
+  description String      @default("") @db.VarChar(2000)
+  createdAt   DateTime    @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime    @updatedAt @db.Timestamptz(3)
+  section     MenuSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+
+  @@id([sectionId, languageTag])
+  @@map("menu_section_translations")
+}
+
+model MenuItemTranslation {
+  itemId      String   @db.Uuid
+  languageTag String   @db.VarChar(35)
+  name        String   @db.VarChar(160)
+  description String   @default("") @db.VarChar(2000)
+  createdAt   DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @db.Timestamptz(3)
+  item        MenuItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@id([itemId, languageTag])
+  @@map("menu_item_translations")
+}
+
+model MenuItemImage {
+  id           String                 @id @default(uuid()) @db.Uuid
+  itemId       String                 @db.Uuid
+  objectKey    String                 @unique
+  mimeType     String
+  bytes        Int
+  width        Int
+  height       Int
+  sha256       String
+  position     Int                    @default(0)
+  archivedAt   DateTime?              @db.Timestamptz(3)
+  createdAt    DateTime               @default(now()) @db.Timestamptz(3)
+  item         MenuItem               @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  translations MenuImageTranslation[]
+
+  @@index([itemId, archivedAt, position])
+  @@map("menu_item_images")
+}
+
+model MenuImageTranslation {
+  imageId     String        @db.Uuid
+  languageTag String        @db.VarChar(35)
+  altText     String        @db.VarChar(500)
+  image       MenuItemImage @relation(fields: [imageId], references: [id], onDelete: Cascade)
+
+  @@id([imageId, languageTag])
+  @@map("menu_image_translations")
+}

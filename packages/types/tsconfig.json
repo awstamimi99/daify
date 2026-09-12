@@ -1,0 +1,8 @@
+{
+  "extends": "@daify/config/typescript/base.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM"],
+    "rootDir": "src"
+  },
+  "include": ["src/**/*.ts"]
+}

@@ -1,0 +1,14 @@
+{
+  "blankOrganization": {
+    "status": 201,
+    "storedName": ""
+  },
+  "invalidLocation": {
+    "status": 201,
+    "name": "",
+    "currency": "ZZZ",
+    "timezone": "Not/A_Timezone"
+  },
+  "duplicateLocationStatus": 500,
+  "malformedCookieStatus": 500
+}

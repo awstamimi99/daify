@@ -1,0 +1,22 @@
+.catalog { padding: clamp(2rem, 6vw, 5rem) 0 clamp(5rem, 10vw, 9rem); }
+.filters { display: flex; gap: .5rem; overflow-x: auto; padding-block: .5rem 1.4rem; scrollbar-width: none; }
+.filters button { flex: 0 0 auto; border: 1px solid var(--border-default); border-radius: var(--radius-pill); background: white; padding: .65rem 1rem; cursor: pointer; font-size: .72rem; font-weight: 700; }
+.filters button[aria-pressed="true"] { border-color: var(--surface-dark); background: var(--surface-dark); color: white; }
+.meta { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-block: 1rem 2rem; }
+.meta h2 { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.7rem); font-weight: 400; }
+.meta h2 b { color: var(--brand-red-strong); font-family: var(--font-sans); font-size: .8em; }
+.meta p { max-width: 34rem; color: var(--text-secondary); font-size: .8rem; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem 1rem; }
+.card { overflow: hidden; border: 1px solid var(--border-default); border-radius: var(--radius-md); background: white; }
+.cover { position: relative; min-height: 28rem; overflow: hidden; background: var(--surface-muted); }
+.cover img { object-fit: cover; transition: transform .5s ease; }
+.card:hover .cover img { transform: scale(1.02); }
+.copy { display: grid; gap: 1rem; padding: 1.25rem; }
+.copy > div { display: flex; align-items: end; justify-content: space-between; gap: 1rem; }
+.copy small, .retained { color: var(--text-muted); font-size: .62rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.copy h3 { font-family: var(--font-serif); font-size: 2rem; font-weight: 400; }
+.copy p { min-height: 2.8rem; color: var(--text-secondary); font-size: .78rem; }
+.copy a { justify-self: start; }
+.retained { min-height: 46px; display: flex; align-items: center; }
+@media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } .meta { align-items: start; flex-direction: column; } }
+@media (max-width: 580px) { .grid { grid-template-columns: 1fr; } .cover { min-height: 24rem; } }

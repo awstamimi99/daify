@@ -1,0 +1,12 @@
+
+> daify@0.1.0 lint
+> npm run lint --workspaces --if-present
+
+
+> @daify/api@0.1.0 lint
+> eslint . --max-warnings=0
+
+
+> @daify/web@0.1.0 lint
+> eslint . --max-warnings=0
+

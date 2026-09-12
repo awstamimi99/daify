@@ -1,0 +1,2 @@
+.logo { width: auto; height: 4rem; object-fit: contain; }
+@media (max-width: 680px) { .logo { height: 3.25rem; } }

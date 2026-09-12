@@ -11,10 +11,10 @@ Status legend: `COMPLETE` · `IN PROGRESS` · `NEXT` · `NOT STARTED` · `BLOCKE
 | # | Milestone | Status | One-line objective |
 | --- | --- | --- | --- |
 | M0 | Prototype Cleanup + Architecture Lock | **COMPLETE** | Clean up DAIFY branding, review the MenuFlow legacy, and lock production architecture decisions before writing production code. |
-| M1 | Foundation — TypeScript / React / Next.js | **NEXT** | Stand up the production web foundation and migrate the design system, marketing shell, dashboard shell, and template-migration strategy onto it. |
-| M2 | Core Backend — NestJS / PostgreSQL / Prisma | NOT STARTED | Stand up the API, database, and migrations that M1's frontend will eventually call. |
-| M3 | Auth / Organizations / RBAC | NOT STARTED | Real accounts, sessions, organizations, membership, and server-enforced roles. |
-| M4 | Menu Platform | NOT STARTED | Locations, menus, sections, items, and multilingual menu content as real backend resources. |
+| M1 | Foundation — TypeScript / React / Next.js | **IN PROGRESS** | Production web foundation implemented; independent visual/accessibility review and first observed CI run remain before completion. |
+| M2 | Core Backend — NestJS / PostgreSQL / Prisma | **COMPLETE** | Production API/database foundation passed independent audit remediation and real-PostgreSQL verification. |
+| M3 | Auth / Organizations / RBAC | **IN PROGRESS** | Real accounts, revocable sessions, organizations, membership, and server-enforced object authorization. |
+| M4 | Menu Platform | **IN PROGRESS** | Local draft CRUD, translations, scoped editing and private images pass QA; real object-store acceptance remains open. |
 | M5 | Templates / Publishing / QR | NOT STARTED | Migrate the template engine, and build draft → preview → publish → version → rollback with stable public/QR routes. |
 | M6 | Billing / Subscriptions | NOT STARTED | Plans, subscriptions, entitlements, checkout, and webhooks. |
 | M7 | Analytics / Admin | NOT STARTED | Real analytics events, the platform-admin backend, audit logs, and support tooling. |
@@ -40,9 +40,26 @@ The table above owns status and objective. These compact gates record the other 
 
 ## Current focus
 
-**M1 — Foundation.** See [MILESTONES/M1_FOUNDATION.md](MILESTONES/M1_FOUNDATION.md) for the sub-phase breakdown (M1.1–M1.9) and for what to learn, what to build yourself, and what to build with Codex at each step.
+2026-09-12 explicit owner instruction: “اعمل m4 انطلق”. M4 is now active while
+M3's documented external operational/security acceptance remains open. This is
+an explicit sequencing exception, not a declaration that M3 or deployment is
+complete. M4 now has a tested local implementation: 78 API, 22 compiled-web and
+17 prototype tests passed. Its remaining gate is actual object-store acceptance.
+See [M4 verification and runbook](QA/M4_2026-09-12.md).
 
-M1 has not started yet. Implementation begins only when explicitly kicked off — see "Rules for this roadmap" below.
+2026-09-12 continuation: account/RBAC QA repairs, real workspace and first-branch
+setup, and team invitation/management are implemented and locally verified.
+Recoverable MFA enrollment and an operator-only administrator promotion command
+are also implemented and locally verified. Signed proxy identity/shared rate
+limits, the current API contract and security notification/key tooling now pass
+local verification. Provider selection, real SMTP/ingress/restore tests and
+final security acceptance remain open. The owner authorized M4 after these M3
+gates close; the subsequent explicit kickoff above supersedes that sequencing.
+See [the remediation record](QA/REMEDIATION_2026-09-12.md) and
+[MFA verification/runbook](QA/MFA_2026-09-12.md) and the
+[latest operations report](QA/M3_OPERATIONS_2026-09-12.md).
+
+**M3 — Authentication, Organizations and RBAC is in progress.** Its explicit kickoff followed M2 completion and audit remediation. See [MILESTONES/M3_AUTH_ORGANIZATIONS.md](MILESTONES/M3_AUTH_ORGANIZATIONS.md). M1's remaining independent visual/CI review status is unchanged. M4 proceeds only under the explicit owner kickoff recorded above.
 
 ## Why M0 is marked complete
 
@@ -57,12 +74,32 @@ M0's deliverables were planning and cleanup, not production code, and all of the
 
 See [MILESTONES/M0_PRE_MILESTONE.md](MILESTONES/M0_PRE_MILESTONE.md) for the full account, including what was intentionally deferred rather than finished.
 
-## Rules for this roadmap
+## Working rules
+
+These apply to every milestone, not just documentation bookkeeping. Codex, Claude, and the project owner all follow the same list.
+
+**Documentation & process**
 
 1. `docs/ROADMAP.md` (this file) is the master progress tracker — if it disagrees with a milestone file, this file is stale and should be corrected first.
 2. `docs/PRODUCTION_ARCHITECTURE.md` is the main architecture reference.
-3. The milestone marked **NEXT** or **IN PROGRESS** is the active execution plan; do not start a later milestone early unless it is a hard dependency.
+3. The milestone marked **NEXT** or **IN PROGRESS** is the active execution plan. Do not start a later milestone early, and do not start the next milestone automatically when the current one finishes — a milestone is kicked off explicitly, not inferred.
 4. `docs/DECISIONS/` stores decisions that should not be repeatedly reconsidered without a documented reason.
-5. When a task completes, update its milestone file. When a milestone completes, update this file.
-6. Architecture decisions are not changed silently — if implementation forces a change, document the reason in the relevant `DECISIONS/` file first.
+5. Update the active milestone's document while working on it. Update this file only when a milestone's status actually changes — not for every task inside it.
+6. Architecture decisions are never changed silently. If implementation forces a change, document the reason in the relevant `DECISIONS/` file first, then update the architecture reference.
 7. Keep this document aligned with the actual repository. A status here is only as good as the last person who verified it against real commits, branches, and files — not against intent.
+8. Keep changes committed and logically separated where practical, rather than one large undifferentiated commit.
+
+**Preserving the product**
+
+9. Preserve the strong parts of the existing prototype (see `MILESTONES/M0_PRE_MILESTONE.md` and `PRODUCTION_ARCHITECTURE.md`'s "Legacy prototype contract" for what those are and why). Migration is not a license to redesign what already works.
+10. Do not remove working functionality without a replacement landing in the same change.
+11. Keep Arabic, English, and RTL support at parity throughout the migration — see [DECISIONS/LOCALIZATION.md](DECISIONS/LOCALIZATION.md).
+12. Keep the existing DAIFY visual identity (brand tokens, type pairing, red-as-accent discipline) — see [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) and [BRAND_GUIDE.md](BRAND_GUIDE.md). Porting tokens into the new stack is expected; abandoning them is not.
+
+**Engineering**
+
+13. Security authorization must eventually be enforced server-side. Frontend/UI guards are for UX only — see [DECISIONS/AUTH_RBAC.md](DECISIONS/AUTH_RBAC.md).
+14. Every milestone includes tests as part of its definition of done, not as a follow-up.
+15. Never mark a task or milestone complete while its tests are failing.
+16. Avoid unnecessary rewrites. Prefer the smallest change that gets a milestone's deliverables to a real, maintainable state over rewriting something that already works.
+17. Prefer maintainable production architecture over shortcuts, even when the shortcut is faster this week.

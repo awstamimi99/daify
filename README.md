@@ -1,25 +1,96 @@
-# DAIFY prototype
+# DAIFY
 
-DAIFY is a framework-free front-end prototype for a premium digital-menu SaaS
-product. It demonstrates the marketing site, authentication journeys,
-restaurant dashboard, platform-admin dashboard, and a reusable restaurant-menu
-template engine. It is not the production application and has no live backend.
+DAIFY is a premium digital-menu SaaS product. The repository contains the
+production Next.js frontend foundation, a NestJS/PostgreSQL/Prisma backend
+foundation, and the preserved framework-free prototype.
 
 ## Run locally
 
-```bash
-python3 -m http.server 8080
-```
-
-Open `http://localhost:8080`.
-
-Run the existing end-to-end tests with:
+Run the production frontend:
 
 ```bash
-npm test
+npm install
+npm run dev:web
 ```
 
-## What is implemented
+Open `http://localhost:3000`. Quality commands are `npm run lint`,
+`npm run typecheck`, `npm run build`, and `npm run test:web`.
+
+Run the production API with PostgreSQL:
+
+```bash
+cp apps/api/.env.example apps/api/.env
+cp apps/web/.env.example apps/web/.env.local
+npm run db:up
+docker compose up -d mailpit
+npm run db:migrate
+npm run dev:api
+```
+
+The API defaults to `http://localhost:4000`; liveness is at
+`/api/v1/health`, database readiness uses `/api/v1/health?database=true`, and
+the OpenAPI 3.1 contract is at `/api/docs/openapi.json`. If Docker is not
+available, use `npm run db:dev --workspace @daify/api` and copy its PostgreSQL
+URL into `DATABASE_URL`.
+
+Development verification, reset and invitation emails go to the local SMTP
+inbox at `http://localhost:8025`. Production requires your SMTP provider's
+settings, a verified sender and an HTTPS `WEB_ORIGIN`; see
+`apps/api/.env.example`. Delivery errors are reported, and verification links
+can be requested again at `/resend-verification`. No real provider has been
+configured or validated in this repository. The no-delivery `test` transport
+and raw response tokens are restricted to `NODE_ENV=test`.
+
+Run the preserved prototype with `python3 -m http.server 8080`, then open
+`http://localhost:8080`. Its original browser suite remains available through
+`npm run test:prototype`; `npm test` runs the prototype browser suite, the
+production-web browser suite, and API unit/integration suites (the latter needs
+both `DATABASE_URL` and `TEST_DATABASE_URL` pointing at a disposable migrated
+PostgreSQL database whose name contains `test`). API integration tests clear
+that database's fixtures; do not point them at development or production data.
+Web tests start their own API/web processes and use test-only token responses.
+After `npm run build`, `WEB_TEST_PRODUCTION=true npm run test:web` verifies the
+compiled frontend with `next start` as well.
+
+## Current authenticated workspace
+
+M4 adds persisted draft menus at `/dashboard/menus`: sections and items, prices,
+availability, ordering, translations, private images and conflict-safe saves.
+`/dashboard/restaurant` supports location updates and archiving. Images use local
+files during development; production requires a private S3-compatible bucket.
+See the [M4 verification and media runbook](docs/QA/M4_2026-09-12.md).
+Publishing, public menu URLs and QR codes remain M5 work.
+
+M3 now includes real signup, email verification/resend, login/logout, password
+reset, persistent organization and first-location setup, invitation acceptance,
+and team role/status management. The dashboard loads the user's actual
+memberships, permitted locations and navigation, with workspace switching for
+users who belong to multiple organizations. Tenant authorization is enforced
+by the API. Menus, publishing/QR, billing and analytics remain later milestones.
+Account security at `/dashboard/security` now supports authenticator enrollment,
+replacement and one-use recovery codes. Set a stable `MFA_ENCRYPTION_KEY` in the
+API environment before using it; see the [MFA runbook and QA record](docs/QA/MFA_2026-09-12.md).
+Signed proxy identity, shared database rate limits, current API schemas, durable
+MFA alerts and key inspection/rotation tools are implemented and tested. Provider
+selection/delivery, actual ingress and backup/restore checks, and final security
+acceptance remain outstanding; M3 is **in progress**. Follow the
+[operations runbook and current QA report](docs/QA/M3_OPERATIONS_2026-09-12.md),
+including the remaining dependency-audit findings. Earlier workspace fixes are in the
+[remediation record](docs/QA/REMEDIATION_2026-09-12.md).
+
+## Production frontend foundation
+
+- Next.js App Router, React, and strict TypeScript under `apps/web`.
+- Shared domain contracts in `packages/types`, UI primitives in `packages/ui`,
+  and strict shared compiler settings in `packages/config`.
+- DAIFY tokens, self-hosted brand fonts, reusable buttons/cards/form fields,
+  shared loading/error/not-found states, and responsive shell conventions.
+- Shared marketing shell and real homepage, auth shell, responsive role-aware
+  dashboard shell, and an Atelier renderer proof with English/Arabic RTL.
+- Playwright coverage plus GitHub Actions checks for lint, typecheck, build, and
+  Chromium tests.
+
+## Preserved prototype
 
 - Marketing: home, features, nine-template gallery, pricing, about, contact,
   privacy, terms, and cookies.
@@ -41,6 +112,12 @@ operations are simulated. Prototype state lives only in the current browser.
 ## Repository structure
 
 ```text
+apps/web/                       production Next.js frontend
+apps/api/                       production NestJS API and Prisma schema
+packages/
+  config/                       shared strict TypeScript configuration
+  types/                        shared domain and renderer contracts
+  ui/                           reusable React UI primitives
 index.html, features.html, ...   public marketing/auth/legal pages
 dashboard/                      restaurant owner/manager application
 admin/                          DAIFY platform-admin application
@@ -59,6 +136,7 @@ assets/
     menu/                       template configs, renderers, preview, theme
     dashboard/                  store, permissions, shells, data, page modules
 docs/                           roadmap, milestones, decisions, and architecture
+compose.yaml                    local PostgreSQL 17 service
 tests/                          Playwright integration tests
 ```
 
@@ -86,15 +164,16 @@ their concepts into typed modules rather than renaming them in place.
 ## Architecture references
 
 - [Master roadmap](docs/ROADMAP.md)
-- [Active milestone: M1 Foundation](docs/MILESTONES/M1_FOUNDATION.md)
+- [Current milestone: M4 Menu Platform](docs/MILESTONES/M4_MENU_PLATFORM.md)
 - [Production architecture](docs/PRODUCTION_ARCHITECTURE.md)
 - [Architecture decisions](docs/DECISIONS/)
 - [Brand guide](docs/BRAND_GUIDE.md)
 - [Design system](docs/DESIGN_SYSTEM.md)
 - [Template engine](docs/TEMPLATE_ENGINE.md)
 
-The production direction is Next.js/React/TypeScript, NestJS, PostgreSQL, and
-Prisma. No production framework or database implementation is part of this
-prototype cleanup. `docs/ROADMAP.md` owns milestone status; the active milestone
-file owns execution details. Architecture decisions must be documented before
-their implementation changes direction.
+The production stack is Next.js/React/TypeScript, NestJS, PostgreSQL, and
+Prisma. M1 established the web boundary, M2 established the API/database
+boundary, M3 implements real authentication and organization membership, and
+M4 implements private multilingual menu drafts.
+`docs/ROADMAP.md` owns milestone status; each milestone file owns execution
+details.

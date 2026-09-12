@@ -1,0 +1,44 @@
+
+> daify@0.1.0 test:web
+> playwright test --config apps/web/playwright.config.ts
+
+[WebServer] (node:32037) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:32121) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 21 tests using 4 workers
+
+(node:32125) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:32123) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:32122) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:32124) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   4 [chromium] › apps/web/tests/foundation.spec.ts:174:5 › account proxy isolates client limits and exposes retry timing (344ms)
+  ✓   3 [chromium] › apps/web/tests/foundation.spec.ts:13:5 › marketing shell keeps the DAIFY identity and primary journey (325ms)
+  ✓   6 [chromium] › apps/web/tests/foundation.spec.ts:190:5 › account form cannot submit credentials before JavaScript is ready (182ms)
+  ✓   5 [chromium] › apps/web/tests/foundation.spec.ts:185:5 › dashboard rejects visitors without a server session (200ms)
+  ✓   1 [chromium] › apps/web/tests/foundation.spec.ts:23:5 › responsive marketing navigation opens on a phone (588ms)
+[WebServer] Error: Internal: NoFallbackError
+[WebServer]     at ignore-listed frames
+  ✓   8 [chromium] › apps/web/tests/foundation.spec.ts:213:5 › unknown routes use the shared not-found pattern (200ms)
+  ✓   9 [chromium] › apps/web/tests/foundation.spec.ts:232:7 › /features has route-specific metadata and content (196ms)
+  ✓   7 [chromium] › apps/web/tests/foundation.spec.ts:203:5 › Atelier renderer switches to Arabic and RTL through the typed contract (268ms)
+  ✓  11 [chromium] › apps/web/tests/foundation.spec.ts:232:7 › /pricing has route-specific metadata and content (207ms)
+  ✓  12 [chromium] › apps/web/tests/foundation.spec.ts:232:7 › /about has route-specific metadata and content (206ms)
+  ✓  14 [chromium] › apps/web/tests/foundation.spec.ts:232:7 › /privacy has route-specific metadata and content (196ms)
+  ✓  13 [chromium] › apps/web/tests/foundation.spec.ts:232:7 › /contact has route-specific metadata and content (236ms)
+  ✓  10 [chromium] › apps/web/tests/foundation.spec.ts:232:7 › /templates has route-specific metadata and content (472ms)
+  ✓  16 [chromium] › apps/web/tests/foundation.spec.ts:232:7 › /cookies has route-specific metadata and content (203ms)
+  ✓  15 [chromium] › apps/web/tests/foundation.spec.ts:232:7 › /terms has route-specific metadata and content (208ms)
+  ✓  17 [chromium] › apps/web/tests/foundation.spec.ts:239:5 › contact form validates and completes without transmitting data (357ms)
+  ✓  19 [chromium] › apps/web/tests/foundation.spec.ts:258:5 › pricing toggle updates visible plan pricing (242ms)
+  ✓  21 [chromium] › apps/web/tests/foundation.spec.ts:278:5 › account proxy rejects cross-origin and form-encoded login requests (37ms)
+  ✓  18 [chromium] › apps/web/tests/foundation.spec.ts:249:5 › template gallery exposes nine designs and working filters (503ms)
+  ✓  20 [chromium] › apps/web/tests/foundation.spec.ts:266:5 › mobile footer keeps accessible accordions and back-to-top control (492ms)
+  ✓   2 [chromium] › apps/web/tests/foundation.spec.ts:34:5 › real authentication verifies email, protects dashboard, and logs out (8.6s)
+
+  21 passed (12.3s)

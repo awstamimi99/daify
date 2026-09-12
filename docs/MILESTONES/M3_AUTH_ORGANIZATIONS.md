@@ -2,7 +2,7 @@
 
 ## Status
 
-NOT STARTED. Detailed task breakdown will be written when M2 is complete and this milestone is about to start.
+**IN PROGRESS.** Explicitly started by the owner on 2026-08-13 after M2 completion and audit remediation.
 
 ## Goal
 
@@ -29,11 +29,34 @@ Session/token-based authentication, password handling (or provider-based auth), 
 - Builds on the NestJS API and PostgreSQL schema from M2.
 - Implements the full permission matrix from [DECISIONS/AUTH_RBAC.md](../DECISIONS/AUTH_RBAC.md), including the four enforcement rules called out there (last-owner protection, managers can't grant scope broader than their own, availability access doesn't imply editing, suspension revokes access promptly).
 - MFA/step-up authentication for Platform Admin and sensitive actions, per the same document.
-- Authentication provider, session duration, and MFA recovery mechanics are explicitly deferred in `AUTH_RBAC.md` — this milestone is where those get decided, not before.
+- Authentication provider, session duration, and MFA recovery mechanics are now recorded in `AUTH_RBAC.md`; production recovery operations still require validation.
 
-## Tasks
+## Tasks and execution status — 2026-09-12
 
-Detailed task breakdown deferred until M2 is complete and this milestone starts.
+- Implemented identity with Argon2id, revocable opaque sessions, verification,
+  verification resend, password reset and TOTP enforcement for existing platform admins.
+- Implemented SMTP delivery with local SMTP integration tests, failure reporting,
+  timeouts and production TLS requirements. External provider delivery is not yet validated.
+- Fixed Origin validation at the Next proxy, one-time token consumption races,
+  last-owner invitation bypass/concurrent demotion, malformed cookies, duplicate
+  location conflicts, and organization/location input validation.
+- Organization and membership mutations serialize on a PostgreSQL organization
+  row lock; token claims and password/session changes are transactional.
+- Implemented actual workspace identity, first organization/location setup,
+  scoped navigation, team invitation acceptance, member role/status management,
+  and member listing limited to the actor's grant authority.
+- Fixed desktop logout, logout failure reporting, return-to paths, verification
+  effects, field labels and mobile sidebar keyboard/focus behavior.
+- Implemented password-confirmed, session-bound MFA enrollment/replacement,
+  encrypted authenticator secrets, one-use recovery codes, replay/concurrency
+  protection, session revocation/rotation, and operator-only admin promotion.
+  Enrollment never grants a platform role. MFA API schemas are documented.
+- Implemented signed proxy client identity, shared PostgreSQL throttle counters,
+  complete current API schemas with route/live-response checks, durable MFA
+  alerts/retries, SMTP preflight and MFA key inspection/rotation. Local tests pass.
+- Remaining: provider selection and actual SMTP/ingress smoke tests, production
+  key backup/restore rehearsal, dependency-audit disposition and final milestone
+  review. The owner authorized M4 after M3 closes; menu CRUD remains M4.
 
 ## Deliverables
 
@@ -61,8 +84,26 @@ API tests asserting the permission matrix directly — for each role, which endp
 ## Risks / Notes
 
 - This is the first milestone where getting something wrong has real security consequences — treat the permission-matrix tests as a gate, not an afterthought.
-- Authentication provider choice (build vs. a hosted provider) is still open; resolve it early in this milestone since most other tasks depend on it.
+- The identity decision is recorded in `AUTH_RBAC.md`: first-party email/password
+  sessions. SMTP delivery is implemented; deployment credentials remain external.
 
 ## Completion Checklist
 
-Not applicable yet — a real checklist will be written from the detailed task breakdown when this milestone starts.
+- [x] Real account/session and organization membership API.
+- [x] Tenant/location isolation and last-owner/manager grant regression tests.
+- [x] Native PostgreSQL 17 migration and concurrency verification.
+- [x] Local SMTP transport success and rejection tests.
+- [x] Browser journey for verification, login, workspace/first branch creation,
+  invitation, acceptance, scoped navigation, suspension and logout.
+- [ ] Provider delivery/retry operational validation using deployment settings.
+- [x] Recoverable MFA enrollment and gated operator promotion, verified on test accounts.
+- [x] Durable owner notifications, retry/exhaustion and key-rotation tooling tested locally.
+- [ ] Production MFA key backup/rotation, owner notifications and recovery operations validated before real administrator rollout.
+- [x] Proxy-aware per-client rate limiting verified locally across clients and API instances.
+- [ ] Selected production ingress verified to overwrite trusted IP headers and prevent bypass.
+- [x] Complete current OpenAPI request/response schemas, route coverage and live-response validation.
+- [ ] Remaining dependency-audit findings disposition and final M3 acceptance review.
+
+Evidence and remaining QA findings: [remediation record](../QA/REMEDIATION_2026-09-12.md).
+MFA implementation, test evidence and operator instructions: [MFA record](../QA/MFA_2026-09-12.md).
+Latest continuation and deployment gates: [operations record](../QA/M3_OPERATIONS_2026-09-12.md).

@@ -1,0 +1,33 @@
+
+> daify@0.1.0 test:api
+> npm run test --workspace @daify/api
+
+
+> @daify/api@0.1.0 test
+> jest --selectProjects unit integration --runInBand
+
+Running 2 projects:
+- integration
+- unit
+[Nest] 21494  - 09/12/2026, 1:13:56 AM     LOG [EmailDeliveryService] Object(2) {
+  event: 'email.accepted-by-smtp',
+  recipientDomain: 'example.com'
+}
+[Nest] 21494  - 09/12/2026, 1:13:56 AM     LOG [EmailDeliveryService] Object(2) {
+  event: 'email.accepted-by-smtp',
+  recipientDomain: 'example.com'
+}
+[Nest] 21494  - 09/12/2026, 1:13:56 AM     LOG [EmailDeliveryService] Object(2) {
+  event: 'email.accepted-by-smtp',
+  recipientDomain: 'example.com'
+}
+[Nest] 21494  - 09/12/2026, 1:13:57 AM   ERROR [EmailDeliveryService] Object(2) {
+  event: 'email.delivery-failed',
+  recipientDomain: 'example.com'
+}
+
+Test Suites: 7 passed, 7 total
+Tests:       42 passed, 42 total
+Snapshots:   0 total
+Time:        2.164 s, estimated 3 s
+Ran all test suites in 2 projects.

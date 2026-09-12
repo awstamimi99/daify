@@ -1,0 +1,13 @@
+
+> @daify/api@0.1.0 prisma:migrate:deploy
+> prisma migrate deploy
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+Datasource "db": PostgreSQL database "daify_test", schema "public" at "127.0.0.1:55433"
+
+2 migrations found in prisma/migrations
+
+
+No pending migrations to apply.

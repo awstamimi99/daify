@@ -1,0 +1,20 @@
+import daifyLogoDark from "../../../../assets/branding/daify-logo-dark.png";
+import daifyLogoLight from "../../../../assets/branding/daify-logo-light.png";
+import heroOliva from "../../../../assets/images/hero-oliva-evening.png";
+import guestScan from "../../../../assets/images/guest-scan-evening.png";
+import restaurantInterior from "../../../../assets/images/restaurant-interior.png";
+import truffleRigatoni from "../../../../assets/images/menu/truffle-rigatoni.jpg";
+import charredOctopus from "../../../../assets/images/menu/charred-octopus.jpg";
+import whippedFeta from "../../../../assets/images/menu/whipped-feta.jpg";
+import burrataTomato from "../../../../assets/images/menu/burrata-tomato.jpg";
+import atelierCover from "../../../../assets/images/template-covers-v2/atelier.png";
+import feastCover from "../../../../assets/images/template-covers-v2/feast.png";
+import soukCover from "../../../../assets/images/template-covers-v2/souk.png";
+import verdeCover from "../../../../assets/images/template-covers-v2/verde.png";
+import noirCover from "../../../../assets/images/template-covers-v2/noir.png";
+import amalfiCover from "../../../../assets/images/template-covers-v2/amalfi.png";
+import soraCover from "../../../../assets/images/template-covers-v2/sora.png";
+import emberCover from "../../../../assets/images/template-covers-v2/ember.png";
+import mellowCover from "../../../../assets/images/template-covers-v2/mellow.png";
+
+export { amalfiCover, atelierCover, burrataTomato, charredOctopus, daifyLogoDark, daifyLogoLight, emberCover, feastCover, guestScan, heroOliva, mellowCover, noirCover, restaurantInterior, soraCover, soukCover, truffleRigatoni, verdeCover, whippedFeta };

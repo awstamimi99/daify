@@ -2,7 +2,11 @@
 
 ## Status
 
-NOT STARTED. Detailed task breakdown will be written when M3 is complete and this milestone is about to start.
+**IN PROGRESS — local implementation complete and tested.** Explicit owner kickoff
+on 2026-09-12. Actual object-store/provider acceptance remains open. M3's external
+operational gates remain open under the sequencing exception in the roadmap.
+See [QA results and media runbook](../QA/M4_2026-09-12.md): 78 API, 22 compiled-web
+and 17 prototype tests passed, together with build, typecheck and lint.
 
 ## Goal
 
@@ -33,7 +37,19 @@ Modeling ordered, nested data (sections containing items) in a relational databa
 
 ## Tasks
 
-Detailed task breakdown deferred until M3 is complete and this milestone starts.
+- Complete scoped location update/archive and draft menu CRUD.
+- Add explicit menu, section, item and image-alt translation rows; canonical
+  BCP 47 tags and versioned completeness reporting for enabled languages.
+- Add sections/items, ordering, move, price precision, allergens/dietary tags,
+  featured/visibility flags and a separate availability-only mutation.
+- Serialize edits with organization/menu locks and reject stale draft revisions.
+- Add bounded validated image upload, metadata stripping, immutable private
+  objects, authenticated reads and detachment. Use local storage for development
+  and an S3-compatible adapter for a subsequently selected production provider.
+- Replace the Menus placeholder with persisted listing and editing, accessible
+  English/Arabic fields, visible save failures/conflicts and mobile layouts.
+- Extend API contracts and verify isolation, permissions, localization, media,
+  concurrency and complete browser journeys before marking implementation done.
 
 ## Deliverables
 
@@ -65,4 +81,10 @@ API tests for CRUD boundaries and tenant scoping; tests specifically covering th
 
 ## Completion Checklist
 
-Not applicable yet — a real checklist will be written from the detailed task breakdown when this milestone starts.
+- [x] Location and draft menu CRUD, with tenant and location scopes.
+- [x] Section/item CRUD, ordering and availability-only authorization.
+- [x] Translation rows and completeness reporting.
+- [x] Validated image storage, private retrieval and detachment.
+- [x] Dashboard listing/editor with persistent saves and mobile/RTL behavior.
+- [x] API contracts, real-database tests and browser evidence.
+- [ ] Real object-store/provider operational validation (provider not yet selected).
