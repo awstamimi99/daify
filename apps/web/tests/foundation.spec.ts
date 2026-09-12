@@ -1,4 +1,14 @@
 import { expect, test } from "@playwright/test";
+import { createHmac } from "node:crypto";
+
+function authenticatorCode(secret: string) {
+  const bits = [...secret].map(char => "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".indexOf(char).toString(2).padStart(5, "0")).join("");
+  const key = Buffer.from(bits.match(/.{8}/g)!.map(byte => Number.parseInt(byte, 2)));
+  const input = Buffer.alloc(8); input.writeBigUInt64BE(BigInt(Math.floor(Date.now() / 30_000)));
+  const digest = createHmac("sha1", key).update(input).digest();
+  const start = digest[digest.length - 1]! & 15;
+  return ((digest.readUInt32BE(start) & 0x7fffffff) % 1_000_000).toString().padStart(6, "0");
+}
 
 test("marketing shell keeps the DAIFY identity and primary journey", async ({ page }) => {
   await page.goto("/");
@@ -98,7 +108,7 @@ test("real authentication verifies email, protects dashboard, and logs out", asy
   });
   expect(teammateSignup.ok()).toBeTruthy();
   const { verificationToken } = await teammateSignup.json() as { verificationToken: string };
-  const teammateContext = await browser.newContext();
+  const teammateContext = await browser.newContext({ extraHTTPHeaders: { "x-daify-test-client-ip": "192.0.2.11" } });
   try {
     const teammate = await teammateContext.newPage();
     await teammate.goto(`http://127.0.0.1:3100/verify-email?token=${encodeURIComponent(verificationToken)}`);
@@ -129,6 +139,47 @@ test("real authentication verifies email, protects dashboard, and logs out", asy
     await teammate.goto("http://127.0.0.1:3100/dashboard");
     await expect(teammate.getByText("Salmiya Branch", { exact: true })).toHaveCount(0);
   } finally { await teammateContext.close(); }
+
+  // Exercise MFA on the same real account, including the proxy's rotated cookie.
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/dashboard/security");
+  await page.getByLabel("Current password").fill(password);
+  await page.getByRole("button", { name: "Set up authenticator", exact: true }).click();
+  const setupKey = await page.getByLabel("Authenticator setup key").inputValue();
+  await page.getByLabel("Current password").fill(password);
+  await page.getByLabel("Code from your new authenticator").fill(authenticatorCode(setupKey));
+  await page.getByRole("button", { name: "Confirm authenticator" }).click();
+  await expect(page.getByRole("heading", { name: "Save your recovery codes" })).toBeVisible();
+  const recoveryCodes = await page.getByRole("list", { name: "Recovery codes" }).locator("code").allTextContents();
+  expect(recoveryCodes).toHaveLength(10);
+  await expect(page.getByRole("button", { name: "Done", exact: true })).toBeDisabled();
+  await page.getByLabel("I have saved my recovery codes").check();
+  await page.getByRole("button", { name: "Done", exact: true }).click();
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "Two-step verification is on" })).toBeVisible();
+  if (process.env.QA_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.QA_EVIDENCE_DIR}/security-desktop.png`, fullPage: true });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.locator("#dashboard-sidebar")).toHaveAttribute("inert", "");
+  if (process.env.QA_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.QA_EVIDENCE_DIR}/security-mobile.png`, fullPage: true, animations: "disabled" });
+  await page.getByRole("button", { name: "Log out", exact: true }).click();
+  await page.getByLabel("Email address").fill(email);
+  await page.getByLabel("Password", { exact: true }).fill(password);
+  await page.getByLabel("Recovery code", { exact: true }).fill(recoveryCodes[0]!);
+  await page.getByRole("button", { name: /Log in/ }).click();
+  await expect(page).toHaveURL(/\/dashboard$/);
+  await page.goto("/dashboard/security");
+  await expect(page.getByText(/You have 9 unused recovery codes/)).toBeVisible();
+});
+
+test("account proxy isolates client limits and exposes retry timing", async ({ request }) => {
+  const send = (ip: string, forgedIp?: string) => request.post("/api/auth/login", {
+    headers: { Origin: "http://127.0.0.1:3100", "x-daify-test-client-ip": ip, "x-forwarded-for": forgedIp ?? "203.0.113.1", "x-daify-client-ip": "203.0.113.2", "x-daify-client-signature": "forged" }, data: {},
+  });
+  for (let i = 0; i < 5; i++) expect((await send("192.0.2.60", `203.0.113.${i}`)).status()).toBe(400);
+  const blocked = await send("192.0.2.60", "203.0.113.99");
+  expect(blocked.status()).toBe(429);
+  expect(Number(blocked.headers()["retry-after"])).toBeGreaterThan(0);
+  expect((await send("192.0.2.61")).status()).toBe(400);
 });
 
 test("dashboard rejects visitors without a server session", async ({ page }) => {

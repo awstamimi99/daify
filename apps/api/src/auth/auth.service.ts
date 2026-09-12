@@ -5,14 +5,14 @@ import { CryptoService } from './crypto.service';
 import type { LoginDto, ResetPasswordDto, SignupDto } from './dto/auth.dto';
 import type { RequestMetadata } from './request-metadata';
 import { EmailDeliveryService } from './email-delivery.service';
-import { TotpService } from './totp.service';
+import { MfaService } from './mfa.service';
 import { consumeToken } from './consume-token';
 
 @Injectable()
 export class AuthService {
   private readonly dummyPasswordHash: Promise<string>;
 
-  constructor(private readonly prisma: PrismaService, private readonly crypto: CryptoService, private readonly emailDelivery: EmailDeliveryService, private readonly totp: TotpService) {
+  constructor(private readonly prisma: PrismaService, private readonly crypto: CryptoService, private readonly emailDelivery: EmailDeliveryService, private readonly mfa: MfaService) {
     this.dummyPasswordHash = this.crypto.hashPassword('DAIFY timing equalizer only');
   }
 
@@ -58,14 +58,10 @@ export class AuthService {
       throw new UnauthorizedException('Email verification is required.');
     }
     let assuranceLevel: 'AAL1' | 'AAL2' = 'AAL1';
-    if (user.platformAdmin) {
-      if (!user.mfaSecret || !dto.mfaCode) {
+    if (user.platformAdmin || user.mfaSecret) {
+      if (!user.mfaSecret || (!dto.mfaCode && !dto.recoveryCode)) {
         await this.recordLoginFailure(user.id, metadata);
         throw new UnauthorizedException('Multi-factor authentication is required.');
-      }
-      if (!this.totp.verify(user.mfaSecret, dto.mfaCode)) {
-        await this.recordLoginFailure(user.id, metadata);
-        throw new UnauthorizedException('Multi-factor authentication is invalid.');
       }
       assuranceLevel = 'AAL2';
     }
@@ -75,10 +71,15 @@ export class AuthService {
       await tx.$queryRaw`SELECT id FROM users WHERE id = ${user.id}::uuid FOR UPDATE`;
       const current = await tx.user.findUnique({ where: { id: user.id } });
       if (!current || current.status !== 'ACTIVE' || current.passwordHash !== user.passwordHash || current.platformAdmin !== user.platformAdmin || current.mfaSecret !== user.mfaSecret) throw new UnauthorizedException('Your account changed. Please log in again.');
+      if (current.mfaSecret) await this.mfa.consumeFactor(tx, current, dto, metadata);
+      if (dto.recoveryCode && current.mfaSecret) await tx.session.updateMany({ where: { userId: user.id, revokedAt: null }, data: { revokedAt: new Date() } });
       const created = await tx.session.create({ data: { userId: user.id, tokenHash: this.crypto.tokenHash(rawToken), assuranceLevel, expiresAt: new Date(now + SESSION_IDLE_MS), absoluteExpiresAt: new Date(now + SESSION_ABSOLUTE_MS), ipAddress: metadata.ipAddress, userAgent: metadata.userAgent } });
       await tx.user.update({ where: { id: user.id }, data: { lastLoginAt: new Date() } });
       await tx.securityEvent.create({ data: { type: 'LOGIN_SUCCEEDED', actorUserId: user.id, outcome: 'SUCCESS', requestId: metadata.requestId, ipAddress: metadata.ipAddress } });
       return created;
+    }).catch(async (error: unknown) => {
+      if (error instanceof UnauthorizedException) await this.recordLoginFailure(user.id, metadata);
+      throw error;
     });
     return { token: rawToken, expiresAt: session.expiresAt, absoluteExpiresAt: session.absoluteExpiresAt, user: this.safeUser(user), assuranceLevel };
   }
@@ -115,7 +116,7 @@ export class AuthService {
       await tx.$queryRaw`SELECT id FROM users WHERE id = ${userId}::uuid FOR UPDATE`;
       const eligible = await tx.user.findFirst({ where: { id: userId, status: { not: 'DISABLED' } } });
       if (!eligible || !await consumeToken(tx, token.id)) throw new UnauthorizedException('Reset token is invalid or expired.');
-      await tx.user.update({ where: { id: userId }, data: { passwordHash } });
+      await tx.user.update({ where: { id: userId }, data: { passwordHash, mfaPendingSecret: null, mfaPendingSessionId: null, mfaPendingExpiresAt: null } });
       await tx.session.updateMany({ where: { userId, revokedAt: null }, data: { revokedAt: new Date() } });
       await tx.securityEvent.create({ data: { type: 'PASSWORD_RESET_COMPLETED', actorUserId: userId, outcome: 'SUCCESS', requestId: metadata.requestId, ipAddress: metadata.ipAddress } });
     });

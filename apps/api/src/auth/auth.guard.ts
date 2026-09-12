@@ -32,6 +32,7 @@ export class AuthGuard implements CanActivate {
       include: { user: true },
     });
     if (!session) throw new UnauthorizedException('Session is invalid or expired.');
+    if (session.user.mfaSecret && session.assuranceLevel !== 'AAL2') throw new UnauthorizedException('Please log in with two-step verification.');
     if (session.expiresAt.getTime() - now.getTime() < 24 * 60 * 60 * 1000) {
       const rollingExpiry = new Date(
         Math.min(now.getTime() + SESSION_IDLE_MS, session.absoluteExpiresAt.getTime()),

@@ -48,6 +48,16 @@ describe('SMTP email delivery', () => {
     await expect(service.sendVerification('reject@example.com', 'test-token')).rejects.toThrow('Email delivery is temporarily unavailable');
   });
 
+  it('verifies SMTP without sending and delivers security alerts without secrets', async () => {
+    const before = messages.length;
+    await service.verifyConnection(); expect(messages).toHaveLength(before);
+    await service.sendSecurityNotification('recipient@example.com', 'MFA_RECOVERY_USED', new Date('2026-09-12T00:00:00Z'), 'test-notification');
+    const message = messages.at(-1)!.replace(/=\r?\n/g, '').replace(/=3D/g, '=');
+    expect(message).toContain('A recovery code was used');
+    expect(message).toContain('/dashboard/security');
+    expect(message).not.toContain('?token=');
+  });
+
   it('forbids the test delivery adapter outside the test environment', () => {
     expect(() => new EmailDeliveryService(new ConfigService({ NODE_ENV: 'production', EMAIL_TRANSPORT: 'test' }))).toThrow('forbidden');
   });

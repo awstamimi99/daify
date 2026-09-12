@@ -1,0 +1,19 @@
+M4 local verification — 2026-09-12
+Disposable PostgreSQL 17; 6 applied migrations; Prisma diff: no difference.
+Production build, typecheck, lint, Prisma format and git diff --check: exit 0.
+
+API
+Test Suites: 16 passed, 16 total
+Tests:       78 passed, 78 total
+Time:        5.217 s, estimated 6 s
+
+Compiled web
+  22 passed (15.7s)
+
+Prototype
+  17 passed (6.7s)
+
+M4 development journey
+  1 passed (16.2s)
+
+npm audit --omit=dev: {"info": 0, "low": 0, "moderate": 0, "high": 7, "critical": 0, "total": 7}

@@ -1,4 +1,6 @@
-import type { InputHTMLAttributes } from "react";
+"use client";
+
+import { useId, type InputHTMLAttributes } from "react";
 import styles from "./text-field.module.css";
 
 export interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -7,7 +9,8 @@ export interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export function TextField({ label, hint, id, className, ...props }: TextFieldProps) {
-  const inputId = id ?? props.name;
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
   const hintId = hint && inputId ? `${inputId}-hint` : undefined;
   return (
     <div className={[styles.field, className].filter(Boolean).join(" ")}>

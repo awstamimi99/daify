@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import type { Request, Response } from 'express';
 import { AuthGuard } from '../auth/auth.guard';
@@ -32,6 +32,14 @@ export class OrganizationsController {
 
   @Get(':organizationId/locations/:locationId')
   getLocation(@CurrentUser() user: AuthenticatedUser, @Param('organizationId', new ParseUUIDPipe({ version: '4' })) id: string, @Param('locationId', new ParseUUIDPipe({ version: '4' })) locationId: string) { return this.organizations.getLocation(user.id, id, locationId); }
+
+  @Patch(':organizationId/locations/:locationId')
+  @UseGuards(CsrfOriginGuard)
+  updateLocation(@CurrentUser() user: AuthenticatedUser, @Param('organizationId', new ParseUUIDPipe({ version: '4' })) id: string, @Param('locationId', new ParseUUIDPipe({ version: '4' })) locationId: string, @Body() dto: CreateLocationDto, @Req() req: Request, @Res({ passthrough: true }) res: Response) { return this.organizations.updateLocation(user.id, id, locationId, dto, requestMetadata(req, res)); }
+
+  @Delete(':organizationId/locations/:locationId')
+  @UseGuards(CsrfOriginGuard)
+  archiveLocation(@CurrentUser() user: AuthenticatedUser, @Param('organizationId', new ParseUUIDPipe({ version: '4' })) id: string, @Param('locationId', new ParseUUIDPipe({ version: '4' })) locationId: string, @Req() req: Request, @Res({ passthrough: true }) res: Response) { return this.organizations.updateLocation(user.id, id, locationId, null, requestMetadata(req, res)); }
 
   @Post(':organizationId/invitations')
   @UseGuards(CsrfOriginGuard)

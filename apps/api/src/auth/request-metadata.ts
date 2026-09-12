@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express';
+import { clientIp } from '../common/middleware/client-identity.middleware';
 
 export interface RequestMetadata {
   requestId?: string;
@@ -9,7 +10,7 @@ export interface RequestMetadata {
 export function requestMetadata(request: Request, response: Response): RequestMetadata {
   return {
     requestId: response.locals.requestId as string | undefined,
-    ipAddress: request.ip,
+    ipAddress: clientIp(request),
     userAgent: request.get('user-agent')?.slice(0, 512),
   };
 }

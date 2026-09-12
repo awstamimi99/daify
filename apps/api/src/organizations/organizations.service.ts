@@ -60,6 +60,19 @@ export class OrganizationsService {
     return location;
   }
 
+  async updateLocation(userId: string, organizationId: string, locationId: string, dto: CreateLocationDto | null, metadata: RequestMetadata) {
+    return this.prisma.$transaction(async tx => {
+      await this.lockOrganization(tx, organizationId);
+      const member = await this.authorization.requireOrganization(userId, organizationId, 'location.manage', tx);
+      const location = await tx.location.findFirst({ where: { id: locationId, organizationId, status: 'ACTIVE', archivedAt: null } });
+      if (!location || (!member.allLocations && !member.locationScopes.some(scope => scope.locationId === locationId))) throw new NotFoundException('Location was not found.');
+      if (dto && dto.currency !== location.currency && await tx.menu.count({ where: { locationId, archivedAt: null } })) throw new ConflictException('Archive the location’s menus before changing its currency.');
+      const updated = await tx.location.update({ where: { id: locationId }, data: dto ?? { archivedAt: new Date(), status: 'ARCHIVED' } });
+      await tx.securityEvent.create({ data: { type: 'MENU_UPDATED', actorUserId: userId, organizationId, targetType: 'Location', targetId: locationId, outcome: 'SUCCESS', reason: dto ? 'location.updated' : 'location.archived', requestId: metadata.requestId, ipAddress: metadata.ipAddress } });
+      return updated;
+    });
+  }
+
   async listMembers(userId: string, organizationId: string) {
     const actor = await this.authorization.requireOrganization(userId, organizationId, 'team.manage');
     const members = await this.prisma.organizationMember.findMany({ where: { organizationId }, select: {

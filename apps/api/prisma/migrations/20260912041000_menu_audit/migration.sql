@@ -1,0 +1,1 @@
+ALTER TYPE "SecurityEventType" ADD VALUE 'MENU_UPDATED';

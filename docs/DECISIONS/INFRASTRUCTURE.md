@@ -43,6 +43,18 @@ Browser → signed upload → R2 original → validation/processing job
 
 Validate MIME signature, dimensions, and size; strip metadata; correct orientation; create thumbnails and responsive variants; use immutable keys; and clean failed/orphaned files through idempotent jobs.
 
+### M4 media implementation — 2026-09-12
+
+For the initial draft editor, upload small bounded images through the authorized
+JSON API, validate declared MIME against decoded JPEG/PNG/WebP content, enforce
+byte/pixel limits, and re-encode to strip metadata before storing. This avoids
+registering the currently flagged multipart parser. Immutable object keys and
+private authenticated retrieval precede the M5 public media/CDN path. Local
+filesystem storage is restricted to development/test; production requires an
+explicitly configured S3-compatible object store. Provider setup, signed direct
+uploads, responsive variants and delayed orphan cleanup remain operational/later
+pipeline work. No object store is purchased or configured by this decision.
+
 ## Cache and queues
 
 - Cache public menus by host, slug, locale, and published version.
@@ -71,4 +83,3 @@ These decisions must be recorded before the corresponding production infrastruct
 
 - [Production architecture](../PRODUCTION_ARCHITECTURE.md)
 - [M8 execution plan](../MILESTONES/M8_PRODUCTION.md)
-

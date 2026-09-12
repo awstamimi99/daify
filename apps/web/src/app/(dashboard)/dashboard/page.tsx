@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Card } from "@daify/ui";
 import styles from "./overview.module.css";
 import { requireSession } from "@/lib/session";
@@ -18,7 +19,7 @@ export default async function DashboardOverview() {
       </section>
       <section className={styles.columns}>
         <Card className={styles.menuCard}><h2>Locations</h2>{active.locations.length ? <div className={styles.sections}>{active.locations.map(location => <div key={location.id}><span>{location.name}</span><b>{location.currency} · {location.defaultLanguage}</b></div>)}</div> : active.membership.permissions.includes("location.manage") ? <><p>Add the first location for your restaurant.</p><WorkspaceSetup organizationId={active.id} /></> : <p>No locations have been assigned to you. Ask an owner to update your access.</p>}</Card>
-        <Card className={styles.next}><span className="eyebrow">Coming next</span><h2>Your menu starts here.</h2><p>Menu editing, design and publishing are being prepared. Your workspace details are saved and ready for the next step.</p></Card>
+        <Card className={styles.next}><span className="eyebrow">Your menus</span><h2>Make every dish count.</h2><p>Add sections, dishes, translations and images to your private menu drafts.</p>{active.membership.permissions.includes("menu.read") ? <Link href="/dashboard/menus">Open menus →</Link> : <p>Ask an owner for menu access.</p>}</Card>
       </section>
     </>}
   </main>;

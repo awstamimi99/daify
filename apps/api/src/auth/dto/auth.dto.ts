@@ -11,6 +11,17 @@ export class LoginDto {
   @Transform(({ value }: { value: unknown }) => typeof value === 'string' ? value.trim().toLowerCase() : value) @IsEmail() email!: string;
   @IsString() @MaxLength(128) password!: string;
   @IsOptional() @Matches(/^\d{6}$/) mfaCode?: string;
+  @IsOptional() @Matches(/^[a-fA-F0-9-]{32,39}$/) recoveryCode?: string;
+}
+
+export class MfaSetupDto {
+  @IsString() @MinLength(1) @MaxLength(128) password!: string;
+  @IsOptional() @Matches(/^\d{6}$/) mfaCode?: string;
+  @IsOptional() @Matches(/^[a-fA-F0-9-]{32,39}$/) recoveryCode?: string;
+}
+export class MfaConfirmDto {
+  @IsString() @MinLength(1) @MaxLength(128) password!: string;
+  @Matches(/^\d{6}$/) code!: string;
 }
 
 export class EmailDto { @Transform(({ value }: { value: unknown }) => typeof value === 'string' ? value.trim().toLowerCase() : value) @IsEmail() email!: string; }

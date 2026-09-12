@@ -14,7 +14,7 @@ Status legend: `COMPLETE` · `IN PROGRESS` · `NEXT` · `NOT STARTED` · `BLOCKE
 | M1 | Foundation — TypeScript / React / Next.js | **IN PROGRESS** | Production web foundation implemented; independent visual/accessibility review and first observed CI run remain before completion. |
 | M2 | Core Backend — NestJS / PostgreSQL / Prisma | **COMPLETE** | Production API/database foundation passed independent audit remediation and real-PostgreSQL verification. |
 | M3 | Auth / Organizations / RBAC | **IN PROGRESS** | Real accounts, revocable sessions, organizations, membership, and server-enforced object authorization. |
-| M4 | Menu Platform | NOT STARTED | Locations, menus, sections, items, and multilingual menu content as real backend resources. |
+| M4 | Menu Platform | **IN PROGRESS** | Local draft CRUD, translations, scoped editing and private images pass QA; real object-store acceptance remains open. |
 | M5 | Templates / Publishing / QR | NOT STARTED | Migrate the template engine, and build draft → preview → publish → version → rollback with stable public/QR routes. |
 | M6 | Billing / Subscriptions | NOT STARTED | Plans, subscriptions, entitlements, checkout, and webhooks. |
 | M7 | Analytics / Admin | NOT STARTED | Real analytics events, the platform-admin backend, audit logs, and support tooling. |
@@ -40,12 +40,26 @@ The table above owns status and objective. These compact gates record the other 
 
 ## Current focus
 
+2026-09-12 explicit owner instruction: “اعمل m4 انطلق”. M4 is now active while
+M3's documented external operational/security acceptance remains open. This is
+an explicit sequencing exception, not a declaration that M3 or deployment is
+complete. M4 now has a tested local implementation: 78 API, 22 compiled-web and
+17 prototype tests passed. Its remaining gate is actual object-store acceptance.
+See [M4 verification and runbook](QA/M4_2026-09-12.md).
+
 2026-09-12 continuation: account/RBAC QA repairs, real workspace and first-branch
 setup, and team invitation/management are implemented and locally verified.
-External SMTP validation, recoverable admin MFA and final M3 gates remain open.
-See [the remediation record](QA/REMEDIATION_2026-09-12.md).
+Recoverable MFA enrollment and an operator-only administrator promotion command
+are also implemented and locally verified. Signed proxy identity/shared rate
+limits, the current API contract and security notification/key tooling now pass
+local verification. Provider selection, real SMTP/ingress/restore tests and
+final security acceptance remain open. The owner authorized M4 after these M3
+gates close; the subsequent explicit kickoff above supersedes that sequencing.
+See [the remediation record](QA/REMEDIATION_2026-09-12.md) and
+[MFA verification/runbook](QA/MFA_2026-09-12.md) and the
+[latest operations report](QA/M3_OPERATIONS_2026-09-12.md).
 
-**M3 — Authentication, Organizations and RBAC is in progress.** Its explicit kickoff followed M2 completion and audit remediation. See [MILESTONES/M3_AUTH_ORGANIZATIONS.md](MILESTONES/M3_AUTH_ORGANIZATIONS.md). M1's remaining independent visual/CI review status is unchanged; M3 must not silently rewrite that history or begin M4 scope.
+**M3 — Authentication, Organizations and RBAC is in progress.** Its explicit kickoff followed M2 completion and audit remediation. See [MILESTONES/M3_AUTH_ORGANIZATIONS.md](MILESTONES/M3_AUTH_ORGANIZATIONS.md). M1's remaining independent visual/CI review status is unchanged. M4 proceeds only under the explicit owner kickoff recorded above.
 
 ## Why M0 is marked complete
 

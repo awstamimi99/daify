@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { createHmac, timingSafeEqual } from 'node:crypto';
+import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 
 const BASE32 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
 
@@ -25,14 +25,26 @@ function codeAt(secret: Buffer, counter: number): string {
 
 @Injectable()
 export class TotpService {
+  generateSecret(): string {
+    const bits = [...randomBytes(20)].map(byte => byte.toString(2).padStart(8, '0')).join('');
+    return bits.match(/.{5}/g)!.map(group => BASE32[Number.parseInt(group, 2)]).join('');
+  }
+
   verify(secretValue: string, token: string, now = Date.now()): boolean {
+    return this.matchCounter(secretValue, token, now) !== null;
+  }
+
+  matchCounter(secretValue: string, token: string, now = Date.now()): number | null {
+    if (!/^\d{6}$/.test(token)) return null;
     let secret: Buffer;
-    try { secret = decodeBase32(secretValue); } catch { return false; }
+    try { secret = decodeBase32(secretValue); } catch { return null; }
     const provided = Buffer.from(token);
     const counter = Math.floor(now / 30_000);
-    return [-1, 0, 1].some(offset => {
+    for (const offset of [1, 0, -1]) {
+      if (counter + offset < 0) continue;
       const expected = Buffer.from(codeAt(secret, counter + offset));
-      return provided.length === expected.length && timingSafeEqual(provided, expected);
-    });
+      if (provided.length === expected.length && timingSafeEqual(provided, expected)) return counter + offset;
+    }
+    return null;
   }
 }

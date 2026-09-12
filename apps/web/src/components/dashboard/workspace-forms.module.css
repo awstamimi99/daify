@@ -13,3 +13,6 @@
 .member .field { flex: 1 1 9rem; min-width: 0; overflow-wrap: anywhere; }
 .error { color: #a51e1e; }
 .message { color: #205838; }
+.securityFields { display: grid; gap: 1rem; min-width: 0; border: 0; padding: 0; margin: 0; }
+.recoveryCodes { display: grid; gap: .6rem; padding-inline-start: 1.2rem; }
+.recoveryCodes code { overflow-wrap: anywhere; font-size: .85rem; }

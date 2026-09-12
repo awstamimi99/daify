@@ -59,7 +59,10 @@ export function AuthForm({ mode }: { readonly mode: AuthMode }) {
         {needsName ? <TextField label="Your name" name="displayName" autoComplete="name" required /> : null}
         {mode !== "reset-password" ? <TextField label="Email address" name="email" type="email" autoComplete="email" required /> : null}
         {needsPassword ? <TextField label={mode === "reset-password" ? "New password" : "Password"} name="password" type="password" autoComplete={mode === "login" ? "current-password" : "new-password"} minLength={12} required hint="Use at least twelve characters." /> : null}
-        {mode === "login" ? <TextField label="Authenticator code (Platform Admin only)" name="mfaCode" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" hint="Leave blank for organization accounts." /> : null}
+        {mode === "login" ? <>
+          <TextField label="Authenticator code" name="mfaCode" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" hint="Required if two-step verification is enabled. Leave blank when using a recovery code." />
+          <TextField label="Recovery code" name="recoveryCode" autoComplete="off" spellCheck={false} hint="Use one saved recovery code if you cannot access your authenticator." />
+        </> : null}
         {error ? <p role="alert">{error}</p> : null}
         <Button type="submit" disabled={!hydrated || pending}>{pending ? "Please wait…" : details.action} <span aria-hidden="true">↗</span></Button>
         </fieldset>

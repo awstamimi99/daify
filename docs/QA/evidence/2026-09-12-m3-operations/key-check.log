@@ -1,0 +1,5 @@
+
+> @daify/api@0.1.0 mfa:key
+> ts-node --project tsconfig.json scripts/mfa-key.ts
+
+{"accountsChecked":1,"rotated":false}

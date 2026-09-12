@@ -28,11 +28,12 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const request = http.getRequest<Request>();
     const response = http.getResponse<Response>();
     const duplicate = exception instanceof Prisma.PrismaClientKnownRequestError && exception.code === 'P2002';
-    const status = duplicate ? HttpStatus.CONFLICT :
+    const tooLarge = exception instanceof Error && 'type' in exception && exception.type === 'entity.too.large';
+    const status = tooLarge ? HttpStatus.PAYLOAD_TOO_LARGE : duplicate ? HttpStatus.CONFLICT :
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
-    const detail = duplicate ? 'A record with these details already exists.' : this.getSafeDetail(exception, status);
+    const detail = tooLarge ? 'Request body exceeds the allowed size.' : duplicate ? 'A record with these details already exists.' : this.getSafeDetail(exception, status);
     const requestId = response.locals.requestId as string | undefined;
 
     if (status >= 500) {

@@ -54,15 +54,29 @@ compiled frontend with `next start` as well.
 
 ## Current authenticated workspace
 
+M4 adds persisted draft menus at `/dashboard/menus`: sections and items, prices,
+availability, ordering, translations, private images and conflict-safe saves.
+`/dashboard/restaurant` supports location updates and archiving. Images use local
+files during development; production requires a private S3-compatible bucket.
+See the [M4 verification and media runbook](docs/QA/M4_2026-09-12.md).
+Publishing, public menu URLs and QR codes remain M5 work.
+
 M3 now includes real signup, email verification/resend, login/logout, password
 reset, persistent organization and first-location setup, invitation acceptance,
 and team role/status management. The dashboard loads the user's actual
 memberships, permitted locations and navigation, with workspace switching for
 users who belong to multiple organizations. Tenant authorization is enforced
 by the API. Menus, publishing/QR, billing and analytics remain later milestones.
-Platform-admin MFA enrollment/recovery and provider delivery verification are
-still outstanding; M3 remains **in progress**. See the
-[remediation record](docs/QA/REMEDIATION_2026-09-12.md) for tested behavior and limits.
+Account security at `/dashboard/security` now supports authenticator enrollment,
+replacement and one-use recovery codes. Set a stable `MFA_ENCRYPTION_KEY` in the
+API environment before using it; see the [MFA runbook and QA record](docs/QA/MFA_2026-09-12.md).
+Signed proxy identity, shared database rate limits, current API schemas, durable
+MFA alerts and key inspection/rotation tools are implemented and tested. Provider
+selection/delivery, actual ingress and backup/restore checks, and final security
+acceptance remain outstanding; M3 is **in progress**. Follow the
+[operations runbook and current QA report](docs/QA/M3_OPERATIONS_2026-09-12.md),
+including the remaining dependency-audit findings. Earlier workspace fixes are in the
+[remediation record](docs/QA/REMEDIATION_2026-09-12.md).
 
 ## Production frontend foundation
 
@@ -150,7 +164,7 @@ their concepts into typed modules rather than renaming them in place.
 ## Architecture references
 
 - [Master roadmap](docs/ROADMAP.md)
-- [Current milestone: M3 Auth / Organizations](docs/MILESTONES/M3_AUTH_ORGANIZATIONS.md)
+- [Current milestone: M4 Menu Platform](docs/MILESTONES/M4_MENU_PLATFORM.md)
 - [Production architecture](docs/PRODUCTION_ARCHITECTURE.md)
 - [Architecture decisions](docs/DECISIONS/)
 - [Brand guide](docs/BRAND_GUIDE.md)
@@ -159,6 +173,7 @@ their concepts into typed modules rather than renaming them in place.
 
 The production stack is Next.js/React/TypeScript, NestJS, PostgreSQL, and
 Prisma. M1 established the web boundary, M2 established the API/database
-boundary, and M3 implements real authentication and organization membership.
+boundary, M3 implements real authentication and organization membership, and
+M4 implements private multilingual menu drafts.
 `docs/ROADMAP.md` owns milestone status; each milestone file owns execution
 details.

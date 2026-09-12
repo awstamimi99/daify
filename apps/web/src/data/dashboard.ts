@@ -4,6 +4,7 @@ export interface DashboardNavItem { readonly href: string; readonly label: strin
 
 export const dashboardNavigation: readonly DashboardNavItem[] = [
   { href: "/dashboard", permissions: [], label: "Overview", glyph: "⌂", roles: ["owner", "manager", "staff", "viewer"] },
+  { href: "/dashboard/security", permissions: [], label: "Account security", glyph: "◇", roles: ["owner", "manager", "staff", "viewer"] },
   { href: "/dashboard/restaurant", permissions: ["organization.read"], label: "Restaurant", glyph: "◇", roles: ["owner", "manager", "viewer"] },
   { href: "/dashboard/menus", permissions: ["menu.read"], label: "Menus", glyph: "≡", roles: ["owner", "manager", "staff", "viewer"] },
   { href: "/dashboard/design", permissions: ["menu.design"], label: "Design", glyph: "✦", roles: ["owner", "manager"] },

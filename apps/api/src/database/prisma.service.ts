@@ -8,6 +8,9 @@ export class PrismaService extends PrismaClient implements OnModuleDestroy {
   constructor(config: ConfigService) {
     const adapter = new PrismaPg({
       connectionString: config.getOrThrow<string>('DATABASE_URL'),
+      // Keep SQL NOW() and Prisma Date parameters on the same UTC timeline,
+      // including databases whose server timezone is not UTC.
+      options: '-c timezone=UTC',
     });
     super({ adapter });
   }

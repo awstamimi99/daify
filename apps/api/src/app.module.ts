@@ -13,6 +13,10 @@ import { MenusModule } from './menus/menus.module';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { OrganizationsModule } from './organizations/organizations.module';
 import { PlatformModule } from './platform/platform.module';
+import { ClientIdentityMiddleware, clientIp } from './common/middleware/client-identity.middleware';
+import { PostgresThrottlerStorage } from './common/postgres-throttler.storage';
+import { PrismaService } from './database/prisma.service';
+import type { Request } from 'express';
 
 @Module({
   imports: [
@@ -22,7 +26,10 @@ import { PlatformModule } from './platform/platform.module';
       validationSchema: environmentSchema,
       validationOptions: { allowUnknown: true, abortEarly: false },
     }),
-    ThrottlerModule.forRoot([{ ttl: 60_000, limit: 120 }]),
+    ThrottlerModule.forRootAsync({ imports: [DatabaseModule], inject: [PrismaService], useFactory: (prisma: PrismaService) => ({
+      throttlers: [{ ttl: 60_000, limit: 120 }], storage: new PostgresThrottlerStorage(prisma),
+      getTracker: request => Promise.resolve(clientIp(request as Request)),
+    }) }),
     AuthModule,
     AuthorizationModule,
     DatabaseModule,
@@ -37,6 +44,6 @@ import { PlatformModule } from './platform/platform.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(RequestContextMiddleware).forRoutes('*');
+    consumer.apply(RequestContextMiddleware, ClientIdentityMiddleware).forRoutes('*');
   }
 }

@@ -1,0 +1,146 @@
+
+> daify@0.1.0 test:api
+> npm run test --workspace @daify/api
+
+
+> @daify/api@0.1.0 test
+> jest --selectProjects unit integration --runInBand
+
+Running 2 projects:
+- integration
+- unit
+[Nest] 31529  - 09/12/2026, 2:55:30 AM     LOG [EmailDeliveryService] Object(2) {
+  event: 'email.accepted-by-smtp',
+  recipientDomain: 'example.com'
+}
+[Nest] 31529  - 09/12/2026, 2:55:30 AM     LOG [EmailDeliveryService] Object(2) {
+  event: 'email.accepted-by-smtp',
+  recipientDomain: 'example.com'
+}
+[Nest] 31529  - 09/12/2026, 2:55:30 AM     LOG [EmailDeliveryService] Object(2) {
+  event: 'email.accepted-by-smtp',
+  recipientDomain: 'example.com'
+}
+[Nest] 31529  - 09/12/2026, 2:55:30 AM   ERROR [EmailDeliveryService] Object(2) {
+  event: 'email.delivery-failed',
+  recipientDomain: 'example.com'
+}
+[Nest] 31529  - 09/12/2026, 2:55:31 AM     LOG [EmailDeliveryService] Object(2) {
+  event: 'email.accepted-by-smtp',
+  recipientDomain: 'example.com'
+}
+{"level":"log","pid":31529,"timestamp":1789170931663,"message":"Starting Nest application...","context":"NestFactory"}
+{"level":"log","pid":31529,"timestamp":1789170931663,"message":"ConfigHostModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931663,"message":"ConfigModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931663,"message":"DatabaseModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931663,"message":"AuthorizationModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931663,"message":"MenusModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931663,"message":"DocsModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931663,"message":"ThrottlerModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931663,"message":"PlatformModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931663,"message":"AppModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"HealthModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"AuthModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"OrganizationsModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Starting Nest application...","context":"NestFactory"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"ConfigHostModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"ConfigModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"DatabaseModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"AuthorizationModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"MenusModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"DocsModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"ThrottlerModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"PlatformModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"AppModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"HealthModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"AuthModule dependencies initialized","context":"InstanceLoader"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"OrganizationsModule dependencies initialized","context":"InstanceLoader"}
+{"level":"warn","pid":31529,"timestamp":1789170931664,"message":"Unsupported route path: \"/api/*\". In previous versions, the symbols ?, *, and + were used to denote optional or repeating path parameters. The latest version of \"path-to-regexp\" now requires the use of named parameters. For example, instead of using a route like /users/* to capture all routes starting with \"/users\", you should use /users/*path. For more details, refer to the migration guide. Attempting to auto-convert to \"/api/{*path}\"...","context":"LegacyRouteConverter"}
+{"level":"warn","pid":31529,"timestamp":1789170931664,"message":"Unsupported route path: \"/api/*\". In previous versions, the symbols ?, *, and + were used to denote optional or repeating path parameters. The latest version of \"path-to-regexp\" now requires the use of named parameters. For example, instead of using a route like /users/* to capture all routes starting with \"/users\", you should use /users/*path. For more details, refer to the migration guide. Attempting to auto-convert to \"/api/{*path}\"...","context":"LegacyRouteConverter"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"AuthController {/api/auth} (version: 1):","context":"RoutesResolver"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/auth/signup, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/auth/verify-email, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/auth/login, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/auth/resend-verification, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/auth/logout, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/auth/me, GET} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/auth/forgot-password, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/auth/reset-password, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"MfaController {/api/auth/mfa} (version: 1):","context":"RoutesResolver"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/auth/mfa, GET} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/auth/mfa/setup, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/auth/mfa/confirm, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"DocsController {/api/docs} (version: Neutral):","context":"RoutesResolver"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/docs/openapi.json, GET} (version: Neutral) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"HealthController {/api/health} (version: 1):","context":"RoutesResolver"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/health, GET} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"OrganizationsController {/api/organizations} (version: 1):","context":"RoutesResolver"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/organizations, GET} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/organizations/:organizationId, GET} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/organizations/:organizationId/members, GET} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/organizations, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/organizations/:organizationId/locations, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/organizations/:organizationId/locations/:locationId, GET} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/organizations/:organizationId/invitations, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/organizations/invitations/accept, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/organizations/:organizationId/members/:memberId, PATCH} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"PlatformController {/api/platform} (version: 1):","context":"RoutesResolver"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/platform/organizations, GET} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Nest application successfully started","context":"NestApplication"}
+{"level":"warn","pid":31529,"timestamp":1789170931664,"message":"Unsupported route path: \"/api/*\". In previous versions, the symbols ?, *, and + were used to denote optional or repeating path parameters. The latest version of \"path-to-regexp\" now requires the use of named parameters. For example, instead of using a route like /users/* to capture all routes starting with \"/users\", you should use /users/*path. For more details, refer to the migration guide. Attempting to auto-convert to \"/api/{*path}\"...","context":"LegacyRouteConverter"}
+{"level":"warn","pid":31529,"timestamp":1789170931664,"message":"Unsupported route path: \"/api/*\". In previous versions, the symbols ?, *, and + were used to denote optional or repeating path parameters. The latest version of \"path-to-regexp\" now requires the use of named parameters. For example, instead of using a route like /users/* to capture all routes starting with \"/users\", you should use /users/*path. For more details, refer to the migration guide. Attempting to auto-convert to \"/api/{*path}\"...","context":"LegacyRouteConverter"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"AuthController {/api/auth} (version: 1):","context":"RoutesResolver"}
+{"level":"log","pid":31529,"timestamp":1789170931664,"message":"Mapped {/api/auth/signup, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"Mapped {/api/auth/verify-email, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"Mapped {/api/auth/login, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"Mapped {/api/auth/resend-verification, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"Mapped {/api/auth/logout, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"Mapped {/api/auth/me, GET} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"Mapped {/api/auth/forgot-password, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"Mapped {/api/auth/reset-password, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"MfaController {/api/auth/mfa} (version: 1):","context":"RoutesResolver"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"Mapped {/api/auth/mfa, GET} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"Mapped {/api/auth/mfa/setup, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"Mapped {/api/auth/mfa/confirm, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"DocsController {/api/docs} (version: Neutral):","context":"RoutesResolver"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"Mapped {/api/docs/openapi.json, GET} (version: Neutral) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"HealthController {/api/health} (version: 1):","context":"RoutesResolver"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"Mapped {/api/health, GET} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"OrganizationsController {/api/organizations} (version: 1):","context":"RoutesResolver"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"Mapped {/api/organizations, GET} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"Mapped {/api/organizations/:organizationId, GET} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"Mapped {/api/organizations/:organizationId/members, GET} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"Mapped {/api/organizations, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931665,"message":"Mapped {/api/organizations/:organizationId/locations, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931666,"message":"Mapped {/api/organizations/:organizationId/locations/:locationId, GET} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931666,"message":"Mapped {/api/organizations/:organizationId/invitations, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931666,"message":"Mapped {/api/organizations/invitations/accept, POST} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931666,"message":"Mapped {/api/organizations/:organizationId/members/:memberId, PATCH} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931666,"message":"PlatformController {/api/platform} (version: 1):","context":"RoutesResolver"}
+{"level":"log","pid":31529,"timestamp":1789170931666,"message":"Mapped {/api/platform/organizations, GET} (version: 1) route","context":"RouterExplorer"}
+{"level":"log","pid":31529,"timestamp":1789170931666,"message":"Nest application successfully started","context":"NestApplication"}
+{"level":"log","pid":31529,"timestamp":1789170931682,"message":{"event":"request.completed","requestId":"c09dde12-f9ec-489f-aa71-7051d0eeefb7","method":"POST","path":"/api/v1/auth/login","statusCode":200,"durationMs":1},"context":"HTTP"}
+{"level":"log","pid":31529,"timestamp":1789170931684,"message":{"event":"request.completed","requestId":"e3140cab-d0b0-4d7d-a867-f95497b30551","method":"POST","path":"/api/v1/auth/login","statusCode":200,"durationMs":0},"context":"HTTP"}
+{"level":"log","pid":31529,"timestamp":1789170931685,"message":{"event":"request.completed","requestId":"1036c403-b23d-4fd1-ba97-f64a1f40f8cd","method":"POST","path":"/api/v1/auth/login","statusCode":200,"durationMs":0},"context":"HTTP"}
+{"level":"log","pid":31529,"timestamp":1789170931688,"message":{"event":"request.completed","requestId":"c1924907-75cd-4a65-a2ca-d41e90d55b05","method":"POST","path":"/api/v1/auth/login","statusCode":200,"durationMs":1},"context":"HTTP"}
+{"level":"log","pid":31529,"timestamp":1789170931688,"message":{"event":"request.completed","requestId":"5a588255-1ffa-4aec-9bd4-67036f959a0b","method":"POST","path":"/api/v1/auth/login","statusCode":200,"durationMs":0},"context":"HTTP"}
+{"level":"log","pid":31529,"timestamp":1789170931695,"message":{"event":"request.completed","requestId":"98bad6f4-c932-4a13-8f4e-82bae3763e2c","method":"POST","path":"/api/v1/auth/login","statusCode":200,"durationMs":1},"context":"HTTP"}
+{"level":"log","pid":31529,"timestamp":1789170931700,"message":{"event":"request.completed","requestId":"2108d219-4aef-4fff-af87-d9c3218b4aeb","method":"POST","path":"/api/v1/auth/login","statusCode":200,"durationMs":0},"context":"HTTP"}
+{"level":"log","pid":31529,"timestamp":1789170931701,"message":{"event":"request.completed","requestId":"d84d4e0d-f23a-408f-9397-946004c1013a","method":"POST","path":"/api/v1/auth/login","statusCode":200,"durationMs":1},"context":"HTTP"}
+{"level":"log","pid":31529,"timestamp":1789170931701,"message":{"event":"request.completed","requestId":"56396d4e-967e-4893-a950-ae11e896de5e","method":"POST","path":"/api/v1/auth/login","statusCode":200,"durationMs":0},"context":"HTTP"}
+{"level":"log","pid":31529,"timestamp":1789170931702,"message":{"event":"request.completed","requestId":"ce2c27ed-fe3b-49fc-8525-d01d720542d8","method":"POST","path":"/api/v1/auth/login","statusCode":200,"durationMs":0},"context":"HTTP"}
+{"level":"log","pid":31529,"timestamp":1789170931703,"message":{"event":"request.completed","requestId":"b5e21949-1c53-4ca8-a7d1-25fa630495f0","method":"POST","path":"/api/v1/auth/login","statusCode":200,"durationMs":0},"context":"HTTP"}
+[Nest] 31529  - 09/12/2026, 2:55:31 AM   ERROR [SecurityNotificationsService] Object(2) {
+  event: 'security-notification.retry',
+  notificationId: '7c1d402b-adaa-4942-9811-b9f40e326b6f'
+}
+[Nest] 31529  - 09/12/2026, 2:55:31 AM   ERROR [SecurityNotificationsService] Object(2) {
+  event: 'security-notification.exhausted',
+  notificationId: '2c149b5e-8235-4f75-ac5d-c58d8e08407a'
+}
+
+Test Suites: 14 passed, 14 total
+Tests:       65 passed, 65 total
+Snapshots:   0 total
+Time:        7.658 s
+Ran all test suites in 2 projects.

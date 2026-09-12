@@ -29,7 +29,7 @@ export function DashboardShell({ children, session, active, workspaces }: { read
   const mobile = useSyncExternalStore(subscribeViewport, () => window.matchMedia(mobileQuery).matches, () => false);
   const pathname = usePathname();
   const router = useRouter();
-  const navigation = dashboardNavigation.filter(item => item.href === "/dashboard" || active && item.permissions.some(permission => active.membership.permissions.includes(permission)));
+  const navigation = dashboardNavigation.filter(item => item.permissions.length === 0 || active && item.permissions.some(permission => active.membership.permissions.includes(permission)));
 
   async function switchWorkspace(id: string) {
     setSwitchError(null); setSwitching(true);

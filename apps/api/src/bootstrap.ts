@@ -9,6 +9,7 @@ import { AppModule } from './app.module';
 import { AppConfigService } from './common/config/app-config.service';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 import { RequestLoggingInterceptor } from './common/interceptors/request-logging.interceptor';
+import { json } from 'express';
 
 const levelOrder: LogLevel[] = [
   'fatal',
@@ -30,6 +31,12 @@ export async function createApp(): Promise<INestApplication> {
     bufferLogs: true,
   });
   const config = app.get(AppConfigService);
+  // Only image JSON uploads get the larger bound; other routes retain Nest's
+  // default body limit. No multipart parser is registered.
+  app.use('/api/v1/organizations/:organizationId/locations/:locationId/menus/:menuId/items/:itemId/images', json({ limit: '3mb' }));
+  // Nest detects the scoped JSON parser and skips its automatic registration.
+  // Register the normal parser explicitly for every other route.
+  app.use(json({ limit: '100kb' }));
   app.enableCors({ origin: config.webOrigin, credentials: true, methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'] });
   app.useLogger(
     new ConsoleLogger({

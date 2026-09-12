@@ -152,3 +152,5 @@ export type TemplatePreviewMessage =
   | { readonly type: "daify.preview.theme"; readonly version: 1; readonly theme: RestaurantTheme }
   | { readonly type: "daify.preview.locale"; readonly version: 1; readonly locale: Locale }
   | { readonly type: "daify.preview.layout"; readonly version: 1; readonly layout: MenuLayout };
+
+export type { DraftMenu, DraftMenuSummary, DraftSection, DraftItem, DraftTranslation, DraftImage } from './draft-menu';

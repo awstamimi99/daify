@@ -51,4 +51,9 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run prisma:migrate:deploy --workspace @daify/api
+      - run: npm run build
+        env:
+          NODE_ENV: production
       - run: npm test
+        env:
+          WEB_TEST_PRODUCTION: 'true'

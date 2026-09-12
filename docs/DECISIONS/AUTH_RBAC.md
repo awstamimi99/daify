@@ -10,6 +10,24 @@ The prototype simulates sessions and hides UI by permission. Production DAIFY ne
 
 ## Decision
 
+### M3 proxy and throttling continuation — 2026-09-12
+
+The web server signs a validated client IP, timestamp, HTTP method and API path
+with a dedicated shared secret. The API accepts forwarded client identity only
+with this proof; arbitrary `X-Forwarded-For` headers never establish trust.
+Production requires the signing key and an explicitly configured web ingress
+header that the hosting edge overwrites. Until a provider is selected, this
+deployment trust boundary cannot be operationally accepted. Local development
+can use socket identity without a proxy key. Signed proof never replaces user
+authentication, Origin checks or object authorization.
+
+Throttling uses atomic PostgreSQL counters shared by API instances, with bounded
+expiry cleanup. This extends the existing persistence boundary without requiring
+Redis during M3; the future Redis decision remains available when load warrants
+it. Liveness and the public API contract do not depend on the throttle database.
+MFA change/recovery notifications must be durably queued in the transaction and
+delivered after commit, with bounded retries and visible failures.
+
 Authentication establishes identity. Organization membership, role, explicit scope, and entitlements determine authorization. Frontend controls improve UX; only the NestJS API is the security boundary.
 
 ### Roles
@@ -73,7 +91,30 @@ Decision date: 2026-08-13
 - Email verification, password reset, and invitations use separate single-use random tokens. PostgreSQL stores token digests, purpose, expiry, consumption, and subject metadata; delivery is behind an email-delivery port so a provider can be selected without changing domain behavior. Test-only token exposure is fail-closed outside `NODE_ENV=test`.
 - Platform Admin is a global user capability, never an Organization membership role. Platform routes require an active AAL2 session established with TOTP MFA, a support reason, request correlation, and an append-only security/audit event.
 - Rate limiting is applied to signup, login, verification, password reset, invitation, and MFA boundaries. M3 uses Nest's in-process throttler for the single API instance; distributed Redis-backed limiting is required before horizontal production scale in M8.
-- Recovery codes, external identity linking, and managed auth-provider migration remain deferred. Enabling a Platform Admin without a recoverable MFA enrollment is not permitted.
+- External identity linking and managed auth-provider migration remain deferred. Enabling a Platform Admin without a recoverable MFA enrollment is not permitted.
+
+## Recoverable MFA — 2026-09-12
+
+- Any verified user can enroll TOTP from account security. Enrollment does not grant
+  platform privileges. A separate operator command can promote an already enrolled,
+  verified user with unused recovery codes; no public promotion endpoint exists.
+- Starting enrollment requires the current password and, when already enrolled,
+  a fresh authenticator code or unused recovery code. Pending setup is bound to the
+  current session, expires in ten minutes, and leaves the existing factor active.
+- Confirmation requires a valid code from the new authenticator and the current
+  password. It creates ten random 128-bit, single-use recovery codes, shown once.
+  Only their SHA-256 digests are retained. Password plus a recovery code is an
+  alternative login factor; recovery does not disable MFA.
+- TOTP secrets, including pending secrets, are encrypted with AES-256-GCM using
+  an external 32-byte MFA_ENCRYPTION_KEY and user-bound authenticated data.
+  Existing plaintext test-era secrets are encrypted on their next successful login;
+  new platform promotion refuses plaintext secrets.
+- Enrolled tenant users also require MFA at login. TOTP counters and recovery-code
+  claims are consumed inside a user-locked transaction. Enrollment replacement
+  revokes existing sessions and rotates the session cookie. Password resets cancel
+  pending enrollment but do not remove an enrolled factor.
+- MFA changes and recovery use create security events. Production operational
+  review must cover encryption-key backup/rotation and account-owner notification.
 
 ## 2026-09-12 implementation hardening
 

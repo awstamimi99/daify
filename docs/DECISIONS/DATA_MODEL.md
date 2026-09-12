@@ -58,6 +58,22 @@ Organization is the tenant and billing boundary. Location is the operational res
 
 ## Consequences
 
+### M4 implementation — 2026-09-12
+
+Use explicit translation tables for menu, section, item and image alt text.
+Keep existing stable keys and soft-delete draft content. Every draft mutation
+requires the last observed revision and increments it under a menu row lock;
+membership mutations and edits acquire the organization lock first. Staff use
+a dedicated availability endpoint. Prices are decimal strings, validated to the
+location currency's fractional precision, with currency derived server-side.
+Location currency changes are rejected once active menus exist.
+
+Draft completeness version 1 reports missing required names and optional
+descriptions/alt text per enabled language. Incomplete secondary translations
+can be saved; M5 will consume this report to enforce publication requirements.
+The default-language name is required for each created/updated content entity.
+No public menu or publication mutation is introduced in M4.
+
 This model supports multi-location organizations and scoped membership without duplicating users. It adds joins and explicit authorization rules, but prevents the prototype's restaurant-as-tenant shortcuts from becoming production constraints.
 
 ## Related references
@@ -66,4 +82,3 @@ This model supports multi-location organizations and scoped membership without d
 - [Auth and RBAC](AUTH_RBAC.md)
 - [Localization](LOCALIZATION.md)
 - [Publishing](PUBLISHING.md)
-
