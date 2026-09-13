@@ -1,3 +1,4 @@
+import { publishingPaths, publishingSchemas } from './publishing-contract';
 import { menuPaths, menuSchemas } from './menu-contract';
 // Hand-maintained contract, checked against route discovery, DTO validation and
 // live HTTP responses in integration tests. Helpers keep repeated shapes uniform.
@@ -33,7 +34,7 @@ const membership = { id: uuid, organizationId: uuid, userId: uuid, role, status:
 const testToken: Schema = { type: 'string', description: 'Present only with NODE_ENV=test. Never returned in development or production.' };
 
 const schemas: Record<string, Schema> = {
-  ...menuSchemas,
+  ...menuSchemas, ...publishingSchemas,
   User: object(user),
   SessionUser: object({ ...user, sessionId: uuid, assuranceLevel: enumeration('AAL1', 'AAL2') }),
   SignupRequest: object({ email, displayName: name, password }),
@@ -94,7 +95,7 @@ export const openApiDocument = {
   servers: [{ url: '/api/v1' }],
   security: [{ sessionCookie: [] }],
   paths: {
-    ...menuPaths,
+    ...menuPaths, ...publishingPaths,
     '/auth/signup': { post: operation('signUp', 'authentication', ref('SignupResponse'), { public: true, mutation: true, body: 'SignupRequest', status: 201, errors: [409], description: 'Creates an unverified account and sends verification email. SMTP failure may occur after account creation; use resend-verification to retry.' }) },
     '/auth/verify-email': { post: operation('verifyEmail', 'authentication', ref('UserResponse'), { public: true, mutation: true, body: 'TokenRequest', status: 201, errors: [401] }) },
     '/auth/login': { post: operation('login', 'authentication', ref('LoginResponse'), { public: true, mutation: true, body: 'LoginRequest', errors: [401], description: 'Sets the session cookie. Enrolled users must supply exactly one fresh authenticator or unused recovery code with their password.' }) },

@@ -20,7 +20,9 @@ export class OrganizationsService {
       const organization = await tx.organization.create({ data: { name: dto.name.trim(), slug: dto.slug, defaultLocale: dto.defaultLocale ?? 'en', timezone: dto.timezone ?? 'Asia/Kuwait' } });
       await tx.organizationMember.create({ data: { organizationId: organization.id, userId, role: 'OWNER', status: 'ACTIVE', allLocations: true, permissions: [], acceptedAt: new Date() } });
       await tx.securityEvent.create({ data: { type: 'ORGANIZATION_CREATED', actorUserId: userId, organizationId: organization.id, targetType: 'Organization', targetId: organization.id, outcome: 'SUCCESS', requestId: metadata.requestId, ipAddress: metadata.ipAddress } });
-      return organization;
+      return { id: organization.id, name: organization.name, slug: organization.slug, status: organization.status,
+        defaultLocale: organization.defaultLocale, timezone: organization.timezone, brandSettings: organization.brandSettings,
+        archivedAt: organization.archivedAt, createdAt: organization.createdAt, updatedAt: organization.updatedAt };
     });
   }
 

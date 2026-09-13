@@ -1,7 +1,9 @@
+import { defaultDesign } from '@daify/menu-engine';
 import 'dotenv/config';
 import { PrismaPg } from '@prisma/adapter-pg';
 import * as argon2 from 'argon2';
 import { PrismaClient } from '../src/generated/prisma/client';
+import type { Prisma } from '../src/generated/prisma/client';
 
 const ids = {
   user: '00000000-0000-4000-8000-000000000001',
@@ -110,15 +112,18 @@ async function seed(): Promise<void> {
         dietaryTags: [],
       },
     });
+    const seedDesign = defaultDesign();
+    seedDesign.tokens.accent = '#9f1723';
+    seedDesign.layout.itemLayout = 'grid';
     await prisma.theme.upsert({
       where: { menuId: ids.menu },
       update: {},
       create: {
         id: ids.theme,
         menuId: ids.menu,
-        templateKey: 'classic-grid',
-        tokens: { accent: '#9f1723' },
-        layout: { family: 'classic' },
+        templateKey: 'atelier',
+        tokens: seedDesign.tokens,
+        layout: JSON.parse(JSON.stringify(seedDesign)) as Prisma.InputJsonValue,
       },
     });
   } finally {

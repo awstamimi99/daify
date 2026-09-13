@@ -131,20 +131,21 @@ model SecurityNotification {
 }
 
 model Organization {
-  id             String               @id @default(uuid()) @db.Uuid
-  name           String               @db.VarChar(160)
-  slug           String               @unique @db.VarChar(100)
-  status         OrganizationStatus   @default(ACTIVE)
-  defaultLocale  String               @default("en") @db.VarChar(35)
-  timezone       String               @default("Asia/Kuwait") @db.VarChar(100)
-  brandSettings  Json?
-  archivedAt     DateTime?            @db.Timestamptz(3)
-  createdAt      DateTime             @default(now()) @db.Timestamptz(3)
-  updatedAt      DateTime             @updatedAt @db.Timestamptz(3)
-  memberships    OrganizationMember[]
-  locations      Location[]
-  actionTokens   ActionToken[]
-  securityEvents SecurityEvent[]
+  id                String               @id @default(uuid()) @db.Uuid
+  name              String               @db.VarChar(160)
+  slug              String               @unique @db.VarChar(100)
+  status            OrganizationStatus   @default(ACTIVE)
+  defaultLocale     String               @default("en") @db.VarChar(35)
+  timezone          String               @default("Asia/Kuwait") @db.VarChar(100)
+  publishingEnabled Boolean              @default(true)
+  brandSettings     Json?
+  archivedAt        DateTime?            @db.Timestamptz(3)
+  createdAt         DateTime             @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime             @updatedAt @db.Timestamptz(3)
+  memberships       OrganizationMember[]
+  locations         Location[]
+  actionTokens      ActionToken[]
+  securityEvents    SecurityEvent[]
 
   @@index([status, archivedAt])
   @@map("organizations")
@@ -275,21 +276,29 @@ model Location {
 }
 
 model Menu {
-  id                 String            @id @default(uuid()) @db.Uuid
-  locationId         String            @db.Uuid
-  name               String            @db.VarChar(160)
-  slug               String            @db.VarChar(100)
-  status             MenuStatus        @default(DRAFT)
-  defaultLanguage    String            @db.VarChar(35)
+  id                 String                 @id @default(uuid()) @db.Uuid
+  locationId         String                 @db.Uuid
+  name               String                 @db.VarChar(160)
+  slug               String                 @db.VarChar(100)
+  status             MenuStatus             @default(DRAFT)
+  defaultLanguage    String                 @db.VarChar(35)
   supportedLanguages String[]
-  draftRevision      Int               @default(1)
-  archivedAt         DateTime?         @db.Timestamptz(3)
-  createdAt          DateTime          @default(now()) @db.Timestamptz(3)
-  updatedAt          DateTime          @updatedAt @db.Timestamptz(3)
-  location           Location          @relation(fields: [locationId], references: [id], onDelete: Restrict)
+  draftRevision      Int                    @default(1)
+  archivedAt         DateTime?              @db.Timestamptz(3)
+  createdAt          DateTime               @default(now()) @db.Timestamptz(3)
+  updatedAt          DateTime               @updatedAt @db.Timestamptz(3)
+  location           Location               @relation(fields: [locationId], references: [id], onDelete: Restrict)
   translations       MenuTranslation[]
   sections           MenuSection[]
   theme              Theme?
+  publicSlug         String?                @db.VarChar(100)
+  visibility         MenuVisibility         @default(PUBLIC)
+  currentVersionId   String?                @db.Uuid
+  currentVersion     MenuVersion?           @relation("LiveVersion", fields: [id, currentVersionId], references: [menuId, id], onDelete: Restrict, onUpdate: Restrict)
+  versions           MenuVersion[]          @relation("VersionHistory")
+  routes             MenuRoute[]
+  operations         PublicationOperation[]
+  publicationEvents  PublicationEvent[]
 
   @@unique([locationId, slug])
   @@index([locationId, status, archivedAt])
@@ -419,4 +428,75 @@ model MenuImageTranslation {
 
   @@id([imageId, languageTag])
   @@map("menu_image_translations")
+}
+
+enum MenuVisibility {
+  PUBLIC
+  UNLISTED
+  PRIVATE
+}
+
+model MenuVersion {
+  id                  String             @id @default(uuid()) @db.Uuid
+  menuId              String             @db.Uuid
+  number              Int
+  schemaVersion       Int                @default(1)
+  snapshot            Json
+  publishedAt         DateTime           @default(now()) @db.Timestamptz(3)
+  publishedById       String             @db.Uuid
+  sourceDraftRevision Int
+  rollbackSourceId    String?            @db.Uuid
+  menu                Menu               @relation("VersionHistory", fields: [menuId], references: [id], onDelete: Restrict)
+  currentMenus        Menu[]             @relation("LiveVersion")
+  images              MenuVersionImage[]
+
+  @@unique([menuId, id])
+  @@unique([menuId, number])
+  @@map("menu_versions")
+}
+
+model MenuVersionImage {
+  versionId String      @db.Uuid
+  imageId   String      @db.Uuid
+  objectKey String
+  sha256    String
+  version   MenuVersion @relation(fields: [versionId], references: [id], onDelete: Cascade)
+
+  @@id([versionId, imageId])
+  @@map("menu_version_images")
+}
+
+model MenuRoute {
+  slug      String   @id @db.VarChar(100)
+  menuId    String   @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  menu      Menu     @relation(fields: [menuId], references: [id], onDelete: Restrict)
+
+  @@index([menuId])
+  @@map("menu_routes")
+}
+
+model PublicationOperation {
+  menuId      String   @db.Uuid
+  key         String   @db.Uuid
+  requestHash String   @db.Char(64)
+  result      Json
+  createdAt   DateTime @default(now()) @db.Timestamptz(3)
+  menu        Menu     @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  @@id([menuId, key])
+  @@map("publication_operations")
+}
+
+model PublicationEvent {
+  id          String    @id @default(uuid()) @db.Uuid
+  menuId      String    @db.Uuid
+  kind        String    @db.VarChar(40)
+  payload     Json
+  createdAt   DateTime  @default(now()) @db.Timestamptz(3)
+  processedAt DateTime? @db.Timestamptz(3)
+  menu        Menu      @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  @@index([processedAt, createdAt])
+  @@map("publication_events")
 }
