@@ -1,3 +1,4 @@
+import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import sharp from 'sharp';
 
@@ -23,6 +24,7 @@ test('M4 menu journey persists bilingual content, images and conflict recovery o
   await page.getByLabel('Short name', { exact: true }).fill('kuwait-city');
   await page.getByRole('button', { name: 'Add location' }).click();
   await expect(page.getByText('Kuwait City', { exact: true })).toBeVisible();
+  expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze()).violations).toEqual([]);
   await page.goto('/dashboard/menus');
   await page.getByRole('button', { name: 'Create menu', exact: true }).click();
   const create = page.getByRole('form', { name: 'Create menu', exact: true });

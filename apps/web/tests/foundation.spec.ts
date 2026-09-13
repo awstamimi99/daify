@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { createHmac } from "node:crypto";
 
@@ -63,6 +64,7 @@ test("real authentication verifies email, protects dashboard, and logs out", asy
   await expect(page.getByText("Salmiya Branch", { exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByText("Salmiya Branch", { exact: true })).toBeVisible();
+  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze()).violations).toEqual([]);
   if (process.env.QA_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.QA_EVIDENCE_DIR}/dashboard-desktop.png`, fullPage: true });
 
   // Desktop logout must remain visible; a failed request must not pretend to log out.
@@ -157,6 +159,7 @@ test("real authentication verifies email, protects dashboard, and logs out", asy
   await page.getByRole("button", { name: "Done", exact: true }).click();
   await page.reload();
   await expect(page.getByRole("heading", { name: "Two-step verification is on" })).toBeVisible();
+  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze()).violations).toEqual([]);
   if (process.env.QA_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.QA_EVIDENCE_DIR}/security-desktop.png`, fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(page.locator("#dashboard-sidebar")).toHaveAttribute("inert", "");

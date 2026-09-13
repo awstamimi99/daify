@@ -7,6 +7,9 @@ on 2026-09-12. Actual object-store/provider acceptance remains open. M3's extern
 operational gates remain open under the sequencing exception in the roadmap.
 See [QA results and media runbook](../QA/M4_2026-09-12.md): 78 API, 22 compiled-web
 and 17 prototype tests passed, together with build, typecheck and lint.
+The [2026-09-13 revalidation](../QA/READINESS_2026-09-13.md) passes 78 API,
+30 compiled-web (including accessibility) and 17 prototype tests, with zero
+dependency-audit findings. Actual object-store acceptance remains open.
 
 ## Goal
 

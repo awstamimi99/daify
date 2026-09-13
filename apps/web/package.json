@@ -20,6 +20,7 @@
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@daify/config": "0.1.0",
     "@playwright/test": "^1.58.2",
     "@types/node": "^24.0.0",

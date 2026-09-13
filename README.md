@@ -66,7 +66,8 @@ reset, persistent organization and first-location setup, invitation acceptance,
 and team role/status management. The dashboard loads the user's actual
 memberships, permitted locations and navigation, with workspace switching for
 users who belong to multiple organizations. Tenant authorization is enforced
-by the API. Menus, publishing/QR, billing and analytics remain later milestones.
+by the API. Draft menus are implemented in M4; publishing/QR, billing and analytics
+remain later milestones.
 Account security at `/dashboard/security` now supports authenticator enrollment,
 replacement and one-use recovery codes. Set a stable `MFA_ENCRYPTION_KEY` in the
 API environment before using it; see the [MFA runbook and QA record](docs/QA/MFA_2026-09-12.md).
@@ -75,7 +76,9 @@ MFA alerts and key inspection/rotation tools are implemented and tested. Provide
 selection/delivery, actual ingress and backup/restore checks, and final security
 acceptance remain outstanding; M3 is **in progress**. Follow the
 [operations runbook and current QA report](docs/QA/M3_OPERATIONS_2026-09-12.md),
-including the remaining dependency-audit findings. Earlier workspace fixes are in the
+and the [2026-09-13 readiness follow-up](docs/QA/READINESS_2026-09-13.md):
+dependency findings are now resolved, while external acceptance remains open.
+Earlier workspace fixes are in the
 [remediation record](docs/QA/REMEDIATION_2026-09-12.md).
 
 ## Production frontend foundation
