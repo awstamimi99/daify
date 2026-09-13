@@ -7,6 +7,7 @@
     "dev": "nest start --watch",
     "start": "node dist/main.js",
     "build": "npm run prisma:generate && nest build",
+    "prelint": "npm run prisma:generate",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "npm run prisma:generate && tsc --noEmit",
     "test": "jest --selectProjects unit integration --runInBand",
