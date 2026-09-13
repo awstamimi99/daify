@@ -20,7 +20,11 @@
     "db:up": "docker compose up -d postgres",
     "db:down": "docker compose down",
     "db:migrate": "npm run prisma:migrate:dev --workspace @daify/api",
-    "db:seed": "npm run prisma:seed --workspace @daify/api"
+    "db:seed": "npm run prisma:seed --workspace @daify/api",
+    "postinstall": "npm run build --workspace @daify/menu-engine",
+    "prebuild": "npm run build --workspace @daify/menu-engine",
+    "prelint": "npm run build --workspace @daify/menu-engine",
+    "pretypecheck": "npm run build --workspace @daify/menu-engine"
   },
   "devDependencies": {
     "@playwright/test": "^1.48.0"

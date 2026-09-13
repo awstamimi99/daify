@@ -7,15 +7,22 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
-    "typecheck": "next typegen && tsc --noEmit"
+    "typecheck": "next typegen && tsc --noEmit",
+    "prebuild": "node scripts/menu-assets.mjs",
+    "predev": "node scripts/menu-assets.mjs"
   },
   "dependencies": {
+    "@daify/menu-engine": "0.1.0",
     "@daify/types": "0.1.0",
     "@daify/ui": "0.1.0",
+    "@fontsource/cormorant-garamond": "^5.3.0",
     "@fontsource/dm-serif-display": "^5.2.8",
+    "@fontsource/inter": "^5.3.0",
     "@fontsource/manrope": "^5.2.8",
     "@fontsource/noto-kufi-arabic": "^5.2.8",
+    "@fontsource/space-grotesk": "^5.3.0",
     "next": "^16.3.3",
+    "qrcode": "^1.5.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
@@ -24,10 +31,13 @@
     "@daify/config": "0.1.0",
     "@playwright/test": "^1.58.2",
     "@types/node": "^24.0.0",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
+    "esbuild": "^0.28.2",
     "eslint": "^9.0.0",
     "eslint-config-next": "^16.3.3",
+    "jsqr": "^1.4.0",
     "sharp": "^0.35.4",
     "typescript": "^5.9.3"
   }

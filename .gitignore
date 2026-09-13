@@ -24,3 +24,7 @@ playwright/.cache/
 
 # Local private draft media
 apps/api/.data/
+
+# Compiled shared menu engine and copied public menu assets
+packages/menu-engine/dist/
+apps/web/public/menu-assets/
