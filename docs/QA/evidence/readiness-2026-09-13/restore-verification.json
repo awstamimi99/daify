@@ -1,0 +1,102 @@
+[
+  {
+    "table": "_prisma_migrations",
+    "rows": 6,
+    "match": true
+  },
+  {
+    "table": "action_tokens",
+    "rows": 20,
+    "match": true
+  },
+  {
+    "table": "locations",
+    "rows": 8,
+    "match": true
+  },
+  {
+    "table": "menu_image_translations",
+    "rows": 6,
+    "match": true
+  },
+  {
+    "table": "menu_item_images",
+    "rows": 3,
+    "match": true
+  },
+  {
+    "table": "menu_item_translations",
+    "rows": 6,
+    "match": true
+  },
+  {
+    "table": "menu_items",
+    "rows": 3,
+    "match": true
+  },
+  {
+    "table": "menu_section_translations",
+    "rows": 6,
+    "match": true
+  },
+  {
+    "table": "menu_sections",
+    "rows": 3,
+    "match": true
+  },
+  {
+    "table": "menu_translations",
+    "rows": 6,
+    "match": true
+  },
+  {
+    "table": "menus",
+    "rows": 3,
+    "match": true
+  },
+  {
+    "table": "organization_member_locations",
+    "rows": 10,
+    "match": true
+  },
+  {
+    "table": "organization_members",
+    "rows": 20,
+    "match": true
+  },
+  {
+    "table": "organizations",
+    "rows": 8,
+    "match": true
+  },
+  {
+    "table": "rate_limit_buckets",
+    "rows": 46,
+    "match": true
+  },
+  {
+    "table": "security_events",
+    "rows": 126,
+    "match": true
+  },
+  {
+    "table": "security_notifications",
+    "rows": 6,
+    "match": true
+  },
+  {
+    "table": "sessions",
+    "rows": 29,
+    "match": true
+  },
+  {
+    "table": "themes",
+    "rows": 0,
+    "match": true
+  },
+  {
+    "table": "users",
+    "rows": 20,
+    "match": true
+  }
+]

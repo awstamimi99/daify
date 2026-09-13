@@ -102,8 +102,13 @@ API tests asserting the permission matrix directly — for each role, which endp
 - [x] Proxy-aware per-client rate limiting verified locally across clients and API instances.
 - [ ] Selected production ingress verified to overwrite trusted IP headers and prevent bypass.
 - [x] Complete current OpenAPI request/response schemas, route coverage and live-response validation.
-- [ ] Remaining dependency-audit findings disposition and final M3 acceptance review.
+- [x] Dependency findings repaired and compatibility verified on 2026-09-13; full and production npm audits report zero findings.
+- [ ] Final M3 acceptance review, including the external operational checks above.
 
 Evidence and remaining QA findings: [remediation record](../QA/REMEDIATION_2026-09-12.md).
 MFA implementation, test evidence and operator instructions: [MFA record](../QA/MFA_2026-09-12.md).
 Latest continuation and deployment gates: [operations record](../QA/M3_OPERATIONS_2026-09-12.md).
+
+2026-09-13: [Readiness follow-up](../QA/READINESS_2026-09-13.md) supersedes the
+old seven-high dependency count. Real provider, ingress and restore acceptance
+remain open.

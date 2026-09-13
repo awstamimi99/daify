@@ -2,7 +2,7 @@
 
 ## Status
 
-**IN PROGRESS — implementation ready for independent review.** Kickoff was explicit on 2026-08-13. The production frontend foundation is implemented and all local automated gates pass. M1 is deliberately not marked complete until independent visual/accessibility review confirms the Atelier parity and migrated-page quality gates, and the first GitHub Actions run is observed green.
+**IN PROGRESS — visual parity acceptance remains open.** Kickoff was explicit on 2026-08-13. The 2026-09-13 review repaired observed text-contrast failures and verified a green GitHub Actions run. The Atelier proof still differs from the preserved template, so M1 is not complete. See the [readiness follow-up](../QA/READINESS_2026-09-13.md).
 
 ## Goal
 
@@ -162,7 +162,7 @@ Each sub-phase below follows the same four-part breakdown: **LEARN** (concept to
 - [ ] All 15 prototype top-level pages migrated. The nine marketing/legal routes and four auth routes are migrated; the legacy preview/customizer remain intentionally in place for M5.
 - [x] Dashboard shell migrated with working role-based navigation.
 - [x] Template migration interface designed and structurally validated against one template (Atelier).
-- [ ] Playwright runs locally and CI is configured; the first remote GitHub Actions run still needs to be observed.
+- [x] Playwright runs locally and a green GitHub Actions run was observed on 2026-09-13 after repairing clean-checkout lint.
 - [ ] `docs/ROADMAP.md` updated to mark M1 complete and M2 as next.
 
 ## Implementation record — 2026-08-13
@@ -220,3 +220,12 @@ M1 is ready for an independent review but not yet complete. The reviewer should:
 4. Observe a green GitHub Actions run after the branch is pushed.
 
 If those gates pass without required changes, mark M1 `COMPLETE` and make M2 `NEXT`. Do not start M2 automatically.
+
+## Readiness follow-up — 2026-09-13
+
+Eight desktop/mobile English/Arabic accessibility cases now run in the 30-test
+compiled-web suite. Workspace/account-security journeys also audit contrast.
+The CI observation gate is closed; Atelier visual parity and the historical
+preview/customizer scope discrepancy remain open. Earlier M2 kickoff instructions
+in this historical record are superseded by the roadmap; M2 is already complete.
+See [the current review and evidence](../QA/READINESS_2026-09-13.md).
