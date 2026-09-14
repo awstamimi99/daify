@@ -15,7 +15,7 @@ Status legend: `COMPLETE` · `IN PROGRESS` · `NEXT` · `NOT STARTED` · `BLOCKE
 | M2 | Core Backend — NestJS / PostgreSQL / Prisma | **COMPLETE** | Production API/database foundation passed independent audit remediation and real-PostgreSQL verification. |
 | M3 | Auth / Organizations / RBAC | **IN PROGRESS** | Real accounts, revocable sessions, organizations, membership, and server-enforced object authorization. |
 | M4 | Menu Platform | **IN PROGRESS** | Local draft CRUD, translations, scoped editing and private images pass QA; real object-store acceptance remains open. |
-| M5 | Templates / Publishing / QR | NOT STARTED | Migrate the template engine, and build draft → preview → publish → version → rollback with stable public/QR routes. |
+| M5 | Templates / Publishing / QR | **COMPLETE** | All nine templates, immutable publication/rollback and stable public/QR routes passed local API, browser, parity and accessibility verification. |
 | M6 | Billing / Subscriptions | NOT STARTED | Plans, subscriptions, entitlements, checkout, and webhooks. |
 | M7 | Analytics / Admin | NOT STARTED | Real analytics events, the platform-admin backend, audit logs, and support tooling. |
 | M8 | Production / Deployment | NOT STARTED | Security review, CI/CD, staging, monitoring, and go-live. |
@@ -39,6 +39,19 @@ The table above owns status and objective. These compact gates record the other 
 | M9 | Flutter Owner/Manager client over shared API | Stable production API and M8 operations | Approved mobile journeys pass with secure storage, API-enforced role parity, RTL/accessibility, resilience, and release QA. |
 
 ## Current focus
+
+2026-09-14 continuation: M5 implementation and local acceptance are complete on
+`feat/m5-publishing`: 102 API, 67 compiled-web and 17 prototype tests passed,
+along with build, lint, typecheck and Prisma validation. The final continuation
+fixed the development seed's readonly layout assignment and refreshed the visual
+evidence. See [M5 verification and handoff](QA/M5_2026-09-13.md).
+Remote CI for this final change and the existing M1/M3/M4 operational acceptance
+remain separate, open checks. M6 has not been kicked off.
+
+2026-09-13 explicit owner instruction: “go to the next”. M5 was activated on
+`feat/m5-publishing`, building on the verified readiness fixes in PR #3. This
+authorized proceeding while the documented M1 visual and M3/M4 external
+provider gates remain open; it does not mark them complete.
 
 2026-09-12 explicit owner instruction: “اعمل m4 انطلق”. M4 is now active while
 M3's documented external operational/security acceptance remains open. This is
