@@ -114,7 +114,7 @@ async function seed(): Promise<void> {
     });
     const seedDesign = defaultDesign();
     seedDesign.tokens.accent = '#9f1723';
-    seedDesign.layout.itemLayout = 'grid';
+    seedDesign.layout = { ...seedDesign.layout, itemLayout: 'grid' };
     await prisma.theme.upsert({
       where: { menuId: ids.menu },
       update: {},
