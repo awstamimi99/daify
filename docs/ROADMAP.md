@@ -16,7 +16,7 @@ Status legend: `COMPLETE` · `IN PROGRESS` · `NEXT` · `NOT STARTED` · `BLOCKE
 | M3 | Auth / Organizations / RBAC | **IN PROGRESS** | Real accounts, revocable sessions, organizations, membership, and server-enforced object authorization. |
 | M4 | Menu Platform | **IN PROGRESS** | Local draft CRUD, translations, scoped editing and private images pass QA; real object-store acceptance remains open. |
 | M5 | Templates / Publishing / QR | **COMPLETE** | All nine templates, immutable publication/rollback and stable public/QR routes passed local API, browser, parity and accessibility verification. |
-| M6 | Billing / Subscriptions | **IN PROGRESS** | Kickoff and implementation plan prepared; merchant/provider and commercial decisions are pending before billing implementation. |
+| M6 | Billing / Subscriptions | **IN PROGRESS** | Sandbox plans, subscriptions, API limits and MyFatoorah test checkout implemented; full provider/account and live commercial acceptance remain open. |
 | M7 | Analytics / Admin | NOT STARTED | Real analytics events, the platform-admin backend, audit logs, and support tooling. |
 | M8 | Production / Deployment | NOT STARTED | Security review, CI/CD, staging, monitoring, and go-live. |
 | M9 | Flutter App | NOT STARTED | Owner/Manager mobile client on top of the stabilized NestJS API. |
@@ -39,6 +39,15 @@ The table above owns status and objective. These compact gates record the other 
 | M9 | Flutter Owner/Manager client over shared API | Stable production API and M8 operations | Approved mobile journeys pass with secure storage, API-enforced role parity, RTL/accessibility, resilience, and release QA. |
 
 ## Current focus
+
+2026-09-14 continuation: the owner explicitly approved MyFatoorah public-key
+sandbox development without a merchant account, superseding the earlier billing
+implementation prerequisite for this scope. The local implementation now includes
+persisted subscriptions, plan limits, audited overrides, hosted test checkout,
+payment-status recovery and a bilingual billing workspace. A real sandbox invoice
+was created and verified as Pending; no card payment was completed. Full provider
+webhook/automatic-renewal and live commercial acceptance remain open. See
+[M6 verification and runbook](QA/M6_2026-09-14.md).
 
 2026-09-14 explicit owner instruction: “go”, following the M5 handoff, kicks off
 M6 on `feat/m6-billing`, based on M5 checkpoint `8c4ff43`. Repository inspection

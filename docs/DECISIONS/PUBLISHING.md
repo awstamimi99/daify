@@ -86,6 +86,10 @@ Preserve the normalized menu model, stable template/family identifiers, Classic 
   subscription or plan. M6 must replace/extend this gate with authoritative
   billing entitlements. Disabling it blocks publish/rollback; unpublish remains
   available. Organization/location suspension also blocks public reads.
+  M6's authorized sandbox now composes this gate with effective subscription
+  limits and validates template access on design, publish and rollback. Trial
+  expiry/cancellation preserves existing public menus and all QR reservations;
+  it blocks new publication. Workspaces must enroll explicitly in sandbox billing.
 - Public HTML, JSON, images, previews, QR downloads, unavailable responses and
   slug redirects use `no-store`. There is no public cache requiring invalidation
   in this milestone. The durable `publication_events` outbox is drained with

@@ -143,6 +143,18 @@ The default route is `https://daify.net/r/{slug}`. It resolves the current publi
 - Cancellation, grace period, downgrade, failed payment, and restoration are explicit state transitions that do not immediately destroy data.
 - Provider, final pricing/tax policy, grace period, and downgrade rules are deferred until M6 planning.
 
+M6 now has explicitly authorized sandbox billing: immutable KWD test plan
+versions, subscriptions, effective limits/expiring overrides, hosted MyFatoorah
+test checkout, durable payment observations and manual/background authoritative
+status reconciliation. Organization-locked commands enforce location/menu/seat,
+template and publication limits. The bilingual owner workspace is at
+`/dashboard/billing`; test enrollment is explicit and preserves existing M5
+workspaces. Sandbox mode/test keys are rejected in production, and sandbox
+entitlements cannot grant production access. Public pricing remains illustrative.
+Signed provider webhooks, automatic renewal, accepted commercial policies and
+live activation remain open. See [BILLING.md](DECISIONS/BILLING.md) and
+[M6 verification](QA/M6_2026-09-14.md).
+
 ## Analytics and audit logs
 
 Analytics events are append-only and carry organization/location/menu/version/QR attribution. Workers aggregate them into query-friendly time buckets. Raw event access is more restricted than aggregate access, and privacy, consent, bot filtering, and retention must be decided before production collection.

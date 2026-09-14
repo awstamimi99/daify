@@ -1,21 +1,48 @@
-# Billing implementation proposal
+# Billing implementation and sandbox decision
 
-Status: **PROPOSED — provider and commercial decisions pending**
+Status: **Sandbox implementation authorized; live commercial decisions pending**
 Prepared: 2026-09-14, after the owner's M6 kickoff.
 Scope: [M6 Billing / Subscriptions](../MILESTONES/M6_BILLING_SUBSCRIPTIONS.md).
 
-This document makes the next implementation reviewable. It does not select a
-provider, activate prices, grant a trial, or change existing workspace access.
+## Authorized sandbox scope — 2026-09-14
+
+The owner approved continuing without a merchant account using MyFatoorah's
+public test key. This explicitly supersedes the M6 sequencing prerequisite for
+local/sandbox development. Live billing, final prices and commercial policies
+remain unapproved. Sandbox code must refuse production startup when enabled.
+
+Build real persisted plan versions, subscriptions and entitlements, with
+illustrative KWD fixtures and explicit enrollment into sandbox billing. Existing
+workspaces keep M5 access until enrolled; no automatic charge or trial conversion.
+Sandbox policies: 14-day trial, monthly manual renewal, 3-day failed-renewal grace,
+cancel at period end, immediate paid plan replacement with no proration. Limits
+count nonarchived locations/menus and active members (including owners); pending
+invitations do not reserve seats but acceptance/reactivation must recheck them.
+Trial/paid/grace access permits new resources and publication within limits;
+expiry preserves editing, existing public menus, versions and QR aliases while
+blocking new resources, design upgrades and publication. These are test rules,
+not customer terms. Overrides are explicit, expiring, audited admin actions.
+
+Initial provider scope is hosted V2 sandbox checkout and authoritative
+GetPaymentStatus reconciliation. The public test key does not establish a
+project-owned webhook secret or recurring-payment activation: signed provider
+webhook and automatic-renewal acceptance remain open. Never represent a return
+redirect or a simulated test response as proof of a real payment. The public key
+is local configuration, never embedded in browser assets or committed source.
+
+This document records the implemented sandbox scope and remaining live decisions.
+It does not select a live provider, activate commercial prices or automatically
+enroll existing workspaces.
 The accepted boundaries remain: Organization owns billing; provider-verified
 payment facts drive database entitlements; API commands enforce access; all
 billing changes are audited; cancellation does not delete customer content.
 
-## Inputs to resolve
+## Live inputs to resolve
 
 | Decision | Current evidence / required input |
 | --- | --- |
 | Merchant entity and country | Not recorded. Kuwait timezone and KWD menu prices do not establish merchant registration or settlement eligibility. |
-| Provider and merchant account | No existing integration. Confirm the owner's provider/account and recurring-payment activation. |
+| Provider and merchant account | MyFatoorah public-key sandbox is implemented. Confirm the owner's live provider/account and recurring-payment activation. |
 | Currency and price versions | Existing USD Starter 10/month or 96/year and Pro 15/month or 156/year are illustrative, not approved. Business has no fixed price. |
 | Location/menu/member limits | Confirm per-organization versus per-location menu counts, owner/manager/staff seat counting and invitation reservations. Prototype copy does not fully define these. |
 | Template access | Define the exact template keys in each tier; “Core” is not an enforceable list. |
@@ -26,7 +53,7 @@ billing changes are audited; cancellation does not delete customer content.
 
 Merchant/provider selection is the first question. Remaining commercial inputs
 can be resolved against the selected provider's supported lifecycle before
-implementing or enabling the affected behavior.
+implementing or enabling the affected live behavior.
 
 ## Provider feasibility notes
 
@@ -48,7 +75,10 @@ not confirmation of this merchant's eligibility or an approved provider choice.
   [Webhook V2](https://docs.myfatoorah.com/docs/webhook-v2),
   [Recurring Data Model](https://docs.myfatoorah.com/docs/webhook-v2-recurring-data-model).
 
-## Repository integration map
+## Original repository integration map
+
+This records the pre-implementation seams. Implemented sandbox behavior and
+verification are tracked in [the M6 checkpoint](../QA/M6_2026-09-14.md).
 
 | Existing seam | Planned change and constraint |
 | --- | --- |
@@ -84,7 +114,8 @@ ordering/reconciliation rules from the chosen provider's contract.
 Use explicit UTC effective dates and deterministic evaluation at a supplied
 clock time. Preserve historical commercial and entitlement provenance. Expired
 overrides must stop granting access even if background work is delayed. Grace
-and downgrade behavior remain policy inputs, not hardcoded defaults.
+and downgrade behavior for live use remain policy inputs. The explicit test
+rules above apply only to sandbox use.
 
 ## Acceptance matrix
 
