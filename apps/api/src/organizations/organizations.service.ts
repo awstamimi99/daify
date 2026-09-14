@@ -1,5 +1,6 @@
 import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { AuthorizationService } from '../authorization/authorization.service';
+import { EntitlementsService } from '../billing/entitlements.service';
 import { permissions, hasPermission } from '../authorization/permissions';
 import { CryptoService } from '../auth/crypto.service';
 import type { RequestMetadata } from '../auth/request-metadata';
@@ -12,7 +13,7 @@ import type { AcceptInvitationDto, CreateLocationDto, CreateOrganizationDto, Inv
 
 @Injectable()
 export class OrganizationsService {
-  constructor(private readonly prisma: PrismaService, private readonly authorization: AuthorizationService, private readonly crypto: CryptoService, private readonly emailDelivery: EmailDeliveryService) {}
+  constructor(private readonly prisma: PrismaService, private readonly authorization: AuthorizationService, private readonly crypto: CryptoService, private readonly emailDelivery: EmailDeliveryService, private readonly entitlements: EntitlementsService) {}
 
   async create(userId: string, dto: CreateOrganizationDto, metadata: RequestMetadata) {
     if (await this.prisma.organization.findUnique({ where: { slug: dto.slug }, select: { id: true } })) throw new ConflictException('Organization slug is already in use.');
@@ -51,6 +52,7 @@ export class OrganizationsService {
     return this.prisma.$transaction(async tx => {
       await this.lockOrganization(tx, organizationId);
       await this.authorization.requireOrganization(userId, organizationId, 'location.manage', tx);
+      await this.entitlements.capacity(tx, organizationId, 'locations');
       const location = await tx.location.create({ data: { organizationId, name: dto.name, slug: dto.slug, timezone: dto.timezone, currency: dto.currency, defaultLanguage: dto.defaultLanguage } });
       await tx.securityEvent.create({ data: { type: 'MEMBERSHIP_UPDATED', actorUserId: userId, organizationId, targetType: 'Location', targetId: location.id, outcome: 'SUCCESS', reason: 'location.created', requestId: metadata.requestId, ipAddress: metadata.ipAddress } });
       return location;
@@ -98,6 +100,7 @@ export class OrganizationsService {
       this.authorization.assertCanGrant(actor, dto.role, dto.permissions, dto.allLocations, dto.locationIds);
       const existing = await tx.organizationMember.findFirst({ where: { organizationId, user: { email } } });
       if (existing && existing.status !== 'REVOKED') throw new ConflictException('This person is already a member. Update their membership instead.');
+      await this.entitlements.capacity(tx, organizationId, 'members');
       const locations = await tx.location.count({ where: { organizationId, id: { in: dto.locationIds }, status: 'ACTIVE', archivedAt: null } });
       if (locations !== new Set(dto.locationIds).size) throw new NotFoundException('One or more locations were not found.');
       await tx.actionToken.updateMany({ where: { organizationId, email, purpose: 'ORGANIZATION_INVITATION', consumedAt: null }, data: { consumedAt: new Date() } });
@@ -120,6 +123,7 @@ export class OrganizationsService {
       const existing = await tx.organizationMember.findUnique({ where: { organizationId_userId: { organizationId, userId } } });
       // Invitations cannot silently demote owners, edit active members, or undo suspension.
       if (existing && existing.status !== 'REVOKED') throw new ConflictException('You already belong to this organization. Ask an owner to update your membership.');
+      await this.entitlements.capacity(tx, organizationId, 'members');
       const locations = await tx.location.count({ where: { organizationId, id: { in: token.locationIds }, status: 'ACTIVE', archivedAt: null } });
       if (locations !== new Set(token.locationIds).size) throw new NotFoundException('An invited location is no longer available.');
       const data = { role, status: 'ACTIVE' as const, allLocations: token.allLocations ?? false, permissions: token.permissions, invitedEmail: token.email, acceptedAt: new Date(), revokedAt: null };
@@ -138,6 +142,7 @@ export class OrganizationsService {
       const actor = await this.authorization.requireOrganization(userId, organizationId, 'team.manage', tx);
       const target = await tx.organizationMember.findFirst({ where: { id: memberId, organizationId }, include: { locationScopes: true, user: { select: { email: true } } } });
       if (!target) throw new NotFoundException('Member was not found.');
+      if (dto.status === 'ACTIVE' && target.status !== 'ACTIVE') await this.entitlements.capacity(tx, organizationId, 'members');
       // A manager must be allowed to manage the existing role AND the requested role.
       this.authorization.assertCanGrant(actor, target.role, target.permissions, target.allLocations, target.locationScopes.map(scope => scope.locationId));
       this.authorization.assertCanGrant(actor, dto.role ?? target.role, dto.permissions ?? target.permissions, target.allLocations, target.locationScopes.map(scope => scope.locationId));

@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { PrismaService } from '../database/prisma.service';
 import type { Prisma } from '../generated/prisma/client';
 import { AuthorizationService } from '../authorization/authorization.service';
+import { EntitlementsService } from '../billing/entitlements.service';
 import type { Permission } from '../authorization/permissions';
 import type { RequestMetadata } from '../auth/request-metadata';
 import type { AvailabilityDto, CreateMenuDto, ImageUpdateDto, ImageUploadDto, ItemDto, RevisionDto, SectionDto, UpdateMenuDto } from './dto/menu.dto';
@@ -15,7 +16,7 @@ const imageFields = { id: true, mimeType: true, bytes: true, width: true, height
 @Injectable()
 export class MenusService {
   private readonly logger = new Logger(MenusService.name);
-  constructor(private readonly prisma: PrismaService, private readonly authorization: AuthorizationService, private readonly media: MediaStorageService) {}
+  constructor(private readonly prisma: PrismaService, private readonly authorization: AuthorizationService, private readonly media: MediaStorageService, private readonly entitlements: EntitlementsService) {}
 
   async access(tx: Prisma.TransactionClient, scope: MenuScope, permission: Permission) {
     const membership = await this.authorization.requireOrganization(scope.userId, scope.organizationId, permission, tx);
@@ -53,6 +54,7 @@ export class MenusService {
     return this.prisma.$transaction(async tx => {
       await tx.$queryRaw`SELECT id FROM organizations WHERE id = ${scope.organizationId}::uuid FOR UPDATE`;
       await this.access(tx, scope, 'menu.edit');
+      await this.entitlements.capacity(tx, scope.organizationId, 'menus');
       const config = languages(dto.defaultLanguage, dto.supportedLanguages);
       const content = translations(dto.translations, config.defaultLanguage, config.supportedLanguages);
       if (!dto.name.trim()) throw new BadRequestException('Menu name is required.');

@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { defaultDesign, designImageIds, validateDesign } from '@daify/menu-engine';
 import type { Design, MenuSnapshot } from '@daify/menu-engine';
 import { PrismaService } from '../database/prisma.service';
+import { EntitlementsService } from '../billing/entitlements.service';
 import type { Prisma } from '../generated/prisma/client';
 import type { Permission } from '../authorization/permissions';
 import type { RequestMetadata } from '../auth/request-metadata';
@@ -16,7 +17,7 @@ const text = (value: Prisma.JsonValue | null, key: string) => value && typeof va
 
 @Injectable()
 export class PublishingService {
-  constructor(private readonly prisma: PrismaService, private readonly menus: MenusService, private readonly media: MediaStorageService) {}
+  constructor(private readonly prisma: PrismaService, private readonly menus: MenusService, private readonly media: MediaStorageService, private readonly entitlements: EntitlementsService) {}
   private design(value: unknown): Design { try { return validateDesign(value); } catch (error) { throw new BadRequestException(error instanceof Error ? error.message : 'Invalid design.'); } }
   private async theme(tx: Prisma.TransactionClient, menuId: string) {
     const theme = await tx.theme.findUnique({ where: { menuId } });
@@ -25,7 +26,7 @@ export class PublishingService {
   private async state(tx: Prisma.TransactionClient, scope: MenuScope) {
     const menu = await tx.menu.findUniqueOrThrow({ where: { id: scope.menuId }, select: { draftRevision: true, publicSlug: true, visibility: true, currentVersionId: true, location: { select: { organization: { select: { publishingEnabled: true } } } } } });
     return { revision: menu.draftRevision, publicSlug: menu.publicSlug, visibility: menu.visibility, currentVersionId: menu.currentVersionId,
-      publishingEnabled: menu.location.organization.publishingEnabled, design: await this.theme(tx, scope.menuId),
+      publishingEnabled: menu.location.organization.publishingEnabled && ((await this.entitlements.current(tx, scope.organizationId))?.publishing ?? true), design: await this.theme(tx, scope.menuId),
       versions: await tx.menuVersion.findMany({ where: { menuId: scope.menuId }, select: versionFields, orderBy: { number: 'desc' } }) };
   }
   async get(scope: MenuScope) { await this.menus.access(this.prisma, scope, 'menu.read'); await this.menus.draft(this.prisma, scope); return this.state(this.prisma, scope); }
@@ -55,6 +56,7 @@ export class PublishingService {
     const design = this.design(dto.design);
     return this.prisma.$transaction(async tx => {
       const draft = await this.lock(tx, scope, 'menu.design'); this.revision(draft.draftRevision, dto.revision);
+      await this.entitlements.template(tx, scope.organizationId, design.templateKey);
       const ids = new Set(draft.sections.flatMap(section => section.items.flatMap(item => item.images.map(image => image.id))));
       if (designImageIds(design).some(id => !ids.has(id))) throw new BadRequestException('Choose images from this menu.');
       const data = { templateKey: design.templateKey, schemaVersion: 1, tokens: json(design.tokens), layout: json(design) };
@@ -74,6 +76,7 @@ export class PublishingService {
       if (kind !== 'unpublished') {
         const org = await tx.organization.findUniqueOrThrow({ where: { id: scope.organizationId } });
         if (!org.publishingEnabled) throw new ForbiddenException('Publishing is disabled for this workspace.');
+        await this.entitlements.publish(tx, scope.organizationId);
       }
       await action(tx, draft.draftRevision);
       await tx.menu.update({ where: { id: scope.menuId }, data: { draftRevision: { increment: 1 } } });
@@ -104,6 +107,7 @@ export class PublishingService {
     return this.operation(scope, dto, metadata, 'published', async (tx, revision) => {
       await this.reserve(tx, scope.menuId, dto.slug);
       const snapshot = await this.snapshot(tx, scope, true);
+      await this.entitlements.template(tx, scope.organizationId, snapshot.design.templateKey);
       const version = await this.version(tx, scope, snapshot, revision);
       await tx.menu.update({ where: { id: scope.menuId }, data: { currentVersionId: version.id, publicSlug: dto.slug, visibility: dto.visibility, status: 'PUBLISHED' } });
     });
@@ -113,6 +117,7 @@ export class PublishingService {
       const source = await tx.menuVersion.findFirst({ where: { id: dto.versionId, menuId: scope.menuId } });
       if (!source || source.schemaVersion !== 1) throw new NotFoundException('Version was not found.');
       const snapshot = source.snapshot as unknown as MenuSnapshot; this.design(snapshot.design);
+      await this.entitlements.template(tx, scope.organizationId, snapshot.design.templateKey);
       const version = await this.version(tx, scope, snapshot, revision, source.id);
       await tx.menu.update({ where: { id: scope.menuId }, data: { currentVersionId: version.id, status: 'PUBLISHED' } });
     });

@@ -1,4 +1,5 @@
 import { PublishingController, PublicMenusController } from '../menus/publishing.controller';
+import { BillingController, BillingAdminController } from '../billing/billing.controller';
 import 'reflect-metadata';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
@@ -15,7 +16,7 @@ import { openApiDocument } from './openapi.document';
 describe('OpenAPI route and schema coverage', () => {
   it('covers every versioned controller operation with no stale paths', () => {
     const actual: string[] = [];
-    for (const controller of [AuthController, MfaController, OrganizationsController, PlatformController, HealthController, MenusController, PublishingController, PublicMenusController]) {
+    for (const controller of [AuthController, MfaController, OrganizationsController, PlatformController, HealthController, MenusController, PublishingController, PublicMenusController, BillingController, BillingAdminController]) {
       const prefix = Reflect.getMetadata(PATH_METADATA, controller) as string;
       for (const descriptor of Object.values(Object.getOwnPropertyDescriptors(controller.prototype))) {
         const handler: unknown = descriptor.value;

@@ -67,6 +67,10 @@ describe('DAIFY API authentication and authorization', () => {
     await prisma.rateLimitBucket.deleteMany();
 
     await prisma.securityEvent.deleteMany();
+    await prisma.billingObservation.deleteMany();
+    await prisma.billingCheckout.deleteMany();
+    await prisma.billingOverride.deleteMany();
+    await prisma.billingSubscription.deleteMany();
     await prisma.actionToken.deleteMany();
     await prisma.session.deleteMany();
     await prisma.menu.updateMany({ data: { currentVersionId: null } });

@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "type": "commonjs",
   "scripts": {
+    "billing:seed": "ts-node --project tsconfig.json scripts/seed-billing-sandbox.ts",
+    "billing:verify": "ts-node --project tsconfig.json scripts/verify-billing-sandbox.ts",
     "dev": "nest start --watch",
     "start": "node dist/main.js",
     "build": "npm run prisma:generate && nest build",

@@ -75,6 +75,7 @@ enum SecurityEventType {
   MFA_ENABLED
   MFA_RECOVERY_USED
   MENU_UPDATED
+  BILLING_UPDATED
 }
 
 model User {
@@ -146,9 +147,97 @@ model Organization {
   locations         Location[]
   actionTokens      ActionToken[]
   securityEvents    SecurityEvent[]
+  subscription      BillingSubscription?
+  billingCheckouts  BillingCheckout[]
+  billingOverrides  BillingOverride[]
 
   @@index([status, archivedAt])
   @@map("organizations")
+}
+
+model BillingPlan {
+  id           String   @id @default(uuid()) @db.Uuid
+  code         String   @db.VarChar(50)
+  version      Int
+  name         String   @db.VarChar(100)
+  nameAr       String   @db.VarChar(100)
+  amount       Decimal  @db.Decimal(12, 3)
+  currency     String   @default("KWD") @db.Char(3)
+  limits       Json
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now()) @db.Timestamptz(3)
+  subscriptions BillingSubscription[]
+  checkouts    BillingCheckout[]
+
+  @@unique([code, version])
+  @@map("billing_plans")
+}
+
+model BillingSubscription {
+  organizationId String @id @db.Uuid
+  planId         String @db.Uuid
+  status         String @db.VarChar(20)
+  periodStart    DateTime @db.Timestamptz(3)
+  periodEnd      DateTime @db.Timestamptz(3)
+  graceEnd       DateTime? @db.Timestamptz(3)
+  cancelAtEnd    Boolean @default(false)
+  trialUsed      Boolean @default(true)
+  createdAt      DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime @updatedAt @db.Timestamptz(3)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  plan           BillingPlan @relation(fields: [planId], references: [id], onDelete: Restrict)
+
+  @@map("billing_subscriptions")
+}
+
+model BillingCheckout {
+  id             String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  planId         String @db.Uuid
+  idempotencyKey String @db.Uuid
+  state          String @db.VarChar(20)
+  providerInvoiceId String? @unique @db.VarChar(100)
+  paymentUrl     String?
+  paidAt         DateTime? @db.Timestamptz(3)
+  periodStart    DateTime? @db.Timestamptz(3)
+  periodEnd      DateTime? @db.Timestamptz(3)
+  createdAt      DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime @updatedAt @db.Timestamptz(3)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  plan           BillingPlan @relation(fields: [planId], references: [id], onDelete: Restrict)
+  observations   BillingObservation[]
+
+  @@unique([organizationId, idempotencyKey])
+  @@index([organizationId, createdAt])
+  @@map("billing_checkouts")
+}
+
+model BillingObservation {
+  id           String @id @default(uuid()) @db.Uuid
+  checkoutId   String @db.Uuid
+  fingerprint  String @db.Char(64)
+  status       String @db.VarChar(20)
+  observedAt   DateTime @default(now()) @db.Timestamptz(3)
+  checkout     BillingCheckout @relation(fields: [checkoutId], references: [id], onDelete: Cascade)
+
+  @@unique([checkoutId, fingerprint])
+  @@map("billing_observations")
+}
+
+model BillingOverride {
+  id             String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  limits         Json
+  startsAt       DateTime @db.Timestamptz(3)
+  expiresAt      DateTime @db.Timestamptz(3)
+  revokedAt      DateTime? @db.Timestamptz(3)
+  actorUserId    String @db.Uuid
+  reason         String @db.VarChar(500)
+  createdAt      DateTime @default(now()) @db.Timestamptz(3)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+
+  @@index([organizationId, expiresAt])
+  @@map("billing_overrides")
 }
 
 model OrganizationMember {
