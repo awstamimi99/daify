@@ -2,7 +2,11 @@
 
 ## Status
 
-NOT STARTED. Detailed task breakdown will be written when M5 is complete and this milestone is about to start.
+**IN PROGRESS — planning.** Explicit owner kickoff on 2026-09-14: “go”, after
+the M5 handoff. Branch: `feat/m6-billing`, based on `8c4ff43`.
+Provider and commercial decisions remain open; implementation has not begun.
+See [the billing proposal](../DECISIONS/BILLING.md) for the inspected integration
+points and decision checklist.
 
 ## Goal
 
@@ -33,7 +37,32 @@ Webhook-driven state (as opposed to polling a payment provider), idempotency (wh
 
 ## Tasks
 
-Detailed task breakdown deferred until M5 is complete and this milestone starts.
+1. Confirm merchant country, provider/account eligibility, recurring-payment
+   capability, currency, prices, resource limits and subscription policies.
+   Record accepted choices in `DECISIONS/BILLING.md` before implementation.
+2. Add additive Plan/price-version, Subscription, Entitlement, checkout-operation
+   and verified-event persistence. Preserve historical plan meaning and isolate
+   test/live provider identities. Document how existing workspaces transition.
+3. Implement typed entitlement evaluation with explicit effective dates and
+   audited overrides. Check resource usage under the existing organization lock
+   in the same transaction as creation/reactivation/publication.
+4. Build authenticated checkout and cancellation commands, with scoped permission
+   and sensitive-action assurance checks. Persist idempotency before provider
+   requests; recover ambiguous provider timeouts without creating a second charge.
+5. Implement the selected provider's exact webhook verification and durable
+   inbox/processor. Bind the event to the server-created checkout/subscription;
+   atomically persist subscription, entitlements and audit effects. Verify
+   duplicate, conflicting, late and reordered delivery behavior.
+6. Implement the accepted grace, cancellation, expiry, downgrade, refund and
+   restoration policies. Preserve content and QR reservations. Reconcile missed
+   events and time-based expiry without requiring a customer request.
+7. Replace illustrative pricing with active database plans, add the owner billing
+   workspace, usage/limit messages and payment recovery. Add the narrowly scoped
+   platform-admin plan/override commands required by M6, with AAL2 and audit.
+8. Extend OpenAPI, test fixtures, migrations and browser journeys. Run all
+   regression checks, then verify a real provider sandbox checkout, webhook,
+   renewal/failure and cancellation. Document deployment setup separately from
+   local acceptance; do not enable live charging as part of local verification.
 
 ## Deliverables
 
@@ -65,4 +94,15 @@ Webhook idempotency tests (same event delivered twice, once, out of order where 
 
 ## Completion Checklist
 
-Not applicable yet — a real checklist will be written from the detailed task breakdown when this milestone starts.
+- [x] Owner kickoff, branch and repository integration map recorded.
+- [x] Detailed implementation sequence and acceptance matrix prepared.
+- [ ] Merchant/provider and commercial policies accepted.
+- [ ] Versioned plans, subscriptions, entitlements and billing operation/event persistence.
+- [ ] Authorized checkout, cancellation and payment recovery.
+- [ ] Verified idempotent webhooks with replay/reconciliation.
+- [ ] Transactional location/menu/member/template/publication limits.
+- [ ] Tested grace, downgrade, cancellation, expiry and restoration behavior.
+- [ ] Audited, strongly authenticated plan and override administration.
+- [ ] Database-backed pricing and billing UI with Arabic/English content support.
+- [ ] API, concurrency, browser and regression checks passed.
+- [ ] Actual provider sandbox acceptance and operational handoff recorded.

@@ -16,7 +16,7 @@ Status legend: `COMPLETE` · `IN PROGRESS` · `NEXT` · `NOT STARTED` · `BLOCKE
 | M3 | Auth / Organizations / RBAC | **IN PROGRESS** | Real accounts, revocable sessions, organizations, membership, and server-enforced object authorization. |
 | M4 | Menu Platform | **IN PROGRESS** | Local draft CRUD, translations, scoped editing and private images pass QA; real object-store acceptance remains open. |
 | M5 | Templates / Publishing / QR | **COMPLETE** | All nine templates, immutable publication/rollback and stable public/QR routes passed local API, browser, parity and accessibility verification. |
-| M6 | Billing / Subscriptions | NOT STARTED | Plans, subscriptions, entitlements, checkout, and webhooks. |
+| M6 | Billing / Subscriptions | **IN PROGRESS** | Kickoff and implementation plan prepared; merchant/provider and commercial decisions are pending before billing implementation. |
 | M7 | Analytics / Admin | NOT STARTED | Real analytics events, the platform-admin backend, audit logs, and support tooling. |
 | M8 | Production / Deployment | NOT STARTED | Security review, CI/CD, staging, monitoring, and go-live. |
 | M9 | Flutter App | NOT STARTED | Owner/Manager mobile client on top of the stabilized NestJS API. |
@@ -40,13 +40,22 @@ The table above owns status and objective. These compact gates record the other 
 
 ## Current focus
 
+2026-09-14 explicit owner instruction: “go”, following the M5 handoff, kicks off
+M6 on `feat/m6-billing`, based on M5 checkpoint `8c4ff43`. Repository inspection
+confirmed that no payment provider or final commercial terms are selected.
+Planning can proceed; provider-dependent implementation awaits those inputs as
+required by [M6](MILESTONES/M6_BILLING_SUBSCRIPTIONS.md). The concrete integration
+map, acceptance matrix and open decisions are recorded in
+[the billing proposal](DECISIONS/BILLING.md). No billing code, prices or live
+payment configuration have changed at kickoff.
+
 2026-09-14 continuation: M5 implementation and local acceptance are complete on
 `feat/m5-publishing`: 102 API, 67 compiled-web and 17 prototype tests passed,
 along with build, lint, typecheck and Prisma validation. The final continuation
 fixed the development seed's readonly layout assignment and refreshed the visual
 evidence. See [M5 verification and handoff](QA/M5_2026-09-13.md).
 Remote CI for this final change and the existing M1/M3/M4 operational acceptance
-remain separate, open checks. M6 has not been kicked off.
+remain separate, open checks. M6 was subsequently kicked off as recorded above.
 
 2026-09-13 explicit owner instruction: “go to the next”. M5 was activated on
 `feat/m5-publishing`, building on the verified readiness fixes in PR #3. This
