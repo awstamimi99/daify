@@ -206,7 +206,7 @@ test("account form cannot submit credentials before JavaScript is ready", async 
 test("Atelier renderer switches to Arabic and RTL through the typed contract", async ({ page }) => {
   await page.goto("/templates/atelier-preview");
 
-  const renderer = page.locator('[data-template="atelier"]');
+  const renderer = page.frameLocator('iframe[title="Atelier menu preview"]').locator('[data-template="atelier"]');
   await expect(renderer).toHaveAttribute("dir", "ltr");
   await page.getByRole("button", { name: "العربية" }).click();
   await expect(renderer).toHaveAttribute("dir", "rtl");
@@ -255,7 +255,7 @@ test("template gallery exposes nine designs and working filters", async ({ page 
   await page.getByRole("button", { name: "Fine Dining" }).click();
   await expect(page.getByText("01 designs in the collection")).toBeVisible();
   await expect(page.getByRole("heading", { level: 3, name: "Atelier" })).toBeVisible();
-  await expect(page.getByRole("link", { name: /Open React proof/ })).toHaveAttribute("href", "/templates/atelier-preview");
+  await expect(page.getByRole("link", { name: /Preview Atelier/ })).toHaveAttribute("href", "/templates/atelier/preview");
 });
 
 test("pricing toggle updates visible plan pricing", async ({ page }) => {

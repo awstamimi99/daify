@@ -8,9 +8,9 @@ async function dispatch(request: Request, context: RouteContext<"/api/menus/[...
   const tail = path.slice(2);
   const shape = tail.map(value => uuid.test(value) ? ":id" : value).join("/");
   const allowed: Record<string, string[]> = {
-    GET: ["", ":id", ":id/images/:id"],
-    POST: ["", ":id/sections", ":id/sections/:id/items", ":id/items/:id/images"],
-    PATCH: [":id", ":id/sections/:id", ":id/items/:id", ":id/items/:id/availability", ":id/images/:id"],
+    GET: [":id/publication", ":id/preview", ":id/qr", "", ":id", ":id/images/:id"],
+    POST: [":id/publish", ":id/rollback", ":id/unpublish", "", ":id/sections", ":id/sections/:id/items", ":id/items/:id/images"],
+    PATCH: [":id/design", ":id", ":id/sections/:id", ":id/items/:id", ":id/items/:id/availability", ":id/images/:id"],
     DELETE: [":id", ":id/sections/:id", ":id/items/:id", ":id/images/:id"],
   };
   if (!allowed[request.method]?.includes(shape)) return NextResponse.json({ detail: "Not found" }, { status: 404 });

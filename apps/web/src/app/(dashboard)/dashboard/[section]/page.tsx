@@ -6,7 +6,6 @@ import styles from "../overview.module.css";
 
 interface PageProps { readonly params: Promise<{ section: string }> }
 
-export function generateStaticParams() { return dashboardNavigation.filter(item => item.href !== "/dashboard").map(item => ({ section: item.href.split("/").at(-1) ?? "" })); }
 
 export default async function DashboardSection({ params }: PageProps) {
   const section = (await params).section;

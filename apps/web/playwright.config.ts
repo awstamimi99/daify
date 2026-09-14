@@ -16,7 +16,7 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: `NODE_ENV=test PROXY_SIGNING_KEY=${Buffer.alloc(32, 8).toString("base64")} MFA_ENCRYPTION_KEY=${Buffer.alloc(32, 7).toString("base64")} WEB_ORIGIN=http://127.0.0.1:3100 SESSION_COOKIE_NAME=daify_session npm run dev --workspace @daify/api`,
+      command: `NODE_ENV=test PROXY_SIGNING_KEY=${Buffer.alloc(32, 8).toString("base64")} MFA_ENCRYPTION_KEY=${Buffer.alloc(32, 7).toString("base64")} WEB_ORIGIN=http://127.0.0.1:3100 SESSION_COOKIE_NAME=daify_session npm run ${process.env.WEB_TEST_PRODUCTION === "true" ? "start" : "dev"} --workspace @daify/api`,
       url: "http://127.0.0.1:4000/api/v1/health",
       reuseExistingServer: !process.env.CI,
       timeout: 120_000,

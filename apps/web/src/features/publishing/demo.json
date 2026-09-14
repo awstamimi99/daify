@@ -1,0 +1,558 @@
+{
+  "restaurant": {
+    "name": "Oliva",
+    "logoText": "O",
+    "type": "Modern Mediterranean",
+    "description": "Season-led Mediterranean cooking shaped by the coast, the garden, and the generous tables we grew up around.",
+    "coverImage": "/menu-assets/demo/oliva-seabass.png",
+    "footerImage": "/menu-assets/demo/restaurant-interior.png",
+    "address": "Al Shaheed District, Kuwait City",
+    "phone": "+965 2200 1840",
+    "whatsapp": "+965 5000 1840",
+    "instagram": "@oliva.table",
+    "openingStatus": "Open today until 11:00 PM",
+    "hours": [
+      {
+        "days": "Sunday — Thursday",
+        "time": "12:00 PM — 11:00 PM",
+        "daysAr": "الأحد — الخميس",
+        "timeAr": "١٢:٠٠ ظهراً — ١١:٠٠ مساءً"
+      },
+      {
+        "days": "Friday — Saturday",
+        "time": "12:00 PM — 12:00 AM",
+        "daysAr": "الجمعة — السبت",
+        "timeAr": "١٢:٠٠ ظهراً — ١٢:٠٠ منتصف الليل"
+      }
+    ],
+    "allergenNotice": "Please tell our team about allergies before ordering. Dishes are prepared in a kitchen that handles nuts, gluten, dairy, and sesame.",
+    "translations": {
+      "ar": {
+        "name": "أوليفا",
+        "type": "مطبخ متوسطي معاصر",
+        "description": "أطباق متوسطية موسمية مستوحاة من الساحل والحديقة وكرم المائدة.",
+        "address": "منطقة الشهيد، مدينة الكويت",
+        "openingStatus": "مفتوح اليوم حتى ١١:٠٠ مساءً",
+        "allergenNotice": "يرجى إبلاغ فريقنا بأي حساسية قبل الطلب. تُحضّر الأطباق في مطبخ يتعامل مع المكسرات والغلوتين والألبان والسمسم."
+      }
+    },
+    "establishedYear": 2026
+  },
+  "sections": [
+    {
+      "id": "starters",
+      "name": "Starters",
+      "nameAr": "المقبلات",
+      "description": "Small plates for the table.",
+      "descriptionAr": "أطباق صغيرة للمشاركة.",
+      "order": 1,
+      "items": [
+        {
+          "id": "whipped-feta",
+          "name": "Whipped Feta",
+          "description": "Charred peppers, basil oil, toasted sesame and warm flatbread.",
+          "price": "3.500 KD",
+          "image": "/menu-assets/demo/menu/whipped-feta.jpg",
+          "badge": "House Favorite",
+          "dietary": [
+            "Vegetarian"
+          ],
+          "available": true,
+          "featured": true,
+          "translations": {
+            "ar": {
+              "name": "فيتا مخفوقة",
+              "description": "فلفل مشوي، زيت الريحان، سمسم وخبز دافئ."
+            }
+          }
+        },
+        {
+          "id": "octopus",
+          "name": "Charred Octopus",
+          "description": "White bean purée, preserved lemon, parsley and smoked paprika.",
+          "price": "5.750 KD",
+          "image": "/menu-assets/demo/menu/charred-octopus.jpg",
+          "badge": "Chef's Choice",
+          "dietary": [],
+          "available": true,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "أخطبوط مشوي",
+              "description": "هريس الفاصوليا البيضاء، ليمون محفوظ، بقدونس وبابريكا مدخنة."
+            }
+          }
+        },
+        {
+          "id": "green-hummus",
+          "name": "Green Herb Hummus",
+          "description": "Chickpeas, parsley, dill, jalapeño and olive oil.",
+          "price": "2.750 KD",
+          "image": "/menu-assets/demo/menu/green-herb-hummus.jpg",
+          "badge": "",
+          "dietary": [
+            "Vegan",
+            "Gluten Free"
+          ],
+          "available": true,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "حمص بالأعشاب",
+              "description": "حمص، بقدونس، شبت، فلفل أخضر وزيت زيتون."
+            }
+          }
+        },
+        {
+          "id": "lamb-kibbeh",
+          "name": "Crisp Lamb Kibbeh",
+          "description": "Pine nuts, sweet onion, mint and sumac yogurt.",
+          "price": "4.250 KD",
+          "image": "/menu-assets/demo/menu/lamb-kibbeh.jpg",
+          "badge": "",
+          "dietary": [],
+          "available": true,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "كبة لحم مقرمشة",
+              "description": "صنوبر، بصل حلو، نعناع ولبن بالسماق."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "salads",
+      "name": "Salads",
+      "nameAr": "السلطات",
+      "description": "Bright, crisp, and made to share.",
+      "descriptionAr": "طازجة ومقرمشة للمشاركة.",
+      "order": 2,
+      "items": [
+        {
+          "id": "burrata-tomato",
+          "name": "Burrata & Heirloom Tomato",
+          "description": "Peach, basil, sumac, aged balsamic and extra virgin olive oil.",
+          "price": "4.750 KD",
+          "image": "/menu-assets/demo/menu/burrata-tomato.jpg",
+          "badge": "New",
+          "dietary": [
+            "Vegetarian",
+            "Gluten Free"
+          ],
+          "available": true,
+          "featured": true,
+          "translations": {
+            "ar": {
+              "name": "بوراتا وطماطم ملونة",
+              "description": "خوخ، ريحان، سماق، بلسميك معتق وزيت زيتون بكر."
+            }
+          }
+        },
+        {
+          "id": "fattoush",
+          "name": "Garden Fattoush",
+          "description": "Cucumber, radish, purslane, crisp bread and pomegranate dressing.",
+          "price": "3.250 KD",
+          "image": "/menu-assets/demo/menu/garden-fattoush.jpg",
+          "badge": "",
+          "dietary": [
+            "Vegan"
+          ],
+          "available": true,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "فتوش الحديقة",
+              "description": "خيار، فجل، بقلة، خبز مقرمش وصلصة الرمان."
+            }
+          }
+        },
+        {
+          "id": "peach-halloumi",
+          "name": "Grilled Peach & Halloumi",
+          "description": "Rocket, toasted almonds, mint and orange blossom honey.",
+          "price": "4.500 KD",
+          "image": "/menu-assets/demo/menu/peach-halloumi.jpg",
+          "badge": "",
+          "dietary": [
+            "Vegetarian",
+            "Gluten Free"
+          ],
+          "available": true,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "خوخ وحلوم مشوي",
+              "description": "جرجير، لوز محمص، نعناع وعسل زهر البرتقال."
+            }
+          }
+        },
+        {
+          "id": "lentil-salad",
+          "name": "Warm Lentil Salad",
+          "description": "Beluga lentils, roasted carrot, tahini, herbs and pickled shallot.",
+          "price": "3.750 KD",
+          "image": "/menu-assets/demo/menu/warm-lentil-salad.jpg",
+          "badge": "",
+          "dietary": [
+            "Vegan",
+            "Gluten Free"
+          ],
+          "available": true,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "سلطة عدس دافئة",
+              "description": "عدس بيلوجا، جزر مشوي، طحينة، أعشاب وبصل مخلل."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "pasta",
+      "name": "Pasta",
+      "nameAr": "الباستا",
+      "description": "Made for slow evenings.",
+      "descriptionAr": "لأمسيات هادئة وطويلة.",
+      "order": 3,
+      "items": [
+        {
+          "id": "truffle-rigatoni",
+          "name": "Truffle Rigatoni",
+          "description": "Rigatoni, wild mushroom cream, aged parmesan and black truffle.",
+          "price": "8.750 KD",
+          "image": "/menu-assets/demo/menu/truffle-rigatoni.jpg",
+          "badge": "Chef's Choice",
+          "dietary": [
+            "Vegetarian"
+          ],
+          "available": true,
+          "featured": true,
+          "translations": {
+            "ar": {
+              "name": "ريغاتوني بالكمأة",
+              "description": "ريغاتوني، كريمة الفطر البري، بارميزان معتق وكمأة سوداء."
+            }
+          }
+        },
+        {
+          "id": "lemon-linguine",
+          "name": "Lemon Linguine",
+          "description": "Zucchini, capers, parsley, pecorino and Amalfi lemon.",
+          "price": "6.500 KD",
+          "image": "/menu-assets/demo/menu/lemon-linguine.jpg",
+          "badge": "",
+          "dietary": [
+            "Vegetarian"
+          ],
+          "available": true,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "لينغويني بالليمون",
+              "description": "كوسا، كبر، بقدونس، بيكورينو وليمون."
+            }
+          }
+        },
+        {
+          "id": "lamb-ragu",
+          "name": "Slow Lamb Rigatoni",
+          "description": "Tomato-braised lamb, rosemary, pecorino and crisp breadcrumbs.",
+          "price": "7.750 KD",
+          "image": null,
+          "badge": "Best Seller",
+          "dietary": [],
+          "available": true,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "ريغاتوني براغو اللحم",
+              "description": "لحم مطهو بالطماطم، إكليل الجبل، بيكورينو وفتات خبز مقرمش."
+            }
+          }
+        },
+        {
+          "id": "spinach-ravioli",
+          "name": "Spinach Ravioli",
+          "description": "Brown butter, sage, lemon and toasted hazelnut.",
+          "price": "7.250 KD",
+          "image": null,
+          "badge": "",
+          "dietary": [
+            "Vegetarian"
+          ],
+          "available": false,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "رافيولي السبانخ",
+              "description": "زبدة بنية، مريمية، ليمون وبندق محمص."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "mains",
+      "name": "Mains",
+      "nameAr": "الأطباق الرئيسية",
+      "description": "From the sea, garden, and fire.",
+      "descriptionAr": "من البحر والحديقة والنار.",
+      "order": 4,
+      "items": [
+        {
+          "id": "sea-bass",
+          "name": "Lemon Sea Bass",
+          "description": "Line-caught sea bass, capers, garden herbs and silky potato.",
+          "price": "9.500 KD",
+          "image": "/menu-assets/demo/oliva-seabass.png",
+          "badge": "Signature",
+          "dietary": [
+            "Gluten Free"
+          ],
+          "available": true,
+          "featured": true,
+          "translations": {
+            "ar": {
+              "name": "قاروص بالليمون",
+              "description": "قاروص، كبر، أعشاب الحديقة وبطاطا ناعمة."
+            }
+          }
+        },
+        {
+          "id": "charred-chicken",
+          "name": "Charred Lemon Chicken",
+          "description": "Freekeh, roast garlic, green olive and herb jus.",
+          "price": "7.250 KD",
+          "image": "/menu-assets/demo/menu/charred-lemon-chicken.jpg",
+          "badge": "",
+          "dietary": [],
+          "available": true,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "دجاج مشوي بالليمون",
+              "description": "فريكة، ثوم مشوي، زيتون أخضر وصلصة الأعشاب."
+            }
+          }
+        },
+        {
+          "id": "lamb-kofta",
+          "name": "Fire-Grilled Lamb Kofta",
+          "description": "Freekeh, tahini, pomegranate, mint and warm spices.",
+          "price": "8.250 KD",
+          "image": "/menu-assets/demo/menu/lamb-kofta.jpg",
+          "badge": "Best Seller",
+          "dietary": [],
+          "available": true,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "كفتة لحم على الفحم",
+              "description": "فريكة، طحينة، رمان، نعناع وبهارات دافئة."
+            }
+          }
+        },
+        {
+          "id": "aubergine",
+          "name": "Roasted Aubergine",
+          "description": "Smoked tomato, tahini, chickpea, pomegranate and dill.",
+          "price": "5.750 KD",
+          "image": "/menu-assets/demo/menu/roasted-aubergine.jpg",
+          "badge": "",
+          "dietary": [
+            "Vegan",
+            "Gluten Free"
+          ],
+          "available": true,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "باذنجان مشوي",
+              "description": "طماطم مدخنة، طحينة، حمص، رمان وشبت."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "desserts",
+      "name": "Desserts",
+      "nameAr": "الحلويات",
+      "description": "A soft finish.",
+      "descriptionAr": "نهاية حلوة وخفيفة.",
+      "order": 5,
+      "items": [
+        {
+          "id": "olive-oil-cake",
+          "name": "Olive Oil Cake",
+          "description": "Citrus, mascarpone, pistachio and orange blossom.",
+          "price": "3.750 KD",
+          "image": "/menu-assets/demo/menu/olive-oil-cake.jpg",
+          "badge": "House Favorite",
+          "dietary": [
+            "Vegetarian"
+          ],
+          "available": true,
+          "featured": true,
+          "translations": {
+            "ar": {
+              "name": "كيكة زيت الزيتون",
+              "description": "حمضيات، ماسكاربوني، فستق وزهر البرتقال."
+            }
+          }
+        },
+        {
+          "id": "tahini-chocolate",
+          "name": "Tahini Chocolate Tart",
+          "description": "Dark chocolate, sesame praline, sea salt and crème fraîche.",
+          "price": "4.000 KD",
+          "image": "/menu-assets/demo/menu/tahini-chocolate-tart.jpg",
+          "badge": "",
+          "dietary": [
+            "Vegetarian"
+          ],
+          "available": true,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "تارت الشوكولاتة والطحينة",
+              "description": "شوكولاتة داكنة، برالين السمسم، ملح البحر وكريمة طازجة."
+            }
+          }
+        },
+        {
+          "id": "pistachio-baklava",
+          "name": "Pistachio Baklava",
+          "description": "Brown butter filo, pistachio, honey and rose.",
+          "price": "3.500 KD",
+          "image": "/menu-assets/demo/menu/pistachio-baklava.jpg",
+          "badge": "",
+          "dietary": [
+            "Vegetarian"
+          ],
+          "available": true,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "بقلاوة بالفستق",
+              "description": "رقائق فيلو بالزبدة، فستق، عسل وورد."
+            }
+          }
+        },
+        {
+          "id": "fig-panna-cotta",
+          "name": "Fig Panna Cotta",
+          "description": "Vanilla bean, fresh fig and toasted almond.",
+          "price": "3.750 KD",
+          "image": "/menu-assets/demo/menu/fig-panna-cotta.jpg",
+          "badge": "",
+          "dietary": [
+            "Gluten Free"
+          ],
+          "available": false,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "بانا كوتا بالتين",
+              "description": "فانيلا، تين طازج ولوز محمص."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "drinks",
+      "name": "Drinks",
+      "nameAr": "المشروبات",
+      "description": "House-made and refreshing.",
+      "descriptionAr": "محضّرة لدينا ومنعشة.",
+      "order": 6,
+      "items": [
+        {
+          "id": "rosemary-lemonade",
+          "name": "Rosemary Lemonade",
+          "description": "Fresh lemon, rosemary syrup and sparkling water.",
+          "price": "1.850 KD",
+          "image": "/menu-assets/demo/menu/rosemary-lemonade.jpg",
+          "badge": "House Made",
+          "dietary": [
+            "Vegan",
+            "Gluten Free"
+          ],
+          "available": true,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "ليمونادة بإكليل الجبل",
+              "description": "ليمون طازج، شراب إكليل الجبل ومياه غازية."
+            }
+          }
+        },
+        {
+          "id": "hibiscus-cooler",
+          "name": "Hibiscus Cooler",
+          "description": "Hibiscus, strawberry, lime and rose water.",
+          "price": "2.250 KD",
+          "image": "/menu-assets/demo/menu/hibiscus-cooler.jpg",
+          "badge": "",
+          "dietary": [
+            "Vegan",
+            "Gluten Free"
+          ],
+          "available": true,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "كركديه بارد",
+              "description": "كركديه، فراولة، ليمون وماء ورد."
+            }
+          }
+        },
+        {
+          "id": "cold-brew",
+          "name": "Orange Blossom Cold Brew",
+          "description": "Single-origin coffee, orange blossom and tonic.",
+          "price": "2.500 KD",
+          "image": "/menu-assets/demo/menu/orange-blossom-cold-brew.jpg",
+          "badge": "",
+          "dietary": [
+            "Vegan",
+            "Gluten Free"
+          ],
+          "available": true,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "كولد برو بزهر البرتقال",
+              "description": "قهوة مختصة، زهر البرتقال وتونيك."
+            }
+          }
+        },
+        {
+          "id": "sparkling-water",
+          "name": "Sparkling Water",
+          "description": "Chilled premium mineral water, 750ml.",
+          "price": "2.000 KD",
+          "image": "/menu-assets/demo/menu/sparkling-water.jpg",
+          "badge": "",
+          "dietary": [
+            "Vegan",
+            "Gluten Free"
+          ],
+          "available": true,
+          "featured": false,
+          "translations": {
+            "ar": {
+              "name": "مياه غازية",
+              "description": "مياه معدنية فاخرة مبردة، ٧٥٠ مل."
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

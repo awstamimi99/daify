@@ -107,7 +107,14 @@ The API exposes a normalized menu model independent of visual template markup. T
 - English/Arabic, future languages, and RTL;
 - search, section, availability, and item-detail interactions.
 
-The current implementation is described in [TEMPLATE_ENGINE.md](TEMPLATE_ENGINE.md). M1 defines the migration strategy; M5 completes production publication integration.
+The preserved prototype is described in [TEMPLATE_ENGINE.md](TEMPLATE_ENGINE.md).
+M5 implements both renderer families in the compiled `@daify/menu-engine`
+workspace. A versioned snapshot/design model feeds the same escaped HTML renderer
+in Next SSR and the authenticated preview iframe; Nest validates and stores those
+snapshots. This replaces the abbreviated M1 React proof with the full original
+markup/CSS vocabulary. See [M5 implementation refinements](DECISIONS/PUBLISHING.md#m5-implementation-refinements-2026-09-13)
+for version immutability, permanent slug reservations, the temporary entitlement
+gate, no-store public responses and the transactional PostgreSQL outbox.
 
 ## Localization
 

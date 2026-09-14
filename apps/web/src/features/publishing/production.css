@@ -1,0 +1,18 @@
+[hidden]{display:none!important}.menu-language{display:flex;gap:1rem;justify-content:flex-end;padding:.55rem 1rem;background:#fff;color:#202321;font:600 .8rem Inter,system-ui,sans-serif}.menu-language a{padding:.3rem .5rem}.menu-language [aria-current]{text-decoration:underline;text-underline-offset:4px}.feast-header-brand h1{font:inherit;font-size:1.3rem;font-weight:700}.restaurant-cover:empty{background:linear-gradient(135deg,var(--restaurant-surface),var(--restaurant-accent));min-height:260px}.restaurant-footer-visual:not(:has(img)){min-height:240px}.restaurant-menu .is-unavailable{opacity:1}.menu-section-heading p,.restaurant-kicker{color:var(--restaurant-muted)}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid currentColor;outline-offset:4px}.menu-item-content,.feast-card-body{min-width:0;overflow-wrap:anywhere}.menu-language a{min-height:32px}.feast-sheet:modal{max-height:90dvh;overflow:auto}
+.restaurant-menu{color:var(--restaurant-text)}.restaurant-menu .menu-item p,.restaurant-menu .feast-card p{color:var(--restaurant-muted);opacity:1}.restaurant-menu .menu-featured>header span{color:var(--restaurant-muted)}
+/* Keep the original palette and motion, with readable small text at every scroll position. */
+.restaurant-menu{--restaurant-readable-muted:color-mix(in srgb,var(--restaurant-muted) 75%,var(--restaurant-text))}
+.restaurant-menu .menu-section{opacity:1!important}
+.restaurant-menu .is-unavailable .menu-item-content{opacity:1}
+.restaurant-menu .restaurant-brand-row>span,.restaurant-menu .restaurant-kicker,.restaurant-menu .restaurant-description,.restaurant-menu .menu-featured>header span,.restaurant-menu .menu-featured>header p,.restaurant-menu .menu-section-heading p,.restaurant-menu .menu-item p,.restaurant-menu .feast-card p,.restaurant-menu .section-nav a:not(.active),.restaurant-menu .feast-category-bar a:not(.active){color:var(--restaurant-readable-muted)}
+.restaurant-menu .restaurant-footer-grid p,.restaurant-menu .restaurant-footer-grid a,.restaurant-menu .restaurant-footer-grid small,.restaurant-menu .restaurant-quick-info,.restaurant-menu .restaurant-footer-meta p,.restaurant-menu .restaurant-footer-meta a,.restaurant-menu .feast-footer-credit,.restaurant-menu .feast-footer-credit a{color:var(--restaurant-bg)}
+.restaurant-menu .restaurant-footer-meta a,.restaurant-menu .feast-footer-credit a{text-decoration:underline;text-underline-offset:3px}
+.restaurant-menu[data-template="ember"] .restaurant-brand-row>span,.restaurant-menu[data-template="ember"] .restaurant-kicker{color:#efe6d5}
+.restaurant-menu[data-template="ember"] .restaurant-primary-action,.restaurant-menu[data-template="amalfi"] .restaurant-primary-action{color:#171a17}
+.restaurant-menu .menu-item p.menu-item-allergens,.restaurant-menu .feast-card p.menu-item-allergens{display:block;-webkit-line-clamp:unset;overflow:visible;font-size:.75rem;line-height:1.5;margin-top:.5rem}
+.restaurant-menu .menu-section-heading span{color:var(--restaurant-readable-muted)}
+.restaurant-menu .restaurant-quick-info>span{color:var(--restaurant-bg)}
+.restaurant-menu[data-template="ember"] .restaurant-description{color:#efe6d5}
+.restaurant-menu[data-template="ember"] .menu-price{color:var(--restaurant-text)}
+/* Text/background colors apply together, avoiding transient unreadable link colors. */
+.restaurant-menu a{transition-property:transform,box-shadow,border-color}
