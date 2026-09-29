@@ -18,6 +18,12 @@ Live provider/commercial decisions and account-specific webhook/automatic-renewa
 acceptance remain open. See [the billing decision](../DECISIONS/BILLING.md) and
 [verification/runbook](../QA/M6_2026-09-14.md).
 
+On 2026-09-29, the owner requested leaving account setup and external payment
+verification until the end. These acceptance steps are deferred to
+[M8 before launch](M8_PRODUCTION.md); they no longer block starting M7.
+The local checkpoint is committed as `5a931fc`. M6 remains incomplete, and its
+remaining commercial, refund/dispute and recurring-payment requirements stay open.
+
 ## Goal
 
 Replace the prototype's static pricing page with real Plans, Subscriptions, Entitlements, checkout, and payment-provider webhook handling.

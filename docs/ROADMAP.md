@@ -16,8 +16,8 @@ Status legend: `COMPLETE` · `IN PROGRESS` · `NEXT` · `NOT STARTED` · `BLOCKE
 | M3 | Auth / Organizations / RBAC | **IN PROGRESS** | Real accounts, revocable sessions, organizations, membership, and server-enforced object authorization. |
 | M4 | Menu Platform | **IN PROGRESS** | Local draft CRUD, translations, scoped editing and private images pass QA; real object-store acceptance remains open. |
 | M5 | Templates / Publishing / QR | **COMPLETE** | All nine templates, immutable publication/rollback and stable public/QR routes passed local API, browser, parity and accessibility verification. |
-| M6 | Billing / Subscriptions | **IN PROGRESS** | Sandbox plans, subscriptions, API limits and MyFatoorah test checkout implemented; full provider/account and live commercial acceptance remain open. |
-| M7 | Analytics / Admin | NOT STARTED | Real analytics events, the platform-admin backend, audit logs, and support tooling. |
+| M6 | Billing / Subscriptions | **IN PROGRESS** | Local sandbox checkpoint verified; account-dependent payment acceptance deferred to M8 before launch by owner instruction. Remaining billing requirements stay open. |
+| M7 | Analytics / Admin | **NEXT** | Real analytics events, the platform-admin backend, audit logs, and support tooling. |
 | M8 | Production / Deployment | NOT STARTED | Security review, CI/CD, staging, monitoring, and go-live. |
 | M9 | Flutter App | NOT STARTED | Owner/Manager mobile client on top of the stabilized NestJS API. |
 
@@ -39,6 +39,14 @@ The table above owns status and objective. These compact gates record the other 
 | M9 | Flutter Owner/Manager client over shared API | Stable production API and M8 operations | Approved mobile journeys pass with secure storage, API-enforced role parity, RTL/accessibility, resilience, and release QA. |
 
 ## Current focus
+
+2026-09-29 owner instruction: “can you leave it for the end?” defers the
+project-owned payment account setup and external payment/webhook verification
+to [M8 pre-launch acceptance](MILESTONES/M8_PRODUCTION.md). The verified M6 local
+checkpoint is committed as `5a931fc` (136 API tests passed). M6 remains incomplete,
+with commercial and provider-lifecycle requirements still open. This sequencing
+exception allows M7 to proceed from the local billing foundation without waiting
+for account setup. M7 is next; implementation has not started.
 
 2026-09-14 continuation: the owner explicitly approved MyFatoorah public-key
 sandbox development without a merchant account, superseding the earlier billing

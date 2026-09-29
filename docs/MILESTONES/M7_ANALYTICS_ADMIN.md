@@ -2,7 +2,10 @@
 
 ## Status
 
-NOT STARTED. Detailed task breakdown will be written when M6 is complete and this milestone is about to start.
+NEXT — implementation has not started. On 2026-09-29, the owner deferred M6's
+account setup and external payment verification to M8 before launch. M7 may
+proceed from the verified local billing checkpoint (`5a931fc`) while those
+acceptance steps remain open. Detailed task breakdown will be written at kickoff.
 
 ## Goal
 
@@ -33,7 +36,8 @@ Append-only event design (why analytics events are never updated, only aggregate
 
 ## Tasks
 
-Detailed task breakdown deferred until M6 is complete and this milestone starts.
+Detailed task breakdown deferred until this milestone starts, under the owner's
+2026-09-29 sequencing exception above.
 
 ## Deliverables
 
@@ -55,7 +59,9 @@ Aggregation correctness tests (known event set in, expected rollup out); scope-e
 
 ## Dependencies
 
-- M6, since a fuller product surface (billing, published menus) gives analytics and admin something real to operate on.
+- M6's verified local billing foundation, since billing and published menus give
+  analytics and admin something real to operate on. Account-dependent M6
+  acceptance is deferred to M8 by the owner's 2026-09-29 sequencing exception.
 - Uses [DECISIONS/DATA_MODEL.md](../DECISIONS/DATA_MODEL.md) and [DECISIONS/AUTH_RBAC.md](../DECISIONS/AUTH_RBAC.md) as locked inputs.
 
 ## Risks / Notes

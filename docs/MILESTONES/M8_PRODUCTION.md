@@ -37,6 +37,23 @@ CI/CD pipeline design, the difference between staging and production environment
 
 Detailed task breakdown deferred until M7 is complete and this milestone starts.
 
+### Deferred M6 payment acceptance — required before launch
+
+The owner deferred account-dependent billing verification here on 2026-09-29.
+This changes sequencing; M6's remaining requirements are still open.
+
+- [ ] Set up a project-owned sandbox account and configure its test API key,
+  dedicated webhook secret and public HTTPS notification endpoint.
+- [ ] Complete a provider test-card payment and verify signed delivery,
+  subscription activation and duplicate/reordered delivery behavior.
+- [ ] Complete the remaining provider-lifecycle acceptance from
+  [M6](M6_BILLING_SUBSCRIPTIONS.md), including recurring renewal/failure,
+  cancellation and refund/dispute handling.
+- [ ] Resolve the live provider/commercial decisions and finish the remaining
+  M6 implementation and acceptance before enabling live billing. Record the
+  evidence and operational handoff in M6; local sandbox tests alone do not
+  satisfy this launch gate.
+
 ## Deliverables
 
 - CI/CD pipeline running tests and deploying to staging and production automatically.
