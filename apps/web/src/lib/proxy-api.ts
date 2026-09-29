@@ -35,7 +35,10 @@ export async function forwardApiRequest(request: Request, path: string) {
     if (body === null) return NextResponse.json({ detail: "Request body exceeds the allowed size." }, { status: 413 });
     const response = await fetch(`${apiBaseUrl}${path}`, {
       method: request.method,
-      headers: { "content-type": "application/json", cookie: request.headers.get("cookie") ?? "", origin: allowedOrigin, ...clientIdentityHeaders(request.headers, request.method, path) },
+      headers: { "content-type": "application/json", cookie: request.headers.get("cookie") ?? "", origin: allowedOrigin,
+        ...(path.startsWith('/api/v1/public/menus/') && path.endsWith('/events') ? Object.fromEntries(['user-agent', 'dnt', 'sec-gpc', 'purpose', 'sec-purpose'].flatMap(name => request.headers.has(name) ? [[name, request.headers.get(name)!]] : [])) : {}),
+        ...(path.startsWith('/api/v1/platform/') ? { 'x-support-reason': request.headers.get('x-support-reason') ?? '' } : {}),
+        ...clientIdentityHeaders(request.headers, request.method, path) },
       body,
       cache: "no-store", signal: AbortSignal.timeout(15_000),
     });

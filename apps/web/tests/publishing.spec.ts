@@ -1,3 +1,4 @@
+import { apiIdentity } from './api-identity';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import sharp from 'sharp';
@@ -31,7 +32,7 @@ test('publishes a real menu, customizes its iframe, decodes a stable QR and rest
   test.setTimeout(120_000);
   await page.context().setExtraHTTPHeaders({ 'x-daify-test-client-ip': '192.0.2.90' });
   const origin = 'http://127.0.0.1:3100', apiOrigin = 'http://127.0.0.1:4000/api/v1', stamp = `${Date.now()}-${Math.floor(Math.random()*10000)}`, email = `publish-${stamp}@example.com`, password = 'correct horse battery staple';
-  const post = async <T,>(path: string, data: object): Promise<T> => { const response = await page.request.post(`${apiOrigin}${path}`,{ headers: { Origin: origin }, data }); expect(response.ok(),await response.text()).toBeTruthy(); return await response.json() as T; };
+  const post = async <T,>(path: string, data: object): Promise<T> => { const response = await page.request.post(`${apiOrigin}${path}`,{ headers: apiIdentity(path, '192.0.2.90'), data }); expect(response.ok(),await response.text()).toBeTruthy(); return await response.json() as T; };
   const signup = await post<{ verificationToken: string }>('/auth/signup',{ email, displayName: 'Publisher', password });
   await post('/auth/verify-email',{ token: signup.verificationToken }); await post('/auth/login',{ email,password });
   const org = await post<{ id: string }>('/organizations',{ name: 'Publishing Kitchen',slug:`publish-${stamp}` });
@@ -70,7 +71,7 @@ test('publishes a real menu, customizes its iframe, decodes a stable QR and rest
   const qr = await page.request.get(qrPath); expect(qr.ok()).toBeTruthy(); expect(qr.headers()['content-type']).toBe('image/png');
   const decodedImage = await sharp(await qr.body()).ensureAlpha().raw().toBuffer({ resolveWithObject:true });
   const decoded = jsQR(new Uint8ClampedArray(decodedImage.data),decodedImage.info.width,decodedImage.info.height);
-  expect(decoded?.data).toBe(`${origin}/r/${slug}`);
+  expect(decoded?.data).toBe(`${origin}/q/${slug}`);
   const publicContext = await browser.newContext({ javaScriptEnabled:false,extraHTTPHeaders:{ 'x-daify-test-client-ip':'192.0.2.91' } });
   const guest = await publicContext.newPage(); let response = await guest.goto(decoded!.data+'?lang=ar'); expect(response?.headers()['cache-control']).toBe('no-store');
   await expect(guest.getByRole('heading',{ name:'المقبلات' })).toBeVisible(); await expect(guest.locator('.restaurant-menu')).toHaveAttribute('data-template','feast');

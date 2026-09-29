@@ -2,10 +2,18 @@
 
 ## Status
 
-NEXT — implementation has not started. On 2026-09-29, the owner deferred M6's
+IN PROGRESS — explicit owner kickoff “go” on 2026-09-29. Branch:
+`feat/m7-analytics-admin`, based on `ffce2e9`. The owner deferred M6's
 account setup and external payment verification to M8 before launch. M7 may
 proceed from the verified local billing checkpoint (`5a931fc`) while those
-acceptance steps remain open. Detailed task breakdown will be written at kickoff.
+acceptance steps remain open.
+
+The verified local checkpoint implements operator directories/status controls, an
+audit viewer, local anonymous analytics ingestion, BullMQ aggregation, retention
+and a bilingual tenant report. All 155 API tests, 70 web tests and prototype regression passed, including the
+real Redis worker and English/Arabic accessibility checks. The remaining
+admin/support/notification flows are still open; see
+[the current verification record](../QA/M7_2026-09-29.md).
 
 ## Goal
 
@@ -36,8 +44,25 @@ Append-only event design (why analytics events are never updated, only aggregate
 
 ## Tasks
 
-Detailed task breakdown deferred until this milestone starts, under the owner's
-2026-09-29 sequencing exception above.
+1. Replace the admin placeholder with bilingual, responsive organization/user
+   directories and an audit viewer. Use bounded pagination and explicit support
+   reasons; require AAL2 and platform authorization on every API request.
+2. Add reversible organization suspension and user disable/restore operations,
+   transactional audit records and session revocation. Preserve content and
+   prevent self-lockout or ordinary tenant access to operator actions.
+3. Define anonymous analytics events, bot/preview exclusion and retention.
+   Persist tenant/location/menu/version attribution from server-owned records;
+   never trust client-supplied ownership. Keep production collection disabled
+   pending privacy review.
+4. Add idempotent asynchronous aggregation with Redis/BullMQ, bounded retention
+   cleanup and scoped reports over daily totals. Preserve existing public/QR
+   links; distinguish future QR redirect counts from general menu views.
+5. Implement bilingual tenant analytics and complete the admin subscription,
+   plan/template, support and notification surfaces using existing application
+   services and audited authorization.
+6. Extend OpenAPI and verify tenant/location isolation, privilege boundaries,
+   audit atomicity, aggregation/replay correctness, browser journeys and Arabic
+   mobile accessibility. Record local acceptance separately from M8 operations.
 
 ## Deliverables
 
@@ -71,4 +96,12 @@ Aggregation correctness tests (known event set in, expected rollup out); scope-e
 
 ## Completion Checklist
 
-Not applicable yet — a real checklist will be written from the detailed task breakdown when this milestone starts.
+- [x] Explicit kickoff, branch and execution sequence recorded.
+- [x] Authenticated organization/user directories and append-only audit viewer.
+- [x] Audited suspension/restore and account disable/session revocation.
+- [ ] Production privacy and retention approval (local defaults recorded; production collection disabled).
+- [x] Attributed event ingestion and bot/preview filtering.
+- [x] Idempotent Redis/BullMQ aggregation, replay and retention cleanup.
+- [x] Tenant/location-scoped reports and bilingual analytics dashboard.
+- [ ] Admin billing/template, support and notification workflows.
+- [ ] API/browser/accessibility regression and operational handoff.

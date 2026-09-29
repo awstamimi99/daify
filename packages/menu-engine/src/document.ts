@@ -19,10 +19,10 @@ export function renderMarkup(model: RenderModel, design: Design, language: strin
   if (!model.restaurant.whatsapp) html = html.replace(/<a href="https:\/\/wa\.me\/[^"]*">[\s\S]*?<\/a>/g, '');
   return html;
 }
-export interface DocumentOptions { imageBase: string; language?: string; preview?: boolean; nonce: string; demoModel?: RenderModel; }
+export interface DocumentOptions { imageBase: string; language?: string; preview?: boolean; nonce: string; demoModel?: RenderModel; analytics?: { slug: string; versionId: string }; }
 export function menuDocument(snapshot: MenuSnapshot, options: DocumentOptions): string {
   const language = languageFor(snapshot, options.language), design = snapshot.design;
   const model = options.demoModel ?? normalize(snapshot, language, id => `${options.imageBase}/${encodeURIComponent(id)}`);
-  const data = JSON.stringify({ snapshot, imageBase: options.imageBase, preview: !!options.preview }).replace(/</g, '\\u003c');
+  const data = JSON.stringify({ snapshot, imageBase: options.imageBase, preview: !!options.preview, ...(!options.preview && options.analytics ? { analytics: options.analytics } : {}) }).replace(/</g, '\\u003c');
   return `<!doctype html><html lang="${esc(language)}" dir="${isRtl(language) ? 'rtl' : 'ltr'}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(model.restaurant.name)} — ${esc(model.restaurant.type)}</title><link rel="stylesheet" href="/menu-assets/base-menu.css"><link data-template-css rel="stylesheet" href="/menu-assets/${design.templateKey}.css"><link data-polish-css rel="stylesheet" href="/menu-assets/polish.css" ${design.templateKey === 'feast' ? 'disabled' : ''}><link rel="stylesheet" href="/menu-assets/production.css"></head><body><nav class="menu-language" aria-label="Language">${snapshot.supportedLanguages.map(lang => `<a href="?lang=${encodeURIComponent(lang)}" lang="${esc(lang)}" ${lang === language ? 'aria-current="true"' : ''}>${esc(lang)}</a>`).join('')}</nav><div id="menu-root">${renderMarkup(model, design, language)}</div><script id="menu-data" type="application/json" nonce="${options.nonce}">${data}</script><script src="/menu-assets/runtime.js" nonce="${options.nonce}" defer></script></body></html>`;
 }

@@ -1,3 +1,4 @@
+import { apiIdentity } from './api-identity';
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { createHmac } from "node:crypto";
@@ -37,7 +38,7 @@ test("real authentication verifies email, protects dashboard, and logs out", asy
   const email = `web-${Date.now()}@example.com`;
   const password = "correct horse battery staple";
   const signup = await request.post("http://127.0.0.1:4000/api/v1/auth/signup", {
-    headers: { Origin: "http://127.0.0.1:3100" },
+    headers: apiIdentity("/auth/signup", "192.0.2.10"),
     data: { email, displayName: "Web Reviewer", password },
   });
   expect(signup.ok()).toBeTruthy();
@@ -106,7 +107,7 @@ test("real authentication verifies email, protects dashboard, and logs out", asy
   await expect(page.getByRole("status").filter({ hasText: "Invitation sent" })).toBeVisible();
 
   const teammateSignup = await request.post("http://127.0.0.1:4000/api/v1/auth/signup", {
-    headers: { Origin: "http://127.0.0.1:3100" }, data: { email: teammateEmail, displayName: "Invited Reviewer", password },
+    headers: apiIdentity("/auth/signup", "192.0.2.11"), data: { email: teammateEmail, displayName: "Invited Reviewer", password },
   });
   expect(teammateSignup.ok()).toBeTruthy();
   const { verificationToken } = await teammateSignup.json() as { verificationToken: string };

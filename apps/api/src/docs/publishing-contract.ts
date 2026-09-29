@@ -20,7 +20,7 @@ export const publishingSchemas = {
   RollbackMenu: object({ revision, idempotencyKey: id, versionId: id }),
   UnpublishMenu: object({ revision, idempotencyKey: id }),
   MenuQr: object({ slug }),
-  PublicMenu: object({ slug, requestedSlug: slug, visibility: { enum: ['PUBLIC','UNLISTED'] }, versionId: id, version: revision, snapshot: ref('MenuSnapshot') }),
+  PublicMenu: object({ slug, requestedSlug: slug, visibility: { enum: ['PUBLIC','UNLISTED'] }, versionId: id, version: revision, snapshot: ref('MenuSnapshot'), analyticsEnabled: { type: 'boolean' } }),
 };
 const root = '/organizations/{organizationId}/locations/{locationId}/menus/{menuId}';
 function operation(path: string, method: string, operationId: string, result: string, body?: string, publicAccess = false): Schema {

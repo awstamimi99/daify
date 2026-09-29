@@ -17,7 +17,7 @@ import { isRtl } from './index';
       ? `<img src="${esc(item.image)}" alt="${esc(item.imageAlt || name)}" width="900" height="900" loading="lazy">`
       : `<div class="menu-item-media-placeholder" aria-hidden="true">${esc(name.trim().charAt(0))}</div>`;
     const flag = item.available ? '' : `<span class="sold-out-flag">${unavailableLabel}</span>`;
-    return `<article class="menu-item${item.featured ? ' is-featured' : ''}${item.available ? '' : ' is-unavailable'}" data-menu-item data-search="${esc(`${item.name} ${item.description} ${name} ${description}`.toLowerCase())}">
+    return `<article class="menu-item${item.featured ? ' is-featured' : ''}${item.available ? '' : ' is-unavailable'}" data-menu-item data-analytics-item="${esc(item.id)}" data-search="${esc(`${item.name} ${item.description} ${name} ${description}`.toLowerCase())}">
       <figure class="menu-item-media">${media}${flag}</figure>
       <div class="menu-item-content">
         <div class="menu-item-line"><h3>${esc(name)}</h3><strong class="menu-price"><bdi>${esc(item.price)}</bdi></strong></div>

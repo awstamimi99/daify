@@ -155,3 +155,5 @@ export type TemplatePreviewMessage =
 
 export type { DraftMenu, DraftMenuSummary, DraftSection, DraftItem, DraftTranslation, DraftImage } from './draft-menu';
 export type { BillingLimits, BillingPlan, BillingCheckout, BillingState } from './billing';
+export type { PlatformOrganization, PlatformUser, PlatformAudit } from './platform';
+export type { AnalyticsReport } from './analytics';

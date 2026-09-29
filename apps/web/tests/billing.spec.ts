@@ -1,3 +1,4 @@
+import { apiIdentity } from './api-identity';
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { createHmac } from 'node:crypto';
@@ -13,10 +14,10 @@ function code(secret: string) {
 
 test('sandbox billing requires MFA, enrolls a real workspace and keeps cancellation and Arabic mobile accessible', async ({ page }) => {
   await page.context().setExtraHTTPHeaders({ 'x-daify-test-client-ip': '192.0.2.100' });
-  const origin = 'http://127.0.0.1:3100', api = 'http://127.0.0.1:4000/api/v1';
+  const api = 'http://127.0.0.1:4000/api/v1';
   const email = `billing-${Date.now()}@example.com`, password = 'correct horse battery staple';
   async function post<T>(path: string, data: object): Promise<T> {
-    const response = await page.request.post(api + path, { headers: { Origin: origin }, data });
+    const response = await page.request.post(api + path, { headers: apiIdentity(path, '192.0.2.100'), data });
     expect(response.ok(), await response.text()).toBeTruthy(); return await response.json() as T;
   }
   const signup = await post<{ verificationToken: string }>('/auth/signup', { email, password, displayName: 'Billing Owner' });

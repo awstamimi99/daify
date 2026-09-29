@@ -1,5 +1,6 @@
 import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { createHash } from 'node:crypto';
+import { ConfigService } from '@nestjs/config';
 import { defaultDesign, designImageIds, validateDesign } from '@daify/menu-engine';
 import type { Design, MenuSnapshot } from '@daify/menu-engine';
 import { PrismaService } from '../database/prisma.service';
@@ -17,7 +18,7 @@ const text = (value: Prisma.JsonValue | null, key: string) => value && typeof va
 
 @Injectable()
 export class PublishingService {
-  constructor(private readonly prisma: PrismaService, private readonly menus: MenusService, private readonly media: MediaStorageService, private readonly entitlements: EntitlementsService) {}
+  constructor(private readonly prisma: PrismaService, private readonly menus: MenusService, private readonly media: MediaStorageService, private readonly entitlements: EntitlementsService, private readonly config: ConfigService) {}
   private design(value: unknown): Design { try { return validateDesign(value); } catch (error) { throw new BadRequestException(error instanceof Error ? error.message : 'Invalid design.'); } }
   private async theme(tx: Prisma.TransactionClient, menuId: string) {
     const theme = await tx.theme.findUnique({ where: { menuId } });
@@ -129,7 +130,8 @@ export class PublishingService {
     const route = await tx.menuRoute.findUnique({ where: { slug }, include: { menu: { include: { currentVersion: true, location: { include: { organization: true } } } } } });
     const menu = route?.menu, location = menu?.location, org = location?.organization;
     if (!menu || !menu.currentVersion || !menu.publicSlug || menu.visibility === 'PRIVATE' || menu.archivedAt || menu.status !== 'PUBLISHED' || location?.status !== 'ACTIVE' || location.archivedAt || org?.status !== 'ACTIVE' || org.archivedAt) throw new NotFoundException('This menu is unavailable.');
-    return { slug: menu.publicSlug, requestedSlug: slug, visibility: menu.visibility, versionId: menu.currentVersion.id, version: menu.currentVersion.number, snapshot: menu.currentVersion.snapshot as unknown as MenuSnapshot };
+    return { slug: menu.publicSlug, requestedSlug: slug, visibility: menu.visibility, versionId: menu.currentVersion.id, version: menu.currentVersion.number, snapshot: menu.currentVersion.snapshot as unknown as MenuSnapshot,
+      analyticsEnabled: this.config.get('ANALYTICS_MODE') === 'local' && this.config.get('NODE_ENV') !== 'production' };
   }
   publicMenu(slug: string) { return this.live(this.prisma, slug); }
   async publicImage(slug: string, versionId: string, imageId: string) {

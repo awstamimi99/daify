@@ -1,7 +1,20 @@
 import { catalog, designImageIds, isRtl, languageFor, normalize, parsePreviewMessage, renderMarkup } from '@daify/menu-engine';
 import type { MenuSnapshot } from '@daify/menu-engine';
-const data = JSON.parse(document.getElementById('menu-data')!.textContent!) as { snapshot: MenuSnapshot; imageBase: string; preview: boolean };
+const data = JSON.parse(document.getElementById('menu-data')!.textContent!) as { snapshot: MenuSnapshot; imageBase: string; preview: boolean; analytics?: { slug: string; versionId: string } };
 const root = document.getElementById('menu-root')!;
+const counted = new Set<string>();
+function track(kind: string, targetId?: string, language = document.documentElement.lang) {
+  const key = `${kind}:${targetId ?? ''}:${language}`;
+  if (data.preview || !data.analytics || document.visibilityState !== 'visible' || navigator.doNotTrack === '1' || (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl || counted.has(key)) return;
+  counted.add(key);
+  void fetch(`/api/analytics/events/${data.analytics.slug}`, { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: crypto.randomUUID(), versionId: data.analytics.versionId, kind, language, ...(targetId ? { targetId } : {}) }) }).catch(() => { /* Best-effort counts never interrupt a menu. */ });
+}
+track('MENU_VIEW');
+document.addEventListener('visibilitychange', () => track('MENU_VIEW'));
+if (!data.preview && data.analytics) {
+  const sections = new IntersectionObserver(entries => { for (const entry of entries) if (entry.isIntersecting) track('SECTION_VIEW', entry.target.id); }, { threshold: 0.25 });
+  root.querySelectorAll('[data-menu-section]').forEach(section => sections.observe(section));
+}
 let observer: IntersectionObserver | undefined;
 function observe() {
   observer?.disconnect();
@@ -18,6 +31,10 @@ document.addEventListener('input', event => {
 });
 document.addEventListener('click', event => {
   if (!(event.target instanceof Element)) return;
+  const languageLink = event.target.closest<HTMLAnchorElement>('.menu-language a');
+  if (languageLink && languageLink.lang !== document.documentElement.lang) track('LANGUAGE_CHANGE', undefined, languageLink.lang);
+  const analyticsItem = event.target.closest<HTMLElement>('[data-analytics-item], [data-detail-id]');
+  if (analyticsItem) track('ITEM_VIEW', analyticsItem.dataset.analyticsItem ?? analyticsItem.dataset.detailId);
   const dialog = root.querySelector<HTMLDialogElement>('[data-item-sheet]');
   if (!dialog) return;
   if (event.target.closest('[data-sheet-close]') || event.target === dialog) { dialog.close(); return; }

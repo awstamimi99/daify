@@ -9,7 +9,7 @@ export async function GET(request: Request, context: RouteContext<'/api/menu-qr/
     const response = await apiFetch(`/api/v1/organizations/${organizationId}/locations/${locationId}/menus/${menuId}/qr`, { headers: { cookie: request.headers.get('cookie') ?? '' } });
     if (!response.ok) return unavailable(response.status);
     const { slug } = await response.json() as { slug: string };
-    const target = new URL(`/r/${slug}`, process.env.DAIFY_WEB_ORIGIN ?? 'http://localhost:3000').href;
+    const target = new URL(`/q/${slug}`, process.env.DAIFY_WEB_ORIGIN ?? 'http://localhost:3000').href;
     const png = new URL(request.url).searchParams.get('format') === 'png';
     const body = png ? new Uint8Array(await QRCode.toBuffer(target, { width: 1024, margin: 4, errorCorrectionLevel: 'M' })) : await QRCode.toString(target, { type: 'svg', margin: 4, errorCorrectionLevel: 'M' });
     return new Response(body, { headers: { 'Content-Type': png ? 'image/png' : 'image/svg+xml', 'Content-Disposition': `attachment; filename="${slug}-qr.${png ? 'png' : 'svg'}"`, 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff' } });

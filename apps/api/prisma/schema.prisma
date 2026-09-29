@@ -553,6 +553,7 @@ model MenuVersion {
   menu                Menu               @relation("VersionHistory", fields: [menuId], references: [id], onDelete: Restrict)
   currentMenus        Menu[]             @relation("LiveVersion")
   images              MenuVersionImage[]
+  analyticsEvents     AnalyticsEvent[]
 
   @@unique([menuId, id])
   @@unique([menuId, number])
@@ -603,4 +604,49 @@ model PublicationEvent {
 
   @@index([processedAt, createdAt])
   @@map("publication_events")
+}
+
+model AnalyticsEvent {
+  id             String @id @db.Uuid
+  organizationId String @db.Uuid
+  locationId     String @db.Uuid
+  menuId         String @db.Uuid
+  versionId      String @db.Uuid
+  route          String @db.VarChar(100)
+  kind           String @db.VarChar(30)
+  language       String @db.VarChar(35)
+  targetId       String @default("") @db.VarChar(36)
+  createdAt      DateTime @default(now()) @db.Timestamptz(3)
+  version        MenuVersion @relation(fields: [menuId, versionId], references: [menuId, id], onDelete: Restrict)
+  receipt        AnalyticsReceipt?
+
+  @@index([createdAt, id])
+  @@map("analytics_events")
+}
+
+model AnalyticsReceipt {
+  eventId     String @id @db.Uuid
+  processedAt DateTime @default(now()) @db.Timestamptz(3)
+  event       AnalyticsEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@map("analytics_receipts")
+}
+
+model AnalyticsDaily {
+  key            String @id @db.Char(64)
+  day            DateTime @db.Date
+  organizationId String @db.Uuid
+  locationId     String @db.Uuid
+  menuId         String @db.Uuid
+  versionId      String @db.Uuid
+  route          String @db.VarChar(100)
+  kind           String @db.VarChar(30)
+  language       String @db.VarChar(35)
+  targetId       String @default("") @db.VarChar(36)
+  count          Int @default(0)
+  updatedAt      DateTime @updatedAt @db.Timestamptz(3)
+
+  @@index([organizationId, locationId, day])
+  @@index([day])
+  @@map("analytics_daily")
 }

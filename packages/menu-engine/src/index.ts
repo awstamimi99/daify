@@ -55,7 +55,7 @@ export interface SnapshotSection { id: string; translations: Translation[]; item
 export interface MenuSnapshot { schemaVersion: 1; defaultLanguage: string; supportedLanguages: string[]; restaurant: { name: string; location: string; phone: string; address: string }; translations: Translation[]; sections: SnapshotSection[]; design: Design; }
 export interface VersionSummary { id: string; number: number; publishedAt: string; publishedById: string; sourceDraftRevision: number; rollbackSourceId: string | null; }
 export interface PublicationState { revision: number; publicSlug: string | null; visibility: 'PUBLIC' | 'UNLISTED' | 'PRIVATE'; currentVersionId: string | null; versions: VersionSummary[]; design: Design; publishingEnabled: boolean; }
-export interface PublicMenu { slug: string; requestedSlug: string; visibility: 'PUBLIC' | 'UNLISTED'; versionId: string; version: number; snapshot: MenuSnapshot; }
+export interface PublicMenu { slug: string; requestedSlug: string; visibility: 'PUBLIC' | 'UNLISTED'; versionId: string; version: number; snapshot: MenuSnapshot; analyticsEnabled: boolean; }
 export interface PreviewMessage { type: 'daify:design'; version: 1; design: Design; language: string; }
 export function parsePreviewMessage(value: unknown): PreviewMessage | null {
   try { const message = object(value); exact(message, ['type','version','design','language']); if (message.type !== 'daify:design' || message.version !== 1 || typeof message.language !== 'string' || message.language.length > 35) return null; Intl.getCanonicalLocales(message.language); return { type: 'daify:design', version: 1, design: validateDesign(message.design), language: message.language }; } catch { return null; }

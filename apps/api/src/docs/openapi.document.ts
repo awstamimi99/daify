@@ -1,5 +1,6 @@
 import { publishingPaths, publishingSchemas } from './publishing-contract';
 import { billingPaths, billingSchemas } from './billing-contract';
+import { analyticsPaths, analyticsSchemas } from './analytics-contract';
 import { menuPaths, menuSchemas } from './menu-contract';
 // Hand-maintained contract, checked against route discovery, DTO validation and
 // live HTTP responses in integration tests. Helpers keep repeated shapes uniform.
@@ -35,7 +36,7 @@ const membership = { id: uuid, organizationId: uuid, userId: uuid, role, status:
 const testToken: Schema = { type: 'string', description: 'Present only with NODE_ENV=test. Never returned in development or production.' };
 
 const schemas: Record<string, Schema> = {
-  ...menuSchemas, ...publishingSchemas, ...billingSchemas,
+  ...menuSchemas, ...publishingSchemas, ...billingSchemas, ...analyticsSchemas,
   User: object(user),
   SessionUser: object({ ...user, sessionId: uuid, assuranceLevel: enumeration('AAL1', 'AAL2') }),
   SignupRequest: object({ email, displayName: name, password }),
@@ -68,6 +69,11 @@ const schemas: Record<string, Schema> = {
   TeamMember: object({ id: uuid, role, status: membershipStatus, allLocations: boolean, permissions: array(string), locationScopes: array(object({ locationId: uuid })), user: object({ displayName: nullable(string), email }) }),
   InvitationResponse: object({ invited: { const: true }, invitationToken: testToken }, ['invitationToken']),
   PlatformOrganization: object({ id: uuid, name: string, slug: string, status: resourceStatus }),
+  PlatformUser: object({ id: uuid, email, displayName: nullable(string), status: enumeration('PENDING', 'ACTIVE', 'DISABLED'), platformAdmin: boolean, createdAt: date, lastLoginAt: nullable(date) }),
+  PlatformAudit: object({ id: uuid, type: string, actorUserId: nullable(uuid), organizationId: nullable(uuid), targetType: nullable(string), targetId: nullable(string), outcome: string, reason: nullable(string), requestId: nullable(string), createdAt: date }),
+  PlatformOrganizationStatus: object({ status: enumeration('ACTIVE', 'SUSPENDED'), expectedStatus: enumeration('ACTIVE', 'SUSPENDED'), reason: { type: 'string', minLength: 10, maxLength: 500 } }),
+  PlatformUserStatus: object({ status: enumeration('ACTIVE', 'DISABLED'), expectedStatus: enumeration('ACTIVE', 'DISABLED'), reason: { type: 'string', minLength: 10, maxLength: 500 } }),
+  PlatformStatusUpdated: object({ id: uuid, status: enumeration('ACTIVE', 'SUSPENDED', 'DISABLED') }),
   HealthResponse: object({ status: { const: 'ok' }, service: { const: 'daify-api' }, database: { const: 'up' } }, ['database']),
   ProblemDetails: object({ type: { type: 'string', format: 'uri' }, title: string, status: { type: 'integer' }, detail: { oneOf: [string, array(string)] }, instance: string, timestamp: date, requestId: string }, ['requestId']),
 };
@@ -76,6 +82,8 @@ const problem = { $ref: '#/components/responses/Problem' };
 const origin = { name: 'Origin', in: 'header', required: true, description: 'Must exactly match the configured WEB_ORIGIN.', schema: { type: 'string', format: 'uri' } };
 const idParameter = (name: string) => ({ name, in: 'path', required: true, schema: uuid });
 const tenant = [idParameter('organizationId')];
+const directoryQuery = [{ name: 'after', in: 'query', schema: uuid }, { name: 'limit', in: 'query', schema: { type: 'integer', minimum: 1, maximum: 100, default: 25 } }, { name: 'search', in: 'query', schema: { type: 'string', maxLength: 100 } }];
+const supportReason = { name: 'x-support-reason', in: 'header', required: true, schema: string, description: 'Meaningful support reason, 10–500 characters after trimming. Unicode may be URI-encoded with the prefix uri:. Requires platformAdmin and AAL2; each successful read is audited.' };
 const json = (schema: Schema) => ({ 'application/json': { schema } });
 interface OperationOptions { public?: boolean; body?: string; parameters?: object[]; status?: number; errors?: number[]; description?: string; mutation?: boolean; }
 function operation(operationId: string, tag: string, response: Schema | null, options: OperationOptions = {}) {
@@ -96,7 +104,7 @@ export const openApiDocument = {
   servers: [{ url: '/api/v1' }],
   security: [{ sessionCookie: [] }],
   paths: {
-    ...menuPaths, ...publishingPaths, ...billingPaths,
+    ...menuPaths, ...publishingPaths, ...billingPaths, ...analyticsPaths,
     '/auth/signup': { post: operation('signUp', 'authentication', ref('SignupResponse'), { public: true, mutation: true, body: 'SignupRequest', status: 201, errors: [409], description: 'Creates an unverified account and sends verification email. SMTP failure may occur after account creation; use resend-verification to retry.' }) },
     '/auth/verify-email': { post: operation('verifyEmail', 'authentication', ref('UserResponse'), { public: true, mutation: true, body: 'TokenRequest', status: 201, errors: [401] }) },
     '/auth/login': { post: operation('login', 'authentication', ref('LoginResponse'), { public: true, mutation: true, body: 'LoginRequest', errors: [401], description: 'Sets the session cookie. Enrolled users must supply exactly one fresh authenticator or unused recovery code with their password.' }) },
@@ -119,7 +127,11 @@ export const openApiDocument = {
     '/organizations/invitations/accept': { post: operation('acceptOrganizationInvitation', 'organizations', ref('Member'), { mutation: true, body: 'AcceptInvitationRequest', status: 201, errors: [404, 409] }) },
     '/organizations/{organizationId}/members': { get: operation('listManageableMembers', 'organizations', array(ref('TeamMember')), { parameters: tenant, errors: [404] }) },
     '/organizations/{organizationId}/members/{memberId}': { patch: operation('updateOrganizationMember', 'organizations', ref('Member'), { parameters: [...tenant, idParameter('memberId')], mutation: true, body: 'UpdateMemberRequest', errors: [404, 409] }) },
-    '/platform/organizations': { get: operation('platformOrganizations', 'platform', array(ref('PlatformOrganization')), { parameters: [{ name: 'x-support-reason', in: 'header', required: true, schema: { type: 'string', minLength: 10 }, description: 'Meaningful support reason, trimmed before validation. Requires platformAdmin and AAL2.' }] }) },
+    '/platform/organizations': { get: operation('platformOrganizations', 'platform', array(ref('PlatformOrganization')), { parameters: [supportReason, ...directoryQuery] }) },
+    '/platform/users': { get: operation('platformUsers', 'platform', array(ref('PlatformUser')), { parameters: [supportReason, ...directoryQuery] }) },
+    '/platform/audit': { get: operation('platformAudit', 'platform', array(ref('PlatformAudit')), { parameters: [supportReason, ...directoryQuery, ...['organizationId', 'actorUserId'].map(name => ({ name, in: 'query', schema: uuid }))], description: 'Newest-first audit records; pagination is scoped to the requested filter. No raw IPs, secrets or arbitrary metadata are exposed.' }) },
+    '/platform/organizations/{id}/status': { patch: operation('platformOrganizationStatus', 'platform', ref('PlatformStatusUpdated'), { body: 'PlatformOrganizationStatus', parameters: [idParameter('id')], mutation: true, errors: [404, 409], description: 'Reversible suspension/restore with optimistic status checking and a transactional before/after audit. Archived organizations cannot be restored.' }) },
+    '/platform/users/{id}/status': { patch: operation('platformUserStatus', 'platform', ref('PlatformStatusUpdated'), { body: 'PlatformUserStatus', parameters: [idParameter('id')], mutation: true, errors: [404, 409], description: 'Disable/restore a verified non-admin account, revoke sessions and audit atomically. Does not grant platform roles or bypass email verification.' }) },
     '/health': { get: { operationId: 'healthCheck', tags: ['health'], security: [], parameters: [{ name: 'database', in: 'query', schema: { type: 'boolean', default: false } }], responses: { '200': { description: 'Liveness or database readiness succeeded.', content: json(ref('HealthResponse')) }, '400': problem, '503': problem } } },
   },
   components: {

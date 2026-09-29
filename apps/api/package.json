@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "type": "commonjs",
   "scripts": {
+    "analytics:aggregate": "ts-node --project tsconfig.json scripts/aggregate-analytics.ts",
     "billing:seed": "ts-node --project tsconfig.json scripts/seed-billing-sandbox.ts",
     "billing:verify": "ts-node --project tsconfig.json scripts/verify-billing-sandbox.ts",
     "dev": "nest start --watch",
@@ -55,6 +56,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1131.0",
+    "@daify/menu-engine": "0.1.0",
     "@nestjs/common": "^11.1.29",
     "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.1.29",
@@ -63,6 +65,7 @@
     "@prisma/adapter-pg": "^7.9.1",
     "@prisma/client": "^7.9.1",
     "argon2": "^0.44.0",
+    "bullmq": "^5.81.5",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.4",
     "dotenv": "^17.4.2",
@@ -71,7 +74,6 @@
     "pg": "^8.23.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
-    "sharp": "^0.35.4",
-    "@daify/menu-engine": "0.1.0"
+    "sharp": "^0.35.4"
   }
 }

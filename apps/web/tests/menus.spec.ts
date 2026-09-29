@@ -1,3 +1,4 @@
+import { apiIdentity } from './api-identity';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import sharp from 'sharp';
@@ -7,7 +8,7 @@ test('M4 menu journey persists bilingual content, images and conflict recovery o
   await page.context().setExtraHTTPHeaders({ 'x-daify-test-client-ip': '192.0.2.80' });
   const email = `menus-${Date.now()}@example.com`;
   const password = 'correct horse battery staple';
-  const signup = await request.post('http://127.0.0.1:4000/api/v1/auth/signup', { headers: { Origin: 'http://127.0.0.1:3100' }, data: { email, displayName: 'Menu Reviewer', password } });
+  const signup = await request.post('http://127.0.0.1:4000/api/v1/auth/signup', { headers: apiIdentity('/auth/signup', '192.0.2.80'), data: { email, displayName: 'Menu Reviewer', password } });
   expect(signup.ok()).toBeTruthy();
   const { verificationToken } = await signup.json() as { verificationToken: string };
   await page.goto(`/verify-email?token=${encodeURIComponent(verificationToken)}`);
