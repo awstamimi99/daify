@@ -1,7 +1,7 @@
 import type { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { Server } from 'node:http';
-import { randomUUID } from 'node:crypto';
+import { createHmac, randomUUID } from 'node:crypto';
 import { defaultDesign, templateKeys } from '@daify/menu-engine';
 import type { BillingState } from '../../../packages/types/src/billing';
 import { createApp } from '../src/bootstrap';
@@ -9,6 +9,9 @@ import { PrismaService } from '../src/database/prisma.service';
 import { CryptoService } from '../src/auth/crypto.service';
 import { EntitlementsService } from '../src/billing/entitlements.service';
 import { MyFatoorahSandboxService } from '../src/billing/myfatoorah-sandbox.service';
+import { BillingWebhookService } from '../src/billing/billing-webhook.service';
+import { BillingReconciler } from '../src/billing/billing-reconciler.service';
+import { BillingService } from '../src/billing/billing.service';
 import { DAY } from '../src/billing/billing-policy';
 import { contractRequest } from './support/contract-request';
 
@@ -22,6 +25,20 @@ describe('M6 persisted sandbox billing', () => {
   const loc = () => `/api/v1/organizations/${org}/locations`;
   const locationData = () => ({ name: 'Branch', slug: randomUUID(), currency: 'KWD', timezone: 'Asia/Kuwait', defaultLanguage: 'en' });
   const limits = { locations: 1, menus: 1, members: 2, templates: ['atelier'], publishing: true };
+  const webhookSecret = 'isolated-billing-webhook-test-secret';
+  const webhookPath = '/api/v1/billing/myfatoorah/webhook';
+  async function notification(checkoutId: string, invoiceStatus = 'PAID', transactionStatus = 'SUCCESS') {
+    const checkout = await prisma.billingCheckout.findUniqueOrThrow({ where: { id: checkoutId } });
+    const invoiceId = checkout.providerInvoiceId!;
+    const body = { Event: { Code: 1, Name: 'PAYMENT_STATUS_CHANGED', CountryIsoCode: 'KWT', Reference: randomUUID() }, Data: {
+      Invoice: { Id: invoiceId, Status: invoiceStatus, ExternalIdentifier: null, UserDefinedField: 'untrusted-reference' },
+      Transaction: { Status: transactionStatus, PaymentId: 'test-payment' },
+    } };
+    const signed = `Invoice.Id=${invoiceId},Invoice.Status=${invoiceStatus},Transaction.Status=${transactionStatus},Transaction.PaymentId=test-payment,Invoice.ExternalIdentifier=`;
+    const signature = createHmac('sha256', webhookSecret).update(signed).digest('base64');
+    return { body, signature };
+  }
+  const deliver = (event: Awaited<ReturnType<typeof notification>>) => contractRequest(app.getHttpServer() as Server).post(webhookPath).set('myfatoorah-signature', event.signature).send(event.body);
   async function session(platformAdmin = false, assuranceLevel: 'AAL1' | 'AAL2' = 'AAL2', member = false) {
     const crypto = app.get(CryptoService), token = crypto.opaqueToken();
     const user = await prisma.user.create({ data: { email: `m6-${randomUUID()}@example.com`, passwordHash: 'unused', status: 'ACTIVE', emailVerifiedAt: new Date(), platformAdmin } }); users.push(user.id);
@@ -39,6 +56,7 @@ describe('M6 persisted sandbox billing', () => {
   });
   beforeEach(async () => {
     config.set('BILLING_MODE', 'sandbox'); config.set('MYFATOORAH_TEST_API_KEY', 'mocked-test-key');
+    config.set('MYFATOORAH_TEST_WEBHOOK_SECRET', webhookSecret);
     await prisma.rateLimitBucket.deleteMany();
     org = (await prisma.organization.create({ data: { name: 'Billing Test', slug: randomUUID() } })).id; orgs.push(org);
     owner = await session(false, 'AAL2', true); weak = await session(false, 'AAL1'); admin = await session(true); outsider = await session();
@@ -47,7 +65,10 @@ describe('M6 persisted sandbox billing', () => {
     create = jest.spyOn(provider, 'create').mockImplementation(() => Promise.resolve({ invoiceId: String(Math.floor(Math.random() * 1e12)), paymentUrl: 'https://demo.myfatoorah.com/test-payment' }));
     inspect = jest.spyOn(provider, 'inspect').mockImplementation((value: { providerInvoiceId: string | null }) => Promise.resolve({ invoiceId: value.providerInvoiceId ?? '123', status: 'Paid' as const, failedAttempt: false }));
   });
-  afterEach(() => jest.restoreAllMocks());
+  afterEach(async () => {
+    jest.restoreAllMocks();
+    await prisma.billingWebhookEvent.deleteMany({ where: { checkout: { organizationId: org } } });
+  });
   afterAll(async () => {
     await prisma.billingCheckout.deleteMany({ where: { organizationId: { in: orgs } } });
     await prisma.billingOverride.deleteMany({ where: { organizationId: { in: orgs } } });
@@ -194,6 +215,110 @@ describe('M6 persisted sandbox billing', () => {
     expect(next.subscription?.plan.id).toBe(lower); expect(next.usage.locations).toBe(2); expect(next.limits?.locations).toBe(1);
     await api('post', loc()).send(locationData()).expect(403);
     expect(await prisma.location.count({ where: { organizationId: org } })).toBe(2);
+  });
+
+  it('accepts signed webhooks without a browser session and deduplicates concurrent replay', async () => {
+    await enroll(); const payment = await checkout(), event = await notification(payment.id);
+    await Promise.all([deliver(event).expect(204), deliver(event).expect(204)]);
+    event.body.Event.Reference = randomUUID();
+    await deliver(event).expect(204);
+    expect(await prisma.billingWebhookEvent.count({ where: { checkoutId: payment.id } })).toBe(1);
+    expect(inspect).not.toHaveBeenCalled();
+    expect((await prisma.billingSubscription.findUniqueOrThrow({ where: { organizationId: org } })).status).toBe('TRIAL');
+    const worker = app.get(BillingWebhookService);
+    const counts = await Promise.all([worker.drain(), worker.drain()]);
+    expect(counts.reduce((sum, count) => sum + count, 0)).toBe(1);
+    expect(inspect).toHaveBeenCalledTimes(1);
+    const before = await prisma.billingSubscription.findUniqueOrThrow({ where: { organizationId: org } });
+    expect(before.status).toBe('ACTIVE');
+    expect(await prisma.billingObservation.count({ where: { checkoutId: payment.id } })).toBe(1);
+    const completed = await prisma.billingWebhookEvent.findFirstOrThrow({ where: { checkoutId: payment.id } });
+    await deliver(event).expect(204); await worker.drain();
+    expect(await prisma.billingWebhookEvent.findUniqueOrThrow({ where: { id: completed.id } })).toEqual(completed);
+    expect((await prisma.billingSubscription.findUniqueOrThrow({ where: { organizationId: org } })).periodEnd).toEqual(before.periodEnd);
+    expect(await prisma.securityEvent.count({ where: { organizationId: org, type: 'BILLING_UPDATED', reason: 'payment.reconciled' } })).toBe(1);
+  });
+
+  it('rejects unsigned and tampered webhooks and ignores unknown signed invoices', async () => {
+    await enroll(); const payment = await checkout(), event = await notification(payment.id);
+    await contractRequest(app.getHttpServer() as Server).post(webhookPath).send(event.body).expect(401);
+    event.body.Data.Invoice.Status = 'PENDING'; await deliver(event).expect(401);
+    event.body.Data.Invoice.Status = 'PAID';
+    await prisma.billingCheckout.update({ where: { id: payment.id }, data: { providerInvoiceId: null } });
+    await deliver(event).expect(204);
+    expect(await prisma.billingWebhookEvent.count({ where: { checkoutId: payment.id } })).toBe(0);
+    expect(inspect).not.toHaveBeenCalled();
+  });
+
+  it('uses authoritative status despite conflicting or reordered notification claims', async () => {
+    await enroll(); const payment = await checkout();
+    inspect.mockImplementation((value: { providerInvoiceId: string }) => Promise.resolve({ invoiceId: value.providerInvoiceId, status: 'Pending', failedAttempt: false }));
+    await deliver(await notification(payment.id)).expect(204);
+    await app.get(BillingWebhookService).drain();
+    expect((await prisma.billingSubscription.findUniqueOrThrow({ where: { organizationId: org } })).status).toBe('TRIAL');
+    inspect.mockImplementation((value: { providerInvoiceId: string }) => Promise.resolve({ invoiceId: value.providerInvoiceId, status: 'Paid', failedAttempt: false }));
+    await deliver(await notification(payment.id, 'PENDING', 'FAILED')).expect(204);
+    await app.get(BillingWebhookService).drain();
+    const paid = await prisma.billingSubscription.findUniqueOrThrow({ where: { organizationId: org } });
+    expect(paid.status).toBe('ACTIVE');
+    await deliver(await notification(payment.id, 'PENDING', 'CANCELED')).expect(204);
+    await app.get(BillingWebhookService).drain();
+    expect((await prisma.billingSubscription.findUniqueOrThrow({ where: { organizationId: org } })).periodEnd).toEqual(paid.periodEnd);
+    expect(inspect).toHaveBeenCalledTimes(2);
+  });
+
+  it('retains failed work across replay and retries it after backoff', async () => {
+    await enroll(); const payment = await checkout(), event = await notification(payment.id);
+    await deliver(event).expect(204);
+    inspect.mockRejectedValueOnce(new ServiceUnavailableExceptionForTest());
+    const worker = app.get(BillingWebhookService);
+    expect(await worker.drain()).toBe(0);
+    const failed = await prisma.billingWebhookEvent.findFirstOrThrow({ where: { checkoutId: payment.id } });
+    expect(failed.attempts).toBe(1); expect(failed.processedAt).toBeNull();
+    expect(failed.nextAttemptAt.getTime()).toBeGreaterThan(Date.now());
+    await deliver(event).expect(204); expect(await worker.drain()).toBe(0);
+    expect(await prisma.billingWebhookEvent.findUniqueOrThrow({ where: { id: failed.id } })).toEqual(failed);
+    expect(await worker.drain(failed.nextAttemptAt)).toBe(1);
+    expect((await prisma.billingWebhookEvent.findUniqueOrThrow({ where: { id: failed.id } })).attempts).toBe(2);
+    expect((await prisma.billingSubscription.findUniqueOrThrow({ where: { organizationId: org } })).status).toBe('ACTIVE');
+  });
+
+  it.each(['resolve', 'reject'] as const)('does not let an expired worker %s over a newer claim', async outcome => {
+    await enroll(); const payment = await checkout(); await deliver(await notification(payment.id)).expect(204);
+    let release!: () => void, started!: () => void;
+    const entered = new Promise<void>(resolve => { started = resolve; });
+    const blocked = new Promise<void>(resolve => { release = resolve; });
+    jest.spyOn(app.get(BillingService), 'reconcileInvoice').mockImplementationOnce(async () => {
+      started(); await blocked;
+      if (outcome === 'reject') throw new ServiceUnavailableExceptionForTest();
+    });
+    const draining = app.get(BillingWebhookService).drain();
+    await entered;
+    const event = await prisma.billingWebhookEvent.findFirstOrThrow({ where: { checkoutId: payment.id } });
+    const nextAttemptAt = new Date(Date.now() + 240_000);
+    try {
+      await prisma.billingWebhookEvent.update({ where: { id: event.id }, data: { attempts: { increment: 1 }, nextAttemptAt } });
+    } finally { release(); }
+    expect(await draining).toBe(0);
+    const claimed = await prisma.billingWebhookEvent.findUniqueOrThrow({ where: { id: event.id } });
+    expect(claimed.attempts).toBe(2); expect(claimed.processedAt).toBeNull(); expect(claimed.nextAttemptAt).toEqual(nextAttemptAt);
+    expect(await app.get(BillingWebhookService).drain(nextAttemptAt)).toBe(1);
+  });
+
+  it('fails closed without sandbox configuration or the dedicated webhook secret', async () => {
+    await enroll(); const payment = await checkout(), event = await notification(payment.id);
+    config.set('MYFATOORAH_TEST_WEBHOOK_SECRET', ''); await deliver(event).expect(503);
+    config.set('MYFATOORAH_TEST_WEBHOOK_SECRET', webhookSecret);
+    config.set('BILLING_MODE', 'disabled'); await deliver(event).expect(503);
+    expect(await app.get(BillingWebhookService).drain()).toBe(0);
+    expect(await prisma.billingWebhookEvent.count({ where: { checkoutId: payment.id } })).toBe(0);
+  });
+
+  it('runs durable webhook work through the background reconciler', async () => {
+    await enroll(); const payment = await checkout(); await deliver(await notification(payment.id)).expect(204);
+    await app.get(BillingReconciler).drain();
+    expect((await prisma.billingSubscription.findUniqueOrThrow({ where: { organizationId: org } })).status).toBe('ACTIVE');
+    expect((await prisma.billingWebhookEvent.findFirstOrThrow({ where: { checkoutId: payment.id } })).processedAt).not.toBeNull();
   });
 });
 

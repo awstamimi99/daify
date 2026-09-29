@@ -33,5 +33,6 @@ export const environmentSchema = Joi.object({
   ALLOW_DEV_SEED: Joi.boolean().truthy('true').falsy('false').default(false),
   BILLING_MODE: Joi.string().when('NODE_ENV', { is: 'production', then: Joi.valid('disabled').default('disabled'), otherwise: Joi.valid('disabled', 'sandbox').default('disabled') }),
   MYFATOORAH_TEST_API_KEY: Joi.string().when('NODE_ENV', { is: 'production', then: Joi.forbidden() }),
+  MYFATOORAH_TEST_WEBHOOK_SECRET: Joi.string().min(16).max(256).when('NODE_ENV', { is: 'production', then: Joi.forbidden() }),
   MYFATOORAH_TEST_RETURN_URL: Joi.string().uri({ scheme: ['https'] }),
 });

@@ -2,9 +2,10 @@ import { deniedLimits, nextMonth, parseLimits, subscriptionStatus } from './bill
 import { environmentSchema } from '../common/config/environment';
 describe('sandbox billing policy', () => {
   it('rejects sandbox mode and test keys at production configuration validation', () => {
-    const errors = environmentSchema.validate({ NODE_ENV: 'production', BILLING_MODE: 'sandbox', MYFATOORAH_TEST_API_KEY: 'test-only' }, { abortEarly: false }).error?.details ?? [];
+    const errors = environmentSchema.validate({ NODE_ENV: 'production', BILLING_MODE: 'sandbox', MYFATOORAH_TEST_API_KEY: 'test-only', MYFATOORAH_TEST_WEBHOOK_SECRET: 'test-webhook-secret' }, { abortEarly: false }).error?.details ?? [];
     expect(errors.map(error => error.path.join('.'))).toContain('BILLING_MODE');
     expect(errors.map(error => error.path.join('.'))).toContain('MYFATOORAH_TEST_API_KEY');
+    expect(errors.map(error => error.path.join('.'))).toContain('MYFATOORAH_TEST_WEBHOOK_SECRET');
     expect(environmentSchema.validate({ NODE_ENV: 'test', DATABASE_URL: 'postgresql://localhost/daify_test', BILLING_MODE: 'sandbox' }).error).toBeUndefined();
   });
   it('clamps calendar renewals at month ends, including leap years', () => {

@@ -206,6 +206,7 @@ model BillingCheckout {
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
   plan           BillingPlan @relation(fields: [planId], references: [id], onDelete: Restrict)
   observations   BillingObservation[]
+  webhookEvents  BillingWebhookEvent[]
 
   @@unique([organizationId, idempotencyKey])
   @@index([organizationId, createdAt])
@@ -222,6 +223,20 @@ model BillingObservation {
 
   @@unique([checkoutId, fingerprint])
   @@map("billing_observations")
+}
+
+model BillingWebhookEvent {
+  id          String    @id @default(uuid()) @db.Uuid
+  checkoutId  String    @db.Uuid
+  fingerprint String    @unique @db.Char(64)
+  attempts    Int       @default(0)
+  nextAttemptAt DateTime @default(now()) @db.Timestamptz(3)
+  processedAt DateTime? @db.Timestamptz(3)
+  createdAt   DateTime  @default(now()) @db.Timestamptz(3)
+  checkout    BillingCheckout @relation(fields: [checkoutId], references: [id], onDelete: Cascade)
+
+  @@index([processedAt, nextAttemptAt])
+  @@map("billing_webhook_events")
 }
 
 model BillingOverride {

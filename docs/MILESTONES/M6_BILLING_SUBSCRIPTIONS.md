@@ -7,6 +7,13 @@ the M5 handoff. Branch: `feat/m6-billing`, based on `8c4ff43`.
 The owner subsequently approved development with MyFatoorah's public test key
 without a merchant account. Persisted sandbox billing, API-enforced limits,
 manual checkout/reconciliation and the bilingual billing workspace are implemented.
+The 2026-09-21 continuation completed local verification of the signed Webhook V2
+payment inbox, replay handling and background retries; see
+[webhook verification](../QA/M6_WEBHOOKS_2026-09-21.md).
+The 2026-09-29 checkpoint review repeated all 136 API tests, build/lint/typecheck,
+schema validation and fresh-database migrations successfully. The owner confirmed
+that no project-owned sandbox account exists yet and requested completion of the
+local checkpoint; external payment/webhook acceptance remains pending.
 Live provider/commercial decisions and account-specific webhook/automatic-renewal
 acceptance remain open. See [the billing decision](../DECISIONS/BILLING.md) and
 [verification/runbook](../QA/M6_2026-09-14.md).
@@ -17,7 +24,7 @@ Replace the prototype's static pricing page with real Plans, Subscriptions, Enti
 
 ## Why this milestone exists
 
-At kickoff, the prototype's pricing and billing pages were illustrative, with no provider integration, entitlement enforcement or subscription state. The sandbox checkpoint now implements these foundations using verified provider status queries. `PRODUCTION_ARCHITECTURE.md` also requires verified webhook processing for the complete payment lifecycle; that acceptance remains open.
+At kickoff, the prototype's pricing and billing pages were illustrative, with no provider integration, entitlement enforcement or subscription state. The sandbox checkpoint now implements these foundations using verified provider status queries. `PRODUCTION_ARCHITECTURE.md` also requires verified webhook processing for the complete payment lifecycle. Sandbox payment notifications now pass local verification; actual account delivery, refunds, disputes and recurring-payment acceptance remain open.
 
 ## What I need to learn
 
@@ -106,13 +113,14 @@ Webhook idempotency tests (same event delivered twice, once, out of order where 
 - [x] Explicit public-key sandbox sequencing exception and test policies recorded.
 - [x] Versioned plans, subscriptions, entitlements and billing operation/observation persistence.
 - [x] Authorized sandbox checkout, cancellation and payment-status recovery.
-- [ ] Verified idempotent webhooks with replay/reconciliation.
+- [x] Sandbox payment webhooks with signature verification, durable replay handling and reconciliation tested locally.
+- [ ] Account-specific webhook delivery and full provider lifecycle acceptance.
 - [x] Transactional location/menu/member/template/publication limits.
 - [x] Tested sandbox grace, downgrade, cancellation, expiry and restoration behavior.
 - [x] Audited, strongly authenticated plan and override administration.
 - [x] Database-backed sandbox plan catalog and billing UI with Arabic/English support.
 - [ ] Replace public illustrative pricing with accepted commercial offers.
-- [x] API, concurrency, browser and regression checks passed: 123 API, 68 web and 17 prototype tests; build, lint, typecheck and schema validation also passed.
+- [x] API, concurrency, browser and regression checks passed: the initial checkpoint had 123 API, 68 web and 17 prototype tests. The 2026-09-21 webhook continuation passed all 136 API tests, API build/lint/typecheck and schema validation; browser/prototype suites were not rerun for this backend change.
 - [ ] Actual provider sandbox acceptance and operational handoff recorded.
 
 The actual sandbox smoke check created invoice `7173687` for 1.000 KWD and verified
