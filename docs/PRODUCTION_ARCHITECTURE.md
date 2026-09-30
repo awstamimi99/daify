@@ -30,11 +30,13 @@ Architecture changes must update the relevant decision document before implement
 | Object storage | Cloudflare R2 or equivalent S3-compatible storage | Originals and processed menu/brand media |
 | Cache and queues | Redis, BullMQ | Cache coordination, rate limits, media jobs, analytics aggregation, notifications |
 | Testing | Playwright, unit tests, API/integration tests | Browser journeys, domain behavior, permissions, and contracts |
-| Deployment | Cloudflare, Vercel, backend hosting, managed PostgreSQL | DNS/CDN, web delivery, API/workers, persistence |
+| Deployment | M8 staging: Netlify, Render, Supabase; production providers partly deferred | DNS/CDN, web delivery, API/workers, persistence |
 | Observability | Sentry plus structured logs and metrics | Errors, performance, job and operational visibility |
 | Later | Flutter | Owner/Manager mobile client after the API stabilizes |
 
-The exact backend, PostgreSQL, and Redis hosting providers remain deferred. See [Infrastructure](DECISIONS/INFRASTRUCTURE.md).
+The $0 M8 staging provider selection and validation gates are recorded in
+[Hosting M8](DECISIONS/HOSTING_M8.md). Production provider/region decisions and
+always-on worker hosting remain open. See [Infrastructure](DECISIONS/INFRASTRUCTURE.md).
 
 ## System boundaries
 

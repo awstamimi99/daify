@@ -18,7 +18,7 @@ Status legend: `COMPLETE` · `IN PROGRESS` · `NEXT` · `NOT STARTED` · `BLOCKE
 | M5 | Templates / Publishing / QR | **COMPLETE** | All nine templates, immutable publication/rollback and stable public/QR routes passed local API, browser, parity and accessibility verification. |
 | M6 | Billing / Subscriptions | **IN PROGRESS** | Local sandbox checkpoint verified; account-dependent payment acceptance deferred to M8 before launch by owner instruction. Remaining billing requirements stay open. |
 | M7 | Analytics / Admin | **IN PROGRESS** | Local analytics, audited admin/billing controls and support notifications implemented; local regression passes; production privacy acceptance remains open. |
-| M8 | Production / Deployment | NOT STARTED | Security review, CI/CD, staging, monitoring, and go-live. |
+| M8 | Production / Deployment | **IN PROGRESS** | $0 staging hosting selected; deployment preparation next, with production and prior acceptance gates still open. |
 | M9 | Flutter App | NOT STARTED | Owner/Manager mobile client on top of the stabilized NestJS API. |
 
 ## Milestone gates
@@ -40,13 +40,19 @@ The table above owns status and objective. These compact gates record the other 
 
 ## Current focus
 
-2026-09-30 continuation: the first M7 checkpoint is committed as `aec724c`.
-Admin billing/template workflows, support conversations and private in-app
-notifications are now implemented; 162 API, 71 web and 17 prototype tests pass.
-Production privacy acceptance remains open. See
-[M7 QA](QA/M7_2026-09-29.md) and the [operator handoff](QA/M7_OPERATIONS.md).
-M8 remains unstarted; payment-account setup stays deferred to its pre-launch
-checks as previously requested.
+2026-09-30 explicit owner instruction: “do it” starts M8 preparation on
+`feat/m8-production`, based on M7 checkpoint `27643ee`. The owner specified a
+$0 monthly hosting budget. The [hosting decision](DECISIONS/HOSTING_M8.md)
+selects free staging providers subject to deployment validation; the
+[M8 execution plan](MILESTONES/M8_PRODUCTION.md) starts with local deployment
+configuration and CI work. No infrastructure is deployed yet. This authorized
+sequencing exception leaves M1/M3/M4/M6/M7 acceptance open; MyFatoorah account
+setup stays at the end of the pre-launch sequence.
+
+M7 local admin/billing/template workflows, support and private notifications
+are committed; 162 API, 71 web and 17 prototype tests pass. Production privacy
+acceptance remains open. See [M7 QA](QA/M7_2026-09-29.md) and the
+[operator handoff](QA/M7_OPERATIONS.md).
 
 2026-09-29 explicit owner instruction: “go” starts M7 on
 `feat/m7-analytics-admin`, based on `ffce2e9`. Start with the strongly authenticated
