@@ -4,6 +4,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AuthModule } from './auth/auth.module';
 import { BillingModule } from './billing/billing.module';
+import { SupportModule } from './support/support.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { AppConfigService } from './common/config/app-config.service';
 import { environmentSchema } from './common/config/environment';
@@ -35,6 +36,7 @@ import type { Request } from 'express';
     AuthModule,
     BillingModule,
     AnalyticsModule,
+    SupportModule,
     AuthorizationModule,
     DatabaseModule,
     DocsModule,

@@ -8,12 +8,12 @@ account setup and external payment verification to M8 before launch. M7 may
 proceed from the verified local billing checkpoint (`5a931fc`) while those
 acceptance steps remain open.
 
-The verified local checkpoint implements operator directories/status controls, an
-audit viewer, local anonymous analytics ingestion, BullMQ aggregation, retention
-and a bilingual tenant report. All 155 API tests, 70 web tests and prototype regression passed, including the
-real Redis worker and English/Arabic accessibility checks. The remaining
-admin/support/notification flows are still open; see
-[the current verification record](../QA/M7_2026-09-29.md).
+The analytics/operator checkpoint is committed as `aec724c`. The continuation
+adds admin sandbox plan/subscription/template workflows, organization-scoped
+support conversations and private in-app notifications. All 162 API tests and the
+three focused browser journeys passed, along with all 71 web regression tests
+and 17 prototype tests. Production privacy acceptance remains open; see [the verification record](../QA/M7_2026-09-29.md)
+and [operator handoff](../QA/M7_OPERATIONS.md).
 
 ## Goal
 
@@ -89,6 +89,17 @@ Aggregation correctness tests (known event set in, expected rollup out); scope-e
   acceptance is deferred to M8 by the owner's 2026-09-29 sequencing exception.
 - Uses [DECISIONS/DATA_MODEL.md](../DECISIONS/DATA_MODEL.md) and [DECISIONS/AUTH_RBAC.md](../DECISIONS/AUTH_RBAC.md) as locked inputs.
 
+## Implemented workflow boundaries
+
+Organization/user controls provide reasoned directories and reversible status
+changes. Account provisioning, verification and platform promotion keep their
+existing protected flows. Billing uses immutable sandbox plan versions and
+expiring entitlements; provider payment state stays authoritative. Templates
+remain version-controlled renderers with plan/override access controls, not
+editable executable code in the operator interface. Support notifications are
+in-app and private to the ticket creator. These boundaries preserve saved
+content, payment history and the existing authentication model.
+
 ## Risks / Notes
 
 - Analytics privacy/consent/retention policy is a legal decision, not just an engineering one — do not ship collection before it's resolved.
@@ -103,5 +114,5 @@ Aggregation correctness tests (known event set in, expected rollup out); scope-e
 - [x] Attributed event ingestion and bot/preview filtering.
 - [x] Idempotent Redis/BullMQ aggregation, replay and retention cleanup.
 - [x] Tenant/location-scoped reports and bilingual analytics dashboard.
-- [ ] Admin billing/template, support and notification workflows.
-- [ ] API/browser/accessibility regression and operational handoff.
+- [x] Admin billing/template, support and notification workflows.
+- [x] Local API/browser/accessibility regression and operational handoff.

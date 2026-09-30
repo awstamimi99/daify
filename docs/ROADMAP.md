@@ -17,7 +17,7 @@ Status legend: `COMPLETE` · `IN PROGRESS` · `NEXT` · `NOT STARTED` · `BLOCKE
 | M4 | Menu Platform | **IN PROGRESS** | Local draft CRUD, translations, scoped editing and private images pass QA; real object-store acceptance remains open. |
 | M5 | Templates / Publishing / QR | **COMPLETE** | All nine templates, immutable publication/rollback and stable public/QR routes passed local API, browser, parity and accessibility verification. |
 | M6 | Billing / Subscriptions | **IN PROGRESS** | Local sandbox checkpoint verified; account-dependent payment acceptance deferred to M8 before launch by owner instruction. Remaining billing requirements stay open. |
-| M7 | Analytics / Admin | **IN PROGRESS** | Build real analytics and an audited platform-admin workspace from the verified local billing foundation. |
+| M7 | Analytics / Admin | **IN PROGRESS** | Local analytics, audited admin/billing controls and support notifications implemented; local regression passes; production privacy acceptance remains open. |
 | M8 | Production / Deployment | NOT STARTED | Security review, CI/CD, staging, monitoring, and go-live. |
 | M9 | Flutter App | NOT STARTED | Owner/Manager mobile client on top of the stabilized NestJS API. |
 
@@ -40,6 +40,14 @@ The table above owns status and objective. These compact gates record the other 
 
 ## Current focus
 
+2026-09-30 continuation: the first M7 checkpoint is committed as `aec724c`.
+Admin billing/template workflows, support conversations and private in-app
+notifications are now implemented; 162 API, 71 web and 17 prototype tests pass.
+Production privacy acceptance remains open. See
+[M7 QA](QA/M7_2026-09-29.md) and the [operator handoff](QA/M7_OPERATIONS.md).
+M8 remains unstarted; payment-account setup stays deferred to its pre-launch
+checks as previously requested.
+
 2026-09-29 explicit owner instruction: “go” starts M7 on
 `feat/m7-analytics-admin`, based on `ffce2e9`. Start with the strongly authenticated
 operator workspace and audit viewer, then anonymous analytics ingestion,
@@ -53,7 +61,7 @@ to [M8 pre-launch acceptance](MILESTONES/M8_PRODUCTION.md). The verified M6 loca
 checkpoint is committed as `5a931fc` (136 API tests passed). M6 remains incomplete,
 with commercial and provider-lifecycle requirements still open. This sequencing
 exception allows M7 to proceed from the local billing foundation without waiting
-for account setup. M7 is next; implementation has not started.
+for account setup. The subsequent explicit kickoff above starts M7.
 
 2026-09-14 continuation: the owner explicitly approved MyFatoorah public-key
 sandbox development without a merchant account, superseding the earlier billing

@@ -66,6 +66,10 @@ describe('DAIFY API authentication and authorization', () => {
     crypto = app.get(CryptoService);
     await prisma.rateLimitBucket.deleteMany();
 
+    await prisma.supportTicket.deleteMany();
+    await prisma.analyticsReceipt.deleteMany();
+    await prisma.analyticsEvent.deleteMany();
+    await prisma.analyticsDaily.deleteMany();
     await prisma.securityEvent.deleteMany();
     await prisma.billingObservation.deleteMany();
     await prisma.billingCheckout.deleteMany();

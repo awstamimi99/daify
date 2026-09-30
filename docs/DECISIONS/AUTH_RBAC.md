@@ -144,3 +144,14 @@ Decision date: 2026-08-13
 - [Data model](DATA_MODEL.md)
 - [Production architecture](../PRODUCTION_ARCHITECTURE.md)
 - [M3 execution plan](../MILESTONES/M3_AUTH_ORGANIZATIONS.md)
+
+### M7 support permission implementation — 2026-09-30
+
+`support.manage` is an organization-wide capability. Owners receive it through
+the owner preset; other roles require an explicit grant. It is not included in
+the location-scoped Manager preset, since support conversations may discuss the
+whole organization. Tenant ticket queries require active membership and scope
+by organization ID. In-app notifications additionally scope by the current user.
+Platform support access uses the existing separate AAL2 namespace and mandatory
+audited reason. Replies/status changes, audit records and recipient notifications
+commit atomically. Support text is not copied into audit metadata.

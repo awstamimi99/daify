@@ -1,12 +1,14 @@
 'use client';
 import Link from 'next/link';
+import { AdminBilling } from './admin-billing';
+import { SupportWorkspace } from '../support/support-workspace';
 import { useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import type { PlatformAudit, PlatformOrganization, PlatformUser } from '@daify/types';
 import { DaifyLogo } from '@/components/brand/daify-logo';
 import styles from './admin-workspace.module.css';
 
-type Section = 'organizations' | 'users' | 'audit';
+type Section = 'organizations' | 'users' | 'audit' | 'billing' | 'support';
 type Rows = (PlatformOrganization | PlatformUser | PlatformAudit)[];
 type Change = { section: 'organizations' | 'users'; id: string; label: string; expectedStatus: string; status: string };
 export function AdminWorkspace({ email }: { email: string }) {
@@ -17,7 +19,7 @@ export function AdminWorkspace({ email }: { email: string }) {
   const [cursors, setCursors] = useState<string[]>([]), [page, setPage] = useState(0);
   const filter = useRef({ reason: '', search: '', organizationId: '' });
   const t = (en: string, ar: string) => arabic ? ar : en;
-  const labels = { organizations: t('Organizations', 'المؤسسات'), users: t('Users', 'المستخدمون'), audit: t('Audit log', 'سجل التدقيق') };
+  const labels = { organizations: t('Organizations', 'المؤسسات'), users: t('Users', 'المستخدمون'), audit: t('Audit log', 'سجل التدقيق'), billing: t('Billing & templates', 'الاشتراكات والقوالب'), support: t('Support', 'الدعم') };
   const status = (value: string) => arabic ? ({ ACTIVE: 'نشط', SUSPENDED: 'موقوف', ARCHIVED: 'مؤرشف', DISABLED: 'معطّل', PENDING: 'بانتظار التحقق', SUCCESS: 'ناجح' }[value] ?? value) : value.toLowerCase();
   const date = (value: string) => new Intl.DateTimeFormat(arabic ? 'ar-KW' : 'en-GB', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value));
 
@@ -56,8 +58,8 @@ export function AdminWorkspace({ email }: { email: string }) {
 
   return <main id="main-content" className={styles.workspace} lang={arabic ? 'ar' : 'en'} dir={arabic ? 'rtl' : 'ltr'}>
     <header className={styles.heading}><div><DaifyLogo /><h1>{t('Platform workspace.', 'إدارة المنصة.')}</h1><p>{email}</p></div><div className={styles.tools}><Link href="/dashboard">{t('Your dashboard', 'لوحة التحكم')}</Link><button onClick={() => setArabic(!arabic)}>{arabic ? 'English' : 'العربية'}</button></div></header>
-    <nav className={styles.tabs} aria-label={t('Administration', 'إدارة المنصة')}>{(['organizations', 'users', 'audit'] as const).map(key => <button key={key} disabled={pending} aria-pressed={section === key} onClick={() => select(key)}>{labels[key]}</button>)}</nav>
-    <section className={styles.panel}><h2>{labels[section]}</h2><p>{t('Enter the support case or operational reason for accessing these records. Each read and change is recorded.', 'أدخل رقم حالة الدعم أو سبب الاطلاع على هذه السجلات. يتم تسجيل كل عملية اطلاع أو تعديل.')}</p>
+    <nav className={styles.tabs} aria-label={t('Administration', 'إدارة المنصة')}>{(['organizations', 'users', 'audit', 'billing', 'support'] as const).map(key => <button key={key} disabled={pending} aria-pressed={section === key} onClick={() => select(key)}>{labels[key]}</button>)}</nav>
+    {section === 'billing' ? <AdminBilling arabic={arabic} /> : section === 'support' ? <SupportWorkspace arabic={arabic} /> : <><section className={styles.panel}><h2>{labels[section]}</h2><p>{t('Enter the support case or operational reason for accessing these records. Each read and change is recorded.', 'أدخل رقم حالة الدعم أو سبب الاطلاع على هذه السجلات. يتم تسجيل كل عملية اطلاع أو تعديل.')}</p>
       <form className={styles.filters} onSubmit={submit}><label className={styles.field}>{t('Access reason', 'سبب الاطلاع')}<input required minLength={10} maxLength={500} value={reason} onChange={e => setReason(e.target.value)} /></label><label className={styles.field}>{t(section === 'audit' ? 'Search reason' : 'Search name or identifier', section === 'audit' ? 'البحث في السبب' : 'البحث بالاسم أو المعرّف')}<input maxLength={100} value={search} onChange={e => setSearch(e.target.value)} /></label>
         {section === 'audit' && <label className={styles.field}>{t('Organization ID (optional)', 'معرّف المؤسسة (اختياري)')}<input value={organizationId} onChange={e => setOrganizationId(e.target.value)} /></label>}<button className={styles.primary} disabled={pending || reason.trim().length < 10}>{pending ? t('Loading…', 'جارٍ التحميل…') : t('Load records', 'تحميل السجلات')}</button></form>
     </section>
@@ -68,6 +70,6 @@ export function AdminWorkspace({ email }: { email: string }) {
         {'name' in row ? <><div><strong>{row.name}</strong><p>{row.slug} · <span className={styles.badge}>{status(row.status)}</span></p><small>{row.id}</small></div>{row.status !== 'ARCHIVED' && <button disabled={pending} onClick={() => prepare({ section: 'organizations', id: row.id, label: row.name, expectedStatus: row.status, status: row.status === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE' })}>{row.status === 'ACTIVE' ? t('Suspend organization', 'إيقاف المؤسسة') : t('Restore organization', 'استعادة المؤسسة')}</button>}</> : 'email' in row ? <><div><strong>{row.displayName ?? row.email}</strong><p>{row.email} · <span className={styles.badge}>{status(row.status)}</span>{row.platformAdmin && ` · ${t('Platform administrator', 'مسؤول المنصة')}`}</p><small>{row.id}</small></div>{!row.platformAdmin && row.status !== 'PENDING' && <button disabled={pending} onClick={() => prepare({ section: 'users', id: row.id, label: row.email, expectedStatus: row.status, status: row.status === 'ACTIVE' ? 'DISABLED' : 'ACTIVE' })}>{row.status === 'ACTIVE' ? t('Disable user', 'تعطيل المستخدم') : t('Restore user', 'استعادة المستخدم')}</button>}</> : <><strong>{row.reason ?? row.type}</strong><p>{date(row.createdAt)} · {row.type} · {status(row.outcome)}</p><small>{t('Actor', 'المنفّذ')}: {row.actorUserId ?? '—'} · {t('Target', 'الهدف')}: {row.targetType ?? '—'} {row.targetId ?? ''}</small><small>{t('Request', 'الطلب')}: {row.requestId ?? '—'}</small></>}
       </li>)}</ul>}
       {loaded && <footer className={styles.footer}><span>{t('Page', 'الصفحة')} {page + 1} · {rows.length} {t('records', 'سجل')}</span><div className={styles.tools}><button disabled={pending || page === 0} onClick={() => void load(page - 1, page > 1 ? cursors[page - 2] : undefined)}>{t('Previous', 'السابق')}</button><button disabled={pending || rows.length < 25} onClick={() => { const after = rows.at(-1)!.id; setCursors(previous => [...previous.slice(0, page), after]); void load(page + 1, after); }}>{t('Next', 'التالي')}</button></div></footer>}
-    </section>
+    </section></>}
   </main>;
 }

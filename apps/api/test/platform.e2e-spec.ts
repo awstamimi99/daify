@@ -38,7 +38,7 @@ describe('M7 audited platform operations', () => {
   });
 
   it('rejects anonymous, tenant and weak-admin reads and writes', async () => {
-    for (const path of ['/platform/organizations', '/platform/users', '/platform/audit']) {
+    for (const path of ['/platform/organizations', '/platform/users', '/platform/audit', '/platform/plans', '/platform/subscriptions', '/platform/templates']) {
       await api('get', path, '').expect(401);
       await api('get', path, owner).expect(403);
       await api('get', path, weak).expect(403);
@@ -117,6 +117,20 @@ describe('M7 audited platform operations', () => {
     await api('patch', `/platform/users/${ownerId}/status`).send({ status: 'ACTIVE', expectedStatus: 'DISABLED', reason, platformAdmin: true }).expect(400);
     await prisma.organization.update({ where: { id: org }, data: { status: 'ARCHIVED', archivedAt: new Date() } });
     await api('patch', `/platform/organizations/${org}/status`).send({ status: 'ACTIVE', expectedStatus: 'SUSPENDED', reason }).expect(409);
+  });
+
+  it('projects plans, subscriptions and the actual template catalog with an audit trail', async () => {
+    const plan = await prisma.billingPlan.create({ data: { code: `m7-${randomUUID()}`, version: 1, name: 'Directory plan', nameAr: 'باقة تجريبية', amount: '3.500', limits: { locations: 1, menus: 2, members: 3, templates: ['atelier'], publishing: true } } });
+    try {
+      await prisma.billingSubscription.create({ data: { organizationId: org, planId: plan.id, status: 'TRIAL', periodStart: new Date(Date.now() - 86400000), periodEnd: new Date(Date.now() + 86400000) } });
+      const plans = await api('get', `/platform/plans?search=${plan.code}`).expect(200);
+      expect((plans.body as { amount: string }[])[0]!.amount).toBe('3.500');
+      const subscriptions = await api('get', `/platform/subscriptions?search=${(await prisma.organization.findUniqueOrThrow({ where: { id: org } })).slug}`).expect(200);
+      expect((subscriptions.body as { id: string; status: string }[])[0]).toMatchObject({ id: org, status: 'TRIAL' });
+      expect(JSON.stringify(subscriptions.body)).not.toMatch(/paymentUrl|providerInvoice|actorUserId/);
+      const templates = await api('get', '/platform/templates').expect(200); expect(templates.body).toHaveLength(9);
+      expect(await prisma.securityEvent.count({ where: { actorUserId: adminId, targetType: { in: ['PlanDirectory', 'SubscriptionDirectory', 'TemplateCatalog'] } } })).toBe(3);
+    } finally { await prisma.billingSubscription.deleteMany({ where: { planId: plan.id } }); await prisma.billingPlan.delete({ where: { id: plan.id } }); }
   });
 
   it('filters and paginates the audit viewer without exposing IPs or metadata', async () => {

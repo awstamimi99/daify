@@ -76,6 +76,7 @@ enum SecurityEventType {
   MFA_RECOVERY_USED
   MENU_UPDATED
   BILLING_UPDATED
+  SUPPORT_UPDATED
 }
 
 model User {
@@ -100,6 +101,9 @@ model User {
   actionTokens          ActionToken[]
   securityEvents        SecurityEvent[]        @relation("SecurityEventActor")
   securityNotifications SecurityNotification[]
+  supportTickets        SupportTicket[]
+  supportMessages       SupportMessage[]
+  inboxNotifications    InboxNotification[]
 
   @@index([status])
   @@map("users")
@@ -150,6 +154,7 @@ model Organization {
   subscription      BillingSubscription?
   billingCheckouts  BillingCheckout[]
   billingOverrides  BillingOverride[]
+  supportTickets    SupportTicket[]
 
   @@index([status, archivedAt])
   @@map("organizations")
@@ -649,4 +654,51 @@ model AnalyticsDaily {
   @@index([organizationId, locationId, day])
   @@index([day])
   @@map("analytics_daily")
+}
+
+
+model SupportTicket {
+  id             String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  createdById    String @db.Uuid
+  subject        String @db.VarChar(160)
+  status         String @default("OPEN") @db.VarChar(10)
+  createdAt      DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime @updatedAt @db.Timestamptz(3)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  createdBy      User @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  messages       SupportMessage[]
+  notifications  InboxNotification[]
+
+  @@index([organizationId, id])
+  @@index([status, id])
+  @@map("support_tickets")
+}
+
+model SupportMessage {
+  id           String @id @default(uuid()) @db.Uuid
+  ticketId     String @db.Uuid
+  authorId     String @db.Uuid
+  fromPlatform Boolean
+  body         String @db.VarChar(4000)
+  createdAt    DateTime @default(now()) @db.Timestamptz(3)
+  ticket       SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author       User @relation(fields: [authorId], references: [id], onDelete: Restrict)
+
+  @@index([ticketId, createdAt, id])
+  @@map("support_messages")
+}
+
+model InboxNotification {
+  id        String @id @default(uuid()) @db.Uuid
+  userId    String @db.Uuid
+  ticketId  String @db.Uuid
+  kind      String @db.VarChar(30)
+  readAt    DateTime? @db.Timestamptz(3)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ticket    SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt, id])
+  @@map("inbox_notifications")
 }

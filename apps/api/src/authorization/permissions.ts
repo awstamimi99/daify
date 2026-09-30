@@ -3,7 +3,7 @@ import type { OrganizationRole } from '../generated/prisma/enums';
 export const permissions = [
   'organization.read', 'organization.update', 'location.read', 'location.manage',
   'menu.read', 'menu.edit', 'menu.availability', 'menu.design', 'menu.publish',
-  'analytics.read', 'team.manage', 'billing.read', 'billing.manage', 'qr.manage', 'audit.read',
+  'support.manage', 'analytics.read', 'team.manage', 'billing.read', 'billing.manage', 'qr.manage', 'audit.read',
 ] as const;
 export type Permission = (typeof permissions)[number];
 

@@ -1,3 +1,7 @@
+import { supportReason } from './support-reason';
+import { catalog, templateKeys } from '@daify/menu-engine';
+import { planView } from '../billing/billing.service';
+import { subscriptionStatus } from '../billing/billing-policy';
 import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import type { AuthenticatedUser } from '../auth/auth.types';
 import type { RequestMetadata } from '../auth/request-metadata';
@@ -12,45 +16,36 @@ const userSelect = { id: true, email: true, displayName: true, status: true, pla
 export class PlatformService {
   constructor(private readonly prisma: PrismaService) {}
 
-  private reason(reason: string | undefined) {
-    let value = reason?.trim();
-    if (value?.startsWith('uri:')) {
-      try { value = decodeURIComponent(value.slice(4)).trim(); } catch { throw new BadRequestException('Invalid support reason encoding.'); }
-    }
-    if (!value || value.length < 10 || value.length > 500) throw new BadRequestException('A support reason of 10–500 characters is required.');
-    return value;
-  }
-
   private audit(tx: Prisma.TransactionClient, user: AuthenticatedUser, reason: string, metadata: RequestMetadata, targetType: string, targetId?: string, organizationId?: string, detail?: Prisma.InputJsonValue) {
     return tx.securityEvent.create({ data: { type: 'PLATFORM_ACCESS', actorUserId: user.id, outcome: 'SUCCESS', reason, requestId: metadata.requestId, ipAddress: metadata.ipAddress, targetType, targetId, organizationId, metadata: detail } });
   }
 
   async organizations(user: AuthenticatedUser, reason: string | undefined, metadata: RequestMetadata, query: DirectoryQuery) {
-    const supportReason = this.reason(reason);
+    const accessReason = supportReason(reason);
     return this.prisma.$transaction(async tx => {
       const rows = await tx.organization.findMany({ where: {
         ...(query.after ? { id: { gt: query.after } } : {}),
         ...(query.search ? { OR: [{ name: { contains: query.search, mode: 'insensitive' } }, { slug: { contains: query.search, mode: 'insensitive' } }] } : {}),
       }, select: organizationSelect, orderBy: { id: 'asc' }, take: query.limit });
-      await this.audit(tx, user, supportReason, metadata, 'OrganizationDirectory');
+      await this.audit(tx, user, accessReason, metadata, 'OrganizationDirectory');
       return rows;
     });
   }
 
   async users(user: AuthenticatedUser, reason: string | undefined, metadata: RequestMetadata, query: DirectoryQuery) {
-    const supportReason = this.reason(reason);
+    const accessReason = supportReason(reason);
     return this.prisma.$transaction(async tx => {
       const rows = await tx.user.findMany({ where: {
         ...(query.after ? { id: { gt: query.after } } : {}),
         ...(query.search ? { OR: [{ email: { contains: query.search, mode: 'insensitive' } }, { displayName: { contains: query.search, mode: 'insensitive' } }] } : {}),
       }, select: userSelect, orderBy: { id: 'asc' }, take: query.limit });
-      await this.audit(tx, user, supportReason, metadata, 'UserDirectory');
+      await this.audit(tx, user, accessReason, metadata, 'UserDirectory');
       return rows;
     });
   }
 
   async events(user: AuthenticatedUser, reason: string | undefined, metadata: RequestMetadata, query: AuditQuery) {
-    const supportReason = this.reason(reason);
+    const accessReason = supportReason(reason);
     return this.prisma.$transaction(async tx => {
       // Stable chronological pagination: the anchor is resolved inside the
       // requested scope, so an unrelated event cannot be used as a cursor.
@@ -62,9 +57,33 @@ export class PlatformService {
         select: { id: true, type: true, actorUserId: true, organizationId: true, targetType: true, targetId: true, outcome: true, reason: true, requestId: true, createdAt: true },
         orderBy: [{ createdAt: 'desc' }, { id: 'desc' }], take: query.limit });
       // Do not expose raw IPs or arbitrary historical metadata in the viewer.
-      await this.audit(tx, user, supportReason, metadata, 'AuditDirectory');
+      await this.audit(tx, user, accessReason, metadata, 'AuditDirectory');
       return rows;
     });
+  }
+
+  async plans(user: AuthenticatedUser, reason: string | undefined, metadata: RequestMetadata, query: DirectoryQuery) {
+    const value = supportReason(reason);
+    return this.prisma.$transaction(async tx => {
+      const rows = await tx.billingPlan.findMany({ where: { ...(query.after ? { id: { gt: query.after } } : {}), ...(query.search ? { OR: [{ name: { contains: query.search, mode: 'insensitive' } }, { code: { contains: query.search, mode: 'insensitive' } }] } : {}) }, orderBy: { id: 'asc' }, take: query.limit });
+      await this.audit(tx, user, value, metadata, 'PlanDirectory');
+      return rows.map(planView);
+    });
+  }
+
+  async subscriptions(user: AuthenticatedUser, reason: string | undefined, metadata: RequestMetadata, query: DirectoryQuery) {
+    const value = supportReason(reason), now = new Date();
+    return this.prisma.$transaction(async tx => {
+      const rows = await tx.billingSubscription.findMany({ where: { ...(query.after ? { organizationId: { gt: query.after } } : {}), ...(query.search ? { organization: { OR: [{ name: { contains: query.search, mode: 'insensitive' } }, { slug: { contains: query.search, mode: 'insensitive' } }] } } : {}) }, include: { plan: true, organization: { select: { name: true, billingOverrides: { where: { revokedAt: null, startsAt: { lte: now }, expiresAt: { gt: now } }, orderBy: { createdAt: 'desc' }, take: 1, select: { limits: true, expiresAt: true } } } } }, orderBy: { organizationId: 'asc' }, take: query.limit });
+      await this.audit(tx, user, value, metadata, 'SubscriptionDirectory');
+      return rows.map(row => ({ id: row.organizationId, name: row.organization.name, plan: planView(row.plan), status: subscriptionStatus(row, now), periodEnd: row.periodEnd, cancelAtEnd: row.cancelAtEnd, override: row.organization.billingOverrides[0] ?? null }));
+    });
+  }
+
+  async templates(user: AuthenticatedUser, reason: string | undefined, metadata: RequestMetadata) {
+    const value = supportReason(reason);
+    await this.audit(this.prisma, user, value, metadata, 'TemplateCatalog');
+    return templateKeys.map(id => ({ id, name: catalog[id].name, category: catalog[id].category }));
   }
 
   async organizationStatus(user: AuthenticatedUser, id: string, dto: OrganizationStatusDto, metadata: RequestMetadata) {
@@ -76,7 +95,7 @@ export class PlatformService {
       if (before.status !== dto.expectedStatus) throw new ConflictException('Organization changed. Refresh before retrying.');
       if (before.status === dto.status) return { id, status: before.status };
       const after = await tx.organization.update({ where: { id }, data: { status: dto.status }, select: { id: true, status: true } });
-      await this.audit(tx, user, this.reason(dto.reason), metadata, 'Organization', id, id, { action: 'organization.status', before: before.status, after: after.status });
+      await this.audit(tx, user, supportReason(dto.reason), metadata, 'Organization', id, id, { action: 'organization.status', before: before.status, after: after.status });
       return after;
     });
   }
@@ -94,7 +113,7 @@ export class PlatformService {
       // Restoring an account never revives a previously issued session or MFA setup.
       await tx.session.updateMany({ where: { userId: id, revokedAt: null }, data: { revokedAt: new Date() } });
       await tx.user.update({ where: { id }, data: { mfaPendingSecret: null, mfaPendingSessionId: null, mfaPendingExpiresAt: null } });
-      await this.audit(tx, user, this.reason(dto.reason), metadata, 'User', id, undefined, { action: 'user.status', before: before.status, after: after.status });
+      await this.audit(tx, user, supportReason(dto.reason), metadata, 'User', id, undefined, { action: 'user.status', before: before.status, after: after.status });
       return after;
     });
   }
