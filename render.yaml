@@ -1,0 +1,62 @@
+# Create only after verifying the account's free plan and zero-spend settings.
+# Migrations run once in the serialized release workflow, never on API startup.
+services:
+  - type: web
+    name: daify-staging-api
+    runtime: node
+    plan: free
+    autoDeployTrigger: 'off'
+    buildCommand: npm ci --include=dev && npm run build --workspace @daify/api
+    startCommand: npm run start --workspace @daify/api
+    healthCheckPath: /api/v1/health?database=true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 24.18.0
+      - key: LOG_LEVEL
+        value: log
+      - key: ALLOW_DEV_SEED
+        value: 'false'
+      - key: BILLING_MODE
+        value: disabled
+      - key: ANALYTICS_MODE
+        value: disabled
+      - key: EMAIL_TRANSPORT
+        value: smtp
+      - key: SMTP_HOST
+        value: smtp.resend.com
+      - key: SMTP_PORT
+        value: '2587'
+      - key: SMTP_SECURE
+        value: 'false'
+      - key: SMTP_REQUIRE_TLS
+        value: 'true'
+      - key: SMTP_USER
+        value: resend
+      - key: MEDIA_STORAGE
+        value: s3
+      - key: SESSION_COOKIE_NAME
+        value: daify_session
+      - key: DATABASE_URL
+        sync: false
+      - key: WEB_ORIGIN
+        sync: false
+      - key: PROXY_SIGNING_KEY
+        sync: false
+      - key: MFA_ENCRYPTION_KEY
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: EMAIL_FROM
+        sync: false
+      - key: S3_ENDPOINT
+        sync: false
+      - key: S3_REGION
+        sync: false
+      - key: S3_BUCKET
+        sync: false
+      - key: S3_ACCESS_KEY_ID
+        sync: false
+      - key: S3_SECRET_ACCESS_KEY
+        sync: false

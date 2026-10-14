@@ -1,3 +1,4 @@
+import { apiIdentity } from './api-identity';
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { createHmac } from "node:crypto";
@@ -37,7 +38,7 @@ test("real authentication verifies email, protects dashboard, and logs out", asy
   const email = `web-${Date.now()}@example.com`;
   const password = "correct horse battery staple";
   const signup = await request.post("http://127.0.0.1:4000/api/v1/auth/signup", {
-    headers: { Origin: "http://127.0.0.1:3100" },
+    headers: apiIdentity("/auth/signup", "192.0.2.10"),
     data: { email, displayName: "Web Reviewer", password },
   });
   expect(signup.ok()).toBeTruthy();
@@ -106,7 +107,7 @@ test("real authentication verifies email, protects dashboard, and logs out", asy
   await expect(page.getByRole("status").filter({ hasText: "Invitation sent" })).toBeVisible();
 
   const teammateSignup = await request.post("http://127.0.0.1:4000/api/v1/auth/signup", {
-    headers: { Origin: "http://127.0.0.1:3100" }, data: { email: teammateEmail, displayName: "Invited Reviewer", password },
+    headers: apiIdentity("/auth/signup", "192.0.2.11"), data: { email: teammateEmail, displayName: "Invited Reviewer", password },
   });
   expect(teammateSignup.ok()).toBeTruthy();
   const { verificationToken } = await teammateSignup.json() as { verificationToken: string };
@@ -206,7 +207,7 @@ test("account form cannot submit credentials before JavaScript is ready", async 
 test("Atelier renderer switches to Arabic and RTL through the typed contract", async ({ page }) => {
   await page.goto("/templates/atelier-preview");
 
-  const renderer = page.locator('[data-template="atelier"]');
+  const renderer = page.frameLocator('iframe[title="Atelier menu preview"]').locator('[data-template="atelier"]');
   await expect(renderer).toHaveAttribute("dir", "ltr");
   await page.getByRole("button", { name: "العربية" }).click();
   await expect(renderer).toHaveAttribute("dir", "rtl");
@@ -255,7 +256,7 @@ test("template gallery exposes nine designs and working filters", async ({ page 
   await page.getByRole("button", { name: "Fine Dining" }).click();
   await expect(page.getByText("01 designs in the collection")).toBeVisible();
   await expect(page.getByRole("heading", { level: 3, name: "Atelier" })).toBeVisible();
-  await expect(page.getByRole("link", { name: /Open React proof/ })).toHaveAttribute("href", "/templates/atelier-preview");
+  await expect(page.getByRole("link", { name: /Preview Atelier/ })).toHaveAttribute("href", "/templates/atelier/preview");
 });
 
 test("pricing toggle updates visible plan pricing", async ({ page }) => {

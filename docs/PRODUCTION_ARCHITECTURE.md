@@ -30,11 +30,13 @@ Architecture changes must update the relevant decision document before implement
 | Object storage | Cloudflare R2 or equivalent S3-compatible storage | Originals and processed menu/brand media |
 | Cache and queues | Redis, BullMQ | Cache coordination, rate limits, media jobs, analytics aggregation, notifications |
 | Testing | Playwright, unit tests, API/integration tests | Browser journeys, domain behavior, permissions, and contracts |
-| Deployment | Cloudflare, Vercel, backend hosting, managed PostgreSQL | DNS/CDN, web delivery, API/workers, persistence |
+| Deployment | M8 staging: Netlify, Render, Supabase; production providers partly deferred | DNS/CDN, web delivery, API/workers, persistence |
 | Observability | Sentry plus structured logs and metrics | Errors, performance, job and operational visibility |
 | Later | Flutter | Owner/Manager mobile client after the API stabilizes |
 
-The exact backend, PostgreSQL, and Redis hosting providers remain deferred. See [Infrastructure](DECISIONS/INFRASTRUCTURE.md).
+The $0 M8 staging provider selection and validation gates are recorded in
+[Hosting M8](DECISIONS/HOSTING_M8.md). Production provider/region decisions and
+always-on worker hosting remain open. See [Infrastructure](DECISIONS/INFRASTRUCTURE.md).
 
 ## System boundaries
 
@@ -107,7 +109,14 @@ The API exposes a normalized menu model independent of visual template markup. T
 - English/Arabic, future languages, and RTL;
 - search, section, availability, and item-detail interactions.
 
-The current implementation is described in [TEMPLATE_ENGINE.md](TEMPLATE_ENGINE.md). M1 defines the migration strategy; M5 completes production publication integration.
+The preserved prototype is described in [TEMPLATE_ENGINE.md](TEMPLATE_ENGINE.md).
+M5 implements both renderer families in the compiled `@daify/menu-engine`
+workspace. A versioned snapshot/design model feeds the same escaped HTML renderer
+in Next SSR and the authenticated preview iframe; Nest validates and stores those
+snapshots. This replaces the abbreviated M1 React proof with the full original
+markup/CSS vocabulary. See [M5 implementation refinements](DECISIONS/PUBLISHING.md#m5-implementation-refinements-2026-09-13)
+for version immutability, permanent slug reservations, the temporary entitlement
+gate, no-store public responses and the transactional PostgreSQL outbox.
 
 ## Localization
 
@@ -135,6 +144,18 @@ The default route is `https://daify.net/r/{slug}`. It resolves the current publi
 - The API enforces entitlements; hiding UI controls is insufficient.
 - Cancellation, grace period, downgrade, failed payment, and restoration are explicit state transitions that do not immediately destroy data.
 - Provider, final pricing/tax policy, grace period, and downgrade rules are deferred until M6 planning.
+
+M6 now has explicitly authorized sandbox billing: immutable KWD test plan
+versions, subscriptions, effective limits/expiring overrides, hosted MyFatoorah
+test checkout, durable payment observations and manual/background authoritative
+status reconciliation. Organization-locked commands enforce location/menu/seat,
+template and publication limits. The bilingual owner workspace is at
+`/dashboard/billing`; test enrollment is explicit and preserves existing M5
+workspaces. Sandbox mode/test keys are rejected in production, and sandbox
+entitlements cannot grant production access. Public pricing remains illustrative.
+Signed provider webhooks, automatic renewal, accepted commercial policies and
+live activation remain open. See [BILLING.md](DECISIONS/BILLING.md) and
+[M6 verification](QA/M6_2026-09-14.md).
 
 ## Analytics and audit logs
 

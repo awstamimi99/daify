@@ -1,0 +1,66 @@
+name: Deploy verified staging
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: daify-staging-release
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    uses: ./.github/workflows/frontend.yml
+  deploy:
+    needs: verify
+    if: vars.STAGING_DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Validate release configuration
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_SERVICE_ID: ${{ vars.RENDER_SERVICE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ vars.NETLIFY_SITE_ID }}
+          MIGRATION_DATABASE_URL: ${{ secrets.MIGRATION_DATABASE_URL }}
+          DAIFY_API_URL: ${{ vars.DAIFY_API_URL }}
+          DAIFY_WEB_ORIGIN: ${{ vars.DAIFY_WEB_ORIGIN }}
+        run: node scripts/check-release-env.mjs
+      - name: Package web before changing the database
+        run: npx --no-install netlify build --context production --filter @daify/web
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ vars.NETLIFY_SITE_ID }}
+          DAIFY_API_URL: ${{ vars.DAIFY_API_URL }}
+          DAIFY_WEB_ORIGIN: ${{ vars.DAIFY_WEB_ORIGIN }}
+          DAIFY_DEPLOYMENT_ENV: staging
+      - name: Apply additive migrations with the dedicated migration role
+        run: npm run prisma:migrate:deploy --workspace @daify/api
+        env:
+          DATABASE_URL: ${{ secrets.MIGRATION_DATABASE_URL }}
+      - name: Deploy API at the verified commit and await readiness
+        run: node scripts/deploy-render.mjs
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_SERVICE_ID: ${{ vars.RENDER_SERVICE_ID }}
+          RELEASE_COMMIT: ${{ github.sha }}
+      - name: Publish the packaged web to the staging site's primary URL
+        run: npx --no-install netlify deploy --no-build --prod --context production --filter @daify/web
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ vars.NETLIFY_SITE_ID }}
+      - name: Check the deployed staging services
+        run: node scripts/staging-smoke.mjs
+        env:
+          DAIFY_API_URL: ${{ vars.DAIFY_API_URL }}
+          DAIFY_WEB_ORIGIN: ${{ vars.DAIFY_WEB_ORIGIN }}

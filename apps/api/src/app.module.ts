@@ -3,6 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AuthModule } from './auth/auth.module';
+import { BillingModule } from './billing/billing.module';
+import { SupportModule } from './support/support.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 import { AppConfigService } from './common/config/app-config.service';
 import { environmentSchema } from './common/config/environment';
 import { RequestContextMiddleware } from './common/middleware/request-context.middleware';
@@ -31,6 +34,9 @@ import type { Request } from 'express';
       getTracker: request => Promise.resolve(clientIp(request as Request)),
     }) }),
     AuthModule,
+    BillingModule,
+    AnalyticsModule,
+    SupportModule,
     AuthorizationModule,
     DatabaseModule,
     DocsModule,

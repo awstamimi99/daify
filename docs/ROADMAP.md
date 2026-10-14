@@ -15,10 +15,10 @@ Status legend: `COMPLETE` · `IN PROGRESS` · `NEXT` · `NOT STARTED` · `BLOCKE
 | M2 | Core Backend — NestJS / PostgreSQL / Prisma | **COMPLETE** | Production API/database foundation passed independent audit remediation and real-PostgreSQL verification. |
 | M3 | Auth / Organizations / RBAC | **IN PROGRESS** | Real accounts, revocable sessions, organizations, membership, and server-enforced object authorization. |
 | M4 | Menu Platform | **IN PROGRESS** | Local draft CRUD, translations, scoped editing and private images pass QA; real object-store acceptance remains open. |
-| M5 | Templates / Publishing / QR | NOT STARTED | Migrate the template engine, and build draft → preview → publish → version → rollback with stable public/QR routes. |
-| M6 | Billing / Subscriptions | NOT STARTED | Plans, subscriptions, entitlements, checkout, and webhooks. |
-| M7 | Analytics / Admin | NOT STARTED | Real analytics events, the platform-admin backend, audit logs, and support tooling. |
-| M8 | Production / Deployment | NOT STARTED | Security review, CI/CD, staging, monitoring, and go-live. |
+| M5 | Templates / Publishing / QR | **COMPLETE** | All nine templates, immutable publication/rollback and stable public/QR routes passed local API, browser, parity and accessibility verification. |
+| M6 | Billing / Subscriptions | **IN PROGRESS** | Local sandbox checkpoint verified; account-dependent payment acceptance deferred to M8 before launch by owner instruction. Remaining billing requirements stay open. |
+| M7 | Analytics / Admin | **IN PROGRESS** | Local analytics, audited admin/billing controls and support notifications implemented; local regression passes; production privacy acceptance remains open. |
+| M8 | Production / Deployment | **IN PROGRESS** | $0 staging hosting selected; deployment preparation next, with production and prior acceptance gates still open. |
 | M9 | Flutter App | NOT STARTED | Owner/Manager mobile client on top of the stabilized NestJS API. |
 
 ## Milestone gates
@@ -39,6 +39,66 @@ The table above owns status and objective. These compact gates record the other 
 | M9 | Flutter Owner/Manager client over shared API | Stable production API and M8 operations | Approved mobile journeys pass with secure storage, API-enforced role parity, RTL/accessibility, resilience, and release QA. |
 
 ## Current focus
+
+2026-09-30 explicit owner instruction: “do it” starts M8 preparation on
+`feat/m8-production`, based on M7 checkpoint `27643ee`. The owner specified a
+$0 monthly hosting budget. The [hosting decision](DECISIONS/HOSTING_M8.md)
+selects free staging providers subject to deployment validation; the
+[M8 execution plan](MILESTONES/M8_PRODUCTION.md) starts with local deployment
+configuration and CI work. No infrastructure is deployed yet. This authorized
+sequencing exception leaves M1/M3/M4/M6/M7 acceptance open; MyFatoorah account
+setup stays at the end of the pre-launch sequence.
+
+M7 local admin/billing/template workflows, support and private notifications
+are committed; 162 API, 71 web and 17 prototype tests pass. Production privacy
+acceptance remains open. See [M7 QA](QA/M7_2026-09-29.md) and the
+[operator handoff](QA/M7_OPERATIONS.md).
+
+2026-09-29 explicit owner instruction: “go” starts M7 on
+`feat/m7-analytics-admin`, based on `ffce2e9`. Start with the strongly authenticated
+operator workspace and audit viewer, then anonymous analytics ingestion,
+aggregation and tenant reporting, followed by support/notifications. M6's
+account-dependent acceptance remains deferred to M8. See
+[the M7 execution plan](MILESTONES/M7_ANALYTICS_ADMIN.md).
+
+2026-09-29 owner instruction: “can you leave it for the end?” defers the
+project-owned payment account setup and external payment/webhook verification
+to [M8 pre-launch acceptance](MILESTONES/M8_PRODUCTION.md). The verified M6 local
+checkpoint is committed as `5a931fc` (136 API tests passed). M6 remains incomplete,
+with commercial and provider-lifecycle requirements still open. This sequencing
+exception allows M7 to proceed from the local billing foundation without waiting
+for account setup. The subsequent explicit kickoff above starts M7.
+
+2026-09-14 continuation: the owner explicitly approved MyFatoorah public-key
+sandbox development without a merchant account, superseding the earlier billing
+implementation prerequisite for this scope. The local implementation now includes
+persisted subscriptions, plan limits, audited overrides, hosted test checkout,
+payment-status recovery and a bilingual billing workspace. A real sandbox invoice
+was created and verified as Pending; no card payment was completed. Full provider
+webhook/automatic-renewal and live commercial acceptance remain open. See
+[M6 verification and runbook](QA/M6_2026-09-14.md).
+
+2026-09-14 explicit owner instruction: “go”, following the M5 handoff, kicks off
+M6 on `feat/m6-billing`, based on M5 checkpoint `8c4ff43`. Repository inspection
+confirmed that no payment provider or final commercial terms are selected.
+Planning can proceed; provider-dependent implementation awaits those inputs as
+required by [M6](MILESTONES/M6_BILLING_SUBSCRIPTIONS.md). The concrete integration
+map, acceptance matrix and open decisions are recorded in
+[the billing proposal](DECISIONS/BILLING.md). No billing code, prices or live
+payment configuration have changed at kickoff.
+
+2026-09-14 continuation: M5 implementation and local acceptance are complete on
+`feat/m5-publishing`: 102 API, 67 compiled-web and 17 prototype tests passed,
+along with build, lint, typecheck and Prisma validation. The final continuation
+fixed the development seed's readonly layout assignment and refreshed the visual
+evidence. See [M5 verification and handoff](QA/M5_2026-09-13.md).
+Remote CI for this final change and the existing M1/M3/M4 operational acceptance
+remain separate, open checks. M6 was subsequently kicked off as recorded above.
+
+2026-09-13 explicit owner instruction: “go to the next”. M5 was activated on
+`feat/m5-publishing`, building on the verified readiness fixes in PR #3. This
+authorized proceeding while the documented M1 visual and M3/M4 external
+provider gates remain open; it does not mark them complete.
 
 2026-09-12 explicit owner instruction: “اعمل m4 انطلق”. M4 is now active while
 M3's documented external operational/security acceptance remains open. This is

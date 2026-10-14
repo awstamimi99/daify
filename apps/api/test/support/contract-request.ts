@@ -17,7 +17,7 @@ export function contractRequest(server: Server) {
     agent[method] = (url: string) => original(url).expect(response => {
       if (url === '/api/docs/openapi.json') return;
       const path = url.split('?')[0]!.replace(/^\/api\/v1/, '');
-      const entry = Object.entries(paths).find(([template]) => new RegExp(`^${template.replace(/\{[^}]+\}/g, '[^/]+')}$`).test(path));
+      const entry = Object.entries(paths).sort(([a], [b]) => (a.match(/\{/g)?.length ?? 0) - (b.match(/\{/g)?.length ?? 0)).find(([template]) => new RegExp(`^${template.replace(/\{[^}]+\}/g, '[^/]+')}$`).test(path));
       if (!entry) throw new Error(`Undocumented path: ${method} ${path}`);
       const operation = entry[1][method];
       const result = operation?.responses[String(response.status)];

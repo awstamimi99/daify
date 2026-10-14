@@ -11,5 +11,6 @@ export const dashboardNavigation: readonly DashboardNavItem[] = [
   { href: "/dashboard/publish", permissions: ["menu.publish", "qr.manage"], label: "QR & Publish", glyph: "▦", roles: ["owner", "manager"] },
   { href: "/dashboard/analytics", permissions: ["analytics.read"], label: "Analytics", glyph: "↗", roles: ["owner", "manager", "viewer"] },
   { href: "/dashboard/team", permissions: ["team.manage"], label: "Team", glyph: "◎", roles: ["owner"] },
+  { href: "/dashboard/support", permissions: ["support.manage"], label: "Support", glyph: "?", roles: ["owner"] },
   { href: "/dashboard/billing", permissions: ["billing.read", "billing.manage"], label: "Billing", glyph: "◫", roles: ["owner"] },
 ] as const;

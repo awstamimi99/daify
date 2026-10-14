@@ -32,7 +32,7 @@ export function TemplatesCatalog() {
       <div className={styles.meta}><h2 id="template-collection-title"><b>{String(visible.length).padStart(2, "0")}</b> designs in the collection</h2><p>Every direction remains mobile-first and bilingual. M1 proves the React renderer contract with Atelier; the other eight production renderers remain M5 work.</p></div>
       <div className={styles.grid}>{visible.map((template, index) => <article className={styles.card} key={template.slug}>
         <div className={styles.cover}><Image src={template.image} alt={`${template.name} menu template cover`} fill sizes="(max-width: 720px) 100vw, 33vw" /></div>
-        <div className={styles.copy}><div><small>{String(index + 1).padStart(2, "0")} / 09 · {template.mood}</small><h3>{template.name}</h3></div><p>{template.tone}</p>{template.slug === "atelier" ? <ButtonLink variant="secondary" href="/templates/atelier-preview">Open React proof <span aria-hidden="true">↗</span></ButtonLink> : <span className={styles.retained}>Legacy renderer retained for M5</span>}</div>
+        <div className={styles.copy}><div><small>{String(index + 1).padStart(2, "0")} / 09 · {template.mood}</small><h3>{template.name}</h3></div><p>{template.tone}</p><ButtonLink variant="secondary" href={`/templates/${template.slug}/preview`}>Preview {template.name} <span aria-hidden="true">↗</span></ButtonLink></div>
       </article>)}</div>
     </div>
   </section>;

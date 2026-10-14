@@ -1,11 +1,16 @@
-# Template migration boundary
+# Production template boundary
 
-M1 proves the migration contract with Atelier only. The preserved prototype remains the behavioral and visual reference until M5 migrates all nine templates.
+The M1 Atelier proof now embeds `/templates/atelier/preview`; the gallery exposes
+all nine `/templates/{template}/preview` routes. The abbreviated React renderer
+and four-dish fixture have been retired.
 
-- `sample-menu.ts` supplies a renderer-independent `MenuViewModel`.
-- `renderer-registry.tsx` maps stable family IDs to typed React renderers.
-- `renderers/classic-renderer.tsx` proves the Classic family without changing its stable `atelier` slug.
-- `AtelierPreview` owns preview-only locale state; its Arabic state sets `lang="ar"` and `dir="rtl"` on the rendered menu.
-- Shared types in `@daify/types` define capabilities, theme/layout, renderer props, and versioned `daify.preview.*` messages.
+`@daify/menu-engine` owns the versioned `MenuSnapshot`, `Design`, normalization,
+capability validation and typed Classic/Feast renderer registry. The production
+renderer returns escaped HTML with the original CSS hooks, shared by server-side
+public routes and the authenticated iframe. This refines the M1 React-only
+component proof into a framework-neutral contract usable by Nest, Next and the
+small browser preview bundle without duplicating renderer logic.
 
-The Feast renderer, iframe transport, runtime payload validation, all remaining templates, publishing snapshots, and public `/r/{slug}` route remain M5 work. New React code does not import or rename the legacy `window.MenuFlow*` globals, so the original renderer keeps working unchanged.
+The original CSS is copied at build time; fonts are self-hosted. A small production
+stylesheet adds keyboard focus, no-image handling and contrast corrections. Only
+`demo.json` is sample data; public menus always render immutable database snapshots.

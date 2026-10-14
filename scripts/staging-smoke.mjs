@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+const api = new URL(process.env.DAIFY_API_URL);
+const web = new URL(process.env.DAIFY_WEB_ORIGIN);
+for (const origin of [api, web]) assert.equal(origin.protocol, 'https:', 'Hosted smoke checks require HTTPS.');
+const get = (url) => fetch(url, { redirect: 'manual', signal: AbortSignal.timeout(90_000) });
+const health = await get(new URL('/api/v1/health?database=true', api));
+assert.equal(health.status, 200);
+assert.equal((await health.json()).database, 'up');
+const direct = await get(new URL('/api/v1/auth/me', api));
+assert.equal(direct.status, 403, 'Direct API access must require trusted ingress.');
+const home = await get(web);
+assert.equal(home.status, 200);
+assert.match(home.headers.get('x-robots-tag') ?? '', /noindex/);
+const dashboard = await get(new URL('/dashboard', web));
+assert.ok([302, 303, 307, 308].includes(dashboard.status));
+assert.equal(new URL(dashboard.headers.get('location'), web).pathname, '/login');
+console.log('Staging health, database, direct-ingress rejection, noindex and login protection passed.');

@@ -41,11 +41,11 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         event: 'request.failed',
         requestId,
         method: request.method,
-        path: request.originalUrl,
+        path: (request.route as { path?: string } | undefined)?.path ?? 'unmatched',
         statusCode: status,
         error:
           exception instanceof Error
-            ? { name: exception.name, message: exception.message, stack: exception.stack }
+            ? { name: exception.constructor.name }
             : { name: 'UnknownError' },
       });
     }
@@ -55,7 +55,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       title: HttpStatus[status] ?? 'Error',
       status,
       detail,
-      instance: request.originalUrl,
+      instance: request.path,
       timestamp: new Date().toISOString(),
       ...(requestId ? { requestId } : {}),
     };

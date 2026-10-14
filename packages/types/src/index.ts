@@ -154,3 +154,7 @@ export type TemplatePreviewMessage =
   | { readonly type: "daify.preview.layout"; readonly version: 1; readonly layout: MenuLayout };
 
 export type { DraftMenu, DraftMenuSummary, DraftSection, DraftItem, DraftTranslation, DraftImage } from './draft-menu';
+export type { BillingLimits, BillingPlan, BillingCheckout, BillingState } from './billing';
+export type { PlatformOrganization, PlatformUser, PlatformAudit, PlatformSubscription, PlatformTemplate } from './platform';
+export type { AnalyticsReport } from './analytics';
+export * from './support';

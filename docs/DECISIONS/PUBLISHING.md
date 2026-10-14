@@ -63,3 +63,53 @@ Preserve the normalized menu model, stable template/family identifiers, Classic 
 - [Localization](LOCALIZATION.md)
 - [M5 execution plan](../MILESTONES/M5_PUBLISHING_TEMPLATES.md)
 
+## M5 implementation refinements (2026-09-13)
+
+- `@daify/menu-engine` is a compiled, framework-neutral TypeScript workspace.
+  Its versioned snapshot/design contracts and independent Classic/Feast HTML
+  renderers refine the M1 React component proof. Both Next SSR and the small
+  preview browser bundle use the same escaped markup implementation. The full
+  original CSS and photography replace the abbreviated M1 renderer; original
+  prototype sources remain untouched. Production CSS corrects small-text
+  contrast, focus and absent-media behavior. Fonts are served locally.
+- `Menu.currentVersionId` is the implemented live pointer. A composite foreign
+  key prevents a menu from pointing at another menu's version; database triggers
+  reject updates to version content and retained image references. History is
+  appended and menu deletion is an archive operation.
+- Every publish/rollback/unpublish locks the organization and menu, rechecks
+  active permissions/location scope, checks the expected draft revision, and
+  commits the version/pointer, audit, idempotency result and outbox together.
+  Idempotency is scoped to a menu, request body/action and actor; reusing a key
+  with different input is a conflict. Media integrity is checked before commit.
+- `Organization.publishingEnabled` is the explicit temporary M5 entitlement
+  gate (default enabled for existing workspaces). It does not assert a paid
+  subscription or plan. M6 must replace/extend this gate with authoritative
+  billing entitlements. Disabling it blocks publish/rollback; unpublish remains
+  available. Organization/location suspension also blocks public reads.
+  M6's authorized sandbox now composes this gate with effective subscription
+  limits and validates template access on design, publish and rollback. Trial
+  expiry/cancellation preserves existing public menus and all QR reservations;
+  it blocks new publication. Workspaces must enroll explicitly in sandbox billing.
+- Public HTML, JSON, images, previews, QR downloads, unavailable responses and
+  slug redirects use `no-store`. There is no public cache requiring invalidation
+  in this milestone. The durable `publication_events` outbox is drained with
+  `FOR UPDATE SKIP LOCKED`; PostgreSQL NOTIFY and `processedAt` commit together.
+  Notifications contain the durable event id for subscriber deduplication.
+  NOTIFY is a wake-up signal, not durable delivery to offline subscribers;
+  future cache consumers must reconcile the event table and define retention.
+- Public slugs are permanently reserved in `menu_routes`. Every alias resolves
+  directly to the menu's current canonical slug. Web redirects use 307/no-store
+  so a browser does not retain a redirect past unpublication or suspension.
+  A previously printed QR remains valid after a canonical slug change.
+- Private, archived, suspended and unpublished menus return a uniform 404;
+  unlisted menus remain readable but return `X-Robots-Tag: noindex, nofollow`.
+  Operational failures return 503 instead of being misreported as missing menus.
+- The authenticated preview accepts only version-1, origin- and source-checked
+  `daify:design` messages with validated settings. It cannot accept replacement
+  menu content or arbitrary image URLs. Uploaded image ids are scoped to the
+  snapshot. A detached image remains available only through a live version that
+  references it; obsolete version image URLs are not public.
+- QR SVG/PNG downloads require `qr.manage` and encode the configured web origin
+  plus `/r/{slug}`. The request Host header never controls the QR destination.
+  Menu public content and configured BCP 47 language fallback are resolved on
+  the server, including when JavaScript is disabled.

@@ -15,7 +15,7 @@ for (const width of [1440, 390]) {
       await page.goto(surface.route);
       if (surface.arabic) {
         await page.getByRole("button", { name: "العربية", exact: true }).click();
-        await expect(page.locator('[data-template="atelier"]')).toHaveAttribute("dir", "rtl");
+        await expect(page.frameLocator('iframe[title="Atelier menu preview"]').locator('[data-template="atelier"]')).toHaveAttribute("dir", "rtl");
       }
       // Include below-the-fold content and sold-out dishes in the contrast audit.
       await page.evaluate(() => document.fonts.ready);

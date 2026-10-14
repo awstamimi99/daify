@@ -1,0 +1,4 @@
+{
+  "compilerOptions": { "strict": true, "noUncheckedIndexedAccess": true, "target": "ES2022", "module": "CommonJS", "moduleResolution": "Node", "resolveJsonModule": true, "esModuleInterop": true, "declaration": true, "outDir": "dist", "rootDir": "src", "skipLibCheck": true },
+  "include": ["src/**/*.ts", "src/**/*.json"]
+}

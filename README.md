@@ -59,15 +59,22 @@ availability, ordering, translations, private images and conflict-safe saves.
 `/dashboard/restaurant` supports location updates and archiving. Images use local
 files during development; production requires a private S3-compatible bucket.
 See the [M4 verification and media runbook](docs/QA/M4_2026-09-12.md).
-Publishing, public menu URLs and QR codes remain M5 work.
+M5 adds all nine templates, immutable publication/rollback, public menu URLs and
+stable QR downloads; see [M5 verification](docs/QA/M5_2026-09-13.md).
+
+M6 sandbox billing is available at `/dashboard/billing`: persisted test plans,
+explicit trial enrollment, server-enforced limits and MyFatoorah test checkout
+with authoritative status checks. No merchant account is needed for the initial
+public-key smoke check. Live payments, account-specific webhooks and automatic
+renewal remain open. See [sandbox setup and verification](docs/QA/M6_2026-09-14.md).
 
 M3 now includes real signup, email verification/resend, login/logout, password
 reset, persistent organization and first-location setup, invitation acceptance,
 and team role/status management. The dashboard loads the user's actual
 memberships, permitted locations and navigation, with workspace switching for
 users who belong to multiple organizations. Tenant authorization is enforced
-by the API. Draft menus are implemented in M4; publishing/QR, billing and analytics
-remain later milestones.
+by the API. Draft menus and publishing/QR are implemented; sandbox billing is
+under M6, and analytics remains later work.
 Account security at `/dashboard/security` now supports authenticator enrollment,
 replacement and one-use recovery codes. Set a stable `MFA_ENCRYPTION_KEY` in the
 API environment before using it; see the [MFA runbook and QA record](docs/QA/MFA_2026-09-12.md).

@@ -2,7 +2,27 @@
 
 ## Status
 
-NOT STARTED. Detailed task breakdown will be written when M5 is complete and this milestone is about to start.
+**IN PROGRESS — sandbox implementation.** Explicit owner kickoff on 2026-09-14: “go”, after
+the M5 handoff. Branch: `feat/m6-billing`, based on `8c4ff43`.
+The owner subsequently approved development with MyFatoorah's public test key
+without a merchant account. Persisted sandbox billing, API-enforced limits,
+manual checkout/reconciliation and the bilingual billing workspace are implemented.
+The 2026-09-21 continuation completed local verification of the signed Webhook V2
+payment inbox, replay handling and background retries; see
+[webhook verification](../QA/M6_WEBHOOKS_2026-09-21.md).
+The 2026-09-29 checkpoint review repeated all 136 API tests, build/lint/typecheck,
+schema validation and fresh-database migrations successfully. The owner confirmed
+that no project-owned sandbox account exists yet and requested completion of the
+local checkpoint; external payment/webhook acceptance remains pending.
+Live provider/commercial decisions and account-specific webhook/automatic-renewal
+acceptance remain open. See [the billing decision](../DECISIONS/BILLING.md) and
+[verification/runbook](../QA/M6_2026-09-14.md).
+
+On 2026-09-29, the owner requested leaving account setup and external payment
+verification until the end. These acceptance steps are deferred to
+[M8 before launch](M8_PRODUCTION.md); they no longer block starting M7.
+The local checkpoint is committed as `5a931fc`. M6 remains incomplete, and its
+remaining commercial, refund/dispute and recurring-payment requirements stay open.
 
 ## Goal
 
@@ -10,7 +30,7 @@ Replace the prototype's static pricing page with real Plans, Subscriptions, Enti
 
 ## Why this milestone exists
 
-The prototype's pricing page and billing dashboard page are illustrative only — there is no real payment provider, no real entitlement enforcement, and no real subscription state. `PRODUCTION_ARCHITECTURE.md`'s billing section is explicit that the provider is the source of payment truth and DAIFY's database is the access-decision source *after* verified webhook processing — that relationship doesn't exist yet and is what this milestone builds.
+At kickoff, the prototype's pricing and billing pages were illustrative, with no provider integration, entitlement enforcement or subscription state. The sandbox checkpoint now implements these foundations using verified provider status queries. `PRODUCTION_ARCHITECTURE.md` also requires verified webhook processing for the complete payment lifecycle. Sandbox payment notifications now pass local verification; actual account delivery, refunds, disputes and recurring-payment acceptance remain open.
 
 ## What I need to learn
 
@@ -26,14 +46,42 @@ Webhook-driven state (as opposed to polling a payment provider), idempotency (wh
 
 ## Technical scope
 
-- Payment provider is not yet selected — `PRODUCTION_ARCHITECTURE.md` names this an explicit blocker to resolve before this milestone's implementation, not before its planning.
+- MyFatoorah is selected for sandbox exploration only. The owner's explicit
+  sandbox authorization supersedes the earlier prerequisite for this scope;
+  final provider/commercial approval remains required for live billing.
 - Builds on the Organization/Subscription/Plan/Entitlement entities already scoped in `DATA_MODEL.md`.
 - Entitlement checks must live in API commands, consistent with the rule already locked in `PRODUCTION_ARCHITECTURE.md`: "hiding UI controls is insufficient."
 - All plan overrides and billing-affecting admin actions must produce `AuditLog` entries, per the same document.
 
 ## Tasks
 
-Detailed task breakdown deferred until M5 is complete and this milestone starts.
+1. Confirm merchant country, provider/account eligibility, recurring-payment
+   capability, currency, prices, resource limits and subscription policies.
+   Record accepted choices in `DECISIONS/BILLING.md` before live implementation;
+   the explicit sandbox exception and test policies are already recorded there.
+2. Add additive Plan/price-version, Subscription, Entitlement, checkout-operation
+   and verified-event persistence. Preserve historical plan meaning and isolate
+   test/live provider identities. Document how existing workspaces transition.
+3. Implement typed entitlement evaluation with explicit effective dates and
+   audited overrides. Check resource usage under the existing organization lock
+   in the same transaction as creation/reactivation/publication.
+4. Build authenticated checkout and cancellation commands, with scoped permission
+   and sensitive-action assurance checks. Persist idempotency before provider
+   requests; recover ambiguous provider timeouts without creating a second charge.
+5. Implement the selected provider's exact webhook verification and durable
+   inbox/processor. Bind the event to the server-created checkout/subscription;
+   atomically persist subscription, entitlements and audit effects. Verify
+   duplicate, conflicting, late and reordered delivery behavior.
+6. Implement the accepted grace, cancellation, expiry, downgrade, refund and
+   restoration policies. Preserve content and QR reservations. Reconcile missed
+   events and time-based expiry without requiring a customer request.
+7. Replace illustrative pricing with active database plans, add the owner billing
+   workspace, usage/limit messages and payment recovery. Add the narrowly scoped
+   platform-admin plan/override commands required by M6, with AAL2 and audit.
+8. Extend OpenAPI, test fixtures, migrations and browser journeys. Run all
+   regression checks, then verify a real provider sandbox checkout, webhook,
+   renewal/failure and cancellation. Document deployment setup separately from
+   local acceptance; do not enable live charging as part of local verification.
 
 ## Deliverables
 
@@ -60,9 +108,27 @@ Webhook idempotency tests (same event delivered twice, once, out of order where 
 
 ## Risks / Notes
 
-- Final payment provider, pricing, tax handling, invoicing regions, and refund policy are all still open per `PRODUCTION_ARCHITECTURE.md` — these are product/legal decisions, not engineering defaults, and should be resolved and documented (likely as a new decision record) before this milestone's implementation begins.
+- Final payment provider, pricing, tax handling, invoicing regions, and refund policy remain open per `PRODUCTION_ARCHITECTURE.md`. Resolve and document these commercial decisions before implementing live billing. The authorized sandbox scope uses separately recorded test policies.
 - Do not let entitlement enforcement become UI-only under deadline pressure — that defeats the entire point of this milestone.
 
 ## Completion Checklist
 
-Not applicable yet — a real checklist will be written from the detailed task breakdown when this milestone starts.
+- [x] Owner kickoff, branch and repository integration map recorded.
+- [x] Detailed implementation sequence and acceptance matrix prepared.
+- [ ] Merchant/provider and commercial policies accepted.
+- [x] Explicit public-key sandbox sequencing exception and test policies recorded.
+- [x] Versioned plans, subscriptions, entitlements and billing operation/observation persistence.
+- [x] Authorized sandbox checkout, cancellation and payment-status recovery.
+- [x] Sandbox payment webhooks with signature verification, durable replay handling and reconciliation tested locally.
+- [ ] Account-specific webhook delivery and full provider lifecycle acceptance.
+- [x] Transactional location/menu/member/template/publication limits.
+- [x] Tested sandbox grace, downgrade, cancellation, expiry and restoration behavior.
+- [x] Audited, strongly authenticated plan and override administration.
+- [x] Database-backed sandbox plan catalog and billing UI with Arabic/English support.
+- [ ] Replace public illustrative pricing with accepted commercial offers.
+- [x] API, concurrency, browser and regression checks passed: the initial checkpoint had 123 API, 68 web and 17 prototype tests. The 2026-09-21 webhook continuation passed all 136 API tests, API build/lint/typecheck and schema validation; browser/prototype suites were not rerun for this backend change.
+- [ ] Actual provider sandbox acceptance and operational handoff recorded.
+
+The actual sandbox smoke check created invoice `7173687` for 1.000 KWD and verified
+its matching reference and amount through GetPaymentStatus. Its status was
+`Pending`; this is not a successful-payment, webhook or recurring-charge test.

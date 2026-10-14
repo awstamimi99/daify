@@ -1,6 +1,6 @@
 # Infrastructure Decision
 
-Status: Direction accepted; providers partially deferred
+Status: Direction accepted; free staging providers selected subject to deployment validation; production providers partially deferred
 Decision date: 2026-08-13
 Implementation milestones: M1, M2, M8
 
@@ -10,7 +10,7 @@ Implementation milestones: M1, M2, M8
 | --- | --- |
 | Source control and review | GitHub |
 | Web application | Next.js, React, TypeScript |
-| Frontend hosting | Vercel |
+| Frontend hosting | Netlify Free for M8 staging; Vercel remains a production option |
 | API | NestJS, TypeScript; modular monolith initially |
 | Database | Managed PostgreSQL with Prisma |
 | Cache and queues | Redis and BullMQ |
@@ -24,6 +24,15 @@ Implementation milestones: M1, M2, M8
 
 The exact backend runtime host, managed PostgreSQL vendor/region, Redis vendor, and billing/auth providers are not locked yet.
 
+## M8 budget decision — 2026-09-30
+
+The owner specified a $0 monthly hosting budget. Use the
+[free staging decision](HOSTING_M8.md) for the initial external demo. This
+explicitly replaces Vercel for staging and selects Render plus Supabase, subject
+to the listed compatibility and account checks. Production launch, always-on
+workers and production region/backup commitments remain unresolved. No service
+has been provisioned.
+
 ## Boundaries
 
 - `web`: marketing, authenticated UI, server-rendered public menus.
@@ -32,7 +41,11 @@ The exact backend runtime host, managed PostgreSQL vendor/region, Redis vendor, 
 - PostgreSQL is authoritative. Redis contains disposable coordination/cache state.
 - Object storage contains media bytes; PostgreSQL stores ownership, object keys, metadata, and processing status.
 
-Start with a modular monolith and one worker deployment. Do not introduce microservices without demonstrated scaling or ownership pressure.
+The production target is a modular monolith and one worker deployment. Current
+notification, billing and analytics workers run inside the API; the free staging
+demo retains that arrangement with billing and analytics disabled. A separate
+always-on worker remains a production decision. Do not introduce microservices
+without demonstrated scaling or ownership pressure.
 
 ## Media pipeline
 

@@ -25,7 +25,7 @@ export class RequestLoggingInterceptor implements NestInterceptor {
             event: 'request.completed',
             requestId: response.locals.requestId as string | undefined,
             method: request.method,
-            path: request.originalUrl,
+            path: (request.route as { path?: string } | undefined)?.path ?? 'unmatched',
             statusCode: response.statusCode,
             durationMs: Date.now() - startedAt,
           });

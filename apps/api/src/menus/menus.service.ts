@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { PrismaService } from '../database/prisma.service';
 import type { Prisma } from '../generated/prisma/client';
 import { AuthorizationService } from '../authorization/authorization.service';
+import { EntitlementsService } from '../billing/entitlements.service';
 import type { Permission } from '../authorization/permissions';
 import type { RequestMetadata } from '../auth/request-metadata';
 import type { AvailabilityDto, CreateMenuDto, ImageUpdateDto, ImageUploadDto, ItemDto, RevisionDto, SectionDto, UpdateMenuDto } from './dto/menu.dto';
@@ -15,9 +16,9 @@ const imageFields = { id: true, mimeType: true, bytes: true, width: true, height
 @Injectable()
 export class MenusService {
   private readonly logger = new Logger(MenusService.name);
-  constructor(private readonly prisma: PrismaService, private readonly authorization: AuthorizationService, private readonly media: MediaStorageService) {}
+  constructor(private readonly prisma: PrismaService, private readonly authorization: AuthorizationService, private readonly media: MediaStorageService, private readonly entitlements: EntitlementsService) {}
 
-  private async access(tx: Prisma.TransactionClient, scope: MenuScope, permission: Permission) {
+  async access(tx: Prisma.TransactionClient, scope: MenuScope, permission: Permission) {
     const membership = await this.authorization.requireOrganization(scope.userId, scope.organizationId, permission, tx);
     const location = await tx.location.findFirst({ where: { id: scope.locationId, organizationId: scope.organizationId, status: 'ACTIVE', archivedAt: null } });
     if (!location || (!membership.allLocations && !membership.locationScopes.some(value => value.locationId === location.id))) throw new NotFoundException('Location was not found.');
@@ -27,7 +28,7 @@ export class MenusService {
     await this.access(this.prisma, scope, 'menu.read');
     return this.prisma.menu.findMany({ where: { locationId: scope.locationId, archivedAt: null }, select: { id: true, name: true, slug: true, defaultLanguage: true, supportedLanguages: true, draftRevision: true, updatedAt: true, status: true }, orderBy: { createdAt: 'asc' } });
   }
-  private async draft(tx: Prisma.TransactionClient, scope: MenuScope) {
+  async draft(tx: Prisma.TransactionClient, scope: MenuScope) {
     const menu = await tx.menu.findFirst({ where: { id: scope.menuId, locationId: scope.locationId, archivedAt: null, location: { organizationId: scope.organizationId, status: 'ACTIVE', archivedAt: null } }, select: {
       id: true, name: true, slug: true, locationId: true, status: true, defaultLanguage: true, supportedLanguages: true, draftRevision: true, updatedAt: true,
       location: { select: { currency: true } }, translations: { select: localized },
@@ -53,6 +54,7 @@ export class MenusService {
     return this.prisma.$transaction(async tx => {
       await tx.$queryRaw`SELECT id FROM organizations WHERE id = ${scope.organizationId}::uuid FOR UPDATE`;
       await this.access(tx, scope, 'menu.edit');
+      await this.entitlements.capacity(tx, scope.organizationId, 'menus');
       const config = languages(dto.defaultLanguage, dto.supportedLanguages);
       const content = translations(dto.translations, config.defaultLanguage, config.supportedLanguages);
       if (!dto.name.trim()) throw new BadRequestException('Menu name is required.');
@@ -61,7 +63,7 @@ export class MenusService {
       return this.draft(tx, { ...scope, menuId: menu.id });
     });
   }
-  private async audit(tx: Prisma.TransactionClient, scope: MenuScope, metadata: RequestMetadata, reason: string) {
+  async audit(tx: Prisma.TransactionClient, scope: MenuScope, metadata: RequestMetadata, reason: string) {
     await tx.securityEvent.create({ data: { type: 'MENU_UPDATED', actorUserId: scope.userId, organizationId: scope.organizationId, targetType: 'Menu', targetId: scope.menuId, outcome: 'SUCCESS', reason, requestId: metadata.requestId, ipAddress: metadata.ipAddress } });
   }
   private async edit(scope: MenuScope, revision: number, permission: Permission, metadata: RequestMetadata, reason: string, change: (tx: Prisma.TransactionClient, menu: Awaited<ReturnType<MenusService['draft']>>) => Promise<void>, archived = false) {
@@ -93,7 +95,11 @@ export class MenusService {
     });
   }
   archive(scope: MenuScope, dto: RevisionDto, metadata: RequestMetadata) {
-    return this.edit(scope, dto.revision, 'menu.edit', metadata, 'menu.archived', async tx => { await tx.menu.update({ where: { id: scope.menuId }, data: { archivedAt: new Date(), status: 'ARCHIVED' } }); }, true);
+    return this.edit(scope, dto.revision, 'menu.edit', metadata, 'menu.archived', async (tx, menu) => {
+      if (menu.status === 'PUBLISHED') await this.access(tx, scope, 'menu.publish');
+      await tx.menu.update({ where: { id: scope.menuId }, data: { archivedAt: new Date(), status: 'ARCHIVED', currentVersionId: null } });
+      await tx.publicationEvent.create({ data: { menuId: scope.menuId, kind: 'archived', payload: { menuId: scope.menuId } } });
+    }, true);
   }
   section(scope: MenuScope, dto: SectionDto, metadata: RequestMetadata, id?: string) {
     return this.edit(scope, dto.revision, 'menu.edit', metadata, id ? 'section.updated' : 'section.created', async (tx, menu) => {

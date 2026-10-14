@@ -2,7 +2,10 @@
 
 ## Status
 
-NOT STARTED. Detailed task breakdown will be written when M4 is complete and this milestone is about to start.
+**COMPLETE — local implementation and acceptance verified 2026-09-14.**
+Explicit owner kickoff on 2026-09-13: “go to the next”. Prior M1 visual and M3/M4
+provider acceptance remains open under this sequencing exception. Remote CI for
+the final change has not been verified. See [verification and handoff](../QA/M5_2026-09-13.md).
 
 ## Goal
 
@@ -32,7 +35,12 @@ Immutable versioning patterns (append, never mutate), the stable-identifier prob
 
 ## Tasks
 
-Detailed task breakdown deferred until M4 is complete and this milestone starts.
+1. Add immutable versions, public route reservations and a transactional publication outbox.
+2. Validate draft revisions, scoped publication/design permissions, entitlements, translations and media.
+3. Implement preview, publish, history, rollback, unpublish and collision-safe slug changes.
+4. Port both renderer families and all nine template configurations into typed modules, retaining prototype styles and interactions.
+5. Build authenticated iframe preview/customization, public server-rendered menus and downloadable stable QR codes.
+6. Verify lifecycle/concurrency/isolation, template parity, English/Arabic, capabilities, messaging and real browser journeys.
 
 ## Deliverables
 
@@ -64,4 +72,10 @@ Visual/structural parity tests for each migrated template against its prototype 
 
 ## Completion Checklist
 
-Not applicable yet — a real checklist will be written from the detailed task breakdown when this milestone starts.
+- [x] Immutable versioning and transactional publication lifecycle.
+- [x] Stable public routes, managed redirects and private/suspended/unpublished behavior.
+- [x] Scoped design/preview/publishing UI and QR downloads.
+- [x] Both typed renderer families, all nine templates and supported controls.
+- [x] Origin/source-checked, versioned iframe messages.
+- [x] API, browser, parity, accessibility and regression verification.
+- [x] Operational limitations and handoff documented.
