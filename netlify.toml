@@ -1,0 +1,17 @@
+[build]
+  command = "npm run build --workspace @daify/menu-engine && npm run build --workspace @daify/web"
+  publish = "apps/web/.next"
+
+[build.environment]
+  NODE_VERSION = "24.18.0"
+  NPM_FLAGS = "--include=dev"
+  NEXT_TELEMETRY_DISABLED = "1"
+  DAIFY_DEPLOYMENT_ENV = "staging"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"

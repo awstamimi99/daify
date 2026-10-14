@@ -54,6 +54,11 @@ export async function forwardApiRequest(request: Request, path: string) {
     outgoing.headers.set("Cache-Control", "no-store");
     return outgoing;
   } catch {
-    return NextResponse.json({ detail: "The service is unavailable. Please try again." }, { status: 503 });
+    return NextResponse.json({
+      code: "SERVICE_UNAVAILABLE",
+      detail: read
+        ? "The service may be starting up. Wait a moment, then try again. قد تكون الخدمة قيد التشغيل. انتظر قليلاً ثم حاول مجدداً."
+        : "We couldn’t confirm whether your change completed. Wait a moment and check its status before submitting again. تعذّر تأكيد اكتمال التغيير. انتظر قليلاً وتحقق من حالته قبل إرساله مجدداً.",
+    }, { status: 503, headers: { "Cache-Control": "no-store", "Retry-After": "15" } });
   }
 }

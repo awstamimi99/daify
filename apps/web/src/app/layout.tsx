@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://daify.net"),
+  metadataBase: new URL(process.env.DAIFY_WEB_ORIGIN ?? "https://daify.net"),
   title: { default: "DAIFY — Digital menus made remarkable", template: "%s — DAIFY" },
   description: "Build, style, publish, and update a beautiful mobile-first restaurant menu.",
   openGraph: { siteName: "DAIFY", type: "website" },

@@ -27,11 +27,13 @@
     "pretypecheck": "npm run build --workspace @daify/menu-engine"
   },
   "devDependencies": {
-    "@playwright/test": "^1.48.0"
+    "@netlify/plugin-nextjs": "5.16.2",
+    "@playwright/test": "^1.48.0",
+    "netlify-cli": "27.12.1"
   },
   "overrides": {
     "@nestjs/platform-express": {
-      "multer": "2.3.0"
+      "multer": "2.4.0"
     },
     "@prisma/config": {
       "deepmerge-ts": "8.0.2"

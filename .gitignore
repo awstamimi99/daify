@@ -20,6 +20,7 @@ apps/web/next-env.d.ts
 test-results/
 playwright-report/
 blob-report/
+.netlify/
 playwright/.cache/
 
 # Local private draft media
