@@ -6,6 +6,15 @@ IN PROGRESS — hosting selection and execution planning started 2026-09-30 on
 explicit owner instruction (“do it”), with a $0 monthly hosting budget.
 No external infrastructure is provisioned or deployed by this checkpoint.
 
+2026-10-15 continuation: M8 preparation was merged into `main` in PR #4.
+Work now continues on `feat/m8-staging`; old milestone branches were removed
+after verifying that their commits are included in `main`. Local builds,
+163 API / 71 compiled-web / 17 prototype tests and Netlify packaging pass.
+See [current verification](../QA/M8_2026-10-15.md) and the
+[staging setup runbook](../QA/M8_STAGING.md). Hosted acceptance remains open,
+including the adapter's monorepo runtime behavior; the local Netlify emulator
+cannot resolve its generated `/var/task` imports.
+
 The owner authorized M8 preparation while earlier operational gates remain
 open. This sequencing exception does not complete M1/M3/M4/M6/M7 acceptance.
 MyFatoorah account setup remains at the end of the pre-launch sequence.
@@ -25,10 +34,12 @@ and feature limits are not production acceptance.
   [architecture](../PRODUCTION_ARCHITECTURE.md) own the system boundaries.
 - M7 checkpoint `27643ee`: 162 API, 71 web and 17 prototype tests passed locally;
   production analytics/privacy acceptance remains open.
-- `.github/workflows/frontend.yml` already runs quality checks and Playwright/API
-  tests on pull requests and pushes to `main` / `Milestone-1`. It has PostgreSQL
-  but lacks Redis integration and deployment/promotion steps. Remote CI for the
-  final checkpoint must be verified; existing local results do not prove it.
+- `.github/workflows/frontend.yml` runs quality checks and Playwright/API tests
+  with PostgreSQL and Redis on pull requests and pushes to `main` /
+  `feat/m8-staging`. It also packages the Netlify app without account credentials.
+  The separate manual staging workflow waits for these checks before deployment.
+  Node is pinned through `.node-version`. Remote CI must be verified for each
+  release commit; existing local results do not prove it.
 
 ## Execution order
 
@@ -36,19 +47,28 @@ and feature limits are not production acceptance.
 
 - [x] Record the $0 provider selection, constraints and environment matrix.
 - [x] Activate M8 and preserve all previous launch gates in the roadmap.
-- [ ] Add reproducible API deployment configuration with the existing Node 24
+- [x] Add reproducible API deployment configuration with the existing Node 24
   build, Prisma client, runtime dependencies, health endpoint and provider port.
   Verify startup using production validation and graceful shutdown locally.
 - [ ] Add Netlify monorepo configuration and prove the exact Next.js adapter
   build, SSR, protected routes, QR native dependencies and secret isolation.
-- [ ] Add Redis to CI and configure `ANALYTICS_TEST_REDIS_URL` so real worker
+- [x] Add Redis to CI and configure `ANALYTICS_TEST_REDIS_URL` so real worker
   integration cannot silently skip. Preserve PostgreSQL and compiled-web tests.
 - [ ] Add a controlled staging deploy workflow after required checks; promote
   the same reviewed commit, serialize migrations and document rollback. Disable
   provider auto-deploy paths that could bypass CI. Check private-repository
   integration support and free Actions/deployment quotas before enabling it.
-- [ ] Prepare a cold-start retry state and tests for the 15-second API timeout;
+- [x] Prepare a cold-start retry state and tests for the 15-second API timeout;
   mutations must not be replayed automatically.
+
+Netlify build and artifact inspection pass with Next.js 16.4.0, adapter 5.16.2
+and CLI 27.12.1. Public assets exclude the synthetic signing key; Node 24 server
+functions, dashboard/admin edge routes and the runner-native Sharp module are
+packaged. Local `netlify serve` returns 500 for the generated monorepo handler's
+absolute Lambda import path, so hosted SSR/QR and trusted-ingress acceptance
+are deliberately not checked off. Release packaging runs on Linux in Actions.
+The staging workflow and rollback instructions exist; account settings,
+quota eligibility and an executed rollback remain open.
 
 ### 2. Account-backed staging acceptance
 
