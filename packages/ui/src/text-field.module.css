@@ -16,4 +16,4 @@
   font-weight: 500;
 }
 
-.field small { color: var(--text-muted); font-weight: 500; }
+.field small { color: var(--text-secondary); font-weight: 500; }

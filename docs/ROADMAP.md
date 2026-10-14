@@ -11,7 +11,7 @@ Status legend: `COMPLETE` · `IN PROGRESS` · `NEXT` · `NOT STARTED` · `BLOCKE
 | # | Milestone | Status | One-line objective |
 | --- | --- | --- | --- |
 | M0 | Prototype Cleanup + Architecture Lock | **COMPLETE** | Clean up DAIFY branding, review the MenuFlow legacy, and lock production architecture decisions before writing production code. |
-| M1 | Foundation — TypeScript / React / Next.js | **IN PROGRESS** | Production web foundation implemented; independent visual/accessibility review and first observed CI run remain before completion. |
+| M1 | Foundation — TypeScript / React / Next.js | **IN PROGRESS** | Production web foundation and green CI verified; Atelier visual parity and final migrated-surface acceptance remain open. |
 | M2 | Core Backend — NestJS / PostgreSQL / Prisma | **COMPLETE** | Production API/database foundation passed independent audit remediation and real-PostgreSQL verification. |
 | M3 | Auth / Organizations / RBAC | **IN PROGRESS** | Real accounts, revocable sessions, organizations, membership, and server-enforced object authorization. |
 | M4 | Menu Platform | **IN PROGRESS** | Local draft CRUD, translations, scoped editing and private images pass QA; real object-store acceptance remains open. |
@@ -59,7 +59,7 @@ See [the remediation record](QA/REMEDIATION_2026-09-12.md) and
 [MFA verification/runbook](QA/MFA_2026-09-12.md) and the
 [latest operations report](QA/M3_OPERATIONS_2026-09-12.md).
 
-**M3 — Authentication, Organizations and RBAC is in progress.** Its explicit kickoff followed M2 completion and audit remediation. See [MILESTONES/M3_AUTH_ORGANIZATIONS.md](MILESTONES/M3_AUTH_ORGANIZATIONS.md). M1's remaining independent visual/CI review status is unchanged. M4 proceeds only under the explicit owner kickoff recorded above.
+**M3 — Authentication, Organizations and RBAC is in progress.** Its explicit kickoff followed M2 completion and audit remediation. See [MILESTONES/M3_AUTH_ORGANIZATIONS.md](MILESTONES/M3_AUTH_ORGANIZATIONS.md). M1's visual acceptance remains open; CI was verified on 2026-09-13. M4 proceeds only under the explicit owner kickoff recorded above.
 
 ## Why M0 is marked complete
 
