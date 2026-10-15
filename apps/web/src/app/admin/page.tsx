@@ -5,5 +5,5 @@ export const metadata = { title: "Platform Admin — DAIFY", robots: { index: fa
 
 export default async function AdminPage() {
   const session = await requirePlatformAdmin();
-  return <AdminWorkspace email={session.user.email} />;
+  return <AdminWorkspace email={session.user.email} permissions={session.user.platformAdmin ? null : session.user.platformStaff?.permissions ?? []} />;
 }

@@ -1,3 +1,4 @@
+import { customerFilter, requirePlatform } from './staff-policy';
 import { supportReason } from './support-reason';
 import { catalog, templateKeys } from '@daify/menu-engine';
 import { planView } from '../billing/billing.service';
@@ -20,10 +21,24 @@ export class PlatformService {
     return tx.securityEvent.create({ data: { type: 'PLATFORM_ACCESS', actorUserId: user.id, outcome: 'SUCCESS', reason, requestId: metadata.requestId, ipAddress: metadata.ipAddress, targetType, targetId, organizationId, metadata: detail } });
   }
 
+  async workspace(user: AuthenticatedUser, id: string, reason: string | undefined, metadata: RequestMetadata) {
+    requirePlatform(user, 'menus.read', id);
+    const accessReason = supportReason(reason);
+    return this.prisma.$transaction(async tx => {
+      const organization = await tx.organization.findFirst({ where: { id, status: 'ACTIVE', archivedAt: null }, select: { id: true, name: true, slug: true, defaultLocale: true, timezone: true, locations: { where: { status: 'ACTIVE', archivedAt: null }, select: { id: true, name: true, slug: true, timezone: true, currency: true, defaultLanguage: true }, orderBy: { createdAt: 'asc' } } } });
+      if (!organization) throw new NotFoundException('Customer was not found.');
+      const permissions = ['menu.read', 'qr.manage'];
+      if (user.platformAdmin || user.platformStaff?.permissions.includes('menus.edit')) permissions.push('menu.edit', 'menu.availability', 'menu.design');
+      if (user.platformAdmin || user.platformStaff?.permissions.includes('menus.publish')) permissions.push('menu.publish');
+      await this.audit(tx, user, accessReason, metadata, 'MenuSupportWorkspace', id, id);
+      return { ...organization, membership: { role: 'platform-support', permissions } };
+    });
+  }
+
   async organizations(user: AuthenticatedUser, reason: string | undefined, metadata: RequestMetadata, query: DirectoryQuery) {
     const accessReason = supportReason(reason);
     return this.prisma.$transaction(async tx => {
-      const rows = await tx.organization.findMany({ where: {
+      const rows = await tx.organization.findMany({ where: { AND: [{ id: customerFilter(user) }],
         ...(query.after ? { id: { gt: query.after } } : {}),
         ...(query.search ? { OR: [{ name: { contains: query.search, mode: 'insensitive' } }, { slug: { contains: query.search, mode: 'insensitive' } }] } : {}),
       }, select: organizationSelect, orderBy: { id: 'asc' }, take: query.limit });
@@ -33,6 +48,7 @@ export class PlatformService {
   }
 
   async users(user: AuthenticatedUser, reason: string | undefined, metadata: RequestMetadata, query: DirectoryQuery) {
+    if (!user.platformAdmin && !user.platformStaff?.allOrganizations) throw new ForbiddenException('Global access is required.');
     const accessReason = supportReason(reason);
     return this.prisma.$transaction(async tx => {
       const rows = await tx.user.findMany({ where: {
@@ -45,6 +61,7 @@ export class PlatformService {
   }
 
   async events(user: AuthenticatedUser, reason: string | undefined, metadata: RequestMetadata, query: AuditQuery) {
+    if (!user.platformAdmin && !user.platformStaff?.allOrganizations) throw new ForbiddenException('Global access is required.');
     const accessReason = supportReason(reason);
     return this.prisma.$transaction(async tx => {
       // Stable chronological pagination: the anchor is resolved inside the
@@ -74,7 +91,7 @@ export class PlatformService {
   async subscriptions(user: AuthenticatedUser, reason: string | undefined, metadata: RequestMetadata, query: DirectoryQuery) {
     const value = supportReason(reason), now = new Date();
     return this.prisma.$transaction(async tx => {
-      const rows = await tx.billingSubscription.findMany({ where: { ...(query.after ? { organizationId: { gt: query.after } } : {}), ...(query.search ? { organization: { OR: [{ name: { contains: query.search, mode: 'insensitive' } }, { slug: { contains: query.search, mode: 'insensitive' } }] } } : {}) }, include: { plan: true, organization: { select: { name: true, billingOverrides: { where: { revokedAt: null, startsAt: { lte: now }, expiresAt: { gt: now } }, orderBy: { createdAt: 'desc' }, take: 1, select: { limits: true, expiresAt: true } } } } }, orderBy: { organizationId: 'asc' }, take: query.limit });
+      const rows = await tx.billingSubscription.findMany({ where: { AND: [{ organizationId: customerFilter(user) }], ...(query.after ? { organizationId: { gt: query.after } } : {}), ...(query.search ? { organization: { OR: [{ name: { contains: query.search, mode: 'insensitive' } }, { slug: { contains: query.search, mode: 'insensitive' } }] } } : {}) }, include: { plan: true, organization: { select: { name: true, billingOverrides: { where: { revokedAt: null, startsAt: { lte: now }, expiresAt: { gt: now } }, orderBy: { createdAt: 'desc' }, take: 1, select: { limits: true, expiresAt: true } } } } }, orderBy: { organizationId: 'asc' }, take: query.limit });
       await this.audit(tx, user, value, metadata, 'SubscriptionDirectory');
       return rows.map(row => ({ id: row.organizationId, name: row.organization.name, plan: planView(row.plan), status: subscriptionStatus(row, now), periodEnd: row.periodEnd, cancelAtEnd: row.cancelAtEnd, override: row.organization.billingOverrides[0] ?? null }));
     });
@@ -87,6 +104,7 @@ export class PlatformService {
   }
 
   async organizationStatus(user: AuthenticatedUser, id: string, dto: OrganizationStatusDto, metadata: RequestMetadata) {
+    requirePlatform(user, 'customers.manage', id);
     return this.prisma.$transaction(async tx => {
       await tx.$queryRaw`SELECT id FROM organizations WHERE id = ${id}::uuid FOR UPDATE`;
       const before = await tx.organization.findUnique({ where: { id } });
@@ -101,11 +119,12 @@ export class PlatformService {
   }
 
   async userStatus(user: AuthenticatedUser, id: string, dto: UserStatusDto, metadata: RequestMetadata) {
+    if (!user.platformAdmin && !user.platformStaff?.allOrganizations) throw new ForbiddenException('Global access is required.');
     return this.prisma.$transaction(async tx => {
       await tx.$queryRaw`SELECT id FROM users WHERE id = ${id}::uuid FOR UPDATE`;
       const before = await tx.user.findUnique({ where: { id } });
       if (!before) throw new NotFoundException('User was not found.');
-      if (id === user.id || before.platformAdmin) throw new ForbiddenException('Administrator accounts require the operator recovery process.');
+      if (id === user.id || before.platformAdmin || await tx.platformStaff.findUnique({ where: { userId: id } })) throw new ForbiddenException('Administrator accounts require the operator recovery process.');
       if (!before.emailVerifiedAt || before.status === 'PENDING') throw new ConflictException('Account verification must be completed by the user.');
       if (before.status !== dto.expectedStatus) throw new ConflictException('User changed. Refresh before retrying.');
       if (before.status === dto.status) return { id, status: before.status };

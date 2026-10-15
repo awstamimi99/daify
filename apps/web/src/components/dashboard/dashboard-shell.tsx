@@ -80,6 +80,7 @@ export function DashboardShell({ children, session, active, workspaces }: { read
       {workspaces.length > 1 ? <label>Workspace<select aria-label="Workspace" value={active?.id ?? ""} disabled={switching} onChange={event => void switchWorkspace(event.target.value)}>{workspaces.map(workspace => <option key={workspace.id} value={workspace.id}>{workspace.name}</option>)}</select></label> : null}
       {switchError ? <p role="alert">{switchError}</p> : null}
       <nav>{navigation.map(item => <Link key={item.href} href={item.href as Route} aria-current={pathname === item.href ? "page" : undefined} onClick={() => setOpen(false)}><span aria-hidden="true">{item.glyph}</span>{item.label}</Link>)}</nav>
+      {(session.user.platformAdmin || session.user.platformStaff) && <Link href="/admin">DAIFY employee workspace · مساحة عمل الموظفين</Link>}
       <div className={styles.sidebarNote}><strong>{session.user.displayName ?? "Your account"}</strong><span>{session.user.email}</span></div>
     </aside>
     <div className={styles.workspace} inert={mobile && open}>

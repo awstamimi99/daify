@@ -1,4 +1,5 @@
 import { publishingPaths, publishingSchemas } from './publishing-contract';
+import { staffPaths, staffSchemas } from './staff-contract';
 import { billingPaths, billingSchemas } from './billing-contract';
 import { supportPaths, supportSchemas, operationsPaths, operationsSchemas } from './support-contract';
 import { analyticsPaths, analyticsSchemas } from './analytics-contract';
@@ -37,9 +38,10 @@ const membership = { id: uuid, organizationId: uuid, userId: uuid, role, status:
 const testToken: Schema = { type: 'string', description: 'Present only with NODE_ENV=test. Never returned in development or production.' };
 
 const schemas: Record<string, Schema> = {
+  ...staffSchemas,
   ...menuSchemas, ...publishingSchemas, ...billingSchemas, ...analyticsSchemas, ...supportSchemas, ...operationsSchemas,
   User: object(user),
-  SessionUser: object({ ...user, sessionId: uuid, assuranceLevel: enumeration('AAL1', 'AAL2') }),
+  SessionUser: object({ ...user, sessionId: uuid, assuranceLevel: enumeration('AAL1', 'AAL2'), platformStaff: ref('StaffAccess') }, ['platformStaff']),
   SignupRequest: object({ email, displayName: name, password }),
   LoginRequest: object({ email, password: { type: 'string', maxLength: 128, writeOnly: true }, mfaCode, recoveryCode }, ['mfaCode', 'recoveryCode']),
   EmailRequest: object({ email }),
@@ -84,7 +86,7 @@ const origin = { name: 'Origin', in: 'header', required: true, description: 'Mus
 const idParameter = (name: string) => ({ name, in: 'path', required: true, schema: uuid });
 const tenant = [idParameter('organizationId')];
 const directoryQuery = [{ name: 'after', in: 'query', schema: uuid }, { name: 'limit', in: 'query', schema: { type: 'integer', minimum: 1, maximum: 100, default: 25 } }, { name: 'search', in: 'query', schema: { type: 'string', maxLength: 100 } }];
-const supportReason = { name: 'x-support-reason', in: 'header', required: true, schema: string, description: 'Meaningful support reason, 10–500 characters after trimming. Unicode may be URI-encoded with the prefix uri:. Requires platformAdmin and AAL2; each successful read is audited.' };
+const supportReason = { name: 'x-support-reason', in: 'header', required: true, schema: string, description: 'Meaningful support reason, 10–500 characters after trimming. Unicode may be URI-encoded with the prefix uri:. Requires Owner access or the corresponding employee permission with AAL2; customer scope is enforced and each successful read is audited.' };
 const json = (schema: Schema) => ({ 'application/json': { schema } });
 interface OperationOptions { public?: boolean; body?: string; parameters?: object[]; status?: number; errors?: number[]; description?: string; mutation?: boolean; }
 function operation(operationId: string, tag: string, response: Schema | null, options: OperationOptions = {}) {
@@ -105,6 +107,7 @@ export const openApiDocument = {
   servers: [{ url: '/api/v1' }],
   security: [{ sessionCookie: [] }],
   paths: {
+    ...staffPaths,
     ...menuPaths, ...publishingPaths, ...billingPaths, ...analyticsPaths, ...supportPaths, ...operationsPaths,
     '/auth/signup': { post: operation('signUp', 'authentication', ref('SignupResponse'), { public: true, mutation: true, body: 'SignupRequest', status: 201, errors: [409], description: 'Creates an unverified account and sends verification email. SMTP failure may occur after account creation; use resend-verification to retry.' }) },
     '/auth/verify-email': { post: operation('verifyEmail', 'authentication', ref('UserResponse'), { public: true, mutation: true, body: 'TokenRequest', status: 201, errors: [401] }) },

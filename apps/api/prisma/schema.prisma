@@ -104,9 +104,43 @@ model User {
   supportTickets        SupportTicket[]
   supportMessages       SupportMessage[]
   inboxNotifications    InboxNotification[]
+  platformStaff         PlatformStaff?
 
   @@index([status])
   @@map("users")
+}
+
+enum PlatformStaffRole {
+  MANAGER
+  SUPERVISOR
+  SUPPORT
+  SALES
+}
+
+enum PlatformStaffStatus {
+  INVITED
+  ACTIVE
+  SUSPENDED
+}
+
+model PlatformStaff {
+  id                   String              @id @default(uuid()) @db.Uuid
+  userId               String?             @unique @db.Uuid
+  email                String              @unique @db.VarChar(320)
+  role                 PlatformStaffRole
+  status               PlatformStaffStatus @default(INVITED)
+  permissions          String[]
+  allOrganizations     Boolean             @default(false)
+  organizationIds      String[]            @db.Uuid
+  version              Int                 @default(1)
+  invitedById          String              @db.Uuid
+  invitationExpiresAt  DateTime            @db.Timestamptz(3)
+  createdAt            DateTime            @default(now()) @db.Timestamptz(3)
+  updatedAt            DateTime            @updatedAt @db.Timestamptz(3)
+  user                 User?               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status, id])
+  @@map("platform_staff")
 }
 
 model RateLimitBucket {

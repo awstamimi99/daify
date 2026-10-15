@@ -1,12 +1,13 @@
 import { apiFetch } from '@/lib/api';
 import QRCode from 'qrcode';
 import { unavailable, uuid } from '@/features/publishing/server';
+import { supportContextReason } from '@/lib/support-context';
 export const dynamic = 'force-dynamic';
 export async function GET(request: Request, context: RouteContext<'/api/menu-qr/[organizationId]/[locationId]/[menuId]'>) {
   const { organizationId, locationId, menuId } = await context.params;
   if (![organizationId, locationId, menuId].every(value => uuid.test(value))) return unavailable();
   try {
-    const response = await apiFetch(`/api/v1/organizations/${organizationId}/locations/${locationId}/menus/${menuId}/qr`, { headers: { cookie: request.headers.get('cookie') ?? '' } });
+    const response = await apiFetch(`/api/v1/organizations/${organizationId}/locations/${locationId}/menus/${menuId}/qr`, { headers: { cookie: request.headers.get('cookie') ?? '', 'x-support-reason': supportContextReason(request.headers, organizationId) } });
     if (!response.ok) return unavailable(response.status);
     const { slug } = await response.json() as { slug: string };
     const target = new URL(`/q/${slug}`, process.env.DAIFY_WEB_ORIGIN ?? 'http://localhost:3000').href;

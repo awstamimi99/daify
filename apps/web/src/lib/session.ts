@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { apiFetch } from "./api";
 
 export interface WebSession {
-  user: { id: string; email: string; displayName: string | null; platformAdmin: boolean; assuranceLevel: "AAL1" | "AAL2" };
+  user: { id: string; email: string; displayName: string | null; platformAdmin: boolean; assuranceLevel: "AAL1" | "AAL2"; platformStaff?: { role: "MANAGER" | "SUPERVISOR" | "SUPPORT" | "SALES"; permissions: string[]; allOrganizations: boolean; organizationIds: string[] } };
 }
 
 export async function getSession(): Promise<WebSession | null> {
@@ -23,6 +23,6 @@ export async function requireSession(): Promise<WebSession> {
 
 export async function requirePlatformAdmin(): Promise<WebSession> {
   const session = await requireSession();
-  if (!session.user.platformAdmin || session.user.assuranceLevel !== "AAL2") redirect("/dashboard");
+  if ((!session.user.platformAdmin && !session.user.platformStaff) || session.user.assuranceLevel !== "AAL2") redirect("/dashboard");
   return session;
 }

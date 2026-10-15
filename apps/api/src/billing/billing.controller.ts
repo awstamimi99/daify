@@ -1,3 +1,4 @@
+import { PlatformPermission, requirePlatform } from '../platform/staff-policy';
 import { Body, Controller, Get, Header, Param, ParseUUIDPipe, Patch, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import type { Request, Response } from 'express';
@@ -34,6 +35,6 @@ export class BillingAdminController {
   plan(@CurrentUser() user: AuthenticatedUser, @Body() dto: PlanDto, @Req() req: Request, @Res({ passthrough: true }) res: Response) { return this.billing.createPlan(user, dto, requestMetadata(req, res)); }
   @Patch('plans/:planId')
   availability(@CurrentUser() user: AuthenticatedUser, @Param('planId', new ParseUUIDPipe({ version: '4' })) id: string, @Body() dto: PlanAvailabilityDto, @Req() req: Request, @Res({ passthrough: true }) res: Response) { return this.billing.planAvailability(user, id, dto.active, dto.reason, requestMetadata(req, res)); }
-  @Post('organizations/:organizationId/override')
-  override(@CurrentUser() user: AuthenticatedUser, @Param('organizationId', new ParseUUIDPipe({ version: '4' })) id: string, @Body() dto: OverrideDto, @Req() req: Request, @Res({ passthrough: true }) res: Response) { return this.billing.override(user, id, dto, requestMetadata(req, res)); }
+  @PlatformPermission('billing.manage') @Post('organizations/:organizationId/override')
+  override(@CurrentUser() user: AuthenticatedUser, @Param('organizationId', new ParseUUIDPipe({ version: '4' })) id: string, @Body() dto: OverrideDto, @Req() req: Request, @Res({ passthrough: true }) res: Response) { requirePlatform(user, 'billing.manage', id); return this.billing.override(user, id, dto, requestMetadata(req, res)); }
 }

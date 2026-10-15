@@ -57,7 +57,9 @@ export class AuthController {
   @Get('me')
   @UseGuards(AuthGuard)
   me(@CurrentUser() user: AuthenticatedUser) {
-    return { user };
+    const safeUser = { ...user };
+    delete safeUser.supportReason;
+    return { user: safeUser };
   }
 
   @Post('forgot-password')

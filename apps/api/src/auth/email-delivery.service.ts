@@ -36,6 +36,11 @@ export class EmailDeliveryService {
     return this.send(email, 'Join your team on DAIFY', '/accept-invitation', token, 'Sign in with this email address to accept your team invitation.');
   }
 
+  sendStaffInvitation(email: string): Promise<void> {
+    const url = new URL('/staff-invitation', this.config.getOrThrow<string>('WEB_ORIGIN'));
+    return this.deliver(email, 'Join the DAIFY employee team', `You have been invited to the DAIFY employee team. Sign in or create an account using this email, verify it, and enable MFA. Then review and accept your invitation: ${url.toString()}\n\nThe invitation expires after seven days. Only the verified recipient can accept it.`);
+  }
+
   sendSecurityNotification(email: string, kind: string, occurredAt: Date, id: string): Promise<void> {
     const description = kind === 'MFA_ENABLED' ? 'Your DAIFY authenticator and recovery codes were configured or replaced.' : 'A recovery code was used for your DAIFY account.';
     const url = new URL('/dashboard/security', this.config.getOrThrow<string>('WEB_ORIGIN'));

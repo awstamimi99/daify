@@ -29,7 +29,7 @@ export class AuthGuard implements CanActivate {
     const now = new Date();
     const session = await this.prisma.session.findFirst({
       where: { tokenHash: this.crypto.tokenHash(token), revokedAt: null, expiresAt: { gt: now }, absoluteExpiresAt: { gt: now }, user: { status: 'ACTIVE', emailVerifiedAt: { not: null } } },
-      include: { user: true },
+      include: { user: { include: { platformStaff: true } } },
     });
     if (!session) throw new UnauthorizedException('Session is invalid or expired.');
     if (session.user.mfaSecret && session.assuranceLevel !== 'AAL2') throw new UnauthorizedException('Please log in with two-step verification.');
@@ -48,6 +48,10 @@ export class AuthGuard implements CanActivate {
       });
     }
     request.user = { id: session.user.id, email: session.user.email, displayName: session.user.displayName, platformAdmin: session.user.platformAdmin, sessionId: session.id, assuranceLevel: session.assuranceLevel };
+    const staff = session.user.platformStaff;
+    if (staff?.status === 'ACTIVE') request.user.platformStaff = { role: staff.role, permissions: staff.permissions, allOrganizations: staff.allOrganizations, organizationIds: staff.organizationIds };
+    const reason = request.headers['x-support-reason'];
+    if (typeof reason === 'string') request.user.supportReason = reason;
     return true;
   }
 }

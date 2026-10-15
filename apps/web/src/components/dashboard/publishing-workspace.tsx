@@ -13,7 +13,7 @@ async function request<T>(path: string, method = 'GET', body?: object): Promise<
   return result as T;
 }
 const pretty = (text: string) => text.replace(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase());
-export function PublishingWorkspace({ workspace, initialMenus, mode }: { workspace: Workspace; initialMenus: DraftMenuSummary[]; mode: 'design' | 'publish' }) {
+export function PublishingWorkspace({ workspace, initialMenus, mode, assistance = false }: { workspace: Workspace; initialMenus: DraftMenuSummary[]; mode: 'design' | 'publish'; assistance?: boolean }) {
   const [locationId, setLocationId] = useState(workspace.locations[0]?.id ?? '');
   const [menus, setMenus] = useState(initialMenus);
   const [menuId, setMenuId] = useState('');
@@ -65,10 +65,10 @@ export function PublishingWorkspace({ workspace, initialMenus, mode }: { workspa
       {state && <button disabled={pending} onClick={() => { void open(menuId); }}>Reload latest</button>}
     </div>
     {error && <p className={styles.error} role="alert">{error}</p>}{message && <p className={styles.success} role="status">{message}</p>}
-    {!menus.length && <p>Create a menu and add dishes to get started. <Link href="/dashboard/menus">Open menus →</Link></p>}
+    {!menus.length && <p>Create a menu and add dishes to get started. {!assistance && <Link href="/dashboard/menus">Open menus →</Link>}</p>}
     {state && snapshot && <div className={styles.studio}>
       <div className={styles.controls}>
-        <div className={styles.tabs}><Link href="/dashboard/design">Design</Link><Link href="/dashboard/publish">QR & Publish</Link><span>Draft {state.revision}</span></div>
+        <div className={styles.tabs}>{!assistance && <><Link href="/dashboard/design">Design</Link><Link href="/dashboard/publish">QR & Publish</Link></>}<span>Draft {state.revision}</span></div>
         <fieldset disabled={pending || !canDesign}><legend>Template & style</legend>
           <label>Template<select value={design.templateKey} onChange={event => { const next = defaultDesign(event.target.value as TemplateKey); edit({ ...next, blocks: design.blocks, heroImageId: design.heroImageId, footerImageId: design.footerImageId }); }}>{templateKeys.map(key => <option key={key} value={key}>{catalog[key].name}</option>)}</select></label>
           <div className={styles.presets}>{Object.entries(catalog[design.templateKey].presets).map(([name,colors]) => <button key={name} onClick={() => edit({ ...design, tokens: { ...design.tokens, ...colors } })}>{name}</button>)}</div>

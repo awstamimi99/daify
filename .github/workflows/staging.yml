@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version-file: .node-version
           cache: npm
       - run: npm ci
       - name: Validate release configuration
@@ -37,7 +37,9 @@ jobs:
           DAIFY_WEB_ORIGIN: ${{ vars.DAIFY_WEB_ORIGIN }}
         run: node scripts/check-release-env.mjs
       - name: Package web before changing the database
-        run: npx --no-install netlify build --context production --filter @daify/web
+        run: |
+          npx --no-install netlify build --context production --filter @daify/web
+          node scripts/check-netlify-artifact.mjs
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ vars.NETLIFY_SITE_ID }}
