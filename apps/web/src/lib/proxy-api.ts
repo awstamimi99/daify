@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { apiBaseUrl } from "./api";
 import { clientIdentityHeaders } from "./client-identity";
+import { supportContextReason } from './support-context';
 
 async function readBoundedBody(request: Request, limit: number) {
   const reader = request.body?.getReader();
@@ -38,6 +39,7 @@ export async function forwardApiRequest(request: Request, path: string) {
       headers: { "content-type": "application/json", cookie: request.headers.get("cookie") ?? "", origin: allowedOrigin,
         ...(path.startsWith('/api/v1/public/menus/') && path.endsWith('/events') ? Object.fromEntries(['user-agent', 'dnt', 'sec-gpc', 'purpose', 'sec-purpose'].flatMap(name => request.headers.has(name) ? [[name, request.headers.get(name)!]] : [])) : {}),
         ...(path.startsWith('/api/v1/platform/') ? { 'x-support-reason': request.headers.get('x-support-reason') ?? '' } : {}),
+        ...(path.startsWith('/api/v1/organizations/') && path.includes('/menus') ? { 'x-support-reason': request.headers.get('x-support-reason') ?? supportContextReason(request.headers, path.split('/')[4] ?? '') } : {}),
         ...clientIdentityHeaders(request.headers, request.method, path) },
       body,
       cache: "no-store", signal: AbortSignal.timeout(15_000),

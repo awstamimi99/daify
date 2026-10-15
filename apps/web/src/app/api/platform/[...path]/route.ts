@@ -8,7 +8,8 @@ async function dispatch(request: Request, context: RouteContext<'/api/platform/[
   const write = request.method === 'PATCH' && path.length === 3 && ['organizations', 'users'].includes(section ?? '') && uuid.test(id ?? '') && action === 'status';
   const support = section === 'support' && uuid.test(id ?? '') && ((path.length === 2 && request.method === 'GET') || (path.length === 3 && ((action === 'messages' && request.method === 'POST') || (action === 'status' && request.method === 'PATCH'))));
   const billing = section === 'billing' && ((path.length === 2 && id === 'plans' && request.method === 'POST') || (path.length === 3 && id === 'plans' && uuid.test(action ?? '') && request.method === 'PATCH') || (path.length === 4 && id === 'organizations' && uuid.test(action ?? '') && path[3] === 'override' && request.method === 'POST'));
-  if (!read && !write && !support && !billing) return NextResponse.json({ detail: 'Not found' }, { status: 404 });
+  const staff = section === 'staff' && ((path.length === 1 && ['GET', 'POST'].includes(request.method)) || (path.length === 2 && ((id === 'invitation' && request.method === 'GET') || (id === 'accept' && request.method === 'POST') || (uuid.test(id ?? '') && request.method === 'PATCH'))));
+  if (!read && !write && !support && !billing && !staff) return NextResponse.json({ detail: 'Not found' }, { status: 404 });
   const input = new URL(request.url).searchParams, query = new URLSearchParams();
   const allowed = section === 'support' ? ['after', 'limit', 'search', ...(path.length === 1 ? ['organizationId', 'status'] : [])] : section === 'audit' ? ['after', 'limit', 'search', 'organizationId', 'actorUserId'] : ['after', 'limit', 'search'];
   for (const [key, value] of input) {

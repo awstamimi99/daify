@@ -43,7 +43,7 @@ export function AuthForm({ mode }: { readonly mode: AuthMode }) {
       if (!response.ok) throw new Error(Array.isArray(result.detail) ? result.detail.join(" ") : result.detail ?? "Request failed.");
       if (mode === "login") {
         const next = searchParams.get("next");
-        const target = next && /^\/(dashboard|admin|accept-invitation)(?:[/?]|$)/.test(next) && !/[\\\r\n]/.test(next) ? next : "/dashboard";
+        const target = next && /^\/(dashboard|admin|accept-invitation|staff-invitation)(?:[/?]|$)/.test(next) && !/[\\\r\n]/.test(next) ? next : "/dashboard";
         router.push(target as Route); router.refresh(); return;
       }
       setMessage(mode === "signup" ? "Account created. Check your email to verify it before logging in." : mode === "resend-verification" ? "If your account needs verification, a new link is on its way." : mode === "forgot-password" ? "If that account exists, a reset link is on its way." : "Password reset. You can now log in with the new password.");

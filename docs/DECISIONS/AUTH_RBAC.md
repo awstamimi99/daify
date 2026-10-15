@@ -141,6 +141,7 @@ Decision date: 2026-08-13
 
 ## Related references
 
+- [DAIFY platform employees and custom permissions](PLATFORM_STAFF.md)
 - [Data model](DATA_MODEL.md)
 - [Production architecture](../PRODUCTION_ARCHITECTURE.md)
 - [M3 execution plan](../MILESTONES/M3_AUTH_ORGANIZATIONS.md)

@@ -4,6 +4,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { requestMetadata } from '../auth/request-metadata';
 import type { AuthenticatedUser } from '../auth/auth.types';
+import { PlatformPermission } from './staff-policy';
 import { PlatformAdminGuard } from './platform-admin.guard';
 import { CsrfOriginGuard } from '../auth/csrf-origin.guard';
 import { PlatformService } from './platform.service';
@@ -14,27 +15,30 @@ import { AuditQuery, DirectoryQuery, OrganizationStatusDto, UserStatusDto } from
 export class PlatformController {
   constructor(private readonly platform: PlatformService) {}
 
-  @Get('organizations') @Header('Cache-Control', 'private, no-store')
+  @Get('organizations/:id/workspace') @Header('Cache-Control', 'private, no-store') @PlatformPermission('menus.read')
+  workspace(@CurrentUser() user: AuthenticatedUser, @Param('id', new ParseUUIDPipe({ version: '4' })) id: string, @Headers('x-support-reason') reason: string | undefined, @Req() req: Request, @Res({ passthrough: true }) res: Response) { return this.platform.workspace(user, id, reason, requestMetadata(req, res)); }
+
+  @PlatformPermission('customers.read') @Get('organizations') @Header('Cache-Control', 'private, no-store')
   organizations(@CurrentUser() user: AuthenticatedUser, @Headers('x-support-reason') reason: string | undefined, @Query() query: DirectoryQuery, @Req() req: Request, @Res({ passthrough: true }) res: Response) { return this.platform.organizations(user, reason, requestMetadata(req, res), query); }
 
-  @Get('users') @Header('Cache-Control', 'private, no-store')
+  @PlatformPermission('users.read') @Get('users') @Header('Cache-Control', 'private, no-store')
   users(@CurrentUser() user: AuthenticatedUser, @Headers('x-support-reason') reason: string | undefined, @Query() query: DirectoryQuery, @Req() req: Request, @Res({ passthrough: true }) res: Response) { return this.platform.users(user, reason, requestMetadata(req, res), query); }
 
-  @Get('audit') @Header('Cache-Control', 'private, no-store')
+  @PlatformPermission('audit.read') @Get('audit') @Header('Cache-Control', 'private, no-store')
   audit(@CurrentUser() user: AuthenticatedUser, @Headers('x-support-reason') reason: string | undefined, @Query() query: AuditQuery, @Req() req: Request, @Res({ passthrough: true }) res: Response) { return this.platform.events(user, reason, requestMetadata(req, res), query); }
 
-  @Get('plans') @Header('Cache-Control', 'private, no-store')
+  @PlatformPermission('billing.read') @Get('plans') @Header('Cache-Control', 'private, no-store')
   plans(@CurrentUser() user: AuthenticatedUser, @Headers('x-support-reason') reason: string | undefined, @Query() query: DirectoryQuery, @Req() req: Request, @Res({ passthrough: true }) res: Response) { return this.platform.plans(user, reason, requestMetadata(req, res), query); }
 
-  @Get('subscriptions') @Header('Cache-Control', 'private, no-store')
+  @PlatformPermission('billing.read') @Get('subscriptions') @Header('Cache-Control', 'private, no-store')
   subscriptions(@CurrentUser() user: AuthenticatedUser, @Headers('x-support-reason') reason: string | undefined, @Query() query: DirectoryQuery, @Req() req: Request, @Res({ passthrough: true }) res: Response) { return this.platform.subscriptions(user, reason, requestMetadata(req, res), query); }
 
-  @Get('templates') @Header('Cache-Control', 'private, no-store')
+  @PlatformPermission('templates.read') @Get('templates') @Header('Cache-Control', 'private, no-store')
   templates(@CurrentUser() user: AuthenticatedUser, @Headers('x-support-reason') reason: string | undefined, @Req() req: Request, @Res({ passthrough: true }) res: Response) { return this.platform.templates(user, reason, requestMetadata(req, res)); }
 
-  @Patch('organizations/:id/status')
+  @PlatformPermission('customers.manage') @Patch('organizations/:id/status')
   organizationStatus(@CurrentUser() user: AuthenticatedUser, @Param('id', new ParseUUIDPipe({ version: '4' })) id: string, @Body() dto: OrganizationStatusDto, @Req() req: Request, @Res({ passthrough: true }) res: Response) { return this.platform.organizationStatus(user, id, dto, requestMetadata(req, res)); }
 
-  @Patch('users/:id/status')
+  @PlatformPermission('users.manage') @Patch('users/:id/status')
   userStatus(@CurrentUser() user: AuthenticatedUser, @Param('id', new ParseUUIDPipe({ version: '4' })) id: string, @Body() dto: UserStatusDto, @Req() req: Request, @Res({ passthrough: true }) res: Response) { return this.platform.userStatus(user, id, dto, requestMetadata(req, res)); }
 }

@@ -1,3 +1,4 @@
+import { PlatformPermission } from '../platform/staff-policy';
 import { Body, Controller, Get, Header, Headers, Param, ParseUUIDPipe, Patch, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import type { Request, Response } from 'express';
@@ -33,6 +34,7 @@ export class SupportController {
 
 @Controller({ path: 'platform/support', version: '1' })
 @UseGuards(AuthGuard, PlatformAdminGuard, CsrfOriginGuard)
+@PlatformPermission('support.manage')
 export class PlatformSupportController {
   constructor(private readonly support: SupportService) {}
   @Get() @Header('Cache-Control', 'private, no-store')

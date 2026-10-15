@@ -4,7 +4,12 @@
 
 IN PROGRESS — hosting selection and execution planning started 2026-09-30 on
 explicit owner instruction (“do it”), with a $0 monthly hosting budget.
-No external infrastructure is provisioned or deployed by this checkpoint.
+No external infrastructure was provisioned by the initial planning checkpoint.
+On 2026-10-15, the owner created the Free `daify-staging` Supabase project in
+Frankfurt and supplied its session-pooler parameters. The dashboard reports
+Healthy; authenticated connectivity, roles, migrations, storage and application
+deployment remain unverified. Non-secret identifiers are saved in the
+[staging setup runbook](../QA/M8_STAGING.md#supabase-project-record--2026-10-15).
 
 2026-10-15 continuation: M8 preparation was merged into `main` in PR #4.
 Work now continues on `feat/m8-staging`; old milestone branches were removed
@@ -18,6 +23,13 @@ cannot resolve its generated `/var/task` imports.
 The owner authorized M8 preparation while earlier operational gates remain
 open. This sequencing exception does not complete M1/M3/M4/M6/M7 acceptance.
 MyFatoorah account setup remains at the end of the pre-launch sequence.
+
+Employee permissions were added locally on 2026-10-15: Owner/Manager/Supervisor/
+Support/Sales presets, per-employee grants and customer scope, invitations with
+MFA, and audited client-menu editing/publishing. See the
+[employee policy and pending commercial rules](../DECISIONS/PLATFORM_STAFF.md)
+and [verification](../QA/PLATFORM_STAFF_2026-10-15.md). This is not a hosted
+deployment; discount/custom-price approval workflows remain pending.
 
 ## Goal
 

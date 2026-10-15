@@ -2,9 +2,50 @@
 
 Use the project-owned accounts below with synthetic data. Keep the $0 budget;
 confirm actual account eligibility and spending controls before provisioning.
-No infrastructure has been provisioned by the local preparation checkpoint.
+The local preparation checkpoint provisioned no infrastructure. On 2026-10-15,
+the owner created the Supabase staging project recorded below; application
+deployment and hosted acceptance remain pending.
 See [hosting decisions](../DECISIONS/HOSTING_M8.md) and
 [verification and limitations](M8_2026-10-15.md).
+
+## Supabase project record — 2026-10-15
+
+Source: owner-provided dashboard screenshots and connection parameters.
+These are non-secret identifiers and a connection template, not credentials.
+
+| Setting | Recorded value |
+| --- | --- |
+| Organization / plan | DAIFY / Free |
+| Project name | `daify-staging` |
+| Project reference | `dflhhtefjqelevmhvyin` |
+| Project URL | `https://dflhhtefjqelevmhvyin.supabase.co` |
+| Dashboard | `https://supabase.com/dashboard/project/dflhhtefjqelevmhvyin` |
+| Region | Central EU (Frankfurt), `eu-central-1` |
+| Dashboard status | Healthy in the supplied screenshot |
+| Dashboard SQL check | PostgreSQL `17.11`; database/user `postgres`; zero public tables; no roles matching `daify%` in the supplied 2026-10-15 result |
+| Connection method | Session pooler (IPv4), URI |
+| Host | `aws-1-eu-central-1.pooler.supabase.com` |
+| Port | `5432` |
+| Database | `postgres` |
+| Initial administrator pooler username | `postgres.dflhhtefjqelevmhvyin` |
+| Data API / automatic table exposure / automatic RLS | Disabled in the supplied creation settings; verify persisted settings before migrations |
+| GitHub integration | No repository connected in the supplied dashboard |
+
+Password-free connection template, exactly as supplied:
+
+```text
+postgresql://postgres.dflhhtefjqelevmhvyin:[YOUR-PASSWORD]@aws-1-eu-central-1.pooler.supabase.com:5432/postgres
+```
+
+The actual password is not recorded here. Keep it in the owner's password
+manager. The username above is the initial administrator connection, not the
+application's final runtime role. Separate migration/runtime roles and TLS
+configuration remain to be prepared and verified.
+
+Saving this record did not connect to the database or apply migrations. External
+pooler connectivity, role permissions, private bucket/S3 keys
+and object operations are not yet verified. No application environment file
+was changed to point development or destructive tests at this hosted database.
 
 ## Accounts and order
 

@@ -9,8 +9,11 @@ import type { RequestMetadata } from '../auth/request-metadata';
 import type { AvailabilityDto, CreateMenuDto, ImageUpdateDto, ImageUploadDto, ItemDto, RevisionDto, SectionDto, UpdateMenuDto } from './dto/menu.dto';
 import { canonicalLanguage, completeness, languages, translations } from './localization';
 import { MediaStorageService } from './media-storage.service';
+import type { AuthenticatedUser } from '../auth/auth.types';
+import { currentPlatformActor, requirePlatform } from '../platform/staff-policy';
+import { supportReason } from '../platform/support-reason';
 
-export interface MenuScope { userId: string; organizationId: string; locationId: string; menuId: string; }
+export interface MenuScope { userId: string; organizationId: string; locationId: string; menuId: string; platformActor?: AuthenticatedUser; }
 const localized = { languageTag: true, name: true, description: true } as const;
 const imageFields = { id: true, mimeType: true, bytes: true, width: true, height: true, position: true, translations: { select: { languageTag: true, altText: true } } } as const;
 @Injectable()
@@ -19,6 +22,15 @@ export class MenusService {
   constructor(private readonly prisma: PrismaService, private readonly authorization: AuthorizationService, private readonly media: MediaStorageService, private readonly entitlements: EntitlementsService) {}
 
   async access(tx: Prisma.TransactionClient, scope: MenuScope, permission: Permission) {
+    if (scope.platformActor) {
+      const actor = await currentPlatformActor(tx, scope.platformActor);
+      requirePlatform(actor, permission === 'menu.publish' ? 'menus.publish' : ['menu.edit', 'menu.availability', 'menu.design'].includes(permission) ? 'menus.edit' : 'menus.read', scope.organizationId);
+      const reason = supportReason(actor.supportReason);
+      const location = await tx.location.findFirst({ where: { id: scope.locationId, organizationId: scope.organizationId, status: 'ACTIVE', archivedAt: null, organization: { status: 'ACTIVE', archivedAt: null } } });
+      if (!location) throw new NotFoundException('Location was not found.');
+      await tx.securityEvent.create({ data: { type: 'PLATFORM_ACCESS', actorUserId: actor.id, organizationId: scope.organizationId, targetType: 'MenuSupportAccess', targetId: scope.menuId || scope.locationId, outcome: 'SUCCESS', reason, metadata: { permission } } });
+      return location;
+    }
     const membership = await this.authorization.requireOrganization(scope.userId, scope.organizationId, permission, tx);
     const location = await tx.location.findFirst({ where: { id: scope.locationId, organizationId: scope.organizationId, status: 'ACTIVE', archivedAt: null } });
     if (!location || (!membership.allLocations && !membership.locationScopes.some(value => value.locationId === location.id))) throw new NotFoundException('Location was not found.');
@@ -64,7 +76,7 @@ export class MenusService {
     });
   }
   async audit(tx: Prisma.TransactionClient, scope: MenuScope, metadata: RequestMetadata, reason: string) {
-    await tx.securityEvent.create({ data: { type: 'MENU_UPDATED', actorUserId: scope.userId, organizationId: scope.organizationId, targetType: 'Menu', targetId: scope.menuId, outcome: 'SUCCESS', reason, requestId: metadata.requestId, ipAddress: metadata.ipAddress } });
+    await tx.securityEvent.create({ data: { type: 'MENU_UPDATED', actorUserId: scope.userId, organizationId: scope.organizationId, targetType: 'Menu', targetId: scope.menuId, outcome: 'SUCCESS', reason, requestId: metadata.requestId, ipAddress: metadata.ipAddress, ...(scope.platformActor ? { metadata: { supportReason: supportReason(scope.platformActor.supportReason), platformAssistance: true } } : {}) } });
   }
   private async edit(scope: MenuScope, revision: number, permission: Permission, metadata: RequestMetadata, reason: string, change: (tx: Prisma.TransactionClient, menu: Awaited<ReturnType<MenusService['draft']>>) => Promise<void>, archived = false) {
     return this.prisma.$transaction(async tx => {

@@ -17,7 +17,7 @@ export class SectionParams extends MenuParams { @IsUUID('4') sectionId!: string;
 export class ItemParams extends MenuParams { @IsUUID('4') itemId!: string; }
 export class ImageParams extends MenuParams { @IsUUID('4') imageId!: string; }
 export const Details = createParamDecorator((_data: unknown, context: ExecutionContext) => requestMetadata(context.switchToHttp().getRequest<Request>(), context.switchToHttp().getResponse<Response>()));
-export const scope = (user: AuthenticatedUser, params: LocationParams & { menuId?: string }) => ({ userId: user.id, organizationId: params.organizationId, locationId: params.locationId, menuId: params.menuId ?? '' });
+export const scope = (user: AuthenticatedUser, params: LocationParams & { menuId?: string }) => ({ userId: user.id, organizationId: params.organizationId, locationId: params.locationId, menuId: params.menuId ?? '', ...((user.platformStaff || user.platformAdmin && user.supportReason) ? { platformActor: user } : {}) });
 
 @Controller({ path: 'organizations/:organizationId/locations/:locationId/menus', version: '1' })
 @UseGuards(AuthGuard, CsrfOriginGuard)
