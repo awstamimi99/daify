@@ -1,3 +1,4 @@
+import { PlatformOffersController, CustomerOffersController } from '../offers/offers.controller';
 import { PublishingController, PublicMenusController } from '../menus/publishing.controller';
 import { BillingController, BillingAdminController } from '../billing/billing.controller';
 import { BillingWebhookController } from '../billing/billing-webhook.controller';
@@ -20,7 +21,7 @@ import { openApiDocument } from './openapi.document';
 describe('OpenAPI route and schema coverage', () => {
   it('covers every versioned controller operation with no stale paths', () => {
     const actual: string[] = [];
-    for (const controller of [AuthController, MfaController, OrganizationsController, PlatformController, StaffController, HealthController, MenusController, PublishingController, PublicMenusController, BillingController, BillingAdminController, BillingWebhookController, AnalyticsController, AnalyticsIngestController, SupportController, PlatformSupportController]) {
+    for (const controller of [PlatformOffersController, CustomerOffersController, AuthController, MfaController, OrganizationsController, PlatformController, StaffController, HealthController, MenusController, PublishingController, PublicMenusController, BillingController, BillingAdminController, BillingWebhookController, AnalyticsController, AnalyticsIngestController, SupportController, PlatformSupportController]) {
       const prefix = Reflect.getMetadata(PATH_METADATA, controller) as string;
       for (const descriptor of Object.values(Object.getOwnPropertyDescriptors(controller.prototype))) {
         const handler: unknown = descriptor.value;

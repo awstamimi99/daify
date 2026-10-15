@@ -40,6 +40,7 @@ export class BillingService {
       const plans = await tx.billingPlan.findMany({ where: { active: true }, orderBy: [{ amount: 'asc' }, { version: 'desc' }] });
       const checkouts = await tx.billingCheckout.findMany({ where: { organizationId }, include: { plan: true }, orderBy: { createdAt: 'desc' }, take: 30 });
       return { mode: this.config.get('BILLING_MODE') === 'sandbox' ? 'sandbox' : 'disabled', providerReady: this.provider.ready(), enrolled: Boolean(subscription),
+        acceptedOfferPending: Boolean(await tx.commercialAcceptance.findUnique({ where: { organizationId } })),
         plans: plans.map(planView), subscription: subscription ? { plan: planView(subscription.plan), status: subscriptionStatus(subscription), periodEnd: subscription.periodEnd.toISOString(), graceEnd: subscription.graceEnd?.toISOString() ?? null, cancelAtEnd: subscription.cancelAtEnd } : null,
         limits: await this.entitlements.current(tx, organizationId), usage: await this.entitlements.usage(tx, organizationId),
         checkouts: checkouts.map(row => ({ id: row.id, plan: planView(row.plan), state: row.state, paymentUrl: row.paymentUrl, createdAt: row.createdAt.toISOString(), periodEnd: row.periodEnd?.toISOString() ?? null })) };
@@ -79,6 +80,7 @@ export class BillingService {
       const previous = await tx.billingCheckout.findUnique({ where: { organizationId_idempotencyKey: { organizationId, idempotencyKey: dto.idempotencyKey } }, include: { plan: true } });
       if (previous) { if (previous.planId !== dto.planId) throw new ConflictException('Checkout key already belongs to another plan.'); return { row: previous, create: false }; }
       if (!await tx.billingSubscription.findUnique({ where: { organizationId } })) throw new ConflictException('Start the sandbox trial before checkout.');
+      if (await tx.commercialAcceptance.findUnique({ where: { organizationId } })) throw new ConflictException('Your accepted offer awaits billing activation. Checkout is paused to avoid charging the standard price.');
       const plan = await this.plan(tx, dto.planId);
       if (await tx.billingCheckout.count({ where: { organizationId, state: { in: ['CREATING', 'UNKNOWN', 'READY'] } } })) throw new ConflictException('Check the existing payment before starting another checkout.');
       const row = await tx.billingCheckout.create({ data: { organizationId, planId: plan.id, idempotencyKey: dto.idempotencyKey, state: 'CREATING' }, include: { plan: true } });

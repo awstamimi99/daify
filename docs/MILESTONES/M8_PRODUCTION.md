@@ -29,7 +29,13 @@ Support/Sales presets, per-employee grants and customer scope, invitations with
 MFA, and audited client-menu editing/publishing. See the
 [employee policy and pending commercial rules](../DECISIONS/PLATFORM_STAFF.md)
 and [verification](../QA/PLATFORM_STAFF_2026-10-15.md). This is not a hosted
-deployment; discount/custom-price approval workflows remain pending.
+deployment; commercial terms and approvals are implemented locally; applying accepted offers to payments remains pending.
+
+2026-10-15 commercial continuation: coupons, configurable Sales allowances,
+custom-price approvals and explicit customer acceptance are implemented locally.
+The schema now contains 41 application tables / 15 migrations. See
+[commercial-offer verification](../QA/COMMERCIAL_OFFERS_2026-10-15.md).
+Accepted terms await future billing activation; hosted acceptance is still disabled.
 
 ## Goal
 

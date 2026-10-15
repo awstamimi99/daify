@@ -31,7 +31,7 @@ export class StaffService {
     assertStaffGrant(actor, access);
     if (access.allOrganizations && access.organizationIds.length) throw new BadRequestException('Choose all customers or specific customers.');
     if (access.permissions.some(p => ['users.read', 'users.manage', 'audit.read'].includes(p)) && !access.allOrganizations) throw new BadRequestException('Global user and audit permissions require all-customer access.');
-    for (const [permission, dependency] of [['menus.edit', 'menus.read'], ['menus.publish', 'menus.edit'], ['customers.manage', 'customers.read'], ['staff.manage', 'customers.read'], ['menus.read', 'customers.read']]) {
+    for (const [permission, dependency] of [['offers.create', 'offers.read'], ['offers.approve', 'offers.read'], ['discounts.manage', 'staff.manage'], ['discounts.manage', 'offers.read'], ['offers.read', 'customers.read'], ['menus.edit', 'menus.read'], ['menus.publish', 'menus.edit'], ['customers.manage', 'customers.read'], ['staff.manage', 'customers.read'], ['menus.read', 'customers.read']]) {
       if (access.permissions.includes(permission!) && !access.permissions.includes(dependency!)) throw new BadRequestException(`${permission} requires ${dependency}.`);
     }
     if (await tx.organization.count({ where: { id: { in: access.organizationIds }, archivedAt: null, status: { not: 'ARCHIVED' } } }) !== access.organizationIds.length) throw new BadRequestException('One or more customers are no longer available.');

@@ -6,7 +6,7 @@ Implementation milestone: M2–M4
 
 ## Context
 
-DAIFY must support one account participating in multiple organizations, organizations owning multiple restaurant locations, and each location owning independent menus. The production database has not been implemented; this document fixes the conceptual ownership model before Prisma design begins.
+DAIFY must support one account participating in multiple organizations, organizations owning multiple restaurant locations, and each location owning independent menus. This document began as the conceptual ownership model before Prisma implementation; the current source of truth is `apps/api/prisma/schema.prisma`.
 
 ## Decision
 
@@ -82,3 +82,12 @@ This model supports multi-location organizations and scoped membership without d
 - [Auth and RBAC](AUTH_RBAC.md)
 - [Localization](LOCALIZATION.md)
 - [Publishing](PUBLISHING.md)
+
+## Current implementation checkpoint — 2026-10-15
+
+The Prisma schema contains 41 application tables and 15 migrations. Platform
+employees use a separate profile linked to global users; restaurant employees
+remain organization memberships. Coupons, Sales discount allowances, customer
+quotes and immutable accepted terms are covered by
+[commercial offers](COMMERCIAL_OFFERS.md). Accepted terms await billing activation.
+Hosted Supabase migrations have not been applied by this checkpoint.
