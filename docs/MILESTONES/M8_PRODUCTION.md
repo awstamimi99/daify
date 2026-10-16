@@ -39,6 +39,11 @@ Accepted terms await future billing activation; hosted acceptance is still disab
 
 ## Goal
 
+2026-10-17 connection checkpoint: private credential input, separate migration/
+runtime role setup and verification, certificate-verified API connections and
+bounded pools are prepared and locally tested. Hosted access remains pending
+the owner-entered password. See [connection setup](../QA/SUPABASE_CONNECTION_2026-10-17.md).
+
 First produce a secure, repeatable free staging demo. Then resolve the remaining
 production requirements before any customer launch. Free staging availability
 and feature limits are not production acceptance.

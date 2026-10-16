@@ -8,6 +8,11 @@ deployment and hosted acceptance remain pending.
 See [hosting decisions](../DECISIONS/HOSTING_M8.md) and
 [verification and limitations](M8_2026-10-15.md).
 
+2026-10-17: [connection and credential setup](SUPABASE_CONNECTION_2026-10-17.md)
+is prepared. Hosted authentication and role creation await the owner's password
+in the ignored private local input file. Use the step-by-step connection record
+before applying any hosted migrations.
+
 ## Supabase project record — 2026-10-15
 
 Source: owner-provided dashboard screenshots and connection parameters.
@@ -83,7 +88,7 @@ manager or `openssl rand -base64 32`. Keep a secure backup of the MFA key.
 | Both web and API | Same `PROXY_SIGNING_KEY` and `SESSION_COOKIE_NAME=daify_session`; `NODE_ENV=production` |
 | Netlify, build and functions scopes | `DAIFY_WEB_ORIGIN=https://<site>.netlify.app`, `DAIFY_API_URL=https://<api>.onrender.com`, `DAIFY_DEPLOYMENT_ENV=staging` |
 | Netlify, functions scope | `PROXY_SIGNING_KEY`, `DAIFY_CLIENT_IP_HEADER=x-nf-client-connection-ip`, `SESSION_COOKIE_NAME` |
-| Render | Runtime-role `DATABASE_URL`, matching `WEB_ORIGIN`, independent `MFA_ENCRYPTION_KEY` |
+| Render | Runtime-role `DATABASE_URL`, `DATABASE_POOL_MAX=3`, `DATABASE_CONNECTION_TIMEOUT_MS=10000`, optional PEM `DATABASE_SSL_CA`, matching `WEB_ORIGIN`, independent `MFA_ENCRYPTION_KEY` |
 | Render mail | `EMAIL_TRANSPORT=smtp`, `SMTP_HOST=smtp.resend.com`, `SMTP_PORT=2587`, `SMTP_SECURE=false`, `SMTP_REQUIRE_TLS=true`, `SMTP_USER=resend`, secret `SMTP_PASSWORD`, verified plain-address `EMAIL_FROM` |
 | Render media | `MEDIA_STORAGE=s3`, project `S3_ENDPOINT`, actual `S3_REGION`, private `S3_BUCKET`, secret `S3_ACCESS_KEY_ID` and `S3_SECRET_ACCESS_KEY` |
 | Render feature gates | `ALLOW_DEV_SEED=false`, `BILLING_MODE=disabled`, `ANALYTICS_MODE=disabled`; omit payment credentials and hosted Redis |
