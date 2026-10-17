@@ -25,7 +25,8 @@ export function initPrivate(directory = privateDirectory) {
 }
 export function passwordFromFile(path) {
   const value = privateFile(path).replace(/[\r\n]+$/, '');
-  if (value.length < 12 || value.length > 256 || /[\r\n\0]/.test(value) || value.includes('[YOUR-PASSWORD]')) throw new Error('Save only your new database password in .local/staging/admin-password.txt, then retry.');
+  // Validate the saved credential's format; Supabase enforces its password policy when it is set.
+  if (value.length === 0 || value.length > 256 || /[\r\n\0]/.test(value) || value.includes('[YOUR-PASSWORD]')) throw new Error('Save only your new database password in .local/staging/admin-password.txt, then retry.');
   return value;
 }
 export function credentials(directory = privateDirectory, project = stagingProject) {

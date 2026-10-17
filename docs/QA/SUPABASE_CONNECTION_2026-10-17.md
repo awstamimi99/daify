@@ -8,12 +8,14 @@ Step 3 follows the employee and commercial-offer checkpoints. Target:
 
 The project has 41 application tables and 15 Prisma migrations **in code**.
 The last owner-provided hosted SQL result reported zero public tables. This
-checkpoint has not connected to or changed the hosted database: no database
-password or authenticated Supabase connection is present in the workspace.
+connection attempt stopped at TLS certificate validation before authentication.
+No hosted database changes were made. The administrator credential is saved in
+the ignored local input file; authentication has not yet been verified. No DAIFY
+role credentials have been generated and no roles have been created.
 
 Prepared locally:
 
-- `.local/staging/admin-password.txt`: empty private input file, mode `0600`,
+- `.local/staging/admin-password.txt`: saved private input file, mode `0600`,
   inside a `0700` directory ignored by Git.
 - `npm run staging:db -- check`: certificate-verified, read-only connection
   check. It reports the server version, current user/database, public-table
@@ -29,18 +31,17 @@ Prepared locally:
 ## Owner action needed
 
 1. Open [this project's Database Settings](https://supabase.com/dashboard/project/dflhhtefjqelevmhvyin/database/settings).
-2. Under **Database password**, reset the password and save it in the owner's
-   password manager. The earlier screenshot-exposed password should not be reused.
-3. Open `/Users/awstamimi/Desktop/DAIFY/.local/staging/admin-password.txt` locally.
-   Paste only the new password and save. Do not send it in chat, screenshots,
-   terminal command arguments or Git.
-4. Resume the connection check. The assistant can use the file without printing it.
+2. Under **SSL Configuration**, download the server root certificate. Save it as
+   `/Users/awstamimi/Desktop/DAIFY/.local/staging/supabase-ca.crt`.
+3. Set the certificate file's permissions to `0600`, then resume the connection
+   check. The assistant can use the saved credential without printing it.
+4. After setup, reset the administrator password again because it was shared in
+   chat. Keep the replacement in the owner's password manager and update the
+   private input file locally if needed; do not send it through chat or screenshots.
 
-If certificate validation needs the project's private root CA, download the
-certificate from the same settings page, save it to
-`.local/staging/supabase-ca.crt`, and set its permissions to `0600`. Do not disable
-certificate verification. The shared pooler may already use a public CA; the
-authenticated check will establish what is needed for this project.
+The check reported `SELF_SIGNED_CERT_IN_CHAIN`; it requires the trusted CA before
+continuing. Certificate verification remains enabled. The password's validity is
+still unknown because TLS failed first.
 
 ## Commands after the password is saved
 
@@ -117,6 +118,9 @@ Private-file permissions, URL escaping and sanitized failures have automated
 coverage; runtime tests cover TLS downgrades, overridden hosts, CA retention and
 pool/timeout limits. Existing role credentials remain untouched on a repeat setup,
 and an unsafe public schema grant rolls back both newly created roles.
+The credential reader accepts an already-set password without imposing a new
+minimum length; empty values, placeholders, embedded newlines and NULs are rejected.
+Its three focused tests passed after this adjustment.
 **201 API tests / 29 suites**, ten script tests, the role integration check,
 production build, API typecheck and lint passed locally. CI runs the database-role integration check in its isolated
 PostgreSQL job. This does not prove hosted TLS, pooler authentication or grants.

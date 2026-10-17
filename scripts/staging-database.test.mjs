@@ -11,6 +11,10 @@ test('private setup preserves credentials and never accepts a world-readable pas
     const path = initPrivate(dir); assert.equal(lstatSync(dir).mode & 0o777, 0o700);
     assert.equal(lstatSync(path).mode & 0o777, 0o600);
     assert.throws(() => passwordFromFile(path), /Save only/);
+    writeFileSync(path, 'test-only!\n'); assert.equal(passwordFromFile(path), 'test-only!');
+    for (const invalid of ['[YOUR-PASSWORD]', 'first\nsecond', 'test\0value']) {
+      writeFileSync(path, invalid); assert.throws(() => passwordFromFile(path), /Save only/);
+    }
     writeFileSync(path, 'placeholder-for-testing-only\n'); assert.equal(passwordFromFile(path), 'placeholder-for-testing-only');
     const one = credentials(dir), two = credentials(dir); assert.deepEqual(one, two);
     assert.notEqual(one.migrationPassword, one.runtimePassword); assert.equal(lstatSync(resolve(dir, 'database-credentials.json')).mode & 0o777, 0o600);

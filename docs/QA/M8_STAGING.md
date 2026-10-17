@@ -9,8 +9,9 @@ See [hosting decisions](../DECISIONS/HOSTING_M8.md) and
 [verification and limitations](M8_2026-10-15.md).
 
 2026-10-17: [connection and credential setup](SUPABASE_CONNECTION_2026-10-17.md)
-is prepared. Hosted authentication and role creation await the owner's password
-in the ignored private local input file. Use the step-by-step connection record
+is prepared. The password is saved privately; the connection check stopped at
+certificate validation and needs the project CA. Hosted authentication and role
+creation remain pending. Use the step-by-step connection record
 before applying any hosted migrations.
 
 ## Supabase project record — 2026-10-15
