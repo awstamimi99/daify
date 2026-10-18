@@ -2,6 +2,14 @@
 
 ## Status
 
+Current checkpoint — 2026-10-18: hosted database roles and all 15 migrations are
+verified. Core Beta, security and disabled-billing acceptance pass locally;
+deployment configurations and recovery instructions are prepared. The owner
+explicitly deferred hosting/email setup and prohibited deployment for now.
+See [current launch progress](../launch/DAIFY_LAUNCH_PROGRESS.md) and
+[evidence](../QA/BETA_DEPLOYMENT_PREPARATION_2026-10-18.md). Earlier dated records
+below remain historical; hosted provider/operations acceptance is still open.
+
 IN PROGRESS — hosting selection and execution planning started 2026-09-30 on
 explicit owner instruction (“do it”), with a $0 monthly hosting budget.
 No external infrastructure was provisioned by the initial planning checkpoint.
