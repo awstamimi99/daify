@@ -3,9 +3,12 @@ import { expect, test } from "@playwright/test";
 
 test("public language preference persists and switches the document direction", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "العربية" }).click();
+  await page.getByRole("button", { name: "Choose interface language" }).click();
+  await expect(page.getByRole("menu", { name: "Choose interface language" })).toBeVisible();
+  await page.getByRole("menuitemradio", { name: "AR العربية" }).click();
 
   await expect(page.locator("html")).toHaveAttribute("lang", "ar");
+  await expect(page.getByRole("menu", { name: "اختر لغة الواجهة" })).toBeHidden();
   await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
   await expect(page.getByRole("heading", { name: "مطعمك يستحق أكثر من ملف PDF." })).toBeVisible();
   await expect(page.locator("#main-content").getByRole("link", { name: /ابدأ التجربة المجانية/ })).toBeVisible();

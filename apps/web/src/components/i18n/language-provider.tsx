@@ -1,5 +1,5 @@
 'use client';
-import { createContext, useContext, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useContext, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { localeCookie, translator, translateError, type Locale } from '@/lib/i18n/translate';
 
@@ -26,8 +26,22 @@ export function useI18n() {
 }
 export function LanguageSwitcher() {
   const { locale, setLocale } = useI18n();
-  return <div className="language-switcher" role="group" aria-label={locale === 'ar' ? 'لغة الواجهة' : 'Interface language'} dir="ltr">
-    <button type="button" lang="en" aria-label="English" aria-pressed={locale === 'en'} onClick={() => setLocale('en')}>EN</button>
-    <button type="button" lang="ar" aria-label="العربية" aria-pressed={locale === 'ar'} onClick={() => setLocale('ar')}>AR</button>
+  const details = useRef<HTMLDetailsElement>(null);
+  function choose(next: Locale) {
+    details.current?.removeAttribute('open');
+    setLocale(next);
+  }
+  const other = locale === 'en' ? 'ar' : 'en';
+  return <div className="language-switcher" dir="ltr">
+    <button className="language-current" type="button" aria-label={other === 'ar' ? 'العربية' : 'English'} onClick={() => choose(other)}>{locale.toUpperCase()}</button>
+    <details ref={details}>
+      <summary role="button" aria-label={locale === 'ar' ? 'اختر لغة الواجهة' : 'Choose interface language'} aria-haspopup="menu">
+        <svg aria-hidden="true" viewBox="0 0 12 8"><path d="m1 1 5 5 5-5" /></svg>
+      </summary>
+      <div className="language-menu" role="menu" aria-label={locale === 'ar' ? 'اختر لغة الواجهة' : 'Choose interface language'}>
+        <button type="button" role="menuitemradio" aria-checked={locale === 'en'} lang="en" onClick={() => choose('en')}><span>EN</span><strong>English</strong></button>
+        <button type="button" role="menuitemradio" aria-checked={locale === 'ar'} lang="ar" onClick={() => choose('ar')}><span>AR</span><strong>العربية</strong></button>
+      </div>
+    </details>
   </div>;
 }
