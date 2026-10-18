@@ -5,7 +5,7 @@
 .grid strong { margin-bottom: .35rem; font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; }
 .grid a, .grid p, .base { color: rgb(255 255 255 / 62%); font-size: .78rem; }
 .grid a:hover { color: white; }
-.column > button { display: flex; align-items: center; justify-content: space-between; background: transparent; color: white; padding: 0; text-align: left; }
+.column > button { display: flex; align-items: center; justify-content: space-between; background: transparent; color: white; padding: 0; text-align: start; }
 .column > button strong { margin: 0; }
 .column > button span { display: none; }
 .column > div { display: flex; flex-direction: column; gap: .7rem; }

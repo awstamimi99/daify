@@ -1,3 +1,4 @@
+import { getTranslator } from '@/lib/i18n/server';
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { getWorkspaceContext } from "@/lib/workspace";
@@ -8,6 +9,7 @@ import styles from "../overview.module.css";
 
 export const metadata = { title: "Menus", robots: { index: false, follow: false } };
 export default async function MenusPage() {
+  const t = await getTranslator();
   const { active } = await getWorkspaceContext();
   if (!active?.membership.permissions.includes("menu.read")) notFound();
   const location = active.locations[0];
@@ -17,5 +19,5 @@ export default async function MenusPage() {
     if (!response.ok) throw new Error("Your menus could not be loaded.");
     menus = await response.json() as DraftMenuSummary[];
   }
-  return <main id="main-content" className={styles.main}><header className={styles.heading}><div><span className="eyebrow">{active.name}</span><h1>Your menus.</h1><p>Create and refine your menu, one dish at a time.</p></div></header><MenuWorkspace workspace={active} initialMenus={menus} /></main>;
+  return <main id="main-content" className={styles.main}><header className={styles.heading}><div><span className="eyebrow">{active.name}</span><h1>{t("Your menus.")}</h1><p>{t("Create and refine your menu, one dish at a time.")}</p></div></header><MenuWorkspace workspace={active} initialMenus={menus} /></main>;
 }

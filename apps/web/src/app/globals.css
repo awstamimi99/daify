@@ -77,3 +77,13 @@ h1, h2, h3, p { margin: 0; }
 .empty-state h1 { margin-block: .7rem 1rem; font-family: var(--font-serif); font-size: var(--fs-h1); font-weight: 400; line-height: 1; }
 .empty-state p { margin-bottom: 1.5rem; color: var(--text-secondary); }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; } }
+
+/* The application preference is separate from each restaurant menu's language. */
+.language-switcher { display: inline-flex; flex: 0 0 auto; gap: 2px; padding: 2px; border: 1px solid var(--border-default); border-radius: 8px; background: var(--surface-secondary); }
+.language-switcher button { min-width: 40px; min-height: 40px; padding: .35rem .5rem; border-radius: 5px; background: transparent; color: var(--text-secondary); font: inherit; font-size: .78rem; font-weight: 700; cursor: pointer; }
+.language-switcher button[aria-pressed="true"] { background: var(--brand-red-strong); color: white; }
+.language-switcher button:focus-visible { outline: 2px solid var(--brand-red-strong); outline-offset: 3px; }
+.auth-language { display: flex; justify-content: flex-end; padding: 1rem; width: 100%; }
+html[lang="ar"] body { font-family: var(--font-arabic), sans-serif; }
+html[dir="rtl"] .serif { font-family: var(--font-arabic), sans-serif; }
+input[type="email"], input[type="url"], input[name="slug"], input[name="timezone"] { direction: ltr; text-align: start; }

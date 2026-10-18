@@ -44,7 +44,8 @@ test('sandbox billing requires MFA, enrolls a real workspace and keeps cancellat
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole('button', { name: 'العربية', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'الاشتراك والباقات.' })).toBeVisible();
-  await expect(page.locator('[lang="ar"][dir="rtl"]')).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
+  await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze()).violations).toEqual([]);
   await expect(page.getByRole('status')).toHaveText('تم تحديث حالة الاشتراك.');

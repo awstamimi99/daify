@@ -1,4 +1,5 @@
 'use client';
+import { useI18n, LanguageSwitcher } from '@/components/i18n/language-provider';
 import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { DaifyLogo } from '@/components/brand/daify-logo';
@@ -7,12 +8,12 @@ import styles from '@/components/admin/admin-workspace.module.css';
 type Directory = { coupons: Coupon[]; quotes: Quote[]; acceptances: (Terms & { id: string; organizationId: string; acceptedAt: string })[]; plans: Plan[]; sales: { id: string; email: string; allowance: Allowance }[]; allowance: Allowance; couponCursor: string | null; quoteCursor: string | null };
 type Change = { path: string; method: string; body: object; summary: string };
 export function OffersWorkspace({ userId, email, owner, permissions }: { userId: string; email: string; owner: boolean; permissions: string[] }) {
-  const [arabic, setArabic] = useState(false), [reason, setReason] = useState(''), [accessReason, setAccessReason] = useState('');
+  const [reason, setReason] = useState(''), [accessReason, setAccessReason] = useState('');
   const [data, setData] = useState<Directory | null>(null), [customers, setCustomers] = useState<{ id: string; name: string }[]>([]);
   const [pending, setPending] = useState(false), [error, setError] = useState(''), [saved, setSaved] = useState(false);
   const [form, setForm] = useState<'coupon' | 'quote' | 'allowance' | null>(null), [editing, setEditing] = useState<Quote | null>(null);
   const [change, setChange] = useState<Change | null>(null), [decision, setDecision] = useState<{ quote: Quote; action: string } | null>(null), [revoking, setRevoking] = useState<Coupon | null>(null), [salesId, setSalesId] = useState('');
-  const t = (en: string, ar: string) => arabic ? ar : en;
+  const { t, arabic, errorMessage } = useI18n();
   const can = (p: string) => owner || permissions.includes(p);
   const customerName = (id: string | null) => id ? customers.find(row => row.id === id)?.name ?? id : t('All customers', 'جميع العملاء');
   const planName = (id: string) => { const p = data?.plans.find(row => row.id === id); return p ? arabic ? p.nameAr : p.name : t('Retired plan', 'باقة غير متاحة'); };
@@ -42,10 +43,10 @@ export function OffersWorkspace({ userId, email, owner, permissions }: { userId:
   }
   const selectedSales = data?.sales.find(s => s.id === salesId);
   return <main id="main-content" className={styles.workspace} dir={arabic ? 'rtl' : 'ltr'} lang={arabic ? 'ar' : 'en'}>
-    <header className={styles.heading}><div><DaifyLogo /><h1>{t('Coupons & customer quotes.', 'الكوبونات وعروض الأسعار.')}</h1><p>{email}</p></div><div className={styles.tools}><Link href="/admin">{t('Platform workspace', 'إدارة المنصة')}</Link><button onClick={() => setArabic(!arabic)}>{arabic ? 'English' : 'العربية'}</button></div></header>
+    <header className={styles.heading}><div><DaifyLogo /><h1>{t('Coupons & customer quotes.', 'الكوبونات وعروض الأسعار.')}</h1><p>{email}</p></div><div className={styles.tools}><Link href="/admin">{t('Platform workspace', 'إدارة المنصة')}</Link><LanguageSwitcher /></div></header>
     <section className={styles.panel}><h2>{t('Clear prices and approval limits.', 'أسعار وحدود موافقة واضحة.')}</h2><p>{t('Managers: up to 50% off for 6 months. Owner: up to free for 12 months. Sales custom quotes always need approval. Offers cannot be combined or repeated for the same customer.', 'المدير: حتى ٥٠٪ لمدة ٦ أشهر. المالك: حتى مجانًا لمدة ١٢ شهرًا. عروض المبيعات الخاصة تحتاج إلى موافقة دائمًا. لا يمكن جمع العروض أو تكرارها لنفس العميل.')}</p><p>{t('Accepted offers are saved for billing activation. They do not change subscription access or create payments yet.', 'تُحفظ العروض المقبولة بانتظار تفعيل الفوترة. لا تغيّر صلاحيات الاشتراك ولا تُنشئ دفعات حاليًا.')}</p>
     <form className={styles.filters} onSubmit={load}><label className={styles.field}>{t('Reason for accessing offers', 'سبب الاطلاع على العروض')}<input required minLength={10} maxLength={500} value={reason} onChange={e => setReason(e.target.value)} /></label><button className={styles.primary} disabled={pending}>{t('Load offers', 'عرض العروض')}</button></form></section>
-    {error && <p role="alert" className={styles.error}>{error}</p>}{saved && <p role="status" className={styles.success}>{t('Offer change saved and audited.', 'تم حفظ التغيير وتسجيله.')}</p>}
+    {error && <p role="alert" className={styles.error}>{errorMessage(error)}</p>}{saved && <p role="status" className={styles.success}>{t('Offer change saved and audited.', 'تم حفظ التغيير وتسجيله.')}</p>}
     {data && <><section className={styles.panel}><h2>{t('Your coupon allowance', 'حدود الكوبونات المسموحة لك')}</h2><p>{data.allowance.maxPercent}% × {data.allowance.maxMonths} {t('months; or', 'أشهر؛ أو')} {data.allowance.freeMonths} {t('free months', 'أشهر مجانية')}</p><div className={styles.tools}>{can('offers.create') && <><button onClick={() => open('coupon')}>{t('Create coupon', 'إنشاء كوبون')}</button><button onClick={() => open('quote')}>{t('Create custom quote', 'إنشاء عرض سعر خاص')}</button></>}{can('discounts.manage') && <button onClick={() => open('allowance')}>{t('Set Sales limits', 'تعيين حدود المبيعات')}</button>}</div></section>
     {(form || decision || revoking) && !change && <form key={`${form}-${editing?.id}-${decision?.quote.id}-${revoking?.id}`} className={`${styles.panel} ${styles.confirmation}`} onSubmit={submit}><h2>{decision ? t('Quote decision', 'قرار العرض') : revoking ? t('Revoke coupon', 'إلغاء الكوبون') : form === 'coupon' ? t('New coupon', 'كوبون جديد') : form === 'quote' ? t('Custom customer price', 'سعر خاص للعميل') : t('Sales discount limits', 'حدود خصومات المبيعات')}</h2>
       {form === 'allowance' && <><label className={styles.field}>{t('Sales employee', 'موظف المبيعات')}<select required value={salesId} onChange={e => setSalesId(e.target.value)}><option value="">{t('Choose employee', 'اختر الموظف')}</option>{data.sales.map(s => <option key={s.id} value={s.id}>{s.email}</option>)}</select></label>{selectedSales && <div key={salesId} className={styles.filters}>{(['maxPercent', 'maxMonths', 'freeMonths'] as const).map((key, i) => <label className={styles.field} key={key}>{[t('Maximum percentage', 'أقصى نسبة'), t('Maximum discount months', 'أقصى أشهر الخصم'), t('Free months allowance', 'عدد الأشهر المجانية')][i]}<input required name={key} type="number" min={0} max={key === 'maxPercent' ? owner ? 100 : 50 : key === 'freeMonths' && !owner ? 1 : owner ? 12 : 6} defaultValue={selectedSales.allowance[key]} /></label>)}</div>}</>}

@@ -1,4 +1,5 @@
 "use client";
+import { useI18n } from '@/components/i18n/language-provider';
 
 import type { Route } from "next";
 import Link from "next/link";
@@ -11,6 +12,8 @@ import styles from "./dashboard-shell.module.css";
 import type { WebSession } from "@/lib/session";
 import type { Workspace } from "@/lib/workspace";
 
+import { LanguageSwitcher } from "@/components/i18n/language-provider";
+
 const mobileQuery = "(max-width: 820px)";
 function subscribeViewport(callback: () => void) {
   const query = window.matchMedia(mobileQuery);
@@ -19,6 +22,7 @@ function subscribeViewport(callback: () => void) {
 }
 
 export function DashboardShell({ children, session, active, workspaces }: { readonly children: ReactNode; readonly session: WebSession; readonly active: Workspace | null; readonly workspaces: Workspace[] }) {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const [logoutError, setLogoutError] = useState<string | null>(null);
   const [loggingOut, setLoggingOut] = useState(false);
@@ -73,21 +77,21 @@ export function DashboardShell({ children, session, active, workspaces }: { read
     } finally { setLoggingOut(false); }
   }
   return <div className={styles.shell}>
-    <aside ref={sidebarRef} inert={mobile && !open} role={mobile && open ? "dialog" : undefined} aria-modal={mobile && open ? true : undefined} className={`${styles.sidebar} ${open ? styles.open : ""}`} id="dashboard-sidebar" aria-label="Dashboard navigation">
-      {mobile && open ? <button className={styles.closeMenu} onClick={closeMenu} type="button">Close menu</button> : null}
-      <Link href="/" aria-label="DAIFY marketing home"><DaifyLogo /></Link>
-      <div className={styles.restaurant}><span>{active?.name.slice(0, 1) ?? "D"}</span><div><strong>{active?.name ?? "Your restaurant"}</strong><small>{active ? `${active.locations.length} locations · ${active.membership.role}` : "Let’s set up your workspace"}</small></div></div>
-      {workspaces.length > 1 ? <label>Workspace<select aria-label="Workspace" value={active?.id ?? ""} disabled={switching} onChange={event => void switchWorkspace(event.target.value)}>{workspaces.map(workspace => <option key={workspace.id} value={workspace.id}>{workspace.name}</option>)}</select></label> : null}
-      {switchError ? <p role="alert">{switchError}</p> : null}
-      <nav>{navigation.map(item => <Link key={item.href} href={item.href as Route} aria-current={pathname === item.href ? "page" : undefined} onClick={() => setOpen(false)}><span aria-hidden="true">{item.glyph}</span>{item.label}</Link>)}</nav>
-      {(session.user.platformAdmin || session.user.platformStaff) && <Link href="/admin">DAIFY employee workspace · مساحة عمل الموظفين</Link>}
-      <div className={styles.sidebarNote}><strong>{session.user.displayName ?? "Your account"}</strong><span>{session.user.email}</span></div>
+    <aside ref={sidebarRef} inert={mobile && !open} role={mobile && open ? "dialog" : undefined} aria-modal={mobile && open ? true : undefined} className={`${styles.sidebar} ${open ? styles.open : ""}`} id="dashboard-sidebar" aria-label={t("Dashboard navigation")}>
+      {mobile && open ? <button className={styles.closeMenu} onClick={closeMenu} type="button">{t("Close menu")}</button> : null}
+      <Link href="/" aria-label={t("DAIFY marketing home")}><DaifyLogo /></Link>
+      <div className={styles.restaurant}><span>{active?.name.slice(0, 1) ?? t("D")}</span><div><strong>{active?.name ?? t("Your restaurant")}</strong><small>{active ? t("{0} locations · {1}", {0: active.locations.length, 1: t(active.membership.role)}) : t("Let’s set up your workspace")}</small></div></div>
+      {workspaces.length > 1 ? <label>{t("Workspace")}<select aria-label={t("Workspace")} value={active?.id ?? ""} disabled={switching} onChange={event => void switchWorkspace(event.target.value)}>{workspaces.map(workspace => <option key={workspace.id} value={workspace.id}>{workspace.name}</option>)}</select></label> : null}
+      {switchError ? <p role="alert">{t(switchError)}</p> : null}
+      <nav>{navigation.map(item => <Link key={item.href} href={item.href as Route} aria-current={pathname === item.href ? "page" : undefined} onClick={() => setOpen(false)}><span aria-hidden="true">{item.glyph}</span>{t(item.label)}</Link>)}</nav>
+      {(session.user.platformAdmin || session.user.platformStaff) && <Link href="/admin">{t("DAIFY employee workspace · مساحة عمل الموظفين")}</Link>}
+      <div className={styles.sidebarNote}><strong>{session.user.displayName ?? t("Your account")}</strong><span>{session.user.email}</span></div>
     </aside>
     <div className={styles.workspace} inert={mobile && open}>
-      <header className={styles.topbar}><button className={styles.menuToggle} ref={toggleRef} type="button" onClick={() => setOpen(value => !value)} aria-expanded={open} aria-controls="dashboard-sidebar"><span aria-hidden="true">☰</span> <span>Menu</span></button><div><span className="surface-status">Your workspace</span></div><button className={styles.logout} type="button" disabled={loggingOut} onClick={() => void logout()}>{loggingOut ? "Logging out…" : "Log out"}</button><div className={styles.avatar} aria-label={session.user.displayName ?? session.user.email}>{(session.user.displayName ?? session.user.email).slice(0, 2).toUpperCase()}</div></header>
-      {logoutError ? <p className={styles.logoutError} role="alert">{logoutError}</p> : null}
+      <header className={styles.topbar}><button className={styles.menuToggle} ref={toggleRef} type="button" onClick={() => setOpen(value => !value)} aria-expanded={open} aria-controls="dashboard-sidebar"><span aria-hidden="true">☰</span> <span>{t("Menu")}</span></button><div><span className="surface-status">{t("Your workspace")}</span></div><LanguageSwitcher /><button className={styles.logout} type="button" disabled={loggingOut} onClick={() => void logout()}>{loggingOut ? t("Logging out…") : t("Log out")}</button><div className={styles.avatar} aria-label={session.user.displayName ?? session.user.email}>{(session.user.displayName ?? session.user.email).slice(0, 2).toUpperCase()}</div></header>
+      {logoutError ? <p className={styles.logoutError} role="alert">{t(logoutError)}</p> : null}
       {children}
     </div>
-    {open && mobile ? <button className={styles.scrim} tabIndex={-1} type="button" aria-label="Close dashboard navigation" onClick={closeMenu} /> : null}
+    {open && mobile ? <button className={styles.scrim} tabIndex={-1} type="button" aria-label={t("Close dashboard navigation")} onClick={closeMenu} /> : null}
   </div>;
 }

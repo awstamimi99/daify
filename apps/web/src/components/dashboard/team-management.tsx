@@ -1,4 +1,5 @@
 "use client";
+import { useI18n } from '@/components/i18n/language-provider';
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -12,6 +13,7 @@ export interface TeamMember {
 }
 
 export function TeamManagement({ workspace, members }: { readonly workspace: Workspace; readonly members: TeamMember[] }) {
+  const { t, errorMessage } = useI18n();
   const router = useRouter();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,19 +36,19 @@ export function TeamManagement({ workspace, members }: { readonly workspace: Wor
     finally { setPending(false); }
   }
   return <div className={styles.stack}>
-    {error ? <p role="alert" className={styles.error}>{error}</p> : null}{message ? <p role="status" className={styles.message}>{message}</p> : null}
-    <Card className={styles.panel}><h2>Invite a teammate</h2><form onSubmit={event => void save(event)} className={styles.form}>
-      <TextField label="Teammate’s email" name="email" type="email" required />
-      <label className={styles.field}>Role <select name="role" defaultValue="VIEWER">{roles.map(role => <option key={role}>{role}</option>)}</select></label>
-      {workspace.membership.role === "owner" ? <label className={styles.check}><input type="checkbox" name="allLocations" checked={allLocations} onChange={event => setAllLocations(event.target.checked)} /> All locations, including future locations</label> : null}
-      {!allLocations ? <fieldset className={styles.locations}><legend>Specific locations</legend>{workspace.locations.length ? workspace.locations.map(location => <label key={location.id} className={styles.check}><input type="checkbox" name="locationIds" value={location.id} /> {location.name}</label>) : <p>No locations yet.</p>}</fieldset> : null}
-      <Button type="submit" disabled={pending}>{pending ? "Saving…" : "Send invitation"}</Button>
+    {error ? <p role="alert" className={styles.error}>{errorMessage(error)}</p> : null}{message ? <p role="status" className={styles.message}>{t(message)}</p> : null}
+    <Card className={styles.panel}><h2>{t("Invite a teammate")}</h2><form onSubmit={event => void save(event)} className={styles.form}>
+      <TextField label={t("Teammate’s email")} name="email" type="email" required />
+      <label className={styles.field}>{t("Role ")}<select name="role" defaultValue="VIEWER">{roles.map(role => <option key={role} value={role}>{t(role)}</option>)}</select></label>
+      {workspace.membership.role === "owner" ? <label className={styles.check}><input type="checkbox" name="allLocations" checked={allLocations} onChange={event => setAllLocations(event.target.checked)} /> {t("All locations, including future locations")}</label> : null}
+      {!allLocations ? <fieldset className={styles.locations}><legend>{t("Specific locations")}</legend>{workspace.locations.length ? workspace.locations.map(location => <label key={location.id} className={styles.check}><input type="checkbox" name="locationIds" value={location.id} /> {location.name}</label>) : <p>{t("No locations yet.")}</p>}</fieldset> : null}
+      <Button type="submit" disabled={pending}>{pending ? t("Saving…") : t("Send invitation")}</Button>
     </form></Card>
-    <Card className={styles.panel}><h2>Members</h2>{members.map(member => <form key={`${member.id}-${member.role}-${member.status}`} onSubmit={event => void save(event, member.id)} className={styles.member}>
+    <Card className={styles.panel}><h2>{t("Members")}</h2>{members.map(member => <form key={`${member.id}-${member.role}-${member.status}`} onSubmit={event => void save(event, member.id)} className={styles.member}>
       <div className={styles.memberName}><strong>{member.user.displayName ?? member.user.email}</strong><p>{member.user.email}</p></div>
-      <label className={styles.field}>Role<select aria-label={`Role for ${member.user.email}`} name="role" defaultValue={member.role}>{roles.map(role => <option key={role}>{role}</option>)}</select></label>
-      <label className={styles.field}>Status<select aria-label={`Status for ${member.user.email}`} name="status" defaultValue={member.status}>{["ACTIVE", "SUSPENDED", "REVOKED"].map(status => <option key={status}>{status}</option>)}</select></label>
-      <Button variant="secondary" type="submit" disabled={pending}>Save member</Button>
+      <label className={styles.field}>{t("Role")}<select aria-label={t("Role for {0}", { "0": member.user.email })} name="role" defaultValue={member.role}>{roles.map(role => <option key={role} value={role}>{t(role)}</option>)}</select></label>
+      <label className={styles.field}>{t("Status")}<select aria-label={t("Status for {0}", { "0": member.user.email })} name="status" defaultValue={member.status}>{["ACTIVE", "SUSPENDED", "REVOKED"].map(status => <option key={status} value={status}>{t(status)}</option>)}</select></label>
+      <Button variant="secondary" type="submit" disabled={pending}>{t("Save member")}</Button>
     </form>)}</Card>
   </div>;
 }

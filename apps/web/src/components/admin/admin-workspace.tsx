@@ -1,4 +1,5 @@
 'use client';
+import { useI18n, LanguageSwitcher } from '@/components/i18n/language-provider';
 import Link from 'next/link';
 import { AdminBilling } from './admin-billing';
 import { SupportWorkspace } from '../support/support-workspace';
@@ -12,13 +13,13 @@ type Section = 'organizations' | 'users' | 'audit' | 'billing' | 'support';
 type Rows = (PlatformOrganization | PlatformUser | PlatformAudit)[];
 type Change = { section: 'organizations' | 'users'; id: string; label: string; expectedStatus: string; status: string };
 export function AdminWorkspace({ email, permissions = null }: { email: string; permissions?: string[] | null }) {
-  const [arabic, setArabic] = useState(false), [section, setSection] = useState<Section>(() => permissions === null ? 'organizations' : permissions.includes('customers.read') ? 'organizations' : permissions.includes('support.manage') ? 'support' : permissions.includes('users.read') ? 'users' : permissions.includes('audit.read') ? 'audit' : 'billing');
+  const [section, setSection] = useState<Section>(() => permissions === null ? 'organizations' : permissions.includes('customers.read') ? 'organizations' : permissions.includes('support.manage') ? 'support' : permissions.includes('users.read') ? 'users' : permissions.includes('audit.read') ? 'audit' : 'billing');
   const [reason, setReason] = useState(''), [search, setSearch] = useState(''), [organizationId, setOrganizationId] = useState('');
   const [rows, setRows] = useState<Rows>([]), [loaded, setLoaded] = useState(false), [pending, setPending] = useState(false);
   const [error, setError] = useState(''), [message, setMessage] = useState(false), [change, setChange] = useState<Change | null>(null), [changeReason, setChangeReason] = useState('');
   const [cursors, setCursors] = useState<string[]>([]), [page, setPage] = useState(0);
   const filter = useRef({ reason: '', search: '', organizationId: '' });
-  const t = (en: string, ar: string) => arabic ? ar : en;
+  const { t, arabic, errorMessage } = useI18n();
   const can = (permission: string) => permissions === null || permissions.includes(permission);
   const sectionPermission = { organizations: 'customers.read', users: 'users.read', audit: 'audit.read', billing: 'billing.read', support: 'support.manage' };
   const labels = { organizations: t('Organizations', 'المؤسسات'), users: t('Users', 'المستخدمون'), audit: t('Audit log', 'سجل التدقيق'), billing: t('Billing & templates', 'الاشتراكات والقوالب'), support: t('Support', 'الدعم') };
@@ -59,7 +60,7 @@ export function AdminWorkspace({ email, permissions = null }: { email: string; p
   function prepare(value: Change) { setChange(value); setChangeReason(''); setMessage(false); setError(''); requestAnimationFrame(() => document.getElementById('change-reason')?.focus()); }
 
   return <main id="main-content" className={styles.workspace} lang={arabic ? 'ar' : 'en'} dir={arabic ? 'rtl' : 'ltr'}>
-    <header className={styles.heading}><div><DaifyLogo /><h1>{t('Platform workspace.', 'إدارة المنصة.')}</h1><p>{email}</p></div><div className={styles.tools}><Link href="/dashboard">{t('Your dashboard', 'لوحة التحكم')}</Link><button onClick={() => setArabic(!arabic)}>{arabic ? 'English' : 'العربية'}</button></div></header>
+    <header className={styles.heading}><div><DaifyLogo /><h1>{t('Platform workspace.', 'إدارة المنصة.')}</h1><p>{email}</p></div><div className={styles.tools}><Link href="/dashboard">{t('Your dashboard', 'لوحة التحكم')}</Link><LanguageSwitcher /></div></header>
     {can('offers.read') && <Link href="/admin/offers">{t('Coupons & quotes', 'الكوبونات وعروض الأسعار')}</Link>}
     {can('staff.manage') && <Link href="/admin/employees">{t('Employees & permissions', 'الموظفون والصلاحيات')}</Link>}{can('menus.read') && <Link href="/admin/assistance">{t('Help a client with their menus', 'مساعدة عميل في قوائمه')}</Link>}
     <nav className={styles.tabs} aria-label={t('Administration', 'إدارة المنصة')}>{(['organizations', 'users', 'audit', 'billing', 'support'] as const).filter(key => can(sectionPermission[key]) || key === 'billing' && can('templates.read')).map(key => <button key={key} disabled={pending} aria-pressed={section === key} onClick={() => select(key)}>{labels[key]}</button>)}</nav>
@@ -67,7 +68,7 @@ export function AdminWorkspace({ email, permissions = null }: { email: string; p
       <form className={styles.filters} onSubmit={submit}><label className={styles.field}>{t('Access reason', 'سبب الاطلاع')}<input required minLength={10} maxLength={500} value={reason} onChange={e => setReason(e.target.value)} /></label><label className={styles.field}>{t(section === 'audit' ? 'Search reason' : 'Search name or identifier', section === 'audit' ? 'البحث في السبب' : 'البحث بالاسم أو المعرّف')}<input maxLength={100} value={search} onChange={e => setSearch(e.target.value)} /></label>
         {section === 'audit' && <label className={styles.field}>{t('Organization ID (optional)', 'معرّف المؤسسة (اختياري)')}<input value={organizationId} onChange={e => setOrganizationId(e.target.value)} /></label>}<button className={styles.primary} disabled={pending || reason.trim().length < 10}>{pending ? t('Loading…', 'جارٍ التحميل…') : t('Load records', 'تحميل السجلات')}</button></form>
     </section>
-    {error && <p role="alert" className={styles.error}>{error}</p>}{message && <p role="status" className={styles.success}>{t('Status updated and recorded in the audit log.', 'تم تحديث الحالة وتسجيلها في سجل التدقيق.')}</p>}
+    {error && <p role="alert" className={styles.error}>{errorMessage(error)}</p>}{message && <p role="status" className={styles.success}>{t('Status updated and recorded in the audit log.', 'تم تحديث الحالة وتسجيلها في سجل التدقيق.')}</p>}
     {change && <form onSubmit={mutate} className={`${styles.panel} ${styles.confirmation}`} aria-label={t('Confirm status change', 'تأكيد تغيير الحالة')}><h2>{change.label} → {status(change.status)}</h2><p>{change.section === 'users' ? t('Disabling blocks sign-in and revokes existing sessions. Restoring requires a new sign-in.', 'التعطيل يمنع تسجيل الدخول وينهي الجلسات الحالية. تتطلب الاستعادة تسجيل دخول جديد.') : t('Suspension blocks workspace access and public menus. Saved content and published versions remain available after restoration.', 'الإيقاف يمنع الوصول إلى مساحة العمل والقوائم العامة. يبقى المحتوى والإصدارات محفوظة للاستعادة.')}</p><label className={styles.field}>{t('Change reason', 'سبب التغيير')}<textarea id="change-reason" required minLength={10} maxLength={500} value={changeReason} onChange={e => setChangeReason(e.target.value)} /></label><div className={styles.tools}><button className={styles.primary} disabled={pending || changeReason.trim().length < 10}>{t('Confirm change', 'تأكيد التغيير')}</button><button type="button" disabled={pending} onClick={() => setChange(null)}>{t('Cancel', 'إلغاء')}</button></div></form>}
     <section className={styles.panel} aria-label={labels[section]} aria-busy={pending}>
       {!loaded ? <p className={styles.empty}>{t('Choose a reason, then load records to begin.', 'أدخل سبب الاطلاع ثم حمّل السجلات للبدء.')}</p> : !rows.length ? <p className={styles.empty}>{t('No matching records.', 'لا توجد سجلات مطابقة.')}</p> : <ul className={styles.list}>{rows.map(row => <li key={row.id} className={`${styles.row} ${section === 'audit' ? styles.audit : ''}`}>

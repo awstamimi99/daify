@@ -1,3 +1,5 @@
+"use client";
+import { useI18n } from '@/components/i18n/language-provider';
 import { ButtonLink, Card } from "@daify/ui";
 import type { MarketingPageData } from "@/data/marketing";
 import { getLegalDocument } from "@/data/legal";
@@ -17,18 +19,21 @@ export function ContentPage({ page }: { readonly page: MarketingPageData }) {
 }
 
 function PageHero({ page, primaryHref = "/signup", primaryLabel = "Start free trial" }: { readonly page: MarketingPageData; readonly primaryHref?: string; readonly primaryLabel?: string }) {
-  return <section className={styles.hero}><div className="container"><span className="eyebrow">{page.eyebrow}</span><h1>{page.title}</h1><p>{page.description}</p><div className={styles.actions}><ButtonLink href={primaryHref}>{primaryLabel} <span aria-hidden="true">↗</span></ButtonLink><ButtonLink variant="secondary" href={page.slug === "features" ? "/templates" : "/contact"}>{page.slug === "features" ? "Explore templates" : "Talk to DAIFY"}</ButtonLink></div></div></section>;
+  const { t } = useI18n();
+  return <section className={styles.hero}><div className="container"><span className="eyebrow">{t(page.eyebrow)}</span><h1>{t(page.title)}</h1><p>{t(page.description)}</p><div className={styles.actions}><ButtonLink href={primaryHref}>{t(primaryLabel)} <span aria-hidden="true">↗</span></ButtonLink><ButtonLink variant="secondary" href={page.slug === "features" ? "/templates" : "/contact"}>{page.slug === "features" ? t("Explore templates") : t("Talk to DAIFY")}</ButtonLink></div></div></section>;
 }
 
 function EditorialPage({ page }: { readonly page: MarketingPageData }) {
+  const { t } = useI18n();
   const isFeatures = page.slug === "features";
   return <main id="main-content" className={styles.main}>
     <PageHero page={page} />
-    <section className={styles.editorial}><div className="container"><div className={styles.sectionHead}><span className="eyebrow">{isFeatures ? "The complete flow" : "What guides the work"}</span><h2>{isFeatures ? "Built around service—not software theater." : "Digital convenience can still feel hospitable."}</h2></div><div className={styles.grid}>{page.highlights.map((item, index) => <Card key={item.title} className={styles.card}><small>0{index + 1}</small><h3>{item.title}</h3><p>{item.copy}</p></Card>)}</div></div></section>
-    {isFeatures ? <section className={styles.flow}><div className="container"><span className="eyebrow">From edit to table</span><h2>Change it once.<br />See it everywhere.</h2><div>{["Edit the live menu draft", "Review the guest experience", "Publish behind the same QR"].map((item, index) => <article key={item}><b>0{index + 1}</b><span>{item}</span></article>)}</div></div></section> : <section className={styles.manifesto}><div className="container"><p>DAIFY begins with a small belief: the moment after a guest scans should feel like the restaurant they chose—not like opening an office document.</p><div><span>Kuwait rooted</span><span>Hospitality minded</span><span>Built bilingually</span></div></div></section>}
+    <section className={styles.editorial}><div className="container"><div className={styles.sectionHead}><span className="eyebrow">{isFeatures ? t("The complete flow") : t("What guides the work")}</span><h2>{isFeatures ? t("Built around service—not software theater.") : t("Digital convenience can still feel hospitable.")}</h2></div><div className={styles.grid}>{page.highlights.map((item, index) => <Card key={t(item.title)} className={styles.card}><small>0{index + 1}</small><h3>{t(item.title)}</h3><p>{t(item.copy)}</p></Card>)}</div></div></section>
+    {isFeatures ? <section className={styles.flow}><div className="container"><span className="eyebrow">{t("From edit to table")}</span><h2>{t("Change it once.")}<br />{t("See it everywhere.")}</h2><div>{["Edit the live menu draft", "Review the guest experience", "Publish behind the same QR"].map((item, index) => <article key={t(item)}><b>0{index + 1}</b><span>{t(item)}</span></article>)}</div></div></section> : <section className={styles.manifesto}><div className="container"><p>{t("DAIFY begins with a small belief: the moment after a guest scans should feel like the restaurant they chose—not like opening an office document.")}</p><div><span>{t("Kuwait rooted")}</span><span>{t("Hospitality minded")}</span><span>{t("Built bilingually")}</span></div></div></section>}
   </main>;
 }
 
 function ContactPage({ page }: { readonly page: MarketingPageData }) {
-  return <main id="main-content"><section className={styles.contact}><div className={`container ${styles.contactGrid}`}><div><span className="eyebrow">{page.eyebrow}</span><h1>Let’s make your menu feel <em>remarkable.</em></h1><p>Whether you run one neighbourhood café or a growing hospitality group, tell us where you want to go. We’ll help you find the clearest way there.</p><div className={styles.promises}><span><b>01</b>A thoughtful reply</span><span><b>02</b>No hard sell</span><span><b>03</b>Usually within one business day</span></div><div className={styles.direct}><span>Prefer email?<a href="mailto:hello@daify.net">hello@daify.net ↗</a></span><span>Based in<strong>Kuwait · Working worldwide</strong></span></div></div><ContactForm /></div></section></main>;
+  const { t } = useI18n();
+  return <main id="main-content"><section className={styles.contact}><div className={`container ${styles.contactGrid}`}><div><span className="eyebrow">{t(page.eyebrow)}</span><h1>{t("Let’s make your menu feel ")}<em>{t("remarkable.")}</em></h1><p>{t("Whether you run one neighbourhood café or a growing hospitality group, tell us where you want to go. We’ll help you find the clearest way there.")}</p><div className={styles.promises}><span><b>01</b>{t("A thoughtful reply")}</span><span><b>02</b>{t("No hard sell")}</span><span><b>03</b>{t("Usually within one business day")}</span></div><div className={styles.direct}><span>{t("Prefer email?")}<a href="mailto:hello@daify.net">{t("hello@daify.net ↗")}</a></span><span>{t("Based in")}<strong>{t("Kuwait · Working worldwide")}</strong></span></div></div><ContactForm /></div></section></main>;
 }

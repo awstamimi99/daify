@@ -35,10 +35,11 @@ test("responsive marketing navigation opens on a phone", async ({ page }) => {
 
 test("real authentication verifies email, protects dashboard, and logs out", async ({ page, request, browser }) => {
   test.setTimeout(60_000);
+  await page.context().setExtraHTTPHeaders({ "x-daify-test-client-ip": "192.0.2.110" });
   const email = `web-${Date.now()}@example.com`;
   const password = "correct horse battery staple";
   const signup = await request.post("http://127.0.0.1:4000/api/v1/auth/signup", {
-    headers: apiIdentity("/auth/signup", "192.0.2.10"),
+    headers: apiIdentity("/auth/signup", "192.0.2.110"),
     data: { email, displayName: "Web Reviewer", password },
   });
   expect(signup.ok()).toBeTruthy();
@@ -55,6 +56,12 @@ test("real authentication verifies email, protects dashboard, and logs out", asy
   await page.getByRole("button", { name: /Log in/ }).click();
   await expect(page).toHaveURL(/\/dashboard$/);
   await expect(page.getByRole("heading", { level: 1, name: "Welcome, Web." })).toBeVisible();
+  await expect(page.getByRole("button", { name: "العربية" })).toBeVisible();
+  await page.getByRole("button", { name: "العربية" }).click();
+  await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
+  await expect(page.getByRole("heading", { level: 1, name: "مرحبًا، Web." })).toBeVisible();
+  await page.getByRole("button", { name: "English" }).click();
+  await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
   await expect(page.getByText("1,284", { exact: true })).toHaveCount(0);
   await page.getByLabel("Restaurant or group name").fill("Web QA Restaurant");
   await page.getByLabel("Short name", { exact: true }).fill(`web-qa-${Date.now()}`);

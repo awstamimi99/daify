@@ -1,4 +1,5 @@
 'use client';
+import { useI18n, LanguageSwitcher } from '@/components/i18n/language-provider';
 import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { DaifyLogo } from '@/components/brand/daify-logo';
@@ -21,14 +22,14 @@ async function api<T>(path: string, reason: string, method = 'GET', body?: objec
   return data as T;
 }
 export function EmployeeWorkspace({ email, owner, role }: { email: string; owner: boolean; role: string }) {
-  const [arabic, setArabic] = useState(false), [reason, setReason] = useState(''), [accessReason, setAccessReason] = useState('');
+  const [reason, setReason] = useState(''), [accessReason, setAccessReason] = useState('');
   const [directory, setDirectory] = useState<Directory | null>(null), [customers, setCustomers] = useState<Customer[]>([]);
   const [pending, setPending] = useState(false), [error, setError] = useState(''), [message, setMessage] = useState('');
   const [editing, setEditing] = useState<Employee | 'new' | null>(null), [address, setAddress] = useState(''), [staffRole, setRole] = useState<Role>('SUPPORT');
   const [permissions, setPermissions] = useState<string[]>([]), [all, setAll] = useState(false), [ids, setIds] = useState<string[]>([]);
   const [status, setStatus] = useState<Employee['status']>('INVITED'), [changeReason, setChangeReason] = useState(''), [review, setReview] = useState(false);
   const [customerSearch, setCustomerSearch] = useState('');
-  const t = (en: string, ar: string) => arabic ? ar : en;
+  const { t, arabic, errorMessage } = useI18n();
   const statusLabel = (value: string) => ({ INVITED: t('Invited', 'بانتظار قبول الدعوة'), ACTIVE: t('Active', 'نشط'), SUSPENDED: t('Suspended', 'موقوف') })[value as Employee['status']] ?? value;
   const eligibleRoles = (Object.keys(roles) as Role[]).filter(r => owner || (role === 'MANAGER' ? r !== 'MANAGER' : ['SUPPORT', 'SALES'].includes(r)));
   function permitted(permission: string, nextRole = staffRole) {
@@ -85,10 +86,10 @@ export function EmployeeWorkspace({ email, owner, role }: { email: string; owner
     });
   }
   return <main id="main-content" className={styles.workspace} lang={arabic ? 'ar' : 'en'} dir={arabic ? 'rtl' : 'ltr'}>
-    <header className={styles.heading}><div><DaifyLogo /><h1>{t('Employees & permissions.', 'الموظفون والصلاحيات.')}</h1><p>{email} · {owner ? t('Owner', 'المالك') : t('Employee management', 'إدارة الموظفين')}</p></div><div className={styles.tools}><Link href="/admin">{t('Platform workspace', 'إدارة المنصة')}</Link><button onClick={() => setArabic(!arabic)}>{arabic ? 'English' : 'العربية'}</button></div></header>
+    <header className={styles.heading}><div><DaifyLogo /><h1>{t('Employees & permissions.', 'الموظفون والصلاحيات.')}</h1><p>{email} · {owner ? t('Owner', 'المالك') : t('Employee management', 'إدارة الموظفين')}</p></div><div className={styles.tools}><Link href="/admin">{t('Platform workspace', 'إدارة المنصة')}</Link><LanguageSwitcher /></div></header>
     <section className={styles.panel}><h2>{t('Your team, with clear boundaries.', 'فريقك، بصلاحيات واضحة.')}</h2><p>{t('Only the Owner appoints Managers. Managers can appoint Supervisors and other employees. Nobody can grant permissions or customer access beyond their own. Sales cannot edit or publish client menus.', 'المالك وحده يعيّن المديرين. يمكن للمديرين تعيين المشرفين وباقي الموظفين. لا يمكن منح صلاحيات أو وصول إلى عملاء يتجاوز صلاحيات المانح. لا يمكن للمبيعات تعديل قوائم العملاء أو نشرها.')}</p>
       <form className={styles.filters} onSubmit={load}><label className={styles.field}>{t('Reason for accessing employee records', 'سبب الاطلاع على سجلات الموظفين')}<input required minLength={10} maxLength={500} value={reason} onChange={e => setReason(e.target.value)} /></label><button className={styles.primary} disabled={pending}>{t('Load employees', 'عرض الموظفين')}</button></form></section>
-    {error && <p role="alert" className={styles.error}>{error} {t('If an invitation email failed, reload employees before retrying: the invitation may already be saved.', 'إذا فشل إرسال الدعوة، أعد تحميل الموظفين قبل المحاولة؛ فقد تكون الدعوة محفوظة.')}</p>}{message && <p role="status" className={styles.success}>{t('Employee access saved. Invitations require email verification and MFA. Changes to existing access end current sessions.', 'تم حفظ صلاحيات الموظف. تتطلب الدعوات التحقق من البريد والمصادقة الثنائية. تعديل الصلاحيات ينهي الجلسات الحالية.')}</p>}
+    {error && <p role="alert" className={styles.error}>{errorMessage(error)} {t('If an invitation email failed, reload employees before retrying: the invitation may already be saved.', 'إذا فشل إرسال الدعوة، أعد تحميل الموظفين قبل المحاولة؛ فقد تكون الدعوة محفوظة.')}</p>}{message && <p role="status" className={styles.success}>{t('Employee access saved. Invitations require email verification and MFA. Changes to existing access end current sessions.', 'تم حفظ صلاحيات الموظف. تتطلب الدعوات التحقق من البريد والمصادقة الثنائية. تعديل الصلاحيات ينهي الجلسات الحالية.')}</p>}
     {directory && <section className={styles.panel} aria-busy={pending}><div className={styles.heading}><h2>{t('Employees', 'الموظفون')}</h2><button className={styles.primary} disabled={pending} onClick={() => open('new')}>{t('Invite employee', 'دعوة موظف')}</button></div>
       {owner && <p>{t('Your Owner access is managed separately and cannot be changed on this page.', 'صلاحياتك كمالك تُدار بشكل منفصل ولا يمكن تعديلها من هذه الصفحة.')}</p>}
       {!directory.employees.length ? <p>{t('No employees on this page yet.', 'لا يوجد موظفون في هذه الصفحة بعد.')}</p> : <ul className={styles.list}>{directory.employees.map(employee => <li className={styles.row} key={employee.id}><div><strong>{employee.email}</strong><p>{roles[employee.role][arabic ? 1 : 0]} · {statusLabel(employee.status)} · {employee.permissions.length} {t('permissions', 'صلاحيات')}</p><small>{employee.allOrganizations ? t('All customers', 'جميع العملاء') : `${employee.organizationIds.length} ${t('assigned customers', 'عملاء معينين')}`}</small></div><button disabled={pending || employee.email === email} onClick={() => open(employee)}>{employee.email === email ? t('Your access', 'صلاحياتك') : t('Edit permissions', 'تعديل الصلاحيات')}</button></li>)}</ul>}

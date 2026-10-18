@@ -1,3 +1,4 @@
+import { getTranslator } from '@/lib/i18n/server';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { getWorkspaceContext } from '@/lib/workspace';
@@ -7,9 +8,10 @@ import type { DraftMenuSummary } from '@daify/types';
 import styles from '../overview.module.css';
 export const metadata = { title: 'QR & Publish.', robots: { index: false, follow: false } };
 export default async function Page() {
+  const t = await getTranslator();
   const { active } = await getWorkspaceContext();
   if (!active?.membership.permissions.some(permission => ['menu.publish','qr.manage'].includes(permission))) notFound();
   let menus: DraftMenuSummary[] = [];
   if (active.locations[0]) { const response = await apiFetch(`/api/v1/organizations/${active.id}/locations/${active.locations[0].id}/menus`,{ headers: { cookie: (await cookies()).toString() } }); if (!response.ok) throw new Error('Menus could not be loaded.'); menus = await response.json() as DraftMenuSummary[]; }
-  return <main id="main-content" className={styles.main}><header className={styles.heading}><div><span className="eyebrow">{active.name}</span><h1>QR & Publish.</h1><p>A stable link for your guests. A version history for you.</p></div></header><PublishingWorkspace workspace={active} initialMenus={menus} mode="publish" /></main>;
+  return <main id="main-content" className={styles.main}><header className={styles.heading}><div><span className="eyebrow">{active.name}</span><h1>{t("QR & Publish.")}</h1><p>{t("A stable link for your guests. A version history for you.")}</p></div></header><PublishingWorkspace workspace={active} initialMenus={menus} mode="publish" /></main>;
 }

@@ -6,7 +6,7 @@ const beta = process.env.WEB_TEST_BETA === "true";
 
 export default defineConfig({
   testDir: "./tests",
-  ...(beta ? { testMatch: /(?:foundation|accessibility|menus|publishing|template-parity|beta)\.spec\.ts$/ } : {}),
+  ...(beta ? { testMatch: /(?:foundation|accessibility|i18n|menus|publishing|template-parity|beta)\.spec\.ts$/ } : {}),
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,

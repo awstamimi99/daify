@@ -5,6 +5,7 @@ services:
     name: daify-staging-api
     runtime: node
     plan: free
+    region: frankfurt
     autoDeployTrigger: 'off'
     buildCommand: npm ci --include=dev && npm run build --workspace @daify/api
     startCommand: npm run start --workspace @daify/api

@@ -11,6 +11,8 @@
   .links { position: fixed; inset: 4.8rem 0 auto; display: none; align-items: stretch; padding: 1.5rem 1rem 2rem; border-bottom: 1px solid var(--border-default); background: var(--surface-secondary); box-shadow: var(--shadow-soft); }
   .links.open { display: grid; }
   .links > a { padding: .65rem; font-size: 1.05rem; }
-  .actions { display: grid; grid-template-columns: 1fr 1fr; margin: .5rem 0 0; text-align: center; }
+  .actions { display: grid; grid-template-columns: auto 1fr 1fr; margin: .5rem 0 0; text-align: center; }
   .actions > a:first-child { padding: .7rem; }
 }
+
+@media (max-width: 380px) { .actions { grid-template-columns: auto 1fr; } .actions > a:last-child { grid-column: 1 / -1; } }

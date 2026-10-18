@@ -1,4 +1,5 @@
 "use client";
+import { useI18n } from '@/components/i18n/language-provider';
 
 import { Button, TextField } from "@daify/ui";
 import Link from "next/link";
@@ -21,6 +22,7 @@ const clientReady = () => true;
 const serverReady = () => false;
 
 export function AuthForm({ mode }: { readonly mode: AuthMode }) {
+  const { t, errorMessage } = useI18n();
   const hydrated = useSyncExternalStore(subscribeHydration, clientReady, serverReady);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -52,22 +54,22 @@ export function AuthForm({ mode }: { readonly mode: AuthMode }) {
   }
 
   return <div className={styles.panel}>
-    <span className="eyebrow">DAIFY workspace</span><h1>{details.title}</h1><p>{details.intro}</p>
-    {message ? <div className={styles.notice} role="status"><strong>Request complete.</strong><span>{message}</span>{mode === "reset-password" ? <Link href="/login">Return to login →</Link> : null}</div> :
+    <span className="eyebrow">{t("DAIFY workspace")}</span><h1>{t(details.title)}</h1><p>{t(details.intro)}</p>
+    {message ? <div className={styles.notice} role="status"><strong>{t("Request complete.")}</strong><span>{t(message)}</span>{mode === "reset-password" ? <Link href="/login">{t("Return to login →")}</Link> : null}</div> :
       <form method="post" action={`/api/auth/${mode}`} onSubmit={submit}>
         <fieldset className={styles.fields} disabled={!hydrated || pending}>
-        {needsName ? <TextField label="Your name" name="displayName" autoComplete="name" required /> : null}
-        {mode !== "reset-password" ? <TextField label="Email address" name="email" type="email" autoComplete="email" required /> : null}
-        {needsPassword ? <TextField label={mode === "reset-password" ? "New password" : "Password"} name="password" type="password" autoComplete={mode === "login" ? "current-password" : "new-password"} minLength={12} required hint="Use at least twelve characters." /> : null}
+        {needsName ? <TextField label={t("Your name")} name="displayName" autoComplete="name" required /> : null}
+        {mode !== "reset-password" ? <TextField label={t("Email address")} name="email" type="email" autoComplete="email" required /> : null}
+        {needsPassword ? <TextField label={mode === "reset-password" ? t("New password") : t("Password")} name="password" type="password" autoComplete={mode === "login" ? "current-password" : "new-password"} minLength={12} required hint={t("Use at least twelve characters.")} /> : null}
         {mode === "login" ? <>
-          <TextField label="Authenticator code" name="mfaCode" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" hint="Required if two-step verification is enabled. Leave blank when using a recovery code." />
-          <TextField label="Recovery code" name="recoveryCode" autoComplete="off" spellCheck={false} hint="Use one saved recovery code if you cannot access your authenticator." />
+          <TextField label={t("Authenticator code")} name="mfaCode" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" hint={t("Required if two-step verification is enabled. Leave blank when using a recovery code.")} />
+          <TextField label={t("Recovery code")} name="recoveryCode" autoComplete="off" spellCheck={false} hint={t("Use one saved recovery code if you cannot access your authenticator.")} />
         </> : null}
-        {error ? <p role="alert">{error}</p> : null}
-        <Button type="submit" disabled={!hydrated || pending}>{pending ? "Please wait…" : details.action} <span aria-hidden="true">↗</span></Button>
+        {error ? <p role="alert">{errorMessage(error)}</p> : null}
+        <Button type="submit" disabled={!hydrated || pending}>{pending ? t("Please wait…") : t(details.action)} <span aria-hidden="true">↗</span></Button>
         </fieldset>
-        {!hydrated ? <p>Enable JavaScript to securely sign in or manage your account.</p> : null}
+        {!hydrated ? <p>{t("Enable JavaScript to securely sign in or manage your account.")}</p> : null}
       </form>}
-    <div className={styles.links}>{mode === "login" ? <><Link href="/forgot-password">Forgot password?</Link><Link href="/signup">Create an account</Link></> : <Link href="/login">Back to login</Link>}<Link href="/resend-verification">Resend verification email</Link></div>
+    <div className={styles.links}>{mode === "login" ? <><Link href="/forgot-password">{t("Forgot password?")}</Link><Link href="/signup">{t("Create an account")}</Link></> : <Link href="/login">{t("Back to login")}</Link>}<Link href="/resend-verification">{t("Resend verification email")}</Link></div>
   </div>;
 }

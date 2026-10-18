@@ -1,4 +1,5 @@
 "use client";
+import { useI18n } from '@/components/i18n/language-provider';
 import { useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { Button, Card, TextField } from "@daify/ui";
@@ -7,6 +8,7 @@ import { WorkspaceSetup } from "./workspace-setup";
 import styles from "./workspace-forms.module.css";
 const subscribe = () => () => {};
 export function LocationManagement({ workspace }: { workspace: Workspace }) {
+  const { t, errorMessage } = useI18n();
   const hydrated = useSyncExternalStore(subscribe, () => true, () => false);
   const [pending, setPending] = useState(false); const [error, setError] = useState<string | null>(null);
   const router = useRouter(); const canEdit = workspace.membership.permissions.includes("location.manage");
@@ -20,10 +22,10 @@ export function LocationManagement({ workspace }: { workspace: Workspace }) {
     } catch (caught) { setError(caught instanceof Error ? caught.message : "Please retry."); }
     finally { setPending(false); }
   }
-  return <div className={styles.stack}>{error ? <p role="alert" className={styles.error}>{error}</p> : null}{workspace.locations.map(location => <Card key={location.id} className={styles.panel}><h2>{location.name}</h2>{canEdit ? <form method="post" aria-label={`Edit ${location.name}`} className={styles.form} onSubmit={event => { event.preventDefault(); const data = Object.fromEntries(new FormData(event.currentTarget)); void save(location.id, data); }}><fieldset disabled={!hydrated || pending} className={styles.securityFields}>
-    <TextField label="Location name" name="name" defaultValue={location.name} minLength={2} maxLength={160} required /><TextField label="Short name" name="slug" defaultValue={location.slug} pattern="[a-z0-9]+(-[a-z0-9]+)*" maxLength={100} required />
-    <TextField label="Time zone" name="timezone" defaultValue={location.timezone} required /><TextField label="Currency" name="currency" defaultValue={location.currency} pattern="[A-Z]{3}" required hint="Currency cannot change while this location has active menus." />
-    <label className={styles.field}>Default language<select name="defaultLanguage" defaultValue={location.defaultLanguage}><option value="en">English</option><option value="ar">العربية</option></select></label>
-    <Button type="submit">Save location</Button><Button variant="secondary" onClick={() => { if (window.confirm("Archive this location? Its menus will become inaccessible and its data will be retained.")) void save(location.id, {}, "DELETE"); }}>Archive location</Button>
-  </fieldset></form> : <p>{location.currency} · {location.timezone}</p>}</Card>)}{canEdit ? <Card className={styles.panel}><h2>Add a location</h2><WorkspaceSetup organizationId={workspace.id} /></Card> : null}</div>;
+  return <div className={styles.stack}>{error ? <p role="alert" className={styles.error}>{errorMessage(error)}</p> : null}{workspace.locations.map(location => <Card key={location.id} className={styles.panel}><h2>{location.name}</h2>{canEdit ? <form method="post" aria-label={t("Edit {0}", { "0": location.name })} className={styles.form} onSubmit={event => { event.preventDefault(); const data = Object.fromEntries(new FormData(event.currentTarget)); void save(location.id, data); }}><fieldset disabled={!hydrated || pending} className={styles.securityFields}>
+    <TextField label={t("Location name")} name="name" defaultValue={location.name} minLength={2} maxLength={160} required /><TextField label={t("Short name")} name="slug" defaultValue={location.slug} pattern="[a-z0-9]+(-[a-z0-9]+)*" maxLength={100} required />
+    <TextField label={t("Time zone")} name="timezone" defaultValue={location.timezone} required /><TextField label={t("Currency")} name="currency" defaultValue={location.currency} pattern="[A-Z]{3}" required hint={t("Currency cannot change while this location has active menus.")} />
+    <label className={styles.field}>{t("Default language")}<select name="defaultLanguage" defaultValue={location.defaultLanguage}><option value="en">{t("English")}</option><option value="ar">العربية</option></select></label>
+    <Button type="submit">{t("Save location")}</Button><Button variant="secondary" onClick={() => { if (window.confirm(t("Archive this location? Its menus will become inaccessible and its data will be retained."))) void save(location.id, {}, "DELETE"); }}>{t("Archive location")}</Button>
+  </fieldset></form> : <p>{location.currency} · {location.timezone}</p>}</Card>)}{canEdit ? <Card className={styles.panel}><h2>{t("Add a location")}</h2><WorkspaceSetup organizationId={workspace.id} /></Card> : null}</div>;
 }
