@@ -146,7 +146,7 @@ export async function verifyMigratorDefaults(client, project = stagingProject) {
     CROSS JOIN LATERAL aclexplode(d.defaclacl) a
     LEFT JOIN pg_roles g ON g.oid=a.grantee
     WHERE d.defaclrole=(SELECT oid FROM pg_roles WHERE rolname=current_user)
-      AND d.defaclnamespace=0
+      AND (d.defaclnamespace=0 OR d.defaclnamespace=(SELECT oid FROM pg_namespace WHERE nspname='public'))
       AND d.defaclobjtype IN ('r','S','f')
       AND (a.grantee=0 OR g.rolname IN ('anon','authenticated','service_role'))`);
   const { rows: functionDefaults } = await client.query(`SELECT 1 FROM pg_default_acl
@@ -196,10 +196,12 @@ export async function setupRolesPhased(adminClient, secrets, connectRole, projec
 export async function grantRuntimeAccess(client, project = stagingProject) {
   const { rows: [{ username }] } = await client.query('SELECT current_user AS username');
   if (username !== project.migrator) throw new Error('Runtime grants must be applied through the migrator login.');
-  const { rows } = await client.query(`SELECT c.relname, r.rolname AS owner
+  const { rows } = await client.query(`SELECT c.relname, c.relkind, r.rolname AS owner
     FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace JOIN pg_roles r ON r.oid=c.relowner
-    WHERE n.nspname='public' AND c.relkind='r' AND c.relname <> '_prisma_migrations' ORDER BY c.relname`);
-  if (rows.length !== applicationTables.length || rows.some((row, index) => row.relname !== applicationTables[index])) throw new Error('The migrated application table set does not match the reviewed runtime allowlist. No runtime grants were changed.');
+    WHERE n.nspname='public' AND c.relkind IN ('r','p','v','m','f','S') AND c.relname <> '_prisma_migrations' ORDER BY c.relname`);
+  // Current migrations use UUID identifiers and contain no sequences or views.
+  // New object types require an explicit grant review, not a schema-wide grant.
+  if (rows.length !== applicationTables.length || rows.some((row, index) => row.relname !== applicationTables[index] || row.relkind !== 'r')) throw new Error('The migrated application table set does not match the reviewed runtime allowlist. No runtime grants were changed.');
   if (rows.some(row => row.owner !== project.migrator)) throw new Error('An application table is not owned by the migrator. No runtime grants were changed.');
   const tables = applicationTables.map(pg.escapeIdentifier).join(', '), runtime = roleIdentifier(project.runtime);
   await client.query('BEGIN');
@@ -208,25 +210,26 @@ export async function grantRuntimeAccess(client, project = stagingProject) {
     const apiRoles = (await client.query("SELECT rolname FROM pg_roles WHERE rolname IN ('anon','authenticated') ORDER BY rolname")).rows;
     for (const { rolname } of apiRoles) await client.query(`REVOKE ALL ON TABLE ${tables} FROM ${pg.escapeIdentifier(rolname)}`);
     await client.query(`GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE ${tables} TO ${runtime}`);
-    const sequences = (await client.query("SELECT c.relname FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='public' AND c.relkind='S' ORDER BY c.relname")).rows;
-    if (sequences.length) await client.query(`GRANT USAGE, SELECT ON SEQUENCE ${sequences.map(({ relname }) => pg.escapeIdentifier(relname)).join(', ')} TO ${runtime}`);
     await client.query('COMMIT');
   } catch (error) { await client.query('ROLLBACK'); throw error; }
-  return { tables: rows.length, sequences: (await client.query("SELECT count(*)::int AS count FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='public' AND c.relkind='S'")).rows[0].count };
+  return { tables: rows.length, sequences: 0 };
 }
 export async function verifyRuntimeAccess(client, project = stagingProject) {
   await verifyRole(client, project.runtime, project);
-  const { rows } = await client.query(`SELECT c.relname,
+  const { rows } = await client.query(`SELECT c.relname, c.relkind, pg_get_userbyid(c.relowner) AS owner,
     has_table_privilege(current_user, c.oid, 'SELECT') AS can_select,
     has_table_privilege(current_user, c.oid, 'INSERT') AS can_insert,
     has_table_privilege(current_user, c.oid, 'UPDATE') AS can_update,
-    has_table_privilege(current_user, c.oid, 'DELETE') AS can_delete
+    has_table_privilege(current_user, c.oid, 'DELETE') AS can_delete,
+    has_table_privilege(current_user, c.oid, 'TRUNCATE,REFERENCES,TRIGGER,MAINTAIN,SELECT WITH GRANT OPTION,INSERT WITH GRANT OPTION,UPDATE WITH GRANT OPTION,DELETE WITH GRANT OPTION') AS excessive_privileges
     FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
-    WHERE n.nspname='public' AND c.relkind='r' ORDER BY c.relname`);
+    WHERE n.nspname='public' AND c.relkind IN ('r','p','v','m','f') ORDER BY c.relname`);
   const application = rows.filter(row => row.relname !== '_prisma_migrations');
-  if (application.length !== applicationTables.length || application.some((row, index) => row.relname !== applicationTables[index] || !row.can_select || !row.can_insert || !row.can_update || !row.can_delete)) throw new Error('Runtime table privileges did not match the reviewed allowlist.');
+  if (application.length !== applicationTables.length || application.some((row, index) => row.relname !== applicationTables[index] || row.relkind !== 'r' || row.owner !== project.migrator || row.excessive_privileges || !row.can_select || !row.can_insert || !row.can_update || !row.can_delete)) throw new Error('Runtime table privileges did not match the reviewed allowlist.');
   const history = rows.find(row => row.relname === '_prisma_migrations');
-  if (!history || history.can_select || history.can_insert || history.can_update || history.can_delete) throw new Error('Runtime unexpectedly has access to Prisma migration history.');
+  if (!history || history.relkind !== 'r' || history.owner !== project.migrator || history.excessive_privileges || history.can_select || history.can_insert || history.can_update || history.can_delete) throw new Error('Runtime unexpectedly has access to Prisma migration history.');
+  const { rows: sequences } = await client.query("SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='public' AND c.relkind='S'");
+  if (sequences.length) throw new Error('Runtime table privileges require review: unexpected public sequences.');
   const { rows: executable } = await client.query(`SELECT p.proname FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
     WHERE n.nspname='public' AND has_function_privilege(current_user,p.oid,'EXECUTE') ORDER BY p.proname`);
   if (executable.length) throw new Error('Runtime unexpectedly has direct execute access to a public database function.');

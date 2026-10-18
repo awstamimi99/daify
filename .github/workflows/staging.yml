@@ -33,6 +33,8 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ vars.NETLIFY_SITE_ID }}
           MIGRATION_DATABASE_URL: ${{ secrets.MIGRATION_DATABASE_URL }}
+          STAGING_RUNTIME_DATABASE_URL: ${{ secrets.STAGING_RUNTIME_DATABASE_URL }}
+          STAGING_DATABASE_CA: ${{ secrets.STAGING_DATABASE_CA }}
           DAIFY_API_URL: ${{ vars.DAIFY_API_URL }}
           DAIFY_WEB_ORIGIN: ${{ vars.DAIFY_WEB_ORIGIN }}
         run: node scripts/check-release-env.mjs
@@ -46,10 +48,12 @@ jobs:
           DAIFY_API_URL: ${{ vars.DAIFY_API_URL }}
           DAIFY_WEB_ORIGIN: ${{ vars.DAIFY_WEB_ORIGIN }}
           DAIFY_DEPLOYMENT_ENV: staging
-      - name: Apply additive migrations with the dedicated migration role
-        run: npm run prisma:migrate:deploy --workspace @daify/api
+      - name: Verify roles, migrate with TLS, grant reviewed runtime access and verify
+        run: node scripts/staging-release-database.mjs deploy
         env:
-          DATABASE_URL: ${{ secrets.MIGRATION_DATABASE_URL }}
+          MIGRATION_DATABASE_URL: ${{ secrets.MIGRATION_DATABASE_URL }}
+          STAGING_RUNTIME_DATABASE_URL: ${{ secrets.STAGING_RUNTIME_DATABASE_URL }}
+          STAGING_DATABASE_CA: ${{ secrets.STAGING_DATABASE_CA }}
       - name: Deploy API at the verified commit and await readiness
         run: node scripts/deploy-render.mjs
         env:

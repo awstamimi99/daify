@@ -2,11 +2,14 @@
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import pg from 'pg';
-import { prepareRoles, setupRolesPhased, verifyRole, verifyMigratorDefaults } from './lib/staging-database.mjs';
+import { prepareRoles, setupRolesPhased, verifyRole, verifyMigratorDefaults, applicationTables, grantRuntimeAccess, verifyRuntimeAccess } from './lib/staging-database.mjs';
 
 const input = process.env.TEST_DATABASE_URL;
-if (!input || !/(^|[_-])test($|[_-])/i.test(new URL(input).pathname.slice(1))) throw new Error('An explicitly named isolated TEST_DATABASE_URL is required.');
-const host = new URL(input).hostname;
+let inputUrl;
+try { inputUrl = new URL(input); } catch { throw new Error('An explicitly named isolated TEST_DATABASE_URL is required.'); }
+if (!['postgres:', 'postgresql:'].includes(inputUrl.protocol) || !/^\/[a-zA-Z0-9_-]+$/.test(inputUrl.pathname) || !/(^|[_-])test($|[_-])/i.test(inputUrl.pathname.slice(1))) throw new Error('An explicitly named isolated TEST_DATABASE_URL is required.');
+if (inputUrl.hash || [...inputUrl.searchParams].some(([key, value]) => key !== 'schema' || value !== 'public')) throw new Error('Role test database URLs allow only the public schema query parameter.');
+const host = inputUrl.hostname;
 if (!['localhost', '127.0.0.1', '[::1]', 'postgres'].includes(host)) throw new Error('Database role tests may run only on a local or CI PostgreSQL service.');
 
 const suffix = randomUUID().replaceAll('-', '').slice(0, 12);
@@ -106,6 +109,27 @@ try {
   await assert.rejects(prepareRoles(adminClient, rollbackSecrets, rollbackProject), /PUBLIC grants schema creation/);
   assert.equal((await adminClient.query('SELECT rolname FROM pg_roles WHERE rolname=ANY($1::text[])', [[rollbackProject.migrator, rollbackProject.runtime]])).rows.length, 0);
   await adminClient.query('REVOKE CREATE ON SCHEMA public FROM PUBLIC');
+
+  // Exercise the release grant boundary using the real restricted logins.
+  // These objects exist only inside this disposable, local test database.
+  await connectRole(project.migrator, secrets.migrationPassword, async client => {
+    await client.query('ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO PUBLIC');
+    await assert.rejects(verifyMigratorDefaults(client, project), /default privileges/);
+    await client.query('ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE SELECT ON TABLES FROM PUBLIC');
+    await verifyMigratorDefaults(client, project);
+    for (const table of [...applicationTables, '_prisma_migrations']) await client.query(`CREATE TABLE public.${pg.escapeIdentifier(table)} (id integer PRIMARY KEY)`);
+    await client.query('CREATE SEQUENCE public.unreviewed_sequence');
+    await assert.rejects(grantRuntimeAccess(client, project), /allowlist/);
+    await client.query('DROP SEQUENCE public.unreviewed_sequence');
+    assert.deepEqual(await grantRuntimeAccess(client, project), { tables: 41, sequences: 0 });
+  });
+  await connectRole(project.runtime, secrets.runtimePassword, client => verifyRuntimeAccess(client, project));
+  for (const privilege of ['TRUNCATE', 'REFERENCES', 'TRIGGER', 'MAINTAIN', 'SELECT WITH GRANT OPTION']) {
+    await connectRole(project.migrator, secrets.migrationPassword, client => client.query(`GRANT ${privilege === 'SELECT WITH GRANT OPTION' ? 'SELECT' : privilege} ON public.users TO ${pg.escapeIdentifier(project.runtime)}${privilege === 'SELECT WITH GRANT OPTION' ? ' WITH GRANT OPTION' : ''}`));
+    await connectRole(project.runtime, secrets.runtimePassword, client => assert.rejects(verifyRuntimeAccess(client, project), /allowlist/));
+    await connectRole(project.migrator, secrets.migrationPassword, client => client.query(`REVOKE ${privilege === 'SELECT WITH GRANT OPTION' ? 'GRANT OPTION FOR SELECT' : privilege} ON public.users FROM ${pg.escapeIdentifier(project.runtime)}`));
+  }
+  await connectRole(project.runtime, secrets.runtimePassword, client => verifyRuntimeAccess(client, project));
 
   console.log('PASS: phased setup works under a non-superuser CREATEROLE administrator; both real logins and migrator defaults verify, unsafe grants roll back atomically, and an interrupted setup resumes without replacing credentials.');
 } finally {

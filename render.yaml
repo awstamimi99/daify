@@ -40,6 +40,12 @@ services:
         value: daify_session
       - key: DATABASE_URL
         sync: false
+      - key: DATABASE_SSL_CA
+        sync: false
+      - key: DATABASE_POOL_MAX
+        value: '3'
+      - key: DATABASE_CONNECTION_TIMEOUT_MS
+        value: '10000'
       - key: WEB_ORIGIN
         sync: false
       - key: PROXY_SIGNING_KEY
