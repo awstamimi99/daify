@@ -78,6 +78,11 @@ h1, h2, h3, p { margin: 0; }
 .empty-state h1 { margin-block: .7rem 1rem; font-family: var(--font-serif); font-size: var(--fs-h1); font-weight: 400; line-height: 1; }
 .empty-state p { margin-bottom: 1.5rem; color: var(--text-secondary); }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; } }
+@supports (animation-timeline: view()) {
+  .marketing-shell main > section:not(:first-child) > .container,
+  .marketing-shell main article { animation: daify-reveal both linear; animation-timeline: view(); animation-range: entry 0% entry 16%; }
+  @keyframes daify-reveal { from { transform: translateY(22px) scale(.995); } to { transform: none; } }
+}
 
 /* The application preference is separate from each restaurant menu's language. */
 .language-switcher { position: relative; flex: 0 0 auto; display: inline-flex; align-items: stretch; min-height: 44px; border: 1px solid var(--border-default); border-radius: 12px; background: #f2eddf; color: var(--surface-dark); transition: border-color .2s, background .2s, box-shadow .2s; }
