@@ -20,7 +20,7 @@
   --surface-dark: #171717;
   --text-primary: #202020;
   --text-secondary: #66615f;
-  --text-muted: #8c8784;
+  --text-muted: #726b66;
   --text-on-brand: #fff;
   --border-default: #e8e5e3;
   --success: #238a57;
@@ -59,9 +59,10 @@ html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--surface-secondary); color: var(--text-primary); font-family: var(--font-sans); line-height: 1.55; }
 html[dir="rtl"] body, [dir="rtl"] { font-family: var(--font-arabic); }
 a { color: inherit; text-decoration: none; }
-button, input { color: inherit; font: inherit; }
+button, input, select, textarea { color: inherit; font: inherit; }
 button { border: 0; }
 img { display: block; max-width: 100%; }
+input, select, textarea { max-width: 100%; }
 h1, h2, h3, p { margin: 0; }
 :focus-visible { outline: 3px solid var(--brand-blue); outline-offset: 3px; }
 .skip-link { position: fixed; inset-block-start: .75rem; inset-inline-start: .75rem; z-index: 100; translate: 0 -180%; padding: .7rem 1rem; border-radius: var(--radius-sm); background: var(--surface-dark); color: white; }
@@ -81,7 +82,7 @@ h1, h2, h3, p { margin: 0; }
 /* The application preference is separate from each restaurant menu's language. */
 .language-switcher { position: relative; flex: 0 0 auto; display: inline-flex; align-items: stretch; min-height: 44px; border: 1px solid var(--border-default); border-radius: 12px; background: #f2eddf; color: var(--surface-dark); transition: border-color .2s, background .2s, box-shadow .2s; }
 .language-switcher:hover, .language-switcher:has(details[open]) { border-color: #c9c1a9; background: #ece5d3; box-shadow: 0 8px 24px rgb(37 34 29 / 8%); }
-.language-current { min-width: 49px; padding: .65rem .35rem .65rem .75rem; background: transparent; color: inherit; font: inherit; font-size: .88rem; font-weight: 850; letter-spacing: .08em; cursor: pointer; }
+.language-switcher > .language-current { min-width: 49px; min-height: 42px; border: 0; border-radius: 12px 0 0 12px; padding: .65rem .35rem .65rem .75rem; background: transparent; color: inherit; font: inherit; font-size: .88rem; font-weight: 800; letter-spacing: .08em; cursor: pointer; }
 .language-switcher details { position: static; display: flex; }
 .language-switcher summary { width: 31px; min-height: 42px; display: inline-flex; align-items: center; justify-content: center; padding-inline-end: .35rem; list-style: none; cursor: pointer; }
 .language-switcher summary::-webkit-details-marker { display: none; }
@@ -93,7 +94,18 @@ h1, h2, h3, p { margin: 0; }
 .language-menu button > span { color: var(--brand-red-strong); font-size: .72rem; font-weight: 900; letter-spacing: .06em; }
 .language-menu button > strong { font-size: .95rem; font-weight: 800; }
 .language-current:focus-visible, .language-switcher summary:focus-visible, .language-menu button:focus-visible { outline: 2px solid var(--brand-red-strong); outline-offset: 3px; }
-.auth-language { display: flex; justify-content: flex-end; padding: 1rem; width: 100%; }
+.auth-language { display: flex; justify-content: flex-end; padding: 1.5rem; width: 100%; }
 html[lang="ar"] body { font-family: var(--font-arabic), sans-serif; }
 html[dir="rtl"] .serif { font-family: var(--font-arabic), sans-serif; }
 input[type="email"], input[type="url"], input[name="slug"], input[name="timezone"] { direction: ltr; text-align: start; }
+
+/* Arabic needs its own display metrics: Latin serif spacing clips connected glyphs. */
+html[lang="ar"] {
+  --font-sans: "Noto Kufi Arabic", sans-serif;
+  --font-serif: "Noto Kufi Arabic", sans-serif;
+  --fs-display: clamp(2.25rem, 4.6vw, 4.4rem);
+  --fs-h1: clamp(1.9rem, 3.3vw, 3rem);
+  --fs-h2: clamp(1.6rem, 2.6vw, 2.6rem);
+}
+html[lang="ar"] :is(h1, h2, h3, blockquote) { line-height: 1.65; letter-spacing: 0; }
+html[lang="ar"] .eyebrow { letter-spacing: 0; line-height: 1.9; }

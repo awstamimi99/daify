@@ -34,3 +34,11 @@
 .direct a, .direct strong { margin-top: .25rem; color: var(--text-primary); font-size: .75rem; }
 @media (max-width: 820px) { .contactGrid { grid-template-columns: 1fr; } .sectionHead { grid-template-columns: 1fr; } }
 @media (max-width: 760px) { .grid, .flow > div > div { grid-template-columns: 1fr; } .card { min-height: auto; } .flow article { border-inline-end: 0; border-bottom: 1px solid rgb(255 255 255 / 18%); } }
+
+.hero { padding-block: clamp(3rem, 7vw, 6rem); background: radial-gradient(ellipse at 90% 0, #eaeefb, transparent 60%), #fcfaf9; }
+.hero h1 { max-width: 16ch; font-size: clamp(2.8rem, 5.8vw, 5.5rem); line-height: 1.05; }
+.hero p { font-size: 1rem; line-height: 1.85; }
+.editorial { padding-top: 2rem; }
+.contact h1 { font-size: clamp(2.8rem, 5.8vw, 5.5rem); line-height: 1.05; }
+@media (max-width: 600px) { .hero h1, .contact h1 { font-size: 2.9rem; }.hero p { font-size: .95rem; } }
+.flow :global(.eyebrow), .flow article b { color: #ffaba5; }

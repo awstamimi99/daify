@@ -23,12 +23,12 @@ export function SiteHeader() {
     <header className={styles.header}>
       <nav className={styles.nav} aria-label={t("Main navigation")}>
         <Link href="/" aria-label={t("DAIFY home")}><DaifyLogo /></Link>
-        <button className={styles.toggle} type="button" aria-expanded={open} aria-controls="marketing-navigation" onClick={() => setOpen(value => !value)}>
-          <span className="sr-only">{t("Toggle navigation")}</span>{open ? t("Close") : t("Menu")}
-        </button>
         <div className={`${styles.links} ${open ? styles.open : ""}`} id="marketing-navigation">
-          {links.map(([href, label]) => <Link key={href} href={href} aria-current={pathname === href ? "page" : undefined} onClick={() => setOpen(false)}>{label}</Link>)}
-          <div className={styles.actions}><LanguageSwitcher /><Link href="/login">{t("Log in")}</Link><ButtonLink href="/signup">{t("Start free trial ")}<span aria-hidden="true">↗</span></ButtonLink></div>
+          {links.map(([href, label]) => <Link key={href} href={href} aria-current={pathname === href ? "page" : undefined} onClick={() => setOpen(false)}>{t(label)}</Link>)}
+          <div className={styles.mobileActions}><Link href="/login">{t("Log in")}</Link><ButtonLink href="/signup">{t("Start free trial ")}<span aria-hidden="true">↗</span></ButtonLink></div>
+        </div>
+        <div className={styles.actions}><LanguageSwitcher /><Link className={styles.login} href="/login">{t("Log in")}</Link><ButtonLink className={styles.trial} href="/signup">{t("Start free trial ")}<span aria-hidden="true">↗</span></ButtonLink>
+          <button className={styles.toggle} type="button" aria-expanded={open} aria-controls="marketing-navigation" onClick={() => setOpen(value => !value)}><span className="sr-only">{t("Toggle navigation")}</span><span aria-hidden="true">{open ? "×" : "☰"}</span></button>
         </div>
       </nav>
     </header>

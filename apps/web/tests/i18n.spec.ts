@@ -29,6 +29,7 @@ test("public language preference persists and switches the document direction", 
 test("mobile marketing navigation keeps the language control accessible", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto("/");
+  await expect(page.getByRole("button", { name: "العربية" })).toBeVisible();
   await page.getByRole("button", { name: "Toggle navigation" }).click();
   await expect(page.getByRole("button", { name: "العربية" })).toBeVisible();
   await page.getByRole("button", { name: "العربية" }).click();

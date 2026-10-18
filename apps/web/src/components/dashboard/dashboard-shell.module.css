@@ -14,3 +14,17 @@
 :global([dir="rtl"]) .sidebar { text-align: start; }
 @media (max-width: 820px) { :global([dir="rtl"]) .sidebar { transform: translateX(105%); } :global([dir="rtl"]) .sidebar.open { transform: translateX(0); } }
 @media (max-width: 560px) { .topbar { flex-wrap: wrap; } .topbar :global(.surface-status) { display: none; } }
+
+.sidebar { width: 260px; gap: .25rem; padding: 1.5rem 1rem; }
+.sidebar > a:first-of-type { align-self: flex-start; margin-inline: .5rem; }
+.sidebar nav a { min-height: 46px; padding-inline: .9rem; font-size: .8rem; }
+.restaurant { margin-block: 1.3rem 1rem; background: #f8f7f5; }
+.sidebarNote { margin-top: 1.5rem; }
+.sidebarNote span { overflow-wrap: anywhere; }
+.workspace { margin-inline-start: 260px; min-width: 0; }
+.topbar { position: sticky; top: 0; z-index: 25; min-height: 5rem; padding-inline: clamp(1.25rem, 3vw, 3rem); gap: 1rem; }
+.topbar > div:nth-of-type(1) { margin-inline-end: auto; }
+.logout { margin-inline-start: 0; font-size: .78rem; font-weight: 700; }
+.avatar { flex-shrink: 0; }
+@media (max-width: 820px) { .workspace { margin-inline-start: 0; }.sidebar { width: 260px; } }
+@media (max-width: 560px) { .topbar { flex-wrap: nowrap; gap: .7rem; padding: .75rem 1rem; }.topbar > div:nth-of-type(1) { display: none; }.topbar > :global(.language-switcher) { margin-inline-start: auto; }.topbar .avatar { display: none; }.logout { font-size: .72rem; }.topbar > .menuToggle { font-size: .8rem; } }

@@ -4,3 +4,22 @@
 .columns { display: grid; grid-template-columns: 1.4fr .8fr; gap: 1rem; margin-top: 1rem; }.menuCard, .next { padding: clamp(1.3rem, 3vw, 2rem); }.cardHead { display: flex; justify-content: space-between; align-items: start; }.cardHead h2, .next h2 { margin-top: .3rem; font-family: var(--font-serif); font-size: 2rem; font-weight: 400; }.sections { margin-block: 1.3rem; }.sections div { display: flex; justify-content: space-between; padding: .75rem 0; border-bottom: 1px solid var(--border-default); font-size: .78rem; }.sections b { color: var(--text-muted); font-weight: 600; }.cardActions { display: flex; flex-wrap: wrap; gap: .7rem; }.main .next { display: flex; flex-direction: column; align-items: flex-start; background: var(--surface-dark); color: white; }.next :global(.eyebrow) { color: #ff8f8b; }.next p { margin-block: 1rem auto; color: rgb(255 255 255 / 62%); font-size: .86rem; }
 @media (max-width: 900px) { .columns { grid-template-columns: 1fr; }.stats { grid-template-columns: 1fr 1fr; }.stat:last-child { grid-column: 1 / -1; } }
 @media (max-width: 600px) { .heading { display: grid; }.stats { grid-template-columns: 1fr; }.stat:last-child { grid-column: auto; } }
+
+/* Keep the working dashboard aligned with the original DAIFY workspace. */
+.main { max-width: 1600px; margin-inline: auto; padding: clamp(1.25rem, 3vw, 3rem); }
+.heading { align-items: center; gap: 1rem; margin-bottom: 1.7rem; }
+.heading h1 { font-size: clamp(1.9rem, 3vw, 2.8rem); line-height: 1.15; letter-spacing: -.035em; }
+.heading p { max-width: 48rem; font-size: .9rem; line-height: 1.8; }
+.heading :global(.eyebrow) { font-size: .65rem; }
+.launch { display: grid; grid-template-columns: 1.2fr .9fr; gap: 2rem; align-items: center; padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 1.5rem; border: 1px solid #30342f; border-radius: 26px; background: radial-gradient(ellipse at 0 100%, #43251f, transparent 60%), radial-gradient(ellipse at 100% 0, #242e43, transparent 55%), #141713; color: white; }
+.launchCopy { min-width: 0; }.launchCopy :global(.eyebrow) { color: #ff9994; font-size: .65rem; }
+.launchCopy h2 { max-width: 12ch; margin-block: 1rem 1.3rem; font-family: var(--font-serif); font-size: clamp(2.5rem, 4.5vw, 4.7rem); font-weight: 400; line-height: 1; letter-spacing: -.035em; }
+.launchCopy > p { max-width: 31rem; color: #c6c6bf; font-size: .9rem; line-height: 1.85; }
+.launchLink { display: inline-flex; align-items: center; gap: 1.25rem; margin-top: 1.7rem; padding: .8rem 1rem; border-radius: 12px; background: var(--brand-red-strong); color: white; font-size: .85rem; font-weight: 700; }.launchLink > span { display: grid; place-items: center; width: 27px; height: 27px; border-radius: 7px; background: white; color: var(--brand-red-strong); }
+.launchSteps { display: grid; border: 1px solid #494b45; border-radius: 18px; background: rgb(255 255 255 / 4%); padding: .4rem 1.25rem; }
+.launchSteps > div { display: flex; align-items: center; gap: 1rem; padding-block: 1.35rem; border-bottom: 1px solid #494b45; }.launchSteps > div:last-child { border: 0; }.launchSteps > div > span { color: #eeaaa5; font-size: .7rem; font-weight: 800; }.launchSteps strong { display: block; font-size: .88rem; }.launchSteps small { display: block; margin-top: .3rem; color: #c6c6bf; font-size: .7rem; line-height: 1.8; }.launchSteps b { margin-inline-start: auto; color: #b8d6c2; font-size: .9rem; }
+.stat { border-radius: 16px; }.stat strong { font-family: var(--font-sans); font-size: 1.35rem; font-weight: 700; overflow-wrap: anywhere; }.stat span { font-weight: 700; }.stat small { line-height: 1.8; }
+.menuCard h2 { font-size: 1.25rem; margin-bottom: .8rem; }.menuCard > p { color: var(--text-secondary); font-size: .88rem; }.menuCard > form { margin-top: 1.5rem; }
+.next { border-radius: 18px; }.next h2 { font-size: 2rem; line-height: 1.2; }.next a { display: inline-block; margin-top: 1.5rem; font-size: .85rem; font-weight: 700; }
+@media (max-width: 1000px) { .launch { grid-template-columns: 1fr; }.launchCopy h2 { max-width: 20ch; }.launchSteps > div { padding-block: 1rem; } }
+@media (max-width: 600px) { .heading h1 { font-size: 1.9rem; }.launch { border-radius: 20px; padding: 1.5rem; gap: 1.5rem; }.launchCopy h2 { font-size: 2.6rem; }.launchSteps { padding-inline: 1rem; }.launchCopy > p { font-size: .82rem; } }

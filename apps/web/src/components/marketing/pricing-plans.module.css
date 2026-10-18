@@ -26,3 +26,10 @@
 .tableWrap thead th { background: var(--surface-muted); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; }
 .tableWrap tr:last-child th, .tableWrap tr:last-child td { border-bottom: 0; }
 @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } .featured { transform: none; } .heading { align-items: start; flex-direction: column; } .heading > div:last-child > p { text-align: start; } }
+
+.featured > small { color: #ffb4ad; }
+.card > small { letter-spacing: .06em; }
+@media (max-width: 820px) { .card { min-height: 29rem; } }
+.toggle b, .card .billing { color: var(--brand-red-strong); }
+.featured .billing { color: #ffb4ad; }
+.badge { background: var(--brand-red-strong); }
