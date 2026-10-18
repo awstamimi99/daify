@@ -16,6 +16,7 @@
     "test": "npm run test:prototype && npm run test:web && npm run test:api",
     "test:prototype": "playwright test",
     "test:web": "playwright test --config apps/web/playwright.config.ts",
+    "test:beta": "WEB_TEST_BETA=true WEB_TEST_PRODUCTION=true playwright test --config apps/web/playwright.config.ts",
     "test:api": "npm run test --workspace @daify/api",
     "db:up": "docker compose up -d postgres",
     "db:down": "docker compose down",

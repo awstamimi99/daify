@@ -84,3 +84,5 @@ jobs:
       - run: npm test
         env:
           WEB_TEST_PRODUCTION: 'true'
+      - name: Verify the Beta journey with billing and analytics disabled
+        run: npm run test:beta
