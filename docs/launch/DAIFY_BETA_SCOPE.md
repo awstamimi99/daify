@@ -26,4 +26,23 @@
 
 ## Beta access policy
 
-Beta must not charge customers. Use the existing disabled/sandbox subscription architecture and explicitly grant invited Beta organizations access. Do not enable live payment credentials or automatic billing.
+Beta must not charge customers. Deploy with `BILLING_MODE=disabled` and
+`ANALYTICS_MODE=disabled`. New organizations without a subscription retain the
+existing unrestricted menu entitlements; no sandbox enrollment or fabricated
+payment is required. The billing screen describes this access and exposes no
+checkout/trial action. Backend billing mutations still fail closed.
+
+Existing sandbox subscriptions remain unavailable when sandbox mode is disabled;
+do not seed them into hosted Beta. This policy does not introduce an invite-only
+gate or plan resource quotas for unenrolled organizations. Keep access limited
+operationally during hosted acceptance and review quota/abuse controls before
+promoting public signup. Existing authentication, tenant scoping, upload limits,
+and rate limits continue to apply. Live payments require separate approval.
+
+## Current execution boundary — 2026-10-18
+
+The owner deferred hosting and email setup and prohibited deployment for now.
+Complete all independent implementation, local integration/security tests and
+release preparation. Hosted delivery, private storage and ingress acceptance
+remain external dependencies; do not bypass verification or use test mail in
+production to work around them.

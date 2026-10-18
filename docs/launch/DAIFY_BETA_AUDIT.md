@@ -20,14 +20,14 @@ The data model contains 41 application models and 15 ordered migrations. Tenant 
 | Tenant authorization | Implemented, deployed proof pending | Guards and repository filters use organization/location membership; cross-tenant tests pass locally. Must repeat against deployed staging services. |
 | Restaurant settings | Implemented | Location update/archive routes and dashboard UI exist. |
 | Menu/category/product CRUD | Implemented | Revision-aware draft menu API/UI supports sections, items, prices, ordering, translations and availability. |
-| Product images | Partial operational readiness | Validation and local/S3-compatible storage code exist. Staging private bucket credentials and real upload/read/delete proof are missing. |
+| Product images | Partial operational readiness | Validation and local/S3-compatible storage code exist; real SDK signed upload/read/delete and error redaction pass a local HTTP fixture. Staging private bucket credentials and real upload/read/delete proof are missing. |
 | Templates/design | Implemented | Nine templates use the shared renderer; authenticated preview, bilingual rendering and template parity tests exist. |
 | Publishing/public menu | Implemented | Immutable versions, publish/rollback/unpublish, stable slug routes, redirects and public no-login rendering exist. Hosted proof pending. |
 | QR | Implemented | Stable SVG/PNG QR generation points at configured web origin and is covered by tests. Hosted native dependency proof pending. |
 | Arabic/English | Implemented, acceptance pending | BCP-47 localization, translation validation and RTL rendering exist; deployed mobile accessibility review remains. |
 | Team management | Implemented | Invitations, roles, location scope and member status exist. SMTP delivery and deployed escalation tests remain. |
 | Platform staff | Implemented beyond Beta | Owner/manager/supervisor/support/sales policies and custom permissions exist; not required for core Beta. |
-| Billing/offers | Sandbox/partial | Plans, trials, limits, coupons and approvals exist. Live provider lifecycle is intentionally incomplete and excluded from Beta. |
+| Billing/offers | Safe Beta mode verified; commercial deferred | Plans, trials, limits, coupons and approvals exist. Disabled-mode bilingual UX and payment refusal pass the 68-check Beta browser suite. Live provider lifecycle is intentionally incomplete and excluded from Beta. |
 | Support/analytics | Implemented locally | APIs and dashboards exist; production retention, workers and monitoring are not accepted. |
 | Database roles/schema | Hosted staging verified | Restricted migrator/runtime roles, 15 migrations, 41 migrator-owned application tables and exact runtime grants are verified with certificate-checked TLS. No seed was applied. |
 | CI/CD | Partial | Quality and controlled staging workflows exist. Provider account settings, hosted deploy evidence and rollback execution remain open. |
@@ -48,7 +48,7 @@ The data model contains 41 application models and 15 ordered migrations. Tenant 
 2. Staging SMTP and private object storage are not configured, blocking real verification/invitation and image acceptance.
 3. Netlify-to-Render trusted client identity, direct API rejection, cookie/CORS behavior and cold-start recovery need hosted tests.
 4. Runtime grants are tied to an exact 41-table allowlist. Every future schema migration must update and reverify this allowlist before the API can use a new table.
-5. Production backup/restore, monitoring, alert ownership, log redaction review and incident response are not yet exercised.
+5. Hosted backup/restore, monitoring and alert ownership remain unexercised. Local recovery evidence and release/incident procedures are tracked in the production-readiness runbook.
 
 ## Database and migration assessment
 
@@ -62,9 +62,17 @@ The data model contains 41 application models and 15 ordered migrations. Tenant 
 
 The platform staff, offers, billing, support and analytics domains add surface area but are isolated enough to leave disabled without rewriting them. The fastest safe Beta path is to retain these modules, configure feature flags conservatively, and focus acceptance on the owner menu journey.
 
-## Launch blockers
+## External acceptance dependencies (deferred by owner)
 
 1. Configure a private Supabase S3-compatible bucket or a reviewed equivalent.
-2. Configure a verified SMTP sender; without a domain, use an explicitly documented invite-only/manual verification Beta policy.
+2. Configure a verified SMTP sender; domain/account setup is deferred. Do not bypass account verification or use test transport in a public deployment.
 3. Obtain/verify Render and Netlify account access and environment configuration, then deploy one reviewed commit.
 4. Complete the bilingual deployed end-to-end journey and security smoke suite.
+
+## 2026-10-18 continuation
+
+Local checks now include 205 API tests, 75 sandbox browser checks, 68 Beta-mode
+browser checks and 15 script tests. Release TLS/role/ACL checks stop on failure;
+local managed-permission fixtures exercise excess grants and schema-default
+leakage. See [deployment-preparation evidence](../QA/BETA_DEPLOYMENT_PREPARATION_2026-10-18.md).
+No deployment or hosted database mutation occurred in this checkpoint.
