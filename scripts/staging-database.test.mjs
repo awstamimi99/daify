@@ -31,8 +31,8 @@ test('pooler URLs encode reserved password characters and distinguish the Prisma
   assert.equal(runtime.username, 'daify_runtime.dflhhtefjqelevmhvyin');
   assert.equal(runtime.searchParams.get('sslmode'), 'verify-full');
   const migration = new URL(roleUrl(stagingProject, stagingProject.migrator, password, { migration: true, caPath: '/private/supabase-ca.crt' }));
-  assert.equal(migration.searchParams.get('sslmode'), 'require'); assert.equal(migration.searchParams.get('sslaccept'), 'strict');
-  assert.equal(migration.searchParams.get('sslcert'), '/private/supabase-ca.crt'); assert.equal(migration.searchParams.get('connection_limit'), '1');
+  assert.equal(migration.searchParams.get('sslmode'), 'verify-full');
+  assert.equal(migration.searchParams.get('sslrootcert'), '/private/supabase-ca.crt'); assert.equal(migration.searchParams.get('connection_limit'), '1');
 });
 test('connection errors cannot disclose passwords, URIs or the SQL submitted to PostgreSQL', () => {
   const secret = 'do-not-print-this-value';

@@ -6,12 +6,13 @@ Step 3 follows the employee and commercial-offer checkpoints. Target:
 
 ## Current state
 
-The project has 41 application tables and 15 Prisma migrations **in code**.
-The last owner-provided hosted SQL result reported zero public tables. This
-connection attempt stopped at TLS certificate validation before authentication.
-No hosted database changes were made. The administrator credential is saved in
-the ignored local input file; authentication has not yet been verified. No DAIFY
-role credentials have been generated and no roles have been created.
+The hosted staging project now has 15 applied Prisma migrations and 41
+application tables. Before setup, read-only diagnostics confirmed that `public`
+was empty, neither DAIFY role existed, the managed `postgres` account was a
+non-superuser with `CREATEROLE`, and `public` was owned by `pg_database_owner`.
+The restricted roles were then created, migrations were applied only through
+`daify_migrator`, and exact runtime grants were applied only after the migrated
+table set and ownership matched the reviewed allowlist.
 
 Prepared locally:
 
@@ -20,9 +21,12 @@ Prepared locally:
 - `npm run staging:db -- check`: certificate-verified, read-only connection
   check. It reports the server version, current user/database, public-table
   count and DAIFY role attributes; it never prints credentials.
-- `npm run staging:db -- setup-roles`: creates the two database roles below
-  only when they are absent and the public schema is empty. It does not run
-  migrations, seed data, change managed Supabase schemas or rotate existing roles.
+- `npm run staging:db -- setup-roles`: performs phased role setup. The
+  administrator creates the restricted roles and minimal grants in one
+  transaction. The script then logs in as `daify_migrator` to set that role's
+  own defaults, and as both roles to verify their real credentials and effective
+  boundaries. It does not run migrations, seed data, change schema ownership,
+  change managed Supabase schemas or rotate existing roles.
 - `npm run staging:db -- verify-roles`: connects separately as each generated
   role and checks its role membership and effective privileges.
 - API connection settings now enforce certificate verification for remote and
@@ -30,18 +34,11 @@ Prepared locally:
 
 ## Owner action needed
 
-1. Open [this project's Database Settings](https://supabase.com/dashboard/project/dflhhtefjqelevmhvyin/database/settings).
-2. Under **SSL Configuration**, download the server root certificate. Save it as
-   `/Users/awstamimi/Desktop/DAIFY/.local/staging/supabase-ca.crt`.
-3. Set the certificate file's permissions to `0600`, then resume the connection
-   check. The assistant can use the saved credential without printing it.
-4. After setup, reset the administrator password again because it was shared in
-   chat. Keep the replacement in the owner's password manager and update the
-   private input file locally if needed; do not send it through chat or screenshots.
-
-The check reported `SELF_SIGNED_CERT_IN_CHAIN`; it requires the trusted CA before
-continuing. Certificate verification remains enabled. The password's validity is
-still unknown because TLS failed first.
+Keep the downloaded project certificate at `.local/staging/supabase-ca.crt`
+with mode `0600`. Rotate the administrator password previously shared in chat,
+save its replacement only in the ignored local input file and the owner's
+password manager, and do not send it through chat or screenshots. The
+application and migration roles do not depend on that administrator password.
 
 ## Commands after the password is saved
 
@@ -53,9 +50,22 @@ npm run staging:db -- setup-roles
 npm run staging:db -- verify-roles
 ```
 
-The first command is read-only. The second creates roles and their defaults in
-one transaction. It refuses existing DAIFY roles or a populated public schema
-so it cannot silently change old passwords or take ownership of existing tables.
+The first command is read-only. The second intentionally uses multiple
+transactions because PostgreSQL 17 does not let a managed, non-superuser
+`CREATEROLE` administrator configure another role's default privileges unless
+it can `SET ROLE`. The administrator transaction creates both roles and applies
+only `CONNECT`, `USAGE` and the migrator's `CREATE` grant. A separate transaction
+authenticated as the migrator configures that role's own defaults. Final checks
+authenticate independently as both generated roles.
+
+Fresh setup refuses any existing DAIFY role or a populated public schema. If the
+administrator transaction committed but a later connection or verification
+failed, rerunning can resume only when both roles exist, `public` is still empty,
+both saved credentials authenticate, and both roles exactly match the restricted
+profile. Resume never changes their passwords or attributes. A single existing
+role, mismatched credentials or privileges, or any public table stops setup for
+manual review.
+
 If `PUBLIC` effectively grants schema creation to runtime, setup rolls back and
 requires a schema-privilege review rather than changing global Supabase grants.
 
@@ -85,9 +95,10 @@ of 4 and 30-second statement/idle-transaction timeouts, but no schema creation
 or access to application tables yet. New migrator-created tables/sequences and
 functions have no default public/API access.
 
-**Step 4 remains separate:** apply the reviewed migrations as the migrator, grant
-runtime access explicitly to the reviewed application tables, exclude migration
-metadata/managed Supabase tables, and prove the runtime role cannot perform DDL.
+**Step 4 is complete:** the reviewed migrations were applied as the migrator,
+runtime access was granted explicitly to the reviewed application tables,
+migration metadata and managed Supabase tables were excluded, and the runtime
+role was proven unable to perform DDL.
 The API's tenant checks remain authoritative; these database roles are service
 credentials, not DAIFY employee or restaurant roles. Data API stays disabled.
 
@@ -102,8 +113,8 @@ credentials, not DAIFY employee or restaurant roles. Data API stays disabled.
   Optional `DATABASE_SSL_CA` contains the PEM CA, so URL parsing cannot replace
   and discard it. TLS/host override parameters and weaker modes are rejected.
 - Non-production loopback tests retain their local connection behavior.
-- Prisma CLI uses a different URL: `sslmode=require&sslaccept=strict` and a
-  single engine connection. If a CA file is needed, its `sslcert` path is local
+- Prisma CLI uses a different URL: `sslmode=verify-full`, the project CA in
+  `sslrootcert`, and a single engine connection. The certificate path is local
   and must be installed separately on the future CI runner before use. Do not
   copy local absolute certificate paths blindly into deployment secrets.
 
@@ -116,16 +127,36 @@ before grants, schema creation, function execution and switching to the
 migrator. The database stored SCRAM verifiers, not the generated passwords.
 Private-file permissions, URL escaping and sanitized failures have automated
 coverage; runtime tests cover TLS downgrades, overridden hosts, CA retention and
-pool/timeout limits. Existing role credentials remain untouched on a repeat setup,
-and an unsafe public schema grant rolls back both newly created roles.
+pool/timeout limits. Existing role credentials remain untouched during verified
+recovery. A partial role pair is rejected unchanged, and an unsafe public schema
+grant rolls back both newly created roles.
 The credential reader accepts an already-set password without imposing a new
 minimum length; empty values, placeholders, embedded newlines and NULs are rejected.
 Its three focused tests passed after this adjustment.
-**201 API tests / 29 suites**, ten script tests, the role integration check,
-production build, API typecheck and lint passed locally. CI runs the database-role integration check in its isolated
-PostgreSQL job. This does not prove hosted TLS, pooler authentication or grants.
+**200 API tests passed and 1 was intentionally skipped across 29 suites**. Ten
+script tests, the role integration check, production build, API typecheck and
+lint passed locally. CI runs the database-role integration check in its isolated
+PostgreSQL job. Hosted TLS, pooler authentication, object ownership and grants
+were then independently verified against `daify-staging` without printing
+credentials.
 
-References checked 2026-10-17:
+## Partial-failure rollback
+
+The administrator phase is atomic: an error before its commit removes both new
+roles and grants. A failure after that commit deliberately leaves the restricted,
+table-free roles in place so the script does not perform a destructive automatic
+rollback. The preferred recovery is to correct the connection problem and rerun
+`setup-roles`; its guarded resume checks the conditions above before changing
+only the migrator's own default ACL.
+
+If rollback is chosen instead, first verify that both roles own no objects and
+that no migration ran. Then, in a separately reviewed administrator session,
+drop `daify_runtime` followed by `daify_migrator`. Delete the ignored generated
+role credential files only after the role drops succeed. Do not change the
+`public` schema owner and do not grant superuser or broader privileges to make
+recovery succeed.
+
+References checked 2026-10-18:
 [Supabase connections and TLS](https://supabase.com/docs/guides/database/connecting-to-postgres),
 [custom roles](https://supabase.com/docs/guides/database/postgres/roles),
 [Prisma with session pooling](https://supabase.com/docs/guides/database/prisma),
