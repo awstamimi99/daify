@@ -10,6 +10,7 @@ Last updated: 2026-10-18
 - All 15 reviewed Prisma migrations applied to Supabase staging through `daify_migrator`; 41 application tables are owned by that role.
 - Runtime access granted only to the reviewed 41-table allowlist. `daify_runtime` cannot read Prisma migration history, execute public functions or create schema objects.
 - Disposable PostgreSQL 17 migration rehearsal and the full API suite pass with the restricted runtime identity.
+- Full browser acceptance passes locally for authentication, menus, publishing, QR, bilingual rendering, employee permissions, offers, support, analytics and accessibility.
 - Current production dependency audit: 0 vulnerabilities.
 - Lint, typecheck, Next.js production build and script tests pass.
 
@@ -38,6 +39,8 @@ Last updated: 2026-10-18
 - Database-role integration test passes under a PostgreSQL 17 non-superuser administrator with `CREATEROLE`.
 - Disposable PostgreSQL 17: 15/15 migrations applied; runtime grant verification passed for 41 tables.
 - API: 29 suites passed, 200 tests passed and 1 intentionally skipped (201 total).
+- Next.js/API browser acceptance: 75/75 passed against a freshly migrated PostgreSQL 17 database.
+- Standalone prototype/template browser suite: 17/17 passed.
 - `npm audit --omit=dev --audit-level=high`: 0 findings.
 - Root lint, typecheck and build passed sequentially with a synthetic loopback database URL.
 
