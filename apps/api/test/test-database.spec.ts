@@ -39,4 +39,22 @@ describe('configureIntegrationDatabase', () => {
 
     expect(environment.DATABASE_URL).toBe(environment.TEST_DATABASE_URL);
   });
+
+  it('rejects hosted targets and connection overrides before changing the environment, without leaking input', () => {
+    for (const target of [
+      'postgresql://user:synthetic-secret@remote.example/daify_test',
+      'postgresql://user:synthetic-secret@localhost/daify_test?host=remote.example',
+      'postgresql://user:synthetic-secret@localhost/daify_test?dbname=production',
+      'postgresql://user:synthetic-secret@localhost/daify_test?schema=private',
+      'postgresql://user:synthetic-secret@localhost/test%2Fsynthetic-secret',
+      'postgresql://user:synthetic-secret@localhost/test%ZZ',
+    ]) {
+      const environment = { NODE_ENV: 'test', TEST_DATABASE_URL: target, DATABASE_URL: 'unchanged' };
+      expect(() => configureIntegrationDatabase(environment)).toThrow();
+      try { configureIntegrationDatabase(environment); } catch (error) {
+        expect(String(error)).not.toContain('synthetic-secret');
+      }
+      expect(environment.DATABASE_URL).toBe('unchanged');
+    }
+  });
 });
