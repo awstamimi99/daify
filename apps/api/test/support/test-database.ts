@@ -27,11 +27,19 @@ export function configureIntegrationDatabase(
     throw new Error('TEST_DATABASE_URL must use postgres:// or postgresql://.');
   }
 
-  const databaseName = decodeURIComponent(parsed.pathname.replace(/^\//, ''));
-  if (!TEST_DATABASE_NAME.test(databaseName)) {
+  if (!['localhost', '127.0.0.1', '[::1]', 'postgres'].includes(parsed.hostname)) {
+    throw new Error('Integration tests may connect only to a local or CI PostgreSQL service.');
+  }
+  let databaseName: string;
+  try { databaseName = decodeURIComponent(parsed.pathname.slice(1)); }
+  catch { throw new Error('Invalid test database name.'); }
+  if (!/^[a-zA-Z0-9_-]+$/.test(databaseName) || !TEST_DATABASE_NAME.test(databaseName)) {
     throw new Error(
-      `Refusing destructive integration tests: database "${databaseName}" is not explicitly named as a test database.`,
+      'Refusing destructive integration tests: database is not explicitly named as a test database.',
     );
+  }
+  if (parsed.hash || [...parsed.searchParams].some(([key, value]) => key !== 'schema' || value !== 'public')) {
+    throw new Error('Integration test database URLs allow only the public schema query parameter.');
   }
 
   environment.DATABASE_URL = testDatabaseUrl;

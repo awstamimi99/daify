@@ -57,7 +57,9 @@ export class MediaStorageService {
     } catch { throw new ServiceUnavailableException('The image could not be loaded.'); }
   }
   async remove(key: string) {
-    if (this.client) await this.client.send(new DeleteObjectCommand({ Bucket: this.config.getOrThrow<string>('S3_BUCKET'), Key: key }), { abortSignal: AbortSignal.timeout(10_000) });
-    else await unlink(this.filename(key));
+    try {
+      if (this.client) await this.client.send(new DeleteObjectCommand({ Bucket: this.config.getOrThrow<string>('S3_BUCKET'), Key: key }), { abortSignal: AbortSignal.timeout(10_000) });
+      else await unlink(this.filename(key));
+    } catch { throw new ServiceUnavailableException('The image could not be removed.'); }
   }
 }

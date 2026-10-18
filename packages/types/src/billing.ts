@@ -28,6 +28,7 @@ export interface BillingState {
   mode: 'disabled' | 'sandbox';
   providerReady: boolean;
   enrolled: boolean;
+  acceptedOfferPending: boolean;
   plans: BillingPlan[];
   subscription: { plan: BillingPlan; status: string; periodEnd: string; graceEnd: string | null; cancelAtEnd: boolean } | null;
   limits: BillingLimits | null;

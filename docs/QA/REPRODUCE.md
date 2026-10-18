@@ -46,6 +46,21 @@ The integration suite deletes fixtures; run it only against the disposable test 
 
 ## Start local servers
 
+For the automated browser suite, leave ports 4000 and 3100 free and run:
+
+```sh
+TEST_DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:55432/daify_qa_test npm run test:web -- --workers=2
+```
+
+Use a disposable PostgreSQL 17 database with all Prisma migrations applied.
+Playwright validates the local test URL before launching anything, gives that
+same URL to the seed, API and fixture processes, and starts its own servers.
+It refuses to reuse running servers because their database targets are unknown.
+`DATABASE_URL` alone is not accepted. Hosted URLs and connection-override query
+parameters are rejected. Stop the automated suite before exploratory testing.
+
+For the exploratory scripts below:
+
 Run each service in its own terminal:
 
 ```sh
@@ -63,7 +78,6 @@ python3 -m http.server 8910 --bind 127.0.0.1
 Then:
 
 ```sh
-DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:55432/daify_qa_test npm run test:web -- --workers=2
 node docs/QA/qa-browser.cjs
 node docs/QA/qa-auth.cjs
 node docs/QA/qa-prototype.cjs

@@ -8,7 +8,20 @@ deployment and hosted acceptance remain pending.
 See [hosting decisions](../DECISIONS/HOSTING_M8.md) and
 [verification and limitations](M8_2026-10-15.md).
 
+Historical checkpoint, superseded by the 2026-10-18 record below: [connection and credential setup](SUPABASE_CONNECTION_2026-10-17.md)
+is prepared. The password is saved privately; the connection check stopped at
+certificate validation and needs the project CA. Hosted authentication and role
+creation remain pending. Use the step-by-step connection record
+before applying any hosted migrations.
+
 ## Supabase project record — 2026-10-15
+
+**Current checkpoint (2026-10-18):** the record below is historical. Both
+restricted roles and all 15 migrations are now verified on hosted staging,
+with 41 application tables and no development seed. See
+[launch progress](../launch/DAIFY_LAUNCH_PROGRESS.md). Hosting account setup and
+email domain configuration are deferred external dependencies at the owner's
+request. Do not deploy, provision services or dispatch the release workflow yet.
 
 Source: owner-provided dashboard screenshots and connection parameters.
 These are non-secret identifiers and a connection template, not credentials.
@@ -83,7 +96,7 @@ manager or `openssl rand -base64 32`. Keep a secure backup of the MFA key.
 | Both web and API | Same `PROXY_SIGNING_KEY` and `SESSION_COOKIE_NAME=daify_session`; `NODE_ENV=production` |
 | Netlify, build and functions scopes | `DAIFY_WEB_ORIGIN=https://<site>.netlify.app`, `DAIFY_API_URL=https://<api>.onrender.com`, `DAIFY_DEPLOYMENT_ENV=staging` |
 | Netlify, functions scope | `PROXY_SIGNING_KEY`, `DAIFY_CLIENT_IP_HEADER=x-nf-client-connection-ip`, `SESSION_COOKIE_NAME` |
-| Render | Runtime-role `DATABASE_URL`, matching `WEB_ORIGIN`, independent `MFA_ENCRYPTION_KEY` |
+| Render | Runtime-role `DATABASE_URL`, `DATABASE_POOL_MAX=3`, `DATABASE_CONNECTION_TIMEOUT_MS=10000`, optional PEM `DATABASE_SSL_CA`, matching `WEB_ORIGIN`, independent `MFA_ENCRYPTION_KEY` |
 | Render mail | `EMAIL_TRANSPORT=smtp`, `SMTP_HOST=smtp.resend.com`, `SMTP_PORT=2587`, `SMTP_SECURE=false`, `SMTP_REQUIRE_TLS=true`, `SMTP_USER=resend`, secret `SMTP_PASSWORD`, verified plain-address `EMAIL_FROM` |
 | Render media | `MEDIA_STORAGE=s3`, project `S3_ENDPOINT`, actual `S3_REGION`, private `S3_BUCKET`, secret `S3_ACCESS_KEY_ID` and `S3_SECRET_ACCESS_KEY` |
 | Render feature gates | `ALLOW_DEV_SEED=false`, `BILLING_MODE=disabled`, `ANALYTICS_MODE=disabled`; omit payment credentials and hosted Redis |
@@ -99,6 +112,8 @@ overwritten client address, and that direct API requests remain rejected.
 | `staging` environment secret | `RENDER_API_KEY` | Trigger/read the selected API deployment |
 | `staging` environment secret | `NETLIFY_AUTH_TOKEN` | Package/publish the selected staging project |
 | `staging` environment secret | `MIGRATION_DATABASE_URL` | Dedicated migration role; never use in web runtime |
+| `staging` environment secret | `STAGING_RUNTIME_DATABASE_URL` | Restricted runtime login used only for release verification |
+| `staging` environment secret | `STAGING_DATABASE_CA` | Project CA certificate PEM for verified TLS on the runner |
 | Repository variable | `RENDER_SERVICE_ID` | `srv-...` identifier |
 | Repository variable | `NETLIFY_SITE_ID` | Existing project ID |
 | Repository variable | `DAIFY_API_URL` | Canonical HTTPS API origin, no path/query |
@@ -108,6 +123,29 @@ overwritten client address, and that direct API requests remain rejected.
 Keep the enable switch at repository scope: it is evaluated by the job-level
 condition before environment secrets become available. Runtime secrets remain
 in Render/Netlify; the workflow does not install them automatically.
+
+The two release database URLs must target the recorded session pooler on port
+5432, database `postgres`, with the exact role/project username and
+`sslmode=verify-full`. Only `schema=public` and `connection_limit=1` are accepted
+as additional parameters. Do not copy a local `sslrootcert` path into Actions:
+the release script writes the supplied CA to a temporary 0600 file on that
+runner and removes it afterward. Runtime/provider secrets are not passed to
+the Prisma subprocess; its output is captured to avoid printing connection
+details. Keep the CA and all populated URLs out of Git.
+
+`node scripts/staging-release-database.mjs status` is a read-only check of both
+actual logins, TLS, migrator defaults, Prisma history and runtime access.
+`deploy` additionally runs migrations and explicit reviewed runtime grants.
+Neither command creates roles, changes passwords or takes schema ownership.
+These commands require secure environment injection; do not paste credentials
+into shell history. They are prepared but were **not executed against Supabase
+in this development checkpoint**.
+
+The release now rejects excess runtime TRUNCATE/REFERENCES/TRIGGER/MAINTAIN
+privileges and grant options, incorrect table ownership, public schema-specific
+default grants, and unexpected views/sequences. The current UUID-based schema
+requires no sequence privileges. Future objects require a reviewed allowlist
+change; do not grant access to every object in `public`.
 
 ## Release
 
@@ -134,6 +172,22 @@ publish or smoke step fails after the API changes, the workflow fails but does
 not automatically roll back either provider or the database.
 
 ## Rollback and recovery
+
+Database release phases commit separately: preflight, Prisma deploy, Prisma
+status, explicit runtime grants (one transaction), then an independent runtime
+login verification. A failed step prevents service deployment. Migration success
+followed by a grant or verification failure leaves the committed schema in
+place; it is not an atomic rollback of the release. Inspect migration history
+and permissions before recovery. An interrupted or failed migration may require
+a reviewed forward fix and deliberate Prisma resolution; never blindly mark it
+applied or rerun destructive commands. Once the schema is confirmed complete,
+the grant phase is repeatable for the exact allowlist. Verification failure does
+not automatically revoke, broaden or repair existing privileges.
+
+Local phase-failure tests verify that later actions never run after a failure,
+no mutation is automatically retried, and raw driver/process errors are redacted.
+The PostgreSQL 17 fixture also proves excess grants are detected through actual
+restricted logins. A hosted release and provider rollback remain unexecuted.
 
 Leave `STAGING_DEPLOY_ENABLED` unset/false while investigating. Capture the
 failed step, release SHA and provider deploy IDs without secrets. A failed

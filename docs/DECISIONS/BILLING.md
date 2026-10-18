@@ -138,3 +138,9 @@ rules above apply only to sandbox use.
 Local fixtures and mocked webhooks do not replace real provider sandbox
 acceptance. M6 completion must report each separately. Credentials belong in
 environment configuration, not this document or source control.
+
+## Commercial offers — 2026-10-15
+
+See [coupons and custom pricing](COMMERCIAL_OFFERS.md) for implemented employee
+authority, quote approvals, customer acceptance and the payment activation gate.
+Accepted offers are not yet applied to subscriptions or provider payments.

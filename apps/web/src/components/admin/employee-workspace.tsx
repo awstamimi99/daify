@@ -12,7 +12,7 @@ type Customer = { id: string; name: string; slug: string; status: string };
 const groups = [
   { name: ['People & customers', 'الموظفون والعملاء'], keys: ['staff.manage', 'customers.read', 'customers.manage', 'users.read', 'users.manage'] },
   { name: ['Menus & support', 'القوائم والدعم'], keys: ['menus.read', 'menus.edit', 'menus.publish', 'support.manage', 'templates.read'] },
-  { name: ['Billing & audit', 'الاشتراكات والتدقيق'], keys: ['billing.read', 'billing.manage', 'audit.read'] },
+  { name: ['Billing & audit', 'الاشتراكات والتدقيق'], keys: ['billing.read', 'billing.manage', 'audit.read', 'offers.read', 'offers.create', 'offers.approve', 'discounts.manage'] },
 ];
 async function api<T>(path: string, reason: string, method = 'GET', body?: object): Promise<T> {
   const response = await fetch(`/api/platform/${path}`, { method, headers: { 'content-type': 'application/json', 'x-support-reason': `uri:${encodeURIComponent(reason)}` }, ...(body ? { body: JSON.stringify(body) } : {}), cache: 'no-store' });
@@ -32,7 +32,7 @@ export function EmployeeWorkspace({ email, owner, role }: { email: string; owner
   const statusLabel = (value: string) => ({ INVITED: t('Invited', 'بانتظار قبول الدعوة'), ACTIVE: t('Active', 'نشط'), SUSPENDED: t('Suspended', 'موقوف') })[value as Employee['status']] ?? value;
   const eligibleRoles = (Object.keys(roles) as Role[]).filter(r => owner || (role === 'MANAGER' ? r !== 'MANAGER' : ['SUPPORT', 'SALES'].includes(r)));
   function permitted(permission: string, nextRole = staffRole) {
-    return Boolean(directory?.actorPermissions.includes(permission)) && (nextRole !== 'SALES' || ['customers.read', 'billing.read', 'templates.read'].includes(permission)) && (!['SUPPORT', 'SALES'].includes(nextRole) || permission !== 'staff.manage');
+    return (!permission.startsWith('offers.') && permission !== 'discounts.manage' || nextRole === 'MANAGER' || nextRole === 'SALES' && ['offers.read', 'offers.create'].includes(permission)) && Boolean(directory?.actorPermissions.includes(permission)) && (nextRole !== 'SALES' || ['customers.read', 'billing.read', 'templates.read', 'offers.read', 'offers.create'].includes(permission)) && (!['SUPPORT', 'SALES'].includes(nextRole) || permission !== 'staff.manage');
   }
   async function run(action: () => Promise<void>) { setPending(true); setError(''); setMessage(''); try { await action(); } catch (e) { setError(e instanceof Error ? e.message : 'Please retry.'); } finally { setPending(false); } }
   async function load(event: FormEvent) {
@@ -59,12 +59,17 @@ export function EmployeeWorkspace({ email, owner, role }: { email: string; owner
     const selected = new Set(permissions);
     if (checked) {
       selected.add(permission);
+      if (['offers.read', 'offers.create', 'offers.approve'].includes(permission)) selected.add('customers.read');
+      if (['offers.create', 'offers.approve'].includes(permission)) selected.add('offers.read');
+      if (permission === 'discounts.manage') { selected.add('staff.manage'); selected.add('customers.read'); selected.add('offers.read'); }
       if (['menus.read', 'menus.edit', 'menus.publish', 'staff.manage', 'customers.manage'].includes(permission)) selected.add('customers.read');
       if (['menus.edit', 'menus.publish'].includes(permission)) selected.add('menus.read');
       if (permission === 'menus.publish') selected.add('menus.edit');
     } else {
       selected.delete(permission);
-      if (permission === 'customers.read') ['menus.read', 'menus.edit', 'menus.publish', 'staff.manage', 'customers.manage'].forEach(p => selected.delete(p));
+      if (permission === 'customers.read') ['menus.read', 'menus.edit', 'menus.publish', 'staff.manage', 'customers.manage', 'offers.read', 'offers.create', 'offers.approve', 'discounts.manage'].forEach(p => selected.delete(p));
+      if (permission === 'offers.read') ['offers.create', 'offers.approve', 'discounts.manage'].forEach(p => selected.delete(p));
+      if (permission === 'staff.manage') selected.delete('discounts.manage');
       if (permission === 'menus.read') ['menus.edit', 'menus.publish'].forEach(p => selected.delete(p));
       if (permission === 'menus.edit') selected.delete('menus.publish');
     }

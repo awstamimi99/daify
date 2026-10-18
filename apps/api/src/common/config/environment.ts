@@ -11,6 +11,9 @@ export const environmentSchema = Joi.object({
   DATABASE_URL: Joi.string()
     .uri({ scheme: ['postgresql', 'postgres'] })
     .required(),
+  DATABASE_POOL_MAX: Joi.number().integer().min(1).max(5).default(3),
+  DATABASE_CONNECTION_TIMEOUT_MS: Joi.number().integer().min(1000).max(30000).default(10000),
+  DATABASE_SSL_CA: Joi.string(),
   WEB_ORIGIN: Joi.string().uri({ scheme: ['http', 'https'] }).when('NODE_ENV', { is: 'production', then: Joi.string().uri({ scheme: ['https'] }).required(), otherwise: Joi.any().default('http://localhost:3000') }),
   EMAIL_TRANSPORT: Joi.string().valid('smtp', 'test').when('NODE_ENV', { is: 'test', then: Joi.any().default('test'), otherwise: Joi.invalid('test').default('smtp') }),
   SMTP_HOST: Joi.string().when('NODE_ENV', { is: 'production', then: Joi.required(), otherwise: Joi.any().default('127.0.0.1') }),

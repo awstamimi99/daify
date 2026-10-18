@@ -2,6 +2,14 @@
 
 ## Status
 
+Current checkpoint — 2026-10-18: hosted database roles and all 15 migrations are
+verified. Core Beta, security and disabled-billing acceptance pass locally;
+deployment configurations and recovery instructions are prepared. The owner
+explicitly deferred hosting/email setup and prohibited deployment for now.
+See [current launch progress](../launch/DAIFY_LAUNCH_PROGRESS.md) and
+[evidence](../QA/BETA_DEPLOYMENT_PREPARATION_2026-10-18.md). Earlier dated records
+below remain historical; hosted provider/operations acceptance is still open.
+
 IN PROGRESS — hosting selection and execution planning started 2026-09-30 on
 explicit owner instruction (“do it”), with a $0 monthly hosting budget.
 No external infrastructure was provisioned by the initial planning checkpoint.
@@ -29,9 +37,22 @@ Support/Sales presets, per-employee grants and customer scope, invitations with
 MFA, and audited client-menu editing/publishing. See the
 [employee policy and pending commercial rules](../DECISIONS/PLATFORM_STAFF.md)
 and [verification](../QA/PLATFORM_STAFF_2026-10-15.md). This is not a hosted
-deployment; discount/custom-price approval workflows remain pending.
+deployment; commercial terms and approvals are implemented locally; applying accepted offers to payments remains pending.
+
+2026-10-15 commercial continuation: coupons, configurable Sales allowances,
+custom-price approvals and explicit customer acceptance are implemented locally.
+The schema now contains 41 application tables / 15 migrations. See
+[commercial-offer verification](../QA/COMMERCIAL_OFFERS_2026-10-15.md).
+Accepted terms await future billing activation; hosted acceptance is still disabled.
 
 ## Goal
+
+2026-10-17 connection checkpoint: private credential input, separate migration/
+runtime role setup and verification, certificate-verified API connections and
+bounded pools are prepared and locally tested. The administrator credential is
+saved privately; hosted access is blocked on the project CA after a certificate
+validation failure. No hosted roles or tables were created.
+See [connection setup](../QA/SUPABASE_CONNECTION_2026-10-17.md).
 
 First produce a secure, repeatable free staging demo. Then resolve the remaining
 production requirements before any customer launch. Free staging availability

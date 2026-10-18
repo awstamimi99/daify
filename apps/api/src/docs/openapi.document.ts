@@ -1,3 +1,4 @@
+import { offersPaths, offersSchemas } from './offers-contract';
 import { publishingPaths, publishingSchemas } from './publishing-contract';
 import { staffPaths, staffSchemas } from './staff-contract';
 import { billingPaths, billingSchemas } from './billing-contract';
@@ -39,6 +40,7 @@ const testToken: Schema = { type: 'string', description: 'Present only with NODE
 
 const schemas: Record<string, Schema> = {
   ...staffSchemas,
+  ...offersSchemas,
   ...menuSchemas, ...publishingSchemas, ...billingSchemas, ...analyticsSchemas, ...supportSchemas, ...operationsSchemas,
   User: object(user),
   SessionUser: object({ ...user, sessionId: uuid, assuranceLevel: enumeration('AAL1', 'AAL2'), platformStaff: ref('StaffAccess') }, ['platformStaff']),
@@ -108,6 +110,7 @@ export const openApiDocument = {
   security: [{ sessionCookie: [] }],
   paths: {
     ...staffPaths,
+    ...offersPaths,
     ...menuPaths, ...publishingPaths, ...billingPaths, ...analyticsPaths, ...supportPaths, ...operationsPaths,
     '/auth/signup': { post: operation('signUp', 'authentication', ref('SignupResponse'), { public: true, mutation: true, body: 'SignupRequest', status: 201, errors: [409], description: 'Creates an unverified account and sends verification email. SMTP failure may occur after account creation; use resend-verification to retry.' }) },
     '/auth/verify-email': { post: operation('verifyEmail', 'authentication', ref('UserResponse'), { public: true, mutation: true, body: 'TokenRequest', status: 201, errors: [401] }) },

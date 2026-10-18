@@ -77,9 +77,12 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run prisma:migrate:deploy --workspace @daify/api
+      - run: npm run staging:db:test
       - run: npm run build
         env:
           NODE_ENV: production
       - run: npm test
         env:
           WEB_TEST_PRODUCTION: 'true'
+      - name: Verify the Beta journey with billing and analytics disabled
+        run: npm run test:beta

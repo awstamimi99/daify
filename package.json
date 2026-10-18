@@ -16,6 +16,7 @@
     "test": "npm run test:prototype && npm run test:web && npm run test:api",
     "test:prototype": "playwright test",
     "test:web": "playwright test --config apps/web/playwright.config.ts",
+    "test:beta": "WEB_TEST_BETA=true WEB_TEST_PRODUCTION=true playwright test --config apps/web/playwright.config.ts",
     "test:api": "npm run test --workspace @daify/api",
     "db:up": "docker compose up -d postgres",
     "db:down": "docker compose down",
@@ -24,7 +25,9 @@
     "postinstall": "npm run build --workspace @daify/menu-engine",
     "prebuild": "npm run build --workspace @daify/menu-engine",
     "prelint": "npm run build --workspace @daify/menu-engine",
-    "pretypecheck": "npm run build --workspace @daify/menu-engine"
+    "pretypecheck": "npm run build --workspace @daify/menu-engine",
+    "staging:db": "node scripts/staging-database.mjs",
+    "staging:db:test": "node scripts/staging-database.integration.mjs"
   },
   "devDependencies": {
     "@netlify/plugin-nextjs": "5.16.2",

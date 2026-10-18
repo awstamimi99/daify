@@ -4,6 +4,12 @@ DAIFY is a premium digital-menu SaaS product. The repository contains the
 production Next.js frontend foundation, a NestJS/PostgreSQL/Prisma backend
 foundation, and the preserved framework-free prototype.
 
+Current Beta checkpoint: the bilingual core journey and disabled-billing mode
+pass local acceptance. Hosting/email setup and hosted acceptance are pending;
+deployment is currently paused by the owner. See [launch progress](docs/launch/DAIFY_LAUNCH_PROGRESS.md),
+[local Beta verification](docs/QA/BETA_LOCAL.md), and
+[deployment readiness](docs/launch/DAIFY_PRODUCTION_READINESS.md).
+
 ## Run locally
 
 Run the production frontend:
@@ -51,6 +57,10 @@ that database's fixtures; do not point them at development or production data.
 Web tests start their own API/web processes and use test-only token responses.
 After `npm run build`, `WEB_TEST_PRODUCTION=true npm run test:web` verifies the
 compiled frontend with `next start` as well.
+`npm run test:beta` uses the built frontend/API with billing and analytics
+disabled. All destructive API/browser/role tests now require a local or CI
+`TEST_DATABASE_URL`; hosted targets and connection-override query parameters
+are rejected.
 
 ## Current authenticated workspace
 

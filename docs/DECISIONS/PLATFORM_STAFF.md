@@ -69,7 +69,7 @@ Supabase migrations, runtime-role privileges, real invitation delivery and
 hosted browser acceptance remain open. Existing custom authentication remains
 in place; this feature does not adopt Supabase Auth or depend on its Data API.
 
-## Commercial rules agreed, implementation still pending
+## Commercial rules and implementation
 
 - Owner and Manager may grant discounts and custom pricing, with permissions
   controlled by the Owner.
@@ -83,15 +83,15 @@ in place; this feature does not adopt Supabase Auth or depend on its Data API.
 - Sales may offer one free month **or** up to 25% off for the first three months.
 - Sales may propose custom pricing, but a Manager or Owner must approve it
   before it takes effect.
-- Discount stacking, repeat offers and approval expiry need explicit rules.
-  Coupon discount duration is distinct from the deadline for redeeming a code.
-  Until implemented, no new discounts or prices
-  are applied by this employee feature.
+- Coupons, Sales allowance settings, quote decisions and customer acceptance
+  are now implemented locally. See [commercial offers](COMMERCIAL_OFFERS.md)
+  for the complete rules and remaining payment-activation work.
 
-The current `billing.manage` checkbox controls existing subscription **usage
-limits**, not prices or discounts. Quotes, promotion redemption, approval
-records and payment-provider application still need implementation and tests.
-Hosted billing remains disabled under the staging plan.
+The current `billing.manage` checkbox controls subscription **usage limits**.
+Separate commercial permissions control coupons, quotes, approvals and Sales
+allowances. Accepted terms await activation; no discount changes a real payment
+or grants free subscription access in this checkpoint. Hosted billing remains
+disabled under the staging plan.
 
 See [auth/RBAC](AUTH_RBAC.md), [billing](BILLING.md),
 [staging setup](../QA/M8_STAGING.md) and [employee QA](../QA/PLATFORM_STAFF_2026-10-15.md).

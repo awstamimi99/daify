@@ -21,6 +21,7 @@ test-results/
 playwright-report/
 blob-report/
 .netlify/
+/.local/staging/
 playwright/.cache/
 
 # Local private draft media

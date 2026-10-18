@@ -5,7 +5,7 @@ import type { Prisma } from '../generated/prisma/client';
 export const staffPermissions = [
   'staff.manage', 'customers.read', 'customers.manage', 'users.read', 'users.manage',
   'audit.read', 'billing.read', 'billing.manage', 'templates.read', 'support.manage',
-  'menus.read', 'menus.edit', 'menus.publish',
+  'menus.read', 'menus.edit', 'menus.publish', 'offers.read', 'offers.create', 'offers.approve', 'discounts.manage',
 ] as const;
 export type StaffPermission = typeof staffPermissions[number];
 export const staffRoles = ['MANAGER', 'SUPERVISOR', 'SUPPORT', 'SALES'] as const;
@@ -14,14 +14,15 @@ export interface StaffAccess {
   role: StaffRole; permissions: string[]; allOrganizations: boolean; organizationIds: string[];
 }
 export const staffPresets: Record<StaffRole, readonly StaffPermission[]> = {
-  MANAGER: ['staff.manage', 'customers.read', 'customers.manage', 'billing.read', 'templates.read', 'support.manage', 'menus.read', 'menus.edit', 'menus.publish'],
+  MANAGER: ['offers.read', 'offers.create', 'offers.approve', 'discounts.manage', 'staff.manage', 'customers.read', 'customers.manage', 'billing.read', 'templates.read', 'support.manage', 'menus.read', 'menus.edit', 'menus.publish'],
   SUPERVISOR: ['customers.read', 'templates.read', 'support.manage', 'menus.read', 'menus.edit', 'menus.publish'],
   SUPPORT: ['customers.read', 'templates.read', 'support.manage', 'menus.read', 'menus.edit', 'menus.publish'],
-  SALES: ['customers.read', 'billing.read', 'templates.read'],
+  SALES: ['offers.read', 'offers.create', 'customers.read', 'billing.read', 'templates.read'],
 };
 export const PlatformPermission = (permission: StaffPermission) => SetMetadata('platform.permission', permission);
 export function allowedForRole(role: StaffRole, permission: string) {
-  return staffPermissions.includes(permission as StaffPermission) && (role !== 'SALES' || staffPresets.SALES.includes(permission as StaffPermission)) &&
+  return staffPermissions.includes(permission as StaffPermission) &&
+    (!['offers.read', 'offers.create', 'offers.approve', 'discounts.manage'].includes(permission) || (role === 'MANAGER' || role === 'SALES' && ['offers.read', 'offers.create'].includes(permission))) && (role !== 'SALES' || staffPresets.SALES.includes(permission as StaffPermission)) &&
     (!['SUPPORT', 'SALES'].includes(role) || permission !== 'staff.manage');
 }
 export function canPlatform(user: AuthenticatedUser, permission: StaffPermission) {
