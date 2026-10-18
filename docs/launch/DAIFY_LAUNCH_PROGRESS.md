@@ -11,6 +11,7 @@ Last updated: 2026-10-18
 - Runtime access granted only to the reviewed 41-table allowlist. `daify_runtime` cannot read Prisma migration history, execute public functions or create schema objects.
 - Disposable PostgreSQL 17 migration rehearsal and the full API suite pass with the restricted runtime identity.
 - Full browser acceptance passes locally for authentication, menus, publishing, QR, bilingual rendering, employee permissions, offers, support, analytics and accessibility.
+- Browser-test startup now pins seeding, API and fixtures to the same validated local `TEST_DATABASE_URL`, rejects hosted/redirected URLs, and refuses to reuse servers with unknown database targets.
 - Current production dependency audit: 0 vulnerabilities.
 - Lint, typecheck, Next.js production build and script tests pass.
 
@@ -35,11 +36,12 @@ Last updated: 2026-10-18
 
 ## Test results
 
-- `node --test scripts/*.test.mjs`: 10/10 passed.
+- `node --test scripts/*.test.mjs`: 12/12 passed, including browser database isolation and secret-safe rejection.
 - Database-role integration test passes under a PostgreSQL 17 non-superuser administrator with `CREATEROLE`.
 - Disposable PostgreSQL 17: 15/15 migrations applied; runtime grant verification passed for 41 tables.
 - API: 29 suites passed, 200 tests passed and 1 intentionally skipped (201 total).
 - Next.js/API browser acceptance: 75/75 passed against a freshly migrated PostgreSQL 17 database.
+- Repeat acceptance with the built Next.js frontend and compiled test-mode API: 75/75 passed while inherited `DATABASE_URL` pointed to an intentionally unusable address, proving test-target selection. This is local evidence, not production configuration or hosted acceptance.
 - Standalone prototype/template browser suite: 17/17 passed.
 - `npm audit --omit=dev --audit-level=high`: 0 findings.
 - Root lint, typecheck and build passed sequentially with a synthetic loopback database URL.

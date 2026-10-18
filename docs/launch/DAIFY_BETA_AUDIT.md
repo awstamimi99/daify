@@ -40,6 +40,7 @@ The data model contains 41 application models and 15 ordered migrations. Tenant 
 - Exact-origin CSRF/CORS handling, secure production cookies, signed trusted-ingress identity, shared PostgreSQL rate limiting and bounded database pools.
 - Argon2 password hashing, recoverable MFA, input DTO validation, safe image parsing, immutable publication snapshots and no committed secrets.
 - Current production dependency audit reports zero known vulnerabilities.
+- Browser tests validate a local `TEST_DATABASE_URL` before any seeding or server startup and propagate it to all processes. Existing servers are never reused, preventing accidental writes through an unrelated API.
 
 ### Open security and operational risks
 
